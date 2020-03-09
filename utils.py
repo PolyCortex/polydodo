@@ -59,7 +59,7 @@ def fetch_data(subjects, recording=[1, 2], path=None, force_update=False,
     path = _data_path(path=path, update_path=update_path)
     params = [path, force_update, base_url]
 
-    _check_subjects(subjects, 82)
+    _check_subjects(subjects, 83)
 
     fnames = []
     for subject in subjects:
