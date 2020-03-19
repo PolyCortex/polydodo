@@ -68,9 +68,8 @@ def convert_csv_to_raw(path_csv):
     #Create dummy MNE rawArray object
     raw = mne.io.RawArray(data, info)
 
+    return raw
 
-
-convert_csv_to_raw(r"C:\Users\thier\Documents\PolyCortex\Sommeil\Preprocessing\Nuit_Will.csv")
 
 
 
