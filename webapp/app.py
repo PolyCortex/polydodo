@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect
 import os
-from convert_csv_to_raw import convert_csv_to_raw 
+from resampling import convert_csv_to_raw 
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'csv'}
