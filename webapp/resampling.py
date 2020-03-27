@@ -7,10 +7,10 @@ import pandas as pd
 import math
 import mne
 from fractions import Fraction
-import pandas_schema
+import pandas_schema 
 from pandas_schema import Column
 from pandas_schema.validation import CustomElementValidation
-from decimal import *
+from decimal import Decimal, InvalidOperation
 
 SAMPLING_RATE = 100
 
@@ -21,15 +21,25 @@ def check_decimal(dec):
         return False
     return True
 
-""" def do_validation(data):
+def do_validation(data):
     # define validation elements
     decimal_validation = [CustomElementValidation(lambda d: check_decimal(d), 'is not decimal')]
     null_validation = [CustomElementValidation(lambda d: d is not np.nan, 'this field cannot be null')]
 
     # define validation schema
     schema = pandas_schema.Schema([
-            Column('dec1', decimal_validation + null_validation),
-            Column('dec2', decimal_validation+ null_validation)), """
+            Column('ch1', decimal_validation + null_validation),
+            Column('ch2', decimal_validation+ null_validation)])
+    
+    # apply validation
+    errors = schema.validate(data)
+    errors_index_rows = [e.row for e in errors]
+    if len(errors)==0:
+        return True
+    else:
+        for e in range(0,len(errors_index_rows)):
+            print("Error on line ", errors[e].row, " for ",errors[e].column, " : ",errors[e].value, " ", errors[e].message)
+        return False
 
 def upsampling(ch_1, ch_2, up_factor, starting_s_rate):
     npts = len(ch_1) #equal to len(ch_2) also
@@ -94,7 +104,8 @@ def convert_csv_to_raw(path_csv, board):
         n_rows_to_skip = 6
     
     #Reading the original signal
-    signal_bci = pd.read_csv(path_csv, header = None, usecols = [1,2],skiprows=n_rows_to_skip) 
+    signal_bci = pd.read_csv(path_csv, header = None, usecols = [1,2],skiprows=n_rows_to_skip, names=['ch1','ch2']) 
+    #validation
     signal_bci = np.array(signal_bci)
     channel_1 = signal_bci[:,0]
     channel_2 = signal_bci[:,1]
@@ -125,4 +136,5 @@ def convert_csv_to_raw(path_csv, board):
 
 
 
-
+signal_bci = pd.read_csv(r"C:\Users\thier\Documents\PolyCortex\openchallenge2020\webapp\erreur_test.csv", header = None, usecols = [1,2],skiprows=7, names=['ch1','ch2']) 
+do_validation(signal_bci)
