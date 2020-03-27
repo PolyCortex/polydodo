@@ -7,8 +7,29 @@ import pandas as pd
 import math
 import mne
 from fractions import Fraction
+import pandas_schema
+from pandas_schema import Column
+from pandas_schema.validation import CustomElementValidation
+from decimal import *
 
 SAMPLING_RATE = 100
+
+def check_decimal(dec):
+    try:
+        Decimal(dec)
+    except InvalidOperation: 
+        return False
+    return True
+
+""" def do_validation(data):
+    # define validation elements
+    decimal_validation = [CustomElementValidation(lambda d: check_decimal(d), 'is not decimal')]
+    null_validation = [CustomElementValidation(lambda d: d is not np.nan, 'this field cannot be null')]
+
+    # define validation schema
+    schema = pandas_schema.Schema([
+            Column('dec1', decimal_validation + null_validation),
+            Column('dec2', decimal_validation+ null_validation)), """
 
 def upsampling(ch_1, ch_2, up_factor, starting_s_rate):
     npts = len(ch_1) #equal to len(ch_2) also
@@ -31,9 +52,6 @@ def downsampling(ch_1, ch_2, down_factor, starting_s_rate):
     npts = len(ch_1) #equal to len(ch_2) also
     new_ds_rate = starting_s_rate/down_factor
     new_npts = npts / down_factor
-
-    # new time vector after downsampling
-    new_ds_time = np.arange(0,new_npts)/new_ds_rate
 
     #Filtering at new Nyquist
     new_nyquist = new_ds_rate/2
@@ -59,15 +77,24 @@ def convert_to_raw(ch_1, ch_2):
 
     return raw
 
-def convert_csv_to_raw(path_csv):
+
+#board defines which board was used for the acquisition of EEG data
+#this value is obtained from the form the user has to fill out before
+#uploading his data. 0 = Ganglion and 1 = Cyton
+def convert_csv_to_raw(path_csv, board): 
     #Reading the original sampling rate : s_rate
     str_srate = pd.read_csv(path_csv, header= None, usecols = [0], skiprows = 2, nrows=1)
     ori_srate = pd.DataFrame.to_string(str_srate)
     ori_srate = [float(s) for s in ori_srate.split() if s.replace('.','',1).isdigit()]
     s_rate = int(ori_srate[-1])
 
+    if board == 0:
+        n_rows_to_skip = 7
+    elif board == 1:
+        n_rows_to_skip = 6
+    
     #Reading the original signal
-    signal_bci = pd.read_csv(path_csv, header = None, usecols = [1,2],skiprows=7) 
+    signal_bci = pd.read_csv(path_csv, header = None, usecols = [1,2],skiprows=n_rows_to_skip) 
     signal_bci = np.array(signal_bci)
     channel_1 = signal_bci[:,0]
     channel_2 = signal_bci[:,1]
