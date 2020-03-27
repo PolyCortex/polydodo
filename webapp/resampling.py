@@ -105,7 +105,7 @@ def convert_csv_to_raw(path_csv, board):
     
     #Reading the original signal
     signal_bci = pd.read_csv(path_csv, header = None, usecols = [1,2],skiprows=n_rows_to_skip, names=['ch1','ch2']) 
-    #validation
+    #do_validation(signal_bci) #faire en sorte que si le fichier est valide on continu sinon ThrowError
     signal_bci = np.array(signal_bci)
     channel_1 = signal_bci[:,0]
     channel_2 = signal_bci[:,1]
@@ -136,5 +136,5 @@ def convert_csv_to_raw(path_csv, board):
 
 
 
-signal_bci = pd.read_csv(r"C:\Users\thier\Documents\PolyCortex\openchallenge2020\webapp\erreur_test.csv", header = None, usecols = [1,2],skiprows=7, names=['ch1','ch2']) 
-do_validation(signal_bci)
+#signal_bci = pd.read_csv(r"C:\Users\thier\Documents\PolyCortex\Sommeil\Preprocessing\Nuit_Will.csv", header = None, usecols = [1,2],skiprows=7, names=['ch1','ch2']) 
+#do_validation(signal_bci)
