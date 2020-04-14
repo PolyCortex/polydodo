@@ -1,0 +1,58 @@
+body {
+  /*display: table;
+  margin: 100px auto auto;*/
+  display: inline-block;
+  margin: 20px 0px ;
+  font-family: Arial, sans-serif;
+}
+
+svg {
+  background-color: white;
+}
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.vis2 {
+  border-right: 1px solid #000000;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.y.axis path {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: white;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+}
+
+.axis text {
+  font-size: 12pt;
+}
+
+/***** Tooltip *****/
+.d3-tip {
+  line-height: 1;
+  padding: 12px;
+  border-radius: 2px;
+  color: #0D0D0D;
+  background: rgba(235, 235, 235, 0.9);
+  /* Color Theme Swatches in Hex */
+
+}
+
+
