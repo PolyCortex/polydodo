@@ -126,14 +126,6 @@ function secondTransition(g, data, firstIndexes, totalStagePortion, width, xAxis
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   d3.selectAll(".rect-stacked")
     .data(data)
-    .on("mouseover", function(d, i) {
-      tip.show(d);
-      d3.select(this).style("opacity", 0.8);
-    })
-    .on("mouseout",function(d){
-      tip.hide();
-      d3.select(this).style("opacity", 1);
-    }) 
     .transition()
     .attr("x", function(d,i){ 
       return 0;
@@ -142,6 +134,14 @@ function secondTransition(g, data, firstIndexes, totalStagePortion, width, xAxis
        if(i === firstIndexes[d.stage]) return totalStagePortion[d.stage]*width;
        else return 0;
     })
+    .on("mouseover", function(d, i) {
+      tip.show(d);
+      d3.select(this).style("opacity", 0.8);
+    })
+    .on("mouseout",function(d){
+      tip.hide();
+      d3.select(this).style("opacity", 1);
+    }) 
     .duration(2000)
 
   //text containing the % of the sleep stage on the bar

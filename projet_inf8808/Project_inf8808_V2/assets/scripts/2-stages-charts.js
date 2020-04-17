@@ -12,7 +12,7 @@
  * @param line      La fonction permettant de dessiner les lignes du graphique.
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createStackedBarChart(g,sources, x, y, color, height, width, tip, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion) {
+function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipStacked, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -43,6 +43,20 @@ function createStackedBarChart(g,sources, x, y, color, height, width, tip, xAxis
         firstTransition(g,sources,xAxisFocus,yAxisFocus,height,color);
       })
 
+    
+    d3.select("svg")
+    .append("rect")
+      .attr("x", 340)
+      .attr("y", 10)
+      .attr("width", 30)
+      .attr("height", 30)
+      //.style('stroke', "#ffffff")
+      .style("fill", "white")
+      .attr("transform", "translate(" + 100 + "," + 10 + ")")
+      .on("click", function(d){
+        //d3.select(".d3-tip").remove()
+        secondTransition(g, sources, xAxisFocus, yAxisFocus, height, color);
+      });
   
     d3.select("svg")
     .append("rect")
@@ -54,25 +68,11 @@ function createStackedBarChart(g,sources, x, y, color, height, width, tip, xAxis
       .style("fill", "#e6521c")
       .attr("transform", "translate(" + 140 + "," + 10 + ")")
       .on("click", function(d){
-        d3.select(".d3-tip").remove()
-        secondTransition(g,sources,firstStageIndex,totalStagePortion,width);
+        //d3.select(".d3-tip").remove()
+        thirdTransition(g,sources,firstStageIndex,totalStagePortion, width,xAxisFocus, x, tipStacked);
     });
   
 
-  d3.select("svg")
-    .append("rect")
-      .attr("x", 340)
-      .attr("y", 10)
-      .attr("width", 30)
-      .attr("height", 30)
-      //.style('stroke', "#ffffff")
-      .style("fill", "white")
-      .attr("transform", "translate(" + 100 + "," + 10 + ")")
-      .on("click", function(d){
-        //d3.select(".d3-tip").remove()
-        thirdTransition(g, sources, xAxisFocus, yAxisFocus, height, color);
-      });
-    
    d3.select("svg")
    .append("rect")
      .attr("x", 340)
@@ -141,11 +141,73 @@ function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
     
 }
 
+function secondTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
+
+  d3.selectAll(".rect-stacked")
+    .data(data)
+    .transition()
+    .duration(2000)
+      .attr("y", function(d,i){
+        var yRow = getStageRow(d.stage); 
+        return 80*yRow;//USE y(yRow)
+      })
+      .attr("height", 10);
+
+  //Move all focus
+   g.transition()
+    .attr("height", 420)
+    .duration(2000);
+
+  d3.select(".y.axis")
+    .transition()
+    .duration(2000)
+    .attr("transform", "translate(0," + (0) + ")")
+    .call(yAxisFocus)
+    .selectAll("text")//The left labels with different colors in Y axes 
+      .attr("class","y-label")
+      .attr("y", 0)  
+      .attr("x", -10)
+      .style('fill', function(d,i) { 
+        return color(getStageColorIndex(i));
+      })
+      .style("font-size", "20px")
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
+  
+}
+
+
 //Third data vizualisation
-function secondTransition(g, data, firstIndexes, totalStagePortion, width) {
+function thirdTransition(g, data, firstIndexes, totalStagePortion, width, xAxis, x, tip) {
+  
+  var endHour = data[data.length - 1].currentStageEnd.getHours() + (data[data.length - 1].currentStageEnd.getMinutes()/60 );
+  var startHour = data[0].currentStageDebut.getHours() + (data[0].currentStageDebut.getMinutes()/60 );
+  var sleepTotal = endHour - startHour
+
+  x.domain([0, sleepTotal])
+  var array = []
+  for (let currentTick = 0; currentTick < sleepTotal; currentTick++) {
+    array.push(currentTick);
+  }
+  xAxis.tickFormat(d => d + " h")
+        .tickValues(array)
+
+  d3.select(".x.axis").transition()
+    .call(xAxis)
+    //.call(x)
+    .duration(2000)
+
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   d3.selectAll(".rect-stacked")
     .data(data)
+    .on("mouseover", function(d, i) {
+      tip.show(d);
+      d3.select(this).style("opacity", 0.8);
+    })
+    .on("mouseout",function(d){
+      tip.hide();
+      d3.select(this).style("opacity", 1);
+    }) 
     .transition()
     .attr("x", function(d,i){ 
       return 0;
@@ -182,70 +244,17 @@ g.selectAll(".text")
    // d3.select(".x.axis").remove()
 }
 
-function thirdTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
 
-  d3.selectAll(".rect-stacked")
-    .data(data)
-    .transition()
-    .duration(2000)
-      .attr("y", function(d,i){
-        var yRow = getStageRow(d.stage); 
-        return 80*yRow;//USE y(yRow)
-      })
-      .attr("height", 10);
-
-  //Move all focus
-   g.transition()
-    .attr("height", 420)
-    .duration(2000);
-
-  d3.select(".y.axis")
-    .transition()
-    .duration(2000)
-    .attr("transform", "translate(0," + (0) + ")")
-    .call(yAxisFocus)
-    .selectAll("text")//The left labels with different colors in Y axes 
-      .attr("class","y-label")
-      .attr("y", 0)  
-      .attr("x", -10)
-      .style('fill', function(d,i) { 
-        return color(getStageColorIndex(i));
-      })
-      .style("font-size", "20px")
-      .attr("text-anchor", "left")
-      .style("alignment-baseline", "middle");
+function forthTransition(g, data, x, firstIndexes, totalStagePortion, width) {
   
-}
-
-function forthTransition(g, data, x,firstIndexes, totalStagePortion, width) {
-
-  d3.selectAll(".rect-stacked")
+  var stack =  d3.selectAll(".rect-stacked")
     .data(data)
     .transition()
     .duration(2000)
     .attr("x", function(d,i){
       if(i === firstIndexes[0])
-        return x(d.currentStageDebut);
+        return 0;
       if(i === firstIndexes[d.stage]){
-        var cumul = totalStagePortion[0];
-        if(d.stage != 4)
-          cumul += totalStagePortion[4]; 
-        if(d.stage === 2 || d.stage === 3 )
-          cumul += totalStagePortion[1]; 
-        if(d.stage === 3)
-          cumul += totalStagePortion[2]; 
-      return cumul*width;}
-    })
-    .delay(2000)
-  
-  d3.selectAll(".rect-stacked")
-    .data(data)
-    .transition()
-    .duration(2000)
-    .attr("x", function(d,i){
-      if(i === firstIndexes[0])
-        return x(d.currentStageDebut);
-      if(i === firstIndexes[d.stage]){console.log(d.stage); 
         var cumul = totalStagePortion[0];
         if(d.stage != 4)
           cumul += totalStagePortion[4]; 
@@ -269,8 +278,38 @@ function forthTransition(g, data, x,firstIndexes, totalStagePortion, width) {
 
   d3.select(".x.axis").transition()
   .attr("transform", "translate(0," + (80) + ")")
-  .duration(5000)
+  .duration(5000);
 
+  g.selectAll(".text")
+  .data(data)
+  .enter()
+    .append("text")
+    .attr("class","pourc")
+    .text(function(d,i) {
+      var rounded = Math.round(totalStagePortion[d.stage]*100 * 10) / 10
+      if(i === firstIndexes[d.stage]) return rounded + "%";
+      else return "";
+    })
+    .attr("x", function(d, i) {
+      if(i === firstIndexes[0])
+      return (totalStagePortion[d.stage]/2)*width;
+      if(i === firstIndexes[d.stage]){
+        var cumul = totalStagePortion[0];
+        if(d.stage != 4)
+          cumul += totalStagePortion[4]; 
+        if(d.stage === 2 || d.stage === 3 )
+          cumul += totalStagePortion[1]; 
+        if(d.stage === 3)
+          cumul += totalStagePortion[2]; 
+      return (cumul*width) + (totalStagePortion[d.stage]/2)*width ;}
+    })
+    .attr("y", function(d,i) {
+      if(i === firstIndexes[d.stage]) return 40;
+    })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "20px")
+    .attr("fill", "white")
+    .attr("text-anchor", "middle")
 }
 
 
@@ -282,28 +321,51 @@ function forthTransition(g, data, x,firstIndexes, totalStagePortion, width) {
  * @param formatPercent   Fonction permettant de formater correctement un pourcentage.
  * @return {string}       Le texte à afficher dans l'infobulle.
  */
+
 function getToolTipText(d) {
  
- var h = addZero(d.currentStageDebut.getHours());
- var m = addZero(d.currentStageDebut.getMinutes());
- var hf = addZero(d.currentStageEnd.getHours());
- var mf = addZero(d.currentStageEnd.getMinutes());
+  var h = addZero(d.currentStageDebut.getHours());
+  var m = addZero(d.currentStageDebut.getMinutes());
+  var hf = addZero(d.currentStageEnd.getHours());
+  var mf = addZero(d.currentStageEnd.getMinutes());
 
- var hourDiff = d.currentStageEnd - d.currentStageDebut; //in ms
+  var hourDiff = d.currentStageEnd - d.currentStageDebut; //in ms
+  hourDiff/= 3.6e6; //in h
 
- var hours   = Math.floor(hourDiff / 3.6e6);
- var minutes = Math.floor((hourDiff % 3.6e6) / 6e4);
- var seconds = Math.floor((hourDiff % 6e4) / 1000);
+  return `Stage : <strong> ${d.stageText} </strong> <br>
+          Début  :  <strong> ${h} h ${m}  </strong>
+            -  Fin : <strong> ${hf} h ${mf} </strong> <br>
+          Durée: <strong> ${getDurationString(hourDiff)} </strong>`; //TO DO ADD HOURS
+}
 
- var humanReadable = {};
- humanReadable.hours = hours;
- humanReadable.minutes = minutes ;
- humanReadable.seconds = seconds;
+/**
+ * Obtient le texte associé à l'infobulle.
+ *
+ * @param d               Les données associées à la barre survollée par la souris.
+ * @return {string}       Le texte à afficher dans l'infobulle.
+ */
+function getStackedToolTipText(d,totalStagesPortion, totalTimeStamp) {
+  return `Stage : <strong> ${d.stageText} </strong><br> 
+          Durée : <strong> ${getDurationSecondString(totalStagesPortion[d.stage]*totalTimeStamp*30)} </strong><br>`;
+}
+function getDurationSecondString(duration){
 
- return "Stage" + " " + ": <strong>" + d.stageText +  "</strong> <br>"+
-        "Debut" + " : " + "<strong>" + h + ":" + m + "</strong>"+
-        " - " + "Fin :" + "<strong>" + hf + ":" + mf + "</strong> <br>"+
-        "Duree" + " " + ": <strong>" + addZero(hours) + ":" +  addZero(minutes) + ":" + addZero(seconds) +"</strong>" ; //TO DO ADD HOURS
+  duration = Number(duration);
+  var h = Math.floor(duration / 3600);
+  var m = Math.floor(duration % 3600 / 60);
+  var s = Math.floor(duration % 3600 % 60)
+   
+  return `${addZero(h)}h ${addZero(m)}min ${addZero(s)}secs`
+}
+
+function getDurationString(duration){
+  var hours = Math.floor(duration)
+  var minutes = (duration % 1.0) * 60.0
+  var seconds = (minutes % 1.0) * 60.0
+  minutes = Math.floor(minutes)
+  seconds = Math.floor(seconds)
+  
+  return `${addZero(hours)}h ${addZero(minutes)}min ${addZero(seconds)}secs`
 }
 
 //Will add zero to display time in this format : 00:00:00 instead of 0:0:0
@@ -331,3 +393,4 @@ function getStageRow(stage){
   else if(stage === 4) yRow = 1;
   return yRow;
 }
+

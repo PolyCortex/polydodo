@@ -43,10 +43,17 @@
   d3.csv("./data/time2.csv").then(function(data) {
     /***** Prétraitement des données *****/
     var states = ["W","N1","N2","N3","REM"];
+    var totalTimeStamp = data.length;
     var color = d3.scaleOrdinal();
     var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0]);
+
+
+    var tipStacked = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0]);
+
 
     domainColor(color, data);
     convertSource(data);
@@ -54,15 +61,15 @@
     var sources = createSources(data, states);
   
     //For visualisation 3
-    var totalStagePortion = calculateStagesPortion(data);
-    var firstStageIndex = findFirstStageIndex(sources); 
+    var totalStagesPortion = calculateStagesPortion(data);
+    var firstStagesIndex = findFirstStageIndex(sources); 
     
     domainX(xFocus, data);
     domainY(yFocus, states);
     var translationHeight = 100;
 
     /***** Création du graphique Stacked bar chart *****/
-    createStackedBarChart(focus, sources, xFocus, yFocus, color, translationHeight,widthFocus, tip, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion);
+    createStackedBarChart(focus, sources, xFocus, yFocus, color, translationHeight,widthFocus, tip,tipStacked, xAxisFocus, yAxisFocus, firstStagesIndex, totalStagesPortion);
    
     // Axes focus
     focus.append("g")
@@ -82,6 +89,11 @@
       return getToolTipText.call(this, d);
     });
     svg.call(tip);
+   
+    tipStacked.html(function(d) {
+      return getStackedToolTipText.call(this, d,totalStagesPortion,totalTimeStamp);
+    });
+    svg.call(tipStacked);
 
     /***** Création de la légende *****/
     legend(svg, states, color);
