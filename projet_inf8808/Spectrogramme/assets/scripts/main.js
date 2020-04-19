@@ -26,7 +26,7 @@
   .range([0, height])
 
   /****** Axes *******/
-  var xAxis = d3.axisBottom(x).tickFormat(getLabelFromIndex);
+  var xAxis = d3.axisBottom(x).tickFormat(d => `${d}h`);
   var yAxis= d3.axisLeft(yAxisScale).ticks(5, "s")
 
   /***** Création des éléments *****/

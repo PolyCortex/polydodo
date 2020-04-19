@@ -24,7 +24,7 @@ function domainColor(color, sources) {
  * @param data        Données provenant du fichier JSON.
  */
 function domainX(x, data, node) {
-  x.domain([0, data[node].length]);
+  x.domain([0, getHoursFromIndex(data[node].length)]);
 }
 
 /**
@@ -64,7 +64,7 @@ function createSources(data, node) {
   var sources = [];
   for (let index = 0; index < data[node].length; index++) {
     var intensityArray = data[node][index];
-    var timeStamp = index
+    var timeStamp = getHoursFromIndex(index)
     var datumArray = intensityArray.map(function(x, i){
       return {"Frequency": data.Frequencies[i], "Intensity": x, "Timestamp":timeStamp}
     })
@@ -72,4 +72,8 @@ function createSources(data, node) {
   }
 
   return sources
+}
+
+function getHoursFromIndex(index){
+  return index * 30 /60 /60
 }

@@ -56,25 +56,17 @@ function getToolTipText(d) {
  //TODO : Fix name
   return `Intensité : <strong> ${d.Intensity.toFixed(2)} </strong> Stonks<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
-          Moment: <strong> ${getDurationString(d.Timestamp * 30)} </strong>`; 
+          Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`; 
 }
 
 function getDurationString(duration){
-  var durationHours = duration/60/60
-  var hours = Math.floor(durationHours)
-  var minutes = (durationHours % 1.0) * 60.0
+  var hours = Math.floor(duration)
+  var minutes = (duration % 1.0) * 60.0
   var seconds = (minutes % 1.0) * 60.0
   minutes = Math.floor(minutes)
   seconds = Math.floor(seconds)
   
   return `${addZero(hours)}h ${addZero(minutes)}min ${addZero(seconds)}secs`
-}
-
-function getLabelFromIndex(index){
-  var durationHours = index*30/60/60
-  var hours = Math.floor(durationHours)
-  var minutes = Math.floor((durationHours % 1.0) * 60.0)
-  return `${addZero(hours)}h${addZero(minutes)}m`
 }
 
 //Will add zero to display time in this format : 00:00:00 instead of 0:0:0
