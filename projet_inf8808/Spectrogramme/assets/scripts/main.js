@@ -45,15 +45,17 @@
 
      /***** Prétraitement des données *****/
     var color = d3.scaleSequential();
+    var node = "Fpz_Cz"
 
     var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0]);
 
-    domainColor(color, data);
 
-    var sources = createSources(data);
-    domainX(x, data);
+
+    var sources = createSources(data, node);
+    domainColor(color, sources, node);
+    domainX(x, data, node);
     domainY(y, yAxisScale, data);
 
     // /***** Création du graphique Stacked bar chart *****/
