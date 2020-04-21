@@ -13,7 +13,7 @@
  * @param y         L'échelle de l'axe des y
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createSpectrgrammeBarChart(g, sources, x, y, color, tip, xAxis, yAxis) {
+function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width, margin, xAxis, yAxis) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -26,7 +26,7 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, xAxis, yAxis) 
         return y(d.Frequency);
       })
       .attr("width", function (d) {
-        return x(d.Timestamp + 1) - x(d.Timestamp);
+        return x(getHoursFromIndex(1));
       })
       .attr("height", function (d) {
         return y.bandwidth();
@@ -41,7 +41,27 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, xAxis, yAxis) 
         tip.hide();
         d3.select(this).style("opacity", 1);
       }) 
-}
+
+  // Titre axe des X
+  g.append("text")
+      .attr("class", "x axis")
+      .attr("y", height + margin.bottom)
+      .attr("x", width/2)
+      .attr("fill", "currentColor")
+      .style("text-anchor", "middle")
+      .text("Time"); 
+  
+  // titre axe des Y
+  g.append("text")
+      .attr("class", "y axis")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .attr("fill", "currentColor")
+      .style("text-anchor", "middle")
+      .text("Frequence (Hz)"); 
+  }
 
 /**
  * Obtient le texte associé à l'infobulle.

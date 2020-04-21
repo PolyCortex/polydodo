@@ -9,11 +9,11 @@
  *
  * @param color   Échelle de 10 couleurs.
  * @param sources Données formaté
+ * 
  */
 function domainColor(color, sources) {
   var extent = d3.extent(sources, d=> d.Intensity)
   color.domain(extent)
-      .interpolator(d3.interpolateRainbow);
 }
 
 /**
@@ -35,10 +35,8 @@ function domainX(x, data, node) {
  * @param data        Données provenant du fichier JSON.
  */
 function domainY(y, yAxisScale,  data) {
-  var sortedFrequencies = data.Frequencies
-  sortedFrequencies.sort((a,b) => b - a)
-  y.domain(sortedFrequencies);
-  yAxisScale.domain([sortedFrequencies[0], sortedFrequencies[sortedFrequencies.length -1]])
+  y.domain(data.Frequencies);
+  yAxisScale.domain([data.Frequencies[0], data.Frequencies[data.Frequencies.length-1]])
 }
 
 /**
@@ -75,5 +73,5 @@ function createSources(data, node) {
 }
 
 function getHoursFromIndex(index){
-  return index * 30 /60 /60
+  return index * 30.0 /60 /60
 }
