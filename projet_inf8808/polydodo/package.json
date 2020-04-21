@@ -1,33 +1,11 @@
 {
-  "name": "argon-design-system-react",
-  "version": "1.1.0",
-  "description": "React version of Argon Design System by Creative Tim",
+  "name": "Polydodo",
+  "version": "0.1",
+  "description": "An automatic sleep analysis tool client.",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-design-system-react.git"
-  },
-  "keywords": [
-    "react",
-    "reactjs",
-    "argon",
-    "argon-react",
-    "design",
-    "design-react",
-    "argon-design",
-    "argon-design-react",
-    "kit",
-    "react-kit",
-    "argon-design-system",
-    "argon-design-system-react",
-    "design-system-react"
-  ],
-  "author": "Creative Tim",
+  "author": "Polycortex",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-design-system-react/issues"
-  },
-  "homepage": "https://demos.creative-tim.com/argon-design-system-react/",
+  "homepage": "https://www.facebook.com/PolyCortex/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",
@@ -54,6 +32,7 @@
     "moment": "2.24.0",
     "node-sass": "4.13.1",
     "nouislider": "14.1.1",
+    "prop-types": "^15.7.2",
     "react": "16.12.0",
     "react-datetime": "2.16.3",
     "react-dom": "16.12.0",
