@@ -10,7 +10,7 @@
  * @param svg       L'élément SVG à utiliser pour créer la légende.
  * @param color     L'échelle de couleurs.
  */
-function legend(svg, color, graphHeight, graphWidth, graphMargin) {
+function legend(svg, color, y, height, width) {
   
   var interpolate = d3.interpolate(color.domain()[0], color.domain()[1])
 
@@ -21,14 +21,16 @@ function legend(svg, color, graphHeight, graphWidth, graphMargin) {
     var scaleIndex = interpolate(interpolateIndex)
     colors.push(color(scaleIndex))
   }
-  // Create the svg:defs element and the main gradient definition.
+
   var svgDefs = svg.append('defs');
 
   var mainGradient = svgDefs.append('linearGradient')
-    .attr('id', 'mainGradient');
+    .attr('id', 'mainGradient')  
+    .attr('x1', '0%')
+    .attr('x2', '0%')
+    .attr('y1', '0%')
+    .attr('y2', '100%');
 
-  // Create the stops of the main gradient. Each stop will be assigned
-  // a class to style the stop using CSS.
   mainGradient.selectAll("stop")
     .data(colors)
     .enter()
@@ -36,14 +38,21 @@ function legend(svg, color, graphHeight, graphWidth, graphMargin) {
     .attr('stop-color', function(d, i){return d})
     .attr('offset', function(d,i){
       return i/(colors.length-1);
-    });
+    })
   
-
-  // Use the gradient to set the shape fill, via CSS.
   svg.append('rect')
     .attr('fill', "url(#mainGradient)")
-    .attr('x', graphWidth + graphMargin.left + (graphMargin.right/2))
-    .attr('y', graphMargin.top)
-    .attr('width', graphMargin.right/2)
-    .attr('height', graphHeight)
+    .attr('x', width/4)
+    .attr('y', 0)
+    .attr('width', width/4)
+    .attr('height', height)
+
+  var yAxis= d3.axisRight(y).ticks(5, "s")
+  console.log(y.domain())
+  svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + (width/2) + ",0)")
+      .call(yAxis)
+      .selectAll("text")
+      .style("font-size", "18px");
 }

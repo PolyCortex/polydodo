@@ -11,7 +11,7 @@
   // Graphique principal ()
   var margin = {
     top: 100,
-    right: 100,
+    right: 150,
     bottom: 100,
     left: 100
   };
@@ -25,6 +25,8 @@
   /***** Échelles *****/
   var x = d3.scaleLinear().range([0, width]);
   var y = d3.scaleBand()
+  .range([0, height])
+  var yColor = d3.scaleLinear()
   .range([0, height])
   var yAxisScale = d3.scaleLinear()
   .range([0, height])
@@ -42,7 +44,8 @@
   // Groupe affichant le graphique principal ().
   var spectrogram = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+  var gLegend = svg.append("g")
+  .attr("transform", "translate(" + (margin.left + width) + "," + margin.top + ")");
 
   /***** Chargement des données *****/
   d3.json("./data/spectrograms.json").then(function(data){
@@ -59,7 +62,8 @@
 
 
     var sources = createSources(data, node);
-    domainColor(color, sources, node);
+    domainColor(color, sources);
+    domainColor(yColor, sources);
     domainX(x, data, node);
     domainY(y, yAxisScale, data);
 
@@ -94,6 +98,6 @@
     svg.call(tip);
 
     // /***** Création de la légende *****/
-    legend(svg, color, height, width, margin);
+    legend(gLegend, color, yColor, height, margin.right);
   });
 })(d3, localization);
