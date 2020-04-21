@@ -30,6 +30,8 @@
   .range(y.range())
   var yAxisScale = d3.scaleLinear()
   .range(y.range())
+  var yColor2 = d3.scaleLinear()
+  .range(y.range())
 
   /****** Axes *******/
   var xAxis = d3.axisBottom(x).tickFormat(d => `${d}h`);
@@ -39,13 +41,17 @@
   var svg = d3.select("body")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+    .attr("height", 2*(height + margin.top + margin.bottom));
 
   // Groupe affichant le graphique principal ().
   var spectrogram = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var spectrogram2 = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + (height + (2*margin.top) + margin.bottom) + ")");
   var gLegend = svg.append("g")
-  .attr("transform", "translate(" + (margin.left + width) + "," + margin.top + ")");
+    .attr("transform", "translate(" + (margin.left + width) + "," + margin.top + ")");
+  var gLegend2 = svg.append("g")
+  .attr("transform", "translate(" + (margin.left + width) + "," + (height + (2*margin.top) + margin.bottom) + ")");
 
   /***** Chargement des données *****/
   d3.json("./data/spectrograms.json").then(function(data){
@@ -53,23 +59,40 @@
      /***** Prétraitement des données *****/
     var color = d3.scaleSequential()
                   .interpolator(colorInterpolator)
+
+    var color2 = d3.scaleSequential()
+                  .interpolator(colorInterpolator)
     var node = "Fpz_Cz"
+    var node2 = "Pz_Oz"
 
     var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0]);
 
 
-
+    console.log("About to load sources 1")
     var sources = createSources(data, node);
     domainColor(color, sources);
     domainColor(yColor, sources);
+    console.log("Loaded sources 1")
+    console.log("About to load sources 12")
+    var sources2 = createSources(data, node2);
+    domainColor(color2, sources);
+    domainColor(yColor2, sources);
+    console.log("Loaded sources 2")
+
+
     domainX(x, data, node);
     domainY(y, yAxisScale, data);
 
     // /***** Création du graphique Stacked bar chart *****/
+    console.log("Create spectrogram 1")
     createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin, xAxis, yAxis);
-   
+    console.log("Done spectrogram 1")
+    console.log("Create spectrogram 2")
+    createSpectrgrammeBarChart(spectrogram2, sources2, x, y, color2, tip, height, width, margin, xAxis, yAxis);
+    console.log("Done spectrogram 2")
+
     // Axes 
     spectrogram.append("g")
       .attr("class", "x axis")
@@ -85,11 +108,20 @@
       .selectAll("text")
       .style("font-size", "18px");
 
+    spectrogram2.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+      .style("font-size", "18px");
 
-    // //get tick
-    // d3.selectAll(".tick")
-    //   .select("text")
-    //   .style("font-weight", function(d,i) {return 540})
+    spectrogram2.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(0" + ",0)")
+      .call(yAxis)
+      .selectAll("text")
+      .style("font-size", "18px");
+
       
     // /***** Création de l'infobulle *****/
     tip.html(function(d) {
@@ -99,5 +131,6 @@
 
     // /***** Création de la légende *****/
     legend(gLegend, color, yColor, height, margin.right);
+    legend(gLegend2, color, yColor, height, margin.right);
   });
 })(d3, localization);
