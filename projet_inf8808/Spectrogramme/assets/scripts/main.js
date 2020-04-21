@@ -21,6 +21,12 @@
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", 2*(height + margin.top + margin.bottom));
+  
+  var spectrogramFPZ = svg.append("g")
+  
+  var spectrogramPZ = svg.append("g")
+    .attr("transform", "translate(0," + (height + margin.top + margin.bottom) + ")");
 
-  createSpectrogram(svg, width, height, margin);
+  createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, height, margin);
+  createSpectrogram(spectrogramPZ,"Pz_Oz", width, height, margin);
 })(d3, localization);
