@@ -9,11 +9,11 @@
  *
  * @param color   Échelle de 10 couleurs.
  * @param sources Données formaté
+ * 
  */
 function domainColor(color, sources) {
   var extent = d3.extent(sources, d=> d.Intensity)
   color.domain(extent)
-      .interpolator(d3.interpolateRainbow);
 }
 
 /**
@@ -75,5 +75,5 @@ function createSources(data, node) {
 }
 
 function getHoursFromIndex(index){
-  return index * 30 /60 /60
+  return index * 30.0 /60 /60
 }

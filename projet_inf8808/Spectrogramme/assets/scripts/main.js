@@ -11,13 +11,17 @@
   // Graphique principal ()
   var margin = {
     top: 100,
-    right: 10,
+    right: 100,
     bottom: 100,
     left: 100
   };
   var width = 2000 /*- margin.left - margin.right*/;
   var height = 1200 - margin.top - margin.bottom;
-   
+
+  /**** Interpolateur de couleurs ****/
+  var colorInterpolator = d3.interpolateRainbow
+
+
   /***** Échelles *****/
   var x = d3.scaleLinear().range([0, width]);
   var y = d3.scaleBand()
@@ -44,7 +48,8 @@
   d3.json("./data/spectrograms.json").then(function(data){
 
      /***** Prétraitement des données *****/
-    var color = d3.scaleSequential();
+    var color = d3.scaleSequential()
+                  .interpolator(colorInterpolator)
     var node = "Fpz_Cz"
 
     var tip = d3.tip()
@@ -59,7 +64,7 @@
     domainY(y, yAxisScale, data);
 
     // /***** Création du graphique Stacked bar chart *****/
-    createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, xAxis, yAxis);
+    createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin, xAxis, yAxis);
    
     // Axes 
     spectrogram.append("g")
@@ -89,6 +94,6 @@
     svg.call(tip);
 
     // /***** Création de la légende *****/
-    // legend(svg, states, color);
+    legend(svg, color, height, width, margin);
   });
 })(d3, localization);

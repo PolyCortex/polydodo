@@ -8,42 +8,42 @@
  * Crée une légende à partir de la source.
  *
  * @param svg       L'élément SVG à utiliser pour créer la légende.
- * @param sources   Données triées par nom de rue et par date.
- * @param color     Échelle de 10 couleurs.
+ * @param color     L'échelle de couleurs.
  */
-function legend(svg, states, color) {
-  var size = 20;
-
-  svg.selectAll("dots")
-    .data(states)
-    .enter()
-    .append("rect")
-      .attr("class", "legend")
-      .attr("x", function(d,i) { 
-        if(i === 0) return 30; 
-        else if (i === states.length-1) return 50 + i * (60)
-        else return 30 + i * (60)})
-      .attr("y", 40)
-      .attr("width", size)
-      .attr("height", size)
-      //.style('stroke', "#ffffff")
-      .style("fill", function(d,i) { return color(i)})
-      .attr("transform", "translate(" + 100 + "," + 0 + ")")
-      .on("click", function(d) {
-         displayLine(d3.select(this), color(d));
-      })
+function legend(svg, color, graphHeight, graphWidth, graphMargin) {
   
-  svg.selectAll("names")
-    .data(states)
+  var interpolate = d3.interpolate(color.domain()[0], color.domain()[1])
+
+  var colors = []
+  var totalPoints = 3
+  for (let index = 0; index <= totalPoints; index++) {
+    var interpolateIndex = index/totalPoints
+    var scaleIndex = interpolate(interpolateIndex)
+    colors.push(color(scaleIndex))
+  }
+  // Create the svg:defs element and the main gradient definition.
+  var svgDefs = svg.append('defs');
+
+  var mainGradient = svgDefs.append('linearGradient')
+    .attr('id', 'mainGradient');
+
+  // Create the stops of the main gradient. Each stop will be assigned
+  // a class to style the stop using CSS.
+  mainGradient.selectAll("stop")
+    .data(colors)
     .enter()
-    .append("text")
-      .attr("class", "legend")
-      .attr("x", function(d,i) { return  i * (60)})
-      .attr("y", 53)
-      .text(function(d) { return d})
-      .style('fill', function(d,i) { return color(i)})
-      .style("font-size", "20px")
-      .attr("text-anchor", "left")
-      .style("alignment-baseline", "middle")
-      .attr("transform", "translate(" + 100 + "," + 0 + ")")
+    .append('stop')
+    .attr('stop-color', function(d, i){return d})
+    .attr('offset', function(d,i){
+      return i/(colors.length-1);
+    });
+  
+
+  // Use the gradient to set the shape fill, via CSS.
+  svg.append('rect')
+    .attr('fill', "url(#mainGradient)")
+    .attr('x', graphWidth + graphMargin.left + (graphMargin.right/2))
+    .attr('y', graphMargin.top)
+    .attr('width', graphMargin.right/2)
+    .attr('height', graphHeight)
 }
