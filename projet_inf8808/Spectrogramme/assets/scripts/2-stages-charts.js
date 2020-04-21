@@ -42,7 +42,7 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width,
         d3.select(this).style("opacity", 1);
       }) 
 
-  // // Axe des X
+  // Titre axe des X
   g.append("text")
       .attr("class", "x axis")
       .attr("y", height + margin.bottom)
@@ -51,7 +51,7 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width,
       .style("text-anchor", "middle")
       .text("Time"); 
   
-  // Axe des Y
+  // titre axe des Y
   g.append("text")
       .attr("class", "y axis")
       .attr("transform", "rotate(-90)")

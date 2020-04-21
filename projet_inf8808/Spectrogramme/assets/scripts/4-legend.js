@@ -28,8 +28,8 @@ function legend(svg, color, y, height, width) {
     .attr('id', 'mainGradient')  
     .attr('x1', '0%')
     .attr('x2', '0%')
-    .attr('y1', '0%')
-    .attr('y2', '100%');
+    .attr('y1', '100%')
+    .attr('y2', '0%');
 
   mainGradient.selectAll("stop")
     .data(colors)
@@ -48,11 +48,21 @@ function legend(svg, color, y, height, width) {
     .attr('height', height)
 
   var yAxis= d3.axisRight(y).ticks(5, "s")
-  console.log(y.domain())
   svg.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + (width/2) + ",0)")
       .call(yAxis)
       .selectAll("text")
       .style("font-size", "18px");
+  
+  // Titre axe des Y
+  svg.append("text")
+  .attr("class", "y axis")
+  .attr("transform", "rotate(90)")
+  .attr("y", 0-width)
+  .attr("x", height/2)
+  .attr("dy", "1em")
+  .attr("fill", "currentColor")
+  .style("text-anchor", "middle")
+  .text("Intensité"); 
 }

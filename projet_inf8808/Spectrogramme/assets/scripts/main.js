@@ -19,17 +19,17 @@
   var height = 1200 - margin.top - margin.bottom;
 
   /**** Interpolateur de couleurs ****/
-  var colorInterpolator = d3.interpolateRainbow
+  var colorInterpolator = d3.interpolatePlasma
 
 
   /***** Échelles *****/
   var x = d3.scaleLinear().range([0, width]);
   var y = d3.scaleBand()
-  .range([0, height])
+  .range([height, 0])
   var yColor = d3.scaleLinear()
-  .range([0, height])
+  .range(y.range())
   var yAxisScale = d3.scaleLinear()
-  .range([0, height])
+  .range(y.range())
 
   /****** Axes *******/
   var xAxis = d3.axisBottom(x).tickFormat(d => `${d}h`);
