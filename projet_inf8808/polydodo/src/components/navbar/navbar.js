@@ -1,6 +1,7 @@
 import React from "react";
-import Headroom from "headroom.js";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import Headroom from "headroom.js";
 import {
   Navbar as NavbarStrap,
   Container,
@@ -13,6 +14,39 @@ import {
 
 import Logo from "assets/img/logo.png";
 import text from "./text.json";
+
+const OutsideLink = ({href, iconClass, linkName, tooltipText, tooltipID}) => {
+  return (
+    <NavItem>
+      <NavLink
+        className="nav-link-icon"
+        href={href}
+        id={tooltipID}
+        target="_blank"
+      >
+        <i className={`fa ${iconClass}`} />
+        <span className="nav-link-inner--text d-lg-none ml-2"> {linkName} </span>
+      </NavLink>
+      <UncontrolledTooltip delay={0} target={tooltipID}>
+        {tooltipText}
+      </UncontrolledTooltip>
+    </NavItem>
+  );
+};
+
+OutsideLink.propTypes = {
+  href: PropTypes.string.isRequired,
+  iconClass: PropTypes.string,
+  linkName: PropTypes.string,
+  tooltipText: PropTypes.string,
+  tooltipID: PropTypes.string.isRequired,
+};
+
+OutsideLink.defaultProps = {
+  iconClass: "",
+  linkName: "",
+  tooltipText: "",
+};
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -37,8 +71,8 @@ class Navbar extends React.Component {
           expand="lg"
         >
           <Container>
-            <NavbarBrand className="mr-lg-5" to="/">
-              <img alt="..." src={Logo} />
+            <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+              <img alt="Polydodo" src={Logo} />
             </NavbarBrand>
 
             <Nav className="navbar-nav-hover align-items-lg-center" navbar>
@@ -57,51 +91,27 @@ class Navbar extends React.Component {
             </Nav>
 
             <Nav className="align-items-lg-center ml-lg-auto" navbar>
-              <NavItem>
-                <NavLink
-                  className="nav-link-icon"
-                  href="https://www.facebook.com/PolyCortex/"
-                  id="tooltip333589074"
-                  target="_blank"
-                >
-                  <i className="fa fa-facebook-square" />
-                  <span className="nav-link-inner--text d-lg-none ml-2"> Facebook </span>
-                </NavLink>
-                <UncontrolledTooltip delay={0} target="tooltip333589074">
-                  {text["navbar_facebook_tooltip"]}
-                </UncontrolledTooltip>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className="nav-link-icon"
-                  href="https://www.instagram.com/polycortex/"
-                  id="tooltip356693867"
-                  target="_blank"
-                >
-                  <i className="fa fa-instagram" />
-                  <span className="nav-link-inner--text d-lg-none ml-2">
-                    Instagram
-              </span>
-                </NavLink>
-                <UncontrolledTooltip delay={0} target="tooltip356693867">
-                  {text["navbar_instagram_tooltip"]}
-                </UncontrolledTooltip>
-              </NavItem>
-
-              <NavItem>
-                <NavLink
-                  className="nav-link-icon"
-                  href="https://github.com/PolyCortex"
-                  id="tooltip112445449"
-                  target="_blank"
-                >
-                  <i className="fa fa-github" />
-                  <span className="nav-link-inner--text d-lg-none ml-2">Github</span>
-                </NavLink>
-                <UncontrolledTooltip delay={0} target="tooltip112445449">
-                  {text["navbar_github_tooltip"]}
-                </UncontrolledTooltip>
-              </NavItem>
+              <OutsideLink
+                href="https://www.facebook.com/PolyCortex/"
+                iconClass="fa-facebook-square"
+                linkName="Facebook"
+                tooltipText={text["navbar_facebook_tooltip"]}
+                tooltipID="tooltip333589074"
+              />
+              <OutsideLink
+                href="https://www.instagram.com/polycortex/"
+                iconClass="fa-instagram"
+                linkName="Instagram"
+                tooltipText={text["navbar_instagram_tooltip"]}
+                tooltipID="tooltip356693867"
+              />
+              <OutsideLink
+                href="https://github.com/PolyCortex"
+                iconClass="fa-github"
+                linkName="Github"
+                tooltipText={text["navbar_github_tooltip"]}
+                tooltipID="tooltip112445449"
+              />
             </Nav>
           </Container>
         </NavbarStrap>
