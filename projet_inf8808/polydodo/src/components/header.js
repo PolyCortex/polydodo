@@ -3,11 +3,18 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import { Col, Container } from "reactstrap";
 
-const Header = ({ sizeClass, title, subtitle, description }) => {
+const Header = ({
+  sizeClass,
+  shapeQty,
+  title,
+  subtitle,
+  description
+}) => {
+
   return (
     <section className={`section section-lg section-shaped ${sizeClass}`}>
       <div className="shape shape-style-1 shape-dark">
-        {_.times(7, (i) => <span key={i} />)}
+        {_.times(shapeQty, i => <span key={i} />)}
       </div>
       <Container>
         <div className="col px-0">
@@ -32,6 +39,7 @@ const Header = ({ sizeClass, title, subtitle, description }) => {
 
 Header.propTypes = {
   sizeClass: PropTypes.string,
+  shapeQty: PropTypes.number,
   title: PropTypes.string,
   subtitle: PropTypes.string,
   description: PropTypes.string,
@@ -39,6 +47,7 @@ Header.propTypes = {
 
 Header.defaultProps = {
   sizeClass: "pb-150",
+  shapeQty: 5,
   title: "",
   subtitle: "",
   description: "",
