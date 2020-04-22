@@ -1,38 +1,51 @@
 "use strict";
 
-/**
- * Crée une ligne SVG en utilisant les domaines X et Y spécifiés.
- * Cette fonction est utilisée par les graphiques "focus" et "contexte".
- *
- * @param x               Le domaine X.
- * @param y               Le domaine Y.
- * @return d3.svg.line    Une ligne SVG.
- *
- * @see https://bl.ocks.org/gordlea/27370d1eea8464b04538e6d8ced39e89      (voir line generator)
- */
 const createLine = (x, y) => {
-  // TODO: Retourner une ligne SVG (voir "d3.line"). Pour l'option curve, utiliser un curveBasisOpen.
-  // Vérifier si ce sont les bons champs du datum qu'on met (si ce n'est pas x et y).
   return d3.line()
     .x(d => x(d.timestamp))
     .y(d => y(d.sleep_stage))
-    .curve(d3.curveBasisOpen);
+    .curve(d3.curveStepAfter);
 };
 
-/**
- * Crée le graphique focus.
- *
- * @param g         Le groupe SVG dans lequel le graphique doit être dessiné.
- * @param sources   Les données à utiliser.
- * @param line      La fonction permettant de dessiner les lignes du graphique.
- * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
- */
-const createFocusLineChart = (g, data, line, color) => {
+const createGradient = (g, y, id) => {
+  // See example here: https://bl.ocks.org/d3noob/d3a22ef27b253ab8d49e97699a8e84b1
+  const label_colors = {
+    'W': "#E3624B",
+    'REM': "#FFD443",
+    'N1': "#B0C9D9",
+    'N2': "#4da6fe",
+    'N3': "#48587f",
+  };
+  const gradient_stop_data = [								
+    {offset: "0%", stage: 'W'},	
+    {offset: "25%", stage: 'REM'},
+    {offset: "50%", stage: 'N1'},	
+    {offset: "75%", stage: 'N2'},	
+    {offset: "100%", stage: 'N3'}
+  ];
+
+  g.append("linearGradient")
+      .attr("id", id)
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", "0%").attr("y1", y('W'))
+      .attr("x2", "0%").attr("y2", y('N3'))
+    .selectAll("stop")						
+      .data(gradient_stop_data)					
+    .enter().append("stop")			
+      .attr("offset", d => d.offset)	
+      .attr("stop-color", d => label_colors[d.stage]);
+}
+
+const createFocusLineChart = (g, data, line, y) => {
+  const gradientId = "sleep-stage-hypnogram-gradient"
+
+  createGradient(g, y, gradientId);
+
   g.append("path")
       .datum(data)
     .attr("class", "line")
     .attr("d", x => line(x))
-    .attr("stroke", "black")
-    .attr("clip-path", "url(#clip)");
+    .attr("stroke", `url(#${gradientId})`)
+    .attr("stroke-width", 2);
 };
 
