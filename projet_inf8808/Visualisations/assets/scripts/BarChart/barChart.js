@@ -1,6 +1,6 @@
 "use strict";
 
-function createBarChart(g, width, height, margin) {
+function createBarChart(g, width, height, margin, useTransitions = true) {
 
    
   /***** Échelles *****/
@@ -48,9 +48,11 @@ function createBarChart(g, width, height, margin) {
     var translationHeight = 100;
 
     /***** Création du graphique Stacked bar chart *****/
-    createStackedBarChart(gBarChart, sources, x, y, color, translationHeight,width, tip,tipStacked, xAxis, yAxis, firstStagesIndex, totalStagesPortion);
-   
-    // Axes 
+    createStackedBarChart(gBarChart,sources, x, y, color, tip);
+    if(useTransitions){
+      addTransitions(gBarChart, g,sources, x, y, color, translationHeight, width, tipStacked, xAxis, yAxis, firstStagesIndex, totalStagesPortion);
+    }
+      // Axes 
     gBarChart.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + (height - 200) + ")")

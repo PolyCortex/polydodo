@@ -12,7 +12,7 @@
  * @param line      La fonction permettant de dessiner les lignes du graphique.
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipStacked, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion) {
+function createStackedBarChart(g,sources, x, y, color, tip) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -39,53 +39,54 @@ function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipSt
         tip.hide();
         d3.select(this).style("opacity", 1);
       }) 
-      .on("click", function(d){
-        firstTransition(g,sources,xAxisFocus,yAxisFocus,height,color);
-      })
+}
 
-    
-    d3.select("svg")
-    .append("rect")
-      .attr("x", 340)
-      .attr("y", 10)
-      .attr("width", 30)
-      .attr("height", 30)
-      //.style('stroke', "#ffffff")
-      .style("fill", "white")
-      .attr("transform", "translate(" + 100 + "," + 10 + ")")
-      .on("click", function(d){
-        //d3.select(".d3-tip").remove()
-        secondTransition(g, sources, xAxisFocus, yAxisFocus, height, color);
-      });
+function addTransitions(g, canvas, sources, x, y, color, height, width, tipStacked, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion){
   
-    d3.select("svg")
-    .append("rect")
-      .attr("x", 340)
-      .attr("y", 10)
-      .attr("width", 30)
-      .attr("height", 30)
-      //.style('stroke', "#ffffff")
-      .style("fill", "#e6521c")
-      .attr("transform", "translate(" + 140 + "," + 10 + ")")
-      .on("click", function(d){
-        //d3.select(".d3-tip").remove()
-        thirdTransition(g,sources,firstStageIndex,totalStagePortion, width,xAxisFocus, x, tipStacked);
+  g.selectAll(".rect-stacked").on("click", function(d){
+    firstTransition(g,sources,xAxisFocus,yAxisFocus,height,color);
+  })
+
+
+  canvas.append("rect")
+    .attr("x", 340)
+    .attr("y", 10)
+    .attr("width", 30)
+    .attr("height", 30)
+    //.style('stroke', "#ffffff")
+    .style("fill", "white")
+    .attr("transform", "translate(" + 100 + "," + 10 + ")")
+    .on("click", function(d){
+      //d3.select(".d3-tip").remove()
+      secondTransition(g, sources, xAxisFocus, yAxisFocus, height, color);
     });
-  
 
-   d3.select("svg")
-   .append("rect")
-     .attr("x", 340)
-     .attr("y", 10)
-     .attr("width", 30)
-     .attr("height", 30)
-     //.style('stroke', "#ffffff")
-     .style("fill", "#ffdcff")
-     .attr("transform", "translate(" + 180 + "," + 10 + ")")
-     .on("click", function(d){
-       d3.select(".d3-tip").remove()
-       forthTransition(g,sources,x,firstStageIndex,totalStagePortion,width);
-   });
+  canvas.append("rect")
+    .attr("x", 340)
+    .attr("y", 10)
+    .attr("width", 30)
+    .attr("height", 30)
+    //.style('stroke', "#ffffff")
+    .style("fill", "#e6521c")
+    .attr("transform", "translate(" + 140 + "," + 10 + ")")
+    .on("click", function(d){
+      //d3.select(".d3-tip").remove()
+      thirdTransition(g,sources,firstStageIndex,totalStagePortion, width,xAxisFocus, x, tipStacked);
+    });
+
+
+  canvas.append("rect")
+    .attr("x", 340)
+    .attr("y", 10)
+    .attr("width", 30)
+    .attr("height", 30)
+    //.style('stroke', "#ffffff")
+    .style("fill", "#ffdcff")
+    .attr("transform", "translate(" + 180 + "," + 10 + ")")
+    .on("click", function(d){
+      d3.select(".d3-tip").remove()
+      forthTransition(g,sources,x,firstStageIndex,totalStagePortion,width);
+    });
 }
 
 /**
