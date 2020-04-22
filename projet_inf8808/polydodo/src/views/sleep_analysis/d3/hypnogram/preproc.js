@@ -26,8 +26,8 @@ export const convertValuesToLabels = (data) => {
   data.forEach(row => {
     row.sleep_stage = Object
       .keys(raw_data_labels_value)
-      .find(key => raw_data_labels_value[key] == row.sleep_stage);;
-  });
+      .find(key => raw_data_labels_value[key] === parseInt(row.sleep_stage));
+  }); 
 };
 
 export const domainX = (x, data) => {
