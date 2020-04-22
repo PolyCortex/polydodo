@@ -42,14 +42,7 @@ const initializeHypnogram = (d3, localization) => {
 
 (function (d3, localization) {
   "use strict";
-
-  const label_values = {
-    'W': 0,
-    'REM': 1,
-    'N1': 2,
-    'N2': 3,
-    'N3': 4,
-  };
+  const sleep_labels = ['W', 'REM', 'N1', 'N2', 'N3'];
 
   const { x, y, xAxis, yAxis, focus, height } = initializeHypnogram(d3, localization);
 
@@ -61,11 +54,11 @@ const initializeHypnogram = (d3, localization) => {
     /***** Prétraitement des données *****/
     const color = d3.scaleOrdinal();
     parseTimestampToDate(data);
-    convertLabelValues(data, label_values);
+    convertValuesToLabels(data);
 
     // domainColor(color, label_values);
     domainX(x, data);
-    domainY(y, label_values);
+    domainY(y, sleep_labels);
 
     // /***** Création du graphique focus *****/
     createFocusLineChart(focus, data, line, color);
@@ -75,12 +68,8 @@ const initializeHypnogram = (d3, localization) => {
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis);
 
-    yAxis.tickValues(Object.keys(label_values));
     focus.append("g")
       .attr("class", "y axis")
       .call(yAxis);
-
-    // /***** Création de la légende *****/
-    // legend(svg, sources, color);
   });
 })(d3, localization);

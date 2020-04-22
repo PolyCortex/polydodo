@@ -46,7 +46,7 @@ function parseTimestampToDate(data) {
   });
 }
 
-function convertLabelValues(data, label_values) {
+function convertValuesToLabels(data) {
   const raw_data_labels_value = {
     'W': 0,
     'N1': 1,
@@ -56,11 +56,9 @@ function convertLabelValues(data, label_values) {
   }
 
   data.forEach(row => {
-    // To convert UNIX timestamp to JS Date, we have to convert nb of seconds to milliseconds.
-    const sleep_stage_label = Object
+    row.sleep_stage = Object
       .keys(raw_data_labels_value)
-      .find(key => raw_data_labels_value[key] == row.sleep_stage);
-    row.sleep_stage = label_values[sleep_stage_label];
+      .find(key => raw_data_labels_value[key] == row.sleep_stage);;
   });
 }
 
@@ -76,6 +74,6 @@ const domainX = (x, data) => {
   x.domain([d3.min(dates), d3.max(dates)]);
 };
 
-const domainY = (y, label_values) => {
-  y.domain(Object.values(label_values));
+const domainY = (y, sleep_labels) => {
+  y.domain(sleep_labels);
 }
