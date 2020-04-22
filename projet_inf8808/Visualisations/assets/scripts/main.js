@@ -13,7 +13,7 @@
     left: 100
   };
   var canvasWidth = 1920
-  var barCanvasHeight = 600
+  var barCanvasHeight = 1200
   var spectroCanvasHeight = 600
 
   var width = canvasWidth - margin.left - margin.right;
@@ -26,7 +26,7 @@
     .attr("width", canvasWidth)
     .attr("height", 2*(spectroCanvasHeight) + barCanvasHeight);
   
-  var barChart = svg.append('g')
+  var barChart = svg.append("g")
       .attr("width", canvasWidth)
       .attr("height", barCanvasHeight);
 
