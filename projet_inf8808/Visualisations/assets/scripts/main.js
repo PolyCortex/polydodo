@@ -12,9 +12,9 @@
     bottom: 100,
     left: 100
   };
-  var canvasWidth = 1920
-  var barCanvasHeight = 1200
-  var spectroCanvasHeight = 600
+  var canvasWidth = window.innerWidth
+  var barCanvasHeight = window.innerHeight / 2
+  var spectroCanvasHeight = window.innerHeight / 4
 
   var width = canvasWidth - margin.left - margin.right;
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;

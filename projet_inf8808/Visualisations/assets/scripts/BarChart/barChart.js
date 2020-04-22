@@ -7,13 +7,14 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
   var statesOrder = ["W","REM", "N1","N2","N3"];
 
   /**** Dimensions ****/
-  var translationHeight = useTransitions? height / states.length: height/2;
+  height = Math.round(height)
+  var translationHeight = Math.round(useTransitions? height / states.length: height/2);
   var barHeight = translationHeight * 2
 
   /***** Échelles *****/
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleOrdinal()
-  .range([0, height*0.2 , height*0.4, height*0.6, height*0.8, height])
+  .range([0, Math.round(height*0.2) ,Math.round(height*0.4) , Math.round(height*0.6) ,Math.round(height*0.8) , height])
 
   /****** Axes *******/
   var xAxis = d3.axisBottom(x).tickFormat(localization.getFormattedDate);
