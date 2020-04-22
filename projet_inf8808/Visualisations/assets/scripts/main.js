@@ -13,7 +13,7 @@
     left: 100
   };
   var canvasWidth = 1920
-  var barCanvasHeight = 1000
+  var barCanvasHeight = 600
   var spectroCanvasHeight = 600
 
   var width = canvasWidth - margin.left - margin.right;

@@ -52,7 +52,7 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
     /***** Création du graphique Stacked bar chart *****/
     createStackedBarChart(gBarChart,sources, x, y, color, tip, barHeight);
     if(useTransitions){
-      addTransitions(gBarChart, g,sources, x, y, color, translationHeight, width, tipStacked, xAxis, yAxis, firstStagesIndex, totalStagesPortion);
+      addTransitions(gBarChart, g,sources, x, y, color, translationHeight,barHeight, width, tipStacked, xAxis, yAxis, firstStagesIndex, totalStagesPortion);
     }
       // Axes 
     gBarChart.append("g")
