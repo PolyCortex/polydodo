@@ -13,7 +13,7 @@
  * @param y         L'échelle de l'axe des y
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width, margin, xAxis, yAxis) {
+function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width, margin) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
