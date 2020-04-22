@@ -59,9 +59,7 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
         .attr("class","y-label")
         .attr("y", height/2)  
         .attr("x", -10)
-        .style('fill', function(d,i) { 
-          return color(d);
-        })
+        .style('fill', d => color(d))
         .style("font-size", "20px")
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle");
@@ -70,9 +68,7 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
     g.selectAll(".rect-stacked")
       .transition()
       .duration(2000)
-        .attr("y", function(d,i){
-          return height*d.stage;
-        })
+        .attr("y", d => height*d.stage)
         .attr("height", height)
     
     //Move X axes
@@ -89,9 +85,7 @@ function secondTransition(g, data, xAxis, yAxis, height, color) {
   g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
-      .attr("y", function(d,i){
-        return height*d.stage;
-      })
+      .attr("y", d => height*d.stage)
       .attr("height", newHeight);
 
   g.select(".y.axis")
@@ -123,25 +117,21 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height
 
   g.select(".x.axis").transition()
     .call(xAxis)
-    //.call(x)
     .duration(2000)
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   g.selectAll(".rect-stacked")
-    .on("mouseover", function(d, i) {
+    .on("mouseover", (d) => {
       tip.show(d);
       d3.select(this).style("opacity", 0.8);
     })
-    .on("mouseout",function(d){
+    .on("mouseout",()=>{
       tip.hide();
       d3.select(this).style("opacity", 1);
     }) 
     .transition()
     .attr("x", 0)
-    .attr("width", function (d,i) {
-        if(i === firstIndexes[d.stage]) return totalStagePortion[d.stage]*width;
-        else return 0;
-    })
+    .attr("width", (d,i) => (i === firstIndexes[d.stage]) ? totalStagePortion[d.stage]*width : 0)
     .duration(2000)
 
   //text containing the % of the sleep stage on the bar
@@ -152,19 +142,15 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height
     .attr("class","pourc")
     .text(function(d,i) {
         var rounded = Math.round(totalStagePortion[d.stage]*100 * 10) / 10
-        if(i === firstIndexes[d.stage]) return rounded + "%";
-        else return "";
+        return i === firstIndexes[d.stage] ? rounded + "%" : "";
       })
       .attr("x", width/20)
-      .attr("y", function(d,i) {; 
-        return (height*d.stage) + height/2;// TO DO USE FUNCTON
-      })
+      .attr("y", d => (height*d.stage) + height/2)
       .attr("font-family", "sans-serif")
       .attr("font-size", "20px")
       .attr("fill", "white")
       .attr("text-anchor", "middle")
   
-    // d3.select(".x.axis").remove()
 }
   
 function fourthTransition(g, data, x, firstIndexes, totalStagePortion, width, height) {
@@ -172,7 +158,7 @@ function fourthTransition(g, data, x, firstIndexes, totalStagePortion, width, he
   g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
-    .attr("x", function(d,i){
+    .attr("x", function(d){
       var cumul = 0;
       for (let index = 0; index < d.stage; index++) {
         cumul += totalStagePortion[index];

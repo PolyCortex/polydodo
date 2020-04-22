@@ -19,23 +19,16 @@ function createStackedBarChart(g,sources, x, y, color, tip, height) {
     .enter()
     .append("rect")
       .attr("class", "rect-stacked")
-      .attr("x", function (d) {
-        return x(d.currentStageDebut);
-      })
-      .attr("y", function (d) {
-        return 0;
-      })
-      .attr("width", function (d) {
-        return x(d.currentStageEnd) - x(d.currentStageDebut);
-      })
+      .attr("x", d => x(d.currentStageDebut))
+      .attr("y", 0)
+      .attr("width", d => x(d.currentStageEnd) - x(d.currentStageDebut))
       .attr("height", height)
-      .attr("fill", function(d) { 
-        return color(d.stageText); 
-      }).on("mouseover", function(d, i) {
+      .attr("fill", d => color(d.stageText))
+      .on("mouseover", d => {
         tip.show(d);
         d3.select(this).style("opacity", 0.8);
       })
-      .on("mouseout",function(d){
+      .on("mouseout", () => {
         tip.hide();
         d3.select(this).style("opacity", 1);
       }) 
