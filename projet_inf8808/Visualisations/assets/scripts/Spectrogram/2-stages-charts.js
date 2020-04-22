@@ -74,7 +74,7 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width,
 
 function getSpectroToolTipText(d) {
  //TODO : Fix name
-  return `Intensité : <strong> ${d.Intensity.toFixed(2)} </strong> Stonks<br>\
+  return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
           Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`; 
 }

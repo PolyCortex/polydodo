@@ -64,5 +64,5 @@ function spectroLegend(svg, color, y, height, width) {
     .attr("dy", "1em")
     .attr("fill", "currentColor")
     .style("text-anchor", "middle")
-    .text("Intensité"); 
+    .text("Puissance"); 
 }
