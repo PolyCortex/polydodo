@@ -2,7 +2,10 @@
 
 function createBarChart(g, width, height, margin, useTransitions = true) {
 
-   
+  /**** Dimensions ****/
+  var translationHeight = useTransitions? height / 5: height/2;
+  var barHeight = translationHeight * 2
+
   /***** Échelles *****/
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleOrdinal()
@@ -45,17 +48,16 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
     
     barDomainX(x, data);
     barDomainY(y, states);
-    var translationHeight = 100;
 
     /***** Création du graphique Stacked bar chart *****/
-    createStackedBarChart(gBarChart,sources, x, y, color, tip);
+    createStackedBarChart(gBarChart,sources, x, y, color, tip, barHeight);
     if(useTransitions){
       addTransitions(gBarChart, g,sources, x, y, color, translationHeight, width, tipStacked, xAxis, yAxis, firstStagesIndex, totalStagesPortion);
     }
       // Axes 
     gBarChart.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + (height - 200) + ")")
+      .attr("transform", "translate(0," + barHeight + ")")
       .call(xAxis)
       .selectAll("text")
       .style("font-size", "18px");

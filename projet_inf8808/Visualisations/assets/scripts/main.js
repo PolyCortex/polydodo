@@ -13,7 +13,7 @@
     left: 100
   };
   var canvasWidth = 1920
-  var barCanvasHeight = 600
+  var barCanvasHeight = 1000
   var spectroCanvasHeight = 600
 
   var width = canvasWidth - margin.left - margin.right;
@@ -41,6 +41,6 @@
       .attr("height", spectroCanvasHeight);
 
   createBarChart(barChart, width, barHeight, margin)
-  createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, spectroHeight, margin);
-  createSpectrogram(spectrogramPZ,"Pz_Oz", width, spectroHeight, margin);
+  //createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, spectroHeight, margin);
+  //createSpectrogram(spectrogramPZ,"Pz_Oz", width, spectroHeight, margin);
 })(d3, localization);

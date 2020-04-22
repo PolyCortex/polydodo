@@ -12,7 +12,7 @@
  * @param line      La fonction permettant de dessiner les lignes du graphique.
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createStackedBarChart(g,sources, x, y, color, tip) {
+function createStackedBarChart(g,sources, x, y, color, tip, height) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -28,7 +28,7 @@ function createStackedBarChart(g,sources, x, y, color, tip) {
       .attr("width", function (d) {
         return x(d.currentStageEnd) - x(d.currentStageDebut);
       })
-      .attr("height", 200)
+      .attr("height", height)
       .attr("fill", function(d) { 
         return color(d.stage); 
       }).on("mouseover", function(d, i) {
@@ -41,10 +41,10 @@ function createStackedBarChart(g,sources, x, y, color, tip) {
       }) 
 }
 
-function addTransitions(g, canvas, sources, x, y, color, height, width, tipStacked, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion){
+function addTransitions(g, canvas, sources, x, y, color, height, width, tipStacked, xAxis, yAxis, firstStageIndex, totalStagePortion){
   
   g.selectAll(".rect-stacked").on("click", function(d){
-    firstTransition(g,sources,xAxisFocus,yAxisFocus,height,color);
+    firstTransition(g,sources,xAxis,yAxis,height,color);
   })
 
 
@@ -58,7 +58,7 @@ function addTransitions(g, canvas, sources, x, y, color, height, width, tipStack
     .attr("transform", "translate(" + 100 + "," + 10 + ")")
     .on("click", function(d){
       //d3.select(".d3-tip").remove()
-      secondTransition(g, sources, xAxisFocus, yAxisFocus, height, color);
+      secondTransition(g, sources, xAxis, yAxis, height, color);
     });
 
   canvas.append("rect")
@@ -71,7 +71,7 @@ function addTransitions(g, canvas, sources, x, y, color, height, width, tipStack
     .attr("transform", "translate(" + 140 + "," + 10 + ")")
     .on("click", function(d){
       //d3.select(".d3-tip").remove()
-      thirdTransition(g,sources,firstStageIndex,totalStagePortion, width,xAxisFocus, x, tipStacked);
+      thirdTransition(g,sources,firstStageIndex,totalStagePortion, width,xAxis, x, tipStacked);
     });
 
 
@@ -98,7 +98,7 @@ function addTransitions(g, canvas, sources, x, y, color, height, width, tipStack
  * @param y       L'échelle pour l'axe Y.
  * @param r       L'échelle pour le rayon des cercles.
  */
-function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
+function firstTransition(g, data, xAxis, yAxis, height, color) {
   
   //create Y axes
   g.append("g")
@@ -106,10 +106,10 @@ function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
     .transition()
     .attr("class", "y axis")
     .duration(2000)
-    .call(yAxisFocus)
+    .call(yAxis)
     .selectAll("text")//The left labels with different colors in Y axes 
       .attr("class","y-label")
-      .attr("y", 40)  
+      .attr("y", height/2)  
       .attr("x", -10)
       .style('fill', function(d,i) { 
         return color(getStageColorIndex(i));
@@ -119,62 +119,46 @@ function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
       .style("alignment-baseline", "middle");
      
   //Move every sleep stage portion to the correspending stage row
-  d3.selectAll(".rect-stacked")
+  g.selectAll(".rect-stacked")
     .data(data)
     .transition()
     .duration(2000)
       .attr("y", function(d,i){
         var yRow = getStageRow(d.stage); 
-        return 80*yRow;//USE y(yRow)
+        return height*yRow;
       })
-      .attr("height", 80)
- 
-  //Move all focus
-  g.transition()
-    .attr("y", height)
-    .duration(2000);
+      .attr("height", height)
   
   //Move X axes
-  d3.select(".x.axis").transition()
-    .attr("transform", "translate(0," + (height + 300) + ")")
+  g.select(".x.axis").transition()
+    .attr("transform", "translate(0," + (height*5) + ")")
     .duration(2000)
-    .call(xAxisFocus);
+    .call(xAxis);
     
 }
 
-function secondTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
+function secondTransition(g, data, xAxis, yAxis, height, color) {
 
-  d3.selectAll(".rect-stacked")
+  var newHeight = height/10
+  g.selectAll(".rect-stacked")
     .data(data)
     .transition()
     .duration(2000)
       .attr("y", function(d,i){
         var yRow = getStageRow(d.stage); 
-        return 80*yRow;//USE y(yRow)
+        return height*yRow;//USE y(yRow)
       })
-      .attr("height", 10);
+      .attr("height", newHeight);
 
-  //Move all focus
-   g.transition()
-    .attr("height", 420)
-    .duration(2000);
-
-  d3.select(".y.axis")
+  g.select(".y.axis")
     .transition()
     .duration(2000)
     .attr("transform", "translate(0," + (0) + ")")
-    .call(yAxisFocus)
-    .selectAll("text")//The left labels with different colors in Y axes 
-      .attr("class","y-label")
-      .attr("y", 0)  
+    .call(yAxis)
+    .selectAll(".y-label")//The left labels with different colors in Y axes 
+      .attr("y", newHeight/2)
       .attr("x", -10)
-      .style('fill', function(d,i) { 
-        return color(getStageColorIndex(i));
-      })
-      .style("font-size", "20px")
-      .attr("text-anchor", "left")
-      .style("alignment-baseline", "middle");
-  
+
 }
 
 
