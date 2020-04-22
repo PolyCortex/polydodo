@@ -41,6 +41,6 @@
       .attr("height", spectroCanvasHeight);
 
   createBarChart(barChart, width, barHeight, margin)
-  createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, spectroHeight, margin);
-  createSpectrogram(spectrogramPZ,"Pz_Oz", width, spectroHeight, margin);
+  //createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, spectroHeight, margin);
+  //createSpectrogram(spectrogramPZ,"Pz_Oz", width, spectroHeight, margin);
 })(d3, localization);

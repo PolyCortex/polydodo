@@ -12,7 +12,7 @@
  * @param line      La fonction permettant de dessiner les lignes du graphique.
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipStacked, xAxisFocus, yAxisFocus, firstStageIndex, totalStagePortion) {
+function createStackedBarChart(g,sources, x, y, color, tip, height) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -28,7 +28,7 @@ function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipSt
       .attr("width", function (d) {
         return x(d.currentStageEnd) - x(d.currentStageDebut);
       })
-      .attr("height", 200)
+      .attr("height", height)
       .attr("fill", function(d) { 
         return color(d.stage); 
       }).on("mouseover", function(d, i) {
@@ -39,53 +39,54 @@ function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipSt
         tip.hide();
         d3.select(this).style("opacity", 1);
       }) 
-      .on("click", function(d){
-        firstTransition(g,sources,xAxisFocus,yAxisFocus,height,color);
-      })
+}
 
-    
-    d3.select("svg")
-    .append("rect")
-      .attr("x", 340)
-      .attr("y", 10)
-      .attr("width", 30)
-      .attr("height", 30)
-      //.style('stroke', "#ffffff")
-      .style("fill", "white")
-      .attr("transform", "translate(" + 100 + "," + 10 + ")")
-      .on("click", function(d){
-        //d3.select(".d3-tip").remove()
-        secondTransition(g, sources, xAxisFocus, yAxisFocus, height, color);
-      });
+function addTransitions(g, canvas, sources, x, y, color, height, barHeight, width, tipStacked, xAxis, yAxis, firstStageIndex, totalStagePortion){
   
-    d3.select("svg")
-    .append("rect")
-      .attr("x", 340)
-      .attr("y", 10)
-      .attr("width", 30)
-      .attr("height", 30)
-      //.style('stroke', "#ffffff")
-      .style("fill", "#e6521c")
-      .attr("transform", "translate(" + 140 + "," + 10 + ")")
-      .on("click", function(d){
-        //d3.select(".d3-tip").remove()
-        thirdTransition(g,sources,firstStageIndex,totalStagePortion, width,xAxisFocus, x, tipStacked);
+  g.selectAll(".rect-stacked").on("click", function(d){
+    firstTransition(g,sources,xAxis,yAxis,height,color);
+  })
+
+
+  canvas.append("rect")
+    .attr("x", 340)
+    .attr("y", 10)
+    .attr("width", 30)
+    .attr("height", 30)
+    //.style('stroke', "#ffffff")
+    .style("fill", "white")
+    .attr("transform", "translate(" + 100 + "," + 10 + ")")
+    .on("click", function(d){
+      //d3.select(".d3-tip").remove()
+      secondTransition(g, sources, xAxis, yAxis, height, color);
     });
-  
 
-   d3.select("svg")
-   .append("rect")
-     .attr("x", 340)
-     .attr("y", 10)
-     .attr("width", 30)
-     .attr("height", 30)
-     //.style('stroke', "#ffffff")
-     .style("fill", "#ffdcff")
-     .attr("transform", "translate(" + 180 + "," + 10 + ")")
-     .on("click", function(d){
-       d3.select(".d3-tip").remove()
-       forthTransition(g,sources,x,firstStageIndex,totalStagePortion,width);
-   });
+  canvas.append("rect")
+    .attr("x", 340)
+    .attr("y", 10)
+    .attr("width", 30)
+    .attr("height", 30)
+    //.style('stroke', "#ffffff")
+    .style("fill", "#e6521c")
+    .attr("transform", "translate(" + 140 + "," + 10 + ")")
+    .on("click", function(d){
+      //d3.select(".d3-tip").remove()
+      thirdTransition(g,sources,firstStageIndex,totalStagePortion, width, height, xAxis, x, tipStacked);
+    });
+
+
+  canvas.append("rect")
+    .attr("x", 340)
+    .attr("y", 10)
+    .attr("width", 30)
+    .attr("height", 30)
+    //.style('stroke', "#ffffff")
+    .style("fill", "#ffdcff")
+    .attr("transform", "translate(" + 180 + "," + 10 + ")")
+    .on("click", function(d){
+      d3.select(".d3-tip").remove()
+      forthTransition(g,sources,x,firstStageIndex,totalStagePortion,width, barHeight);
+    });
 }
 
 /**
@@ -97,7 +98,7 @@ function createStackedBarChart(g,sources, x, y, color, height, width, tip, tipSt
  * @param y       L'échelle pour l'axe Y.
  * @param r       L'échelle pour le rayon des cercles.
  */
-function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
+function firstTransition(g, data, xAxis, yAxis, height, color) {
   
   //create Y axes
   g.append("g")
@@ -105,10 +106,10 @@ function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
     .transition()
     .attr("class", "y axis")
     .duration(2000)
-    .call(yAxisFocus)
+    .call(yAxis)
     .selectAll("text")//The left labels with different colors in Y axes 
       .attr("class","y-label")
-      .attr("y", 40)  
+      .attr("y", height/2)  
       .attr("x", -10)
       .style('fill', function(d,i) { 
         return color(getStageColorIndex(i));
@@ -118,67 +119,49 @@ function firstTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
       .style("alignment-baseline", "middle");
      
   //Move every sleep stage portion to the correspending stage row
-  d3.selectAll(".rect-stacked")
-    .data(data)
+  g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
       .attr("y", function(d,i){
         var yRow = getStageRow(d.stage); 
-        return 80*yRow;//USE y(yRow)
+        return height*yRow;
       })
-      .attr("height", 80)
- 
-  //Move all focus
-  g.transition()
-    .attr("y", height)
-    .duration(2000);
+      .attr("height", height)
   
   //Move X axes
-  d3.select(".x.axis").transition()
-    .attr("transform", "translate(0," + (height + 300) + ")")
+  g.select(".x.axis").transition()
+    .attr("transform", "translate(0," + (height*5) + ")")
     .duration(2000)
-    .call(xAxisFocus);
+    .call(xAxis);
     
 }
 
-function secondTransition(g, data, xAxisFocus, yAxisFocus, height, color) {
+function secondTransition(g, data, xAxis, yAxis, height, color) {
 
-  d3.selectAll(".rect-stacked")
-    .data(data)
+  var newHeight = height/10
+  g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
       .attr("y", function(d,i){
         var yRow = getStageRow(d.stage); 
-        return 80*yRow;//USE y(yRow)
+        return height*yRow;//USE y(yRow)
       })
-      .attr("height", 10);
+      .attr("height", newHeight);
 
-  //Move all focus
-   g.transition()
-    .attr("height", 420)
-    .duration(2000);
-
-  d3.select(".y.axis")
+  g.select(".y.axis")
     .transition()
     .duration(2000)
     .attr("transform", "translate(0," + (0) + ")")
-    .call(yAxisFocus)
-    .selectAll("text")//The left labels with different colors in Y axes 
-      .attr("class","y-label")
-      .attr("y", 0)  
+    .call(yAxis)
+    .selectAll(".y-label")//The left labels with different colors in Y axes 
+      .attr("y", newHeight/2)
       .attr("x", -10)
-      .style('fill', function(d,i) { 
-        return color(getStageColorIndex(i));
-      })
-      .style("font-size", "20px")
-      .attr("text-anchor", "left")
-      .style("alignment-baseline", "middle");
-  
+
 }
 
 
 //Third data vizualisation
-function thirdTransition(g, data, firstIndexes, totalStagePortion, width, xAxis, x, tip) {
+function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height, xAxis, x, tip) {
   
   var endHour = data[data.length - 1].currentStageEnd.getHours() + (data[data.length - 1].currentStageEnd.getMinutes()/60 );
   var startHour = data[0].currentStageDebut.getHours() + (data[0].currentStageDebut.getMinutes()/60 );
@@ -192,14 +175,13 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, xAxis,
   xAxis.tickFormat(d => d + " h")
         .tickValues(array)
 
-  d3.select(".x.axis").transition()
+  g.select(".x.axis").transition()
     .call(xAxis)
     //.call(x)
     .duration(2000)
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
-  d3.selectAll(".rect-stacked")
-    .data(data)
+  g.selectAll(".rect-stacked")
     .on("mouseover", function(d, i) {
       tip.show(d);
       d3.select(this).style("opacity", 0.8);
@@ -209,9 +191,7 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, xAxis,
       d3.select(this).style("opacity", 1);
     }) 
     .transition()
-    .attr("x", function(d,i){ 
-      return 0;
-     })
+    .attr("x", 0)
     .attr("width", function (d,i) {
        if(i === firstIndexes[d.stage]) return totalStagePortion[d.stage]*width;
        else return 0;
@@ -229,12 +209,10 @@ g.selectAll(".text")
       if(i === firstIndexes[d.stage]) return rounded + "%";
       else return "";
     })
-    .attr("x", function(d, i) {
-       return 50;
-    })
+    .attr("x", width/20)
     .attr("y", function(d,i) {
       var yRow = getStageRow(d.stage); 
-      return 50 + (80*yRow);// TO DO USE FUNCTON
+      return (height*yRow) + height/2;// TO DO USE FUNCTON
     })
     .attr("font-family", "sans-serif")
     .attr("font-size", "20px")
@@ -245,10 +223,9 @@ g.selectAll(".text")
 }
 
 
-function forthTransition(g, data, x, firstIndexes, totalStagePortion, width) {
+function forthTransition(g, data, x, firstIndexes, totalStagePortion, width, height) {
   
-  var stack =  d3.selectAll(".rect-stacked")
-    .data(data)
+  g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
     .attr("x", function(d,i){
@@ -271,25 +248,17 @@ function forthTransition(g, data, x, firstIndexes, totalStagePortion, width) {
     })
     .transition()
     .duration(1000)
-    .attr("height", 80)
+    .attr("height", height)
     
-  d3.selectAll(".pourc").remove();
-  d3.selectAll(".y.axis").remove();
+  g.selectAll(".y.axis").remove();
 
-  d3.select(".x.axis").transition()
-  .attr("transform", "translate(0," + (80) + ")")
+  g.select(".x.axis").transition()
+  .attr("transform", "translate(0," + (height) + ")")
   .duration(5000);
 
-  g.selectAll(".text")
-  .data(data)
-  .enter()
-    .append("text")
-    .attr("class","pourc")
-    .text(function(d,i) {
-      var rounded = Math.round(totalStagePortion[d.stage]*100 * 10) / 10
-      if(i === firstIndexes[d.stage]) return rounded + "%";
-      else return "";
-    })
+  g.selectAll(".pourc")
+    .transition()
+    .duration(5000)
     .attr("x", function(d, i) {
       if(i === firstIndexes[0])
       return (totalStagePortion[d.stage]/2)*width;
@@ -304,12 +273,8 @@ function forthTransition(g, data, x, firstIndexes, totalStagePortion, width) {
       return (cumul*width) + (totalStagePortion[d.stage]/2)*width ;}
     })
     .attr("y", function(d,i) {
-      if(i === firstIndexes[d.stage]) return 40;
+      if(i === firstIndexes[d.stage]) return height/2;
     })
-    .attr("font-family", "sans-serif")
-    .attr("font-size", "20px")
-    .attr("fill", "white")
-    .attr("text-anchor", "middle")
 }
 
 
