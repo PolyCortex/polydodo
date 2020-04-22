@@ -10,7 +10,7 @@
  * @param color   Échelle de 10 couleurs.
  * @param data    Données provenant du fichier CSV.
  */
-function domainColor(color, data) {
+function barDomainColor(color, data) {
   color.domain([0, 1, 2, 3, 4])
       .range(["#E3624B", "#B0C9D9", "#4da6fe", "#48587f", "#FFD443"]);
 }
@@ -22,7 +22,7 @@ function domainColor(color, data) {
  * @param xContext    Échelle en X utilisée avec le graphique "contexte".
  * @param data        Données provenant du fichier CSV.
  */
-function domainX(xFocus, data) {
+function barDomainX(xFocus, data) {
   xFocus.domain([data[0].timestamp, data[data.length-1].timestamp]);
 }
 
@@ -33,7 +33,7 @@ function domainX(xFocus, data) {
  * @param yContext    Échelle en Y utilisée avec le graphique "contexte".
  * @param sources     Données triées par nom de rue et par date (voir fonction "createSources").
  */
-function domainY(yFocus, states) {
+function barDomainY(yFocus, states) {
   var statesYOrder = states.slice(0);
 
   statesYOrder[1] = states[4];
@@ -78,7 +78,7 @@ function convertSource(data) {
  *                     ...
  *                  ]
  */
-function createSources(data, states) {
+function createBarSources(data, states) {
   var sources = [];
   var totalTimestamps = data.length-1;
   var currentStageDebut = data[0].timestamp;

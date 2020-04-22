@@ -11,7 +11,7 @@
  * @param sources   Données triées par nom de rue et par date.
  * @param color     Échelle de 10 couleurs.
  */
-function legend(svg, states, color) {
+function barLegend(svg, states, color) {
   var size = 20;
 
   svg.selectAll("dots")

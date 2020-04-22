@@ -11,7 +11,7 @@
  * @param sources Données formaté
  * 
  */
-function domainColor(color, sources) {
+function spectroDomainColor(color, sources) {
   var extent = d3.extent(sources, d=> d.Intensity)
   color.domain(extent)
 }
@@ -23,7 +23,7 @@ function domainColor(color, sources) {
  * @param node      The name of the node to get the data from 
  * @param data        Données provenant du fichier JSON.
  */
-function domainX(x, data, node) {
+function spectroDomainX(x, data, node) {
   x.domain([0, getHoursFromIndex(data[node].length)]);
 }
 
@@ -34,7 +34,7 @@ function domainX(x, data, node) {
  * @param yAxisScale           Échelle en Y utilisée pour l'axe.
  * @param data        Données provenant du fichier JSON.
  */
-function domainY(y, yAxisScale,  data) {
+function spectroDomainY(y, yAxisScale,  data) {
   y.domain(data.Frequencies);
   yAxisScale.domain([data.Frequencies[0], data.Frequencies[data.Frequencies.length-1]])
 }
@@ -58,7 +58,7 @@ function domainY(y, yAxisScale,  data) {
  *                     ...
  *                  ]
  */
-function createSources(data, node) {
+function createSpectroSources(data, node) {
   var sources = [];
   for (let index = 0; index < data[node].length; index++) {
     var intensityArray = data[node][index];

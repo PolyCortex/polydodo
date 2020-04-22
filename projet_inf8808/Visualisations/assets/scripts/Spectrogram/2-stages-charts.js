@@ -72,25 +72,10 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width,
  * @return {string}       Le texte à afficher dans l'infobulle.
  */
 
-function getToolTipText(d) {
+function getSpectroToolTipText(d) {
  //TODO : Fix name
-  return `Intensité : <strong> ${d.Intensity.toFixed(2)} </strong> Stonks<br>\
+  return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
           Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`; 
 }
 
-function getDurationString(duration){
-  var hours = Math.floor(duration)
-  var minutes = (duration % 1.0) * 60.0
-  var seconds = (minutes % 1.0) * 60.0
-  minutes = Math.floor(minutes)
-  seconds = Math.floor(seconds)
-  
-  return `${addZero(hours)}h ${addZero(minutes)}min ${addZero(seconds)}secs`
-}
-
-//Will add zero to display time in this format : 00:00:00 instead of 0:0:0
-function addZero(i) {
-  if (i < 10) i = "0" + i;
-  return i;
-}

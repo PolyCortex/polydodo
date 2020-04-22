@@ -10,7 +10,7 @@
  * @param svg       L'élément SVG à utiliser pour créer la légende.
  * @param color     L'échelle de couleurs.
  */
-function legend(svg, color, y, height, width) {
+function spectroLegend(svg, color, y, height, width) {
   
   var interpolate = d3.interpolate(color.domain()[0], color.domain()[1])
 
@@ -57,12 +57,12 @@ function legend(svg, color, y, height, width) {
   
   // Titre axe des Y
   svg.append("text")
-  .attr("class", "y axis")
-  .attr("transform", "rotate(90)")
-  .attr("y", 0-width)
-  .attr("x", height/2)
-  .attr("dy", "1em")
-  .attr("fill", "currentColor")
-  .style("text-anchor", "middle")
-  .text("Intensité"); 
+    .attr("class", "y axis")
+    .attr("transform", "rotate(90)")
+    .attr("y", 0-width)
+    .attr("x", height/2)
+    .attr("dy", "1em")
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Puissance"); 
 }
