@@ -108,3 +108,4 @@ venv.bak/
 
 node_modules/
 .vscode/
+build/
