@@ -109,3 +109,4 @@ venv.bak/
 classification/data/*
 node_modules/
 .vscode/
+build/
