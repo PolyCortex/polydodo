@@ -58,7 +58,7 @@ const initializeHypnogram = (d3, margin, width, height) => {
     domainY(y, sleep_labels);
 
     createHypnogramChart(g, data, line, y);
-    createMouseOver(g, margin, width, height);
+    createMouseOver(g, data, width, height, x);
 
     g.append("g")
       .attr("class", "x axis")

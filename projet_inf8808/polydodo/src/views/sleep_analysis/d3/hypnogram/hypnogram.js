@@ -18,7 +18,7 @@ import {
   createMouseOver,
 } from "./mouse-over";
 
-const initializeHypnogram = (margin, width, height, svg) => {
+const initializeHypnogram = (margin, width, height, svg, dateFormat) => {
 
   const initializeScales = () => {
     const x = d3.scaleTime().range([0, width]);
@@ -28,7 +28,7 @@ const initializeHypnogram = (margin, width, height, svg) => {
   };
 
   const initializeAxes = (x, y) => {
-    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"));
+    const xAxis = d3.axisBottom(x).tickFormat(dateFormat);
     const yAxis = d3.axisLeft().scale(y);
 
     return { xAxis, yAxis };
@@ -55,6 +55,7 @@ const initializeHypnogram = (margin, width, height, svg) => {
 const createHypnogram = (containerNode) => {
   const svg = d3.select(containerNode);
   const sleep_labels = ['W', 'REM', 'N1', 'N2', 'N3'];
+  const dateFormat = d3.timeFormat("%H:%M");
 
   const margin = {
     top: 10,
@@ -65,11 +66,11 @@ const createHypnogram = (containerNode) => {
   const width = 1000 - margin.left - margin.right;
   const height = 400 - margin.top - margin.bottom;
 
-  const { x, y, xAxis, yAxis, g } = initializeHypnogram(margin, width, height, svg);
+  const { x, y, xAxis, yAxis, g } = initializeHypnogram(margin, width, height, svg, dateFormat);
   const line = createLine(x, y);
 
   /***** Chargement des données *****/
-  d3.csv(hypnogramData).then(function (data) {
+  d3.csv(hypnogramData).then((data) => {
     parseTimestampToDate(data);
     convertValuesToLabels(data);
 
@@ -77,7 +78,7 @@ const createHypnogram = (containerNode) => {
     domainY(y, sleep_labels);
 
     createHypnogramChart(g, data, line, y);
-    createMouseOver(g, margin, width, height);
+    createMouseOver(g, x, data, margin, width, height, dateFormat);
 
     g.append("g")
       .attr("class", "x axis")
