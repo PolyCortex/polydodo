@@ -13,7 +13,7 @@ class Hypnogram extends React.Component {
 
     render() {
         return (<svg ref={ref => this.svg = ref } />);
-    } 
+    }
 }
 
 export default Hypnogram;

@@ -29,10 +29,9 @@ const SleepAnalysis = () => {
         <p>
           Without further ado, this is what was your night of sleep:
         </p>
-        <Hypnogram/>
-        {/* <Row className="justify-content-center">
+        <Row className="justify-content-center">
           <img className="mt-7 mb-7"  width="50%" alt="viz placeholder" src={Placeholder}/>
-        </Row> */}
+        </Row>
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe different stage proportions across age, gender and different sleep disorders. We’ve also defined other measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time. In order to improve your sleep hygiene, many elements can be considered:
         </p>
@@ -47,9 +46,7 @@ const SleepAnalysis = () => {
         <p>
           Although we’ve looked at many aspects of your night’s sleep, we haven’t properly looked at your sleep dynamics, whereas how your sleep evolves overnight.
         </p>
-        <Row className="justify-content-center">
-          <img className="mt-7 mb-7"  width="50%" alt="viz placeholder" src={Placeholder}/>
-        </Row>
+        <Hypnogram/>
         <p>
           Sleep cycles take place in a broader process, named the circadian rhythm. It is the one that regulates our wake and sleep cycles over a 24 hours period. 
         </p>
