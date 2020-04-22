@@ -6,7 +6,7 @@ import Header from "../../components/header";
 import Footer from "../../components/footer/footer";
 import D3Component from "../../components/d3component";
 
-import createHypnogram from "./d3/hypnogram";
+import createHypnogram from "./d3/hypnogram/hypnogram";
 import Placeholder from "../../assets/img/placeholder.png";
 
 import text from "./text.json";
