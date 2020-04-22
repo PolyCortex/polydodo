@@ -7,7 +7,7 @@
   "license": "MIT",
   "homepage": "https://www.facebook.com/PolyCortex/",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "sleep 2 && react-scripts start",
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
