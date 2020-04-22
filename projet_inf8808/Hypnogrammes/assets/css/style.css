@@ -1,0 +1,39 @@
+body {
+  display: table;
+  margin: 20px auto auto;
+  font-family: Arial, sans-serif;
+}
+
+svg {
+  background-color: white;
+}
+.axis {
+  shape-rendering: crispEdges
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.y.axis path {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: white;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+}
+
+.axis text {
+  font-size: 12pt;
+}
