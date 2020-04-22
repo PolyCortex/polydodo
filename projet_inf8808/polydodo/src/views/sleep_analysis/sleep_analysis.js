@@ -1,12 +1,12 @@
 import React from "react";
-
 import {Container, Row} from "reactstrap";
 
 import Navbar from "../../components/navbar/navbar";
 import Header from "../../components/header";
 import Footer from "../../components/footer/footer";
-import Hypnogram from "../../components/hypnogram/hypnogram";
+import D3Component from "../../components/d3component";
 
+import createHypnogram from "./d3/hypnogram";
 import Placeholder from "../../assets/img/placeholder.png";
 
 import text from "./text.json";
@@ -46,7 +46,7 @@ const SleepAnalysis = () => {
         <p>
           Although we’ve looked at many aspects of your night’s sleep, we haven’t properly looked at your sleep dynamics, whereas how your sleep evolves overnight.
         </p>
-        <Hypnogram/>
+        <D3Component callback={createHypnogram}/>
         <p>
           Sleep cycles take place in a broader process, named the circadian rhythm. It is the one that regulates our wake and sleep cycles over a 24 hours period. 
         </p>
