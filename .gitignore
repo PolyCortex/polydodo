@@ -105,3 +105,8 @@ venv.bak/
 
 # Other
 .DS_Store
+
+classification/data/*
+node_modules/
+.vscode/
+build/
