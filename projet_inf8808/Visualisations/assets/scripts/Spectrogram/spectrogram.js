@@ -27,7 +27,6 @@ function createSpectrogram(g, node, width, height, margin){
 
   /***** Chargement des données *****/
   d3.json("./data/spectrograms.json").then(function(data){
-    console.log(data)
      /***** Prétraitement des données *****/
     var color = d3.scaleSequential()
                   .interpolator(colorInterpolator)
@@ -39,7 +38,6 @@ function createSpectrogram(g, node, width, height, margin){
     var sources = createSpectroSources(data, node);
     spectroDomainColor(color, sources);
     spectroDomainColor(yColor, sources);
-
 
     spectroDomainX(x, data, node);
     spectroDomainY(y, yAxisScale, data);

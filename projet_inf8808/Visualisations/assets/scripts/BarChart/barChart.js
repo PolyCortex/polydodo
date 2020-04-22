@@ -20,7 +20,6 @@ function createBarChart(g, width, height, margin) {
 
   /***** Chargement des données *****/
   d3.csv("./data/time2.csv").then(function(data) {
-    console.log(data)
     /***** Prétraitement des données *****/
     var states = ["W","N1","N2","N3","REM"];
     var totalTimeStamp = data.length;
