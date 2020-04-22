@@ -20,17 +20,17 @@ const initializeHypnogram = (d3, localization, margin, width, height) => {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom);
 
-    const graph = svg.append("g")
+    const g = svg.append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    return graph;
+    return g;
   }
 
   const { x, y } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, y);
-  const graph = createDrawingGroup();
+  const g = createDrawingGroup();
 
-  return { x, y, xAxis, yAxis, graph };
+  return { x, y, xAxis, yAxis, g };
 };
 
 (function (d3, localization) {
@@ -46,30 +46,26 @@ const initializeHypnogram = (d3, localization, margin, width, height) => {
   const width = 1000 - margin.left - margin.right;
   const height = 350 - margin.top - margin.bottom;
 
-  const { x, y, xAxis, yAxis, graph } = initializeHypnogram(d3, localization, margin, width, height);
-
-  // Fonctions pour dessiner les lignes
+  const { x, y, xAxis, yAxis, g } = initializeHypnogram(d3, localization, margin, width, height);
   const line = createLine(x, y);
 
   /***** Chargement des données *****/
   d3.csv("./data/hypnogram.csv").then(function (data) {
-    /***** Prétraitement des données *****/
     parseTimestampToDate(data);
     convertValuesToLabels(data);
 
-    // domainColor(color, label_values);
     domainX(x, data);
     domainY(y, sleep_labels);
 
-    // /***** Création du graphique focus *****/
-    createFocusLineChart(graph, data, line, y);
+    createHypnogramChart(g, data, line, y);
+    createMouseOver(g, margin, width, height);
 
-    graph.append("g")
+    g.append("g")
       .attr("class", "x axis")
       .attr("transform", `translate(0,${height})`)
       .call(xAxis);
 
-    graph.append("g")
+    g.append("g")
       .attr("class", "y axis")
       .call(yAxis);
   });

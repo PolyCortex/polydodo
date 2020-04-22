@@ -36,7 +36,7 @@ const createGradient = (g, y, id) => {
       .attr("stop-color", d => label_colors[d.stage]);
 }
 
-const createFocusLineChart = (g, data, line, y) => {
+const createHypnogramChart = (g, data, line, y) => {
   const gradientId = "sleep-stage-hypnogram-gradient"
 
   createGradient(g, y, gradientId);
