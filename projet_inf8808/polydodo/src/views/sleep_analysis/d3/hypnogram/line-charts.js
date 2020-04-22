@@ -44,6 +44,7 @@ export const createFocusLineChart = (g, data, line, y) => {
   g.append("path")
       .datum(data)
     .attr("class", "line")
+    .attr("fill", "none")
     .attr("d", x => line(x))
     .attr("stroke", `url(#${gradientId})`)
     .attr("stroke-width", 2);
