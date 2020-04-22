@@ -28,6 +28,7 @@
   "dependencies": {
     "bootstrap": "4.3.1",
     "classnames": "2.2.6",
+    "d3": "^5.16.0",
     "headroom.js": "^0.11.0",
     "moment": "2.24.0",
     "node-sass": "4.13.1",

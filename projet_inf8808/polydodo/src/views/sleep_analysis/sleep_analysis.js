@@ -5,6 +5,7 @@ import {Container, Row} from "reactstrap";
 import Navbar from "../../components/navbar/navbar";
 import Header from "../../components/header";
 import Footer from "../../components/footer/footer";
+import Hypnogram from "../../components/hypnogram/hypnogram";
 
 import Placeholder from "../../assets/img/placeholder.png";
 
@@ -28,9 +29,10 @@ const SleepAnalysis = () => {
         <p>
           Without further ado, this is what was your night of sleep:
         </p>
-        <Row className="justify-content-center">
+        <Hypnogram/>
+        {/* <Row className="justify-content-center">
           <img className="mt-7 mb-7"  width="50%" alt="viz placeholder" src={Placeholder}/>
-        </Row>
+        </Row> */}
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe different stage proportions across age, gender and different sleep disorders. We’ve also defined other measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time. In order to improve your sleep hygiene, many elements can be considered:
         </p>
