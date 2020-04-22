@@ -43,7 +43,7 @@ function createSpectrogram(g, node, width, height, margin){
     spectroDomainY(y, yAxisScale, data);
 
     // /***** Création du graphique Stacked bar chart *****/
-    createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin, xAxis, yAxis);
+    createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin);
 
     // Axes 
     spectrogram.append("g")
