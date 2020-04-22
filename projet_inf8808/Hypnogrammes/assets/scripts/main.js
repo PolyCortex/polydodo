@@ -1,4 +1,4 @@
-const initializeHypnogram = (d3, localization, margin, width, height) => {
+const initializeHypnogram = (d3, margin, width, height) => {
 
   const initializeScales = () => {
     const x = d3.scaleTime().range([0, width]);
@@ -8,7 +8,7 @@ const initializeHypnogram = (d3, localization, margin, width, height) => {
   };
 
   const initializeAxes = (x, y) => {
-    const xAxis = d3.axisBottom(x).tickFormat(localization.getFormattedDate);
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"));
     const yAxis = d3.axisLeft().scale(y);
 
     return { xAxis, yAxis };
@@ -33,7 +33,7 @@ const initializeHypnogram = (d3, localization, margin, width, height) => {
   return { x, y, xAxis, yAxis, g };
 };
 
-(function (d3, localization) {
+(function (d3) {
   "use strict";
   const sleep_labels = ['W', 'REM', 'N1', 'N2', 'N3'];
 
@@ -46,7 +46,7 @@ const initializeHypnogram = (d3, localization, margin, width, height) => {
   const width = 1000 - margin.left - margin.right;
   const height = 350 - margin.top - margin.bottom;
 
-  const { x, y, xAxis, yAxis, g } = initializeHypnogram(d3, localization, margin, width, height);
+  const { x, y, xAxis, yAxis, g } = initializeHypnogram(d3, margin, width, height);
   const line = createLine(x, y);
 
   /***** Chargement des données *****/
@@ -69,4 +69,4 @@ const initializeHypnogram = (d3, localization, margin, width, height) => {
       .attr("class", "y axis")
       .call(yAxis);
   });
-})(d3, localization);
+})(d3);
