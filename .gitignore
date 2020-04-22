@@ -105,3 +105,5 @@ venv.bak/
 
 # Other
 .DS_Store
+
+classification/data/*
