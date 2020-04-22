@@ -46,7 +46,8 @@ function addTransitions(g, canvas, sources, x, y, color, height, barHeight, widt
  * @param r       L'échelle pour le rayon des cercles.
  */
 function firstTransition(g, data, xAxis, yAxis, height, color) {
-  
+
+  g.selectAll(".y.axis").remove();
     //create Y axes
     g.append("g")
       .data(data)
@@ -59,7 +60,7 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
         .attr("y", height/2)  
         .attr("x", -10)
         .style('fill', function(d,i) { 
-          return color(getStageColorIndex(i));
+          return color(d);
         })
         .style("font-size", "20px")
         .attr("text-anchor", "left")
@@ -70,8 +71,7 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
       .transition()
       .duration(2000)
         .attr("y", function(d,i){
-          var yRow = getStageRow(d.stage); 
-          return height*yRow;
+          return height*d.stage;
         })
         .attr("height", height)
     
@@ -90,8 +90,7 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
       .transition()
       .duration(2000)
         .attr("y", function(d,i){
-          var yRow = getStageRow(d.stage); 
-          return height*yRow;//USE y(yRow)
+          return height*d.stage;
         })
         .attr("height", newHeight);
   
@@ -157,9 +156,8 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
         else return "";
       })
       .attr("x", width/20)
-      .attr("y", function(d,i) {
-        var yRow = getStageRow(d.stage); 
-        return (height*yRow) + height/2;// TO DO USE FUNCTON
+      .attr("y", function(d,i) {; 
+        return (height*d.stage) + height/2;// TO DO USE FUNCTON
       })
       .attr("font-family", "sans-serif")
       .attr("font-size", "20px")
@@ -176,17 +174,11 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
       .transition()
       .duration(2000)
       .attr("x", function(d,i){
-        if(i === firstIndexes[0])
-          return 0;
-        if(i === firstIndexes[d.stage]){
-          var cumul = totalStagePortion[0];
-          if(d.stage != 4)
-            cumul += totalStagePortion[4]; 
-          if(d.stage === 2 || d.stage === 3 )
-            cumul += totalStagePortion[1]; 
-          if(d.stage === 3)
-            cumul += totalStagePortion[2]; 
-        return cumul*width;}
+        var cumul = 0;
+        for (let index = 0; index < d.stage; index++) {
+          cumul += totalStagePortion[index];
+        }
+        return cumul*width;
       })
       .transition()
       .duration(2000)
@@ -207,17 +199,11 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
       .transition()
       .duration(5000)
       .attr("x", function(d, i) {
-        if(i === firstIndexes[0])
-        return (totalStagePortion[d.stage]/2)*width;
-        if(i === firstIndexes[d.stage]){
-          var cumul = totalStagePortion[0];
-          if(d.stage != 4)
-            cumul += totalStagePortion[4]; 
-          if(d.stage === 2 || d.stage === 3 )
-            cumul += totalStagePortion[1]; 
-          if(d.stage === 3)
-            cumul += totalStagePortion[2]; 
-        return (cumul*width) + (totalStagePortion[d.stage]/2)*width ;}
+        var cumul = totalStagePortion[d.stage]/2
+        for (let index = 0; index < d.stage; index++) {
+          cumul += totalStagePortion[index];
+        }
+        return cumul*width;
       })
       .attr("y", function(d,i) {
         if(i === firstIndexes[d.stage]) return height/2;

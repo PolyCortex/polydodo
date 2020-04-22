@@ -9,9 +9,12 @@ function getDurationString(duration){
     
     return `${addZero(hours)}h ${addZero(minutes)}min ${addZero(seconds)}secs`
   }
-  
-  //Will add zero to display time in this format : 00:00:00 instead of 0:0:0
-  function addZero(i) {
-    if (i < 10) i = "0" + i;
-    return i;
+function getDurationSecondString(duration){
+    duration = Number(duration);
+    return getDurationString(duration/3600.0)
   }
+//Will add zero to display time in this format : 00:00:00 instead of 0:0:0
+function addZero(i) {
+  if (i < 10) i = "0" + i;
+  return i;
+}

@@ -2,8 +2,12 @@
 
 function createBarChart(g, width, height, margin, useTransitions = true) {
 
+  /**** Prétraitement de donnée ****/
+  var states = ["W","N1","N2","N3","REM"];
+  var statesOrder = ["W","REM", "N1","N2","N3"];
+
   /**** Dimensions ****/
-  var translationHeight = useTransitions? height / 5: height/2;
+  var translationHeight = useTransitions? height / states.length: height/2;
   var barHeight = translationHeight * 2
 
   /***** Échelles *****/
@@ -16,7 +20,6 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
   var yAxis= d3.axisLeft().scale(y).ticks(5, "s")
   .tickSize(-width);//will create the lines in second visualisation
 
-
   // Groupe affichant le graphique principal ().
   var gBarChart = g.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -24,7 +27,6 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
   /***** Chargement des données *****/
   d3.csv("./data/time2.csv").then(function(data) {
     /***** Prétraitement des données *****/
-    var states = ["W","N1","N2","N3","REM"];
     var totalTimeStamp = data.length;
     var color = d3.scaleOrdinal();
     var tip = d3.tip()
@@ -37,17 +39,17 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
     .offset([-10, 0]);
 
 
-    barDomainColor(color, data);
+    barDomainColor(color, states);
     convertSource(data);
 
-    var sources = createBarSources(data, states);
+    var sources = createBarSources(data, states, statesOrder);
   
     //For visualisation 3
-    var totalStagesPortion = calculateStagesPortion(data);
+    var totalStagesPortion = calculateStagesPortion(data, states, statesOrder);
     var firstStagesIndex = findFirstStageIndex(sources); 
     
     barDomainX(x, data);
-    barDomainY(y, states);
+    barDomainY(y, statesOrder);
 
     /***** Création du graphique Stacked bar chart *****/
     createStackedBarChart(gBarChart,sources, x, y, color, tip, barHeight);
@@ -65,7 +67,7 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
     //get tick
     d3.selectAll(".tick")
       .select("text")
-      .style("font-weight", function(d,i) {return 540})
+      .style("font-weight", 540)
       
     /***** Création de l'infobulle *****/
     tip.html(function(d) {

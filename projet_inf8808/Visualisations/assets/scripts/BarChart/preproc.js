@@ -8,10 +8,10 @@
  * Précise le domaine en associant un stage de sommeil à une couleur précise.
  *
  * @param color   Échelle de 10 couleurs.
- * @param data    Données provenant du fichier CSV.
+ * @param states  Les stage de sommeil
  */
-function barDomainColor(color, data) {
-  color.domain([0, 1, 2, 3, 4])
+function barDomainColor(color, states) {
+  color.domain(states)
       .range(["#E3624B", "#B0C9D9", "#4da6fe", "#48587f", "#FFD443"]);
 }
 
@@ -34,14 +34,7 @@ function barDomainX(xFocus, data) {
  * @param sources     Données triées par nom de rue et par date (voir fonction "createSources").
  */
 function barDomainY(yFocus, states) {
-  var statesYOrder = states.slice(0);
-
-  statesYOrder[1] = states[4];
-  statesYOrder[2] = states[1];
-  statesYOrder[3] = states[2];
-  statesYOrder[4] = states[3];
-
-  yFocus.domain(statesYOrder);
+  yFocus.domain(states);
 }
 
 /**
@@ -78,7 +71,7 @@ function convertSource(data) {
  *                     ...
  *                  ]
  */
-function createBarSources(data, states) {
+function createBarSources(data, states, statesOrder) {
   var sources = [];
   var totalTimestamps = data.length-1;
   var currentStageDebut = data[0].timestamp;
@@ -90,8 +83,8 @@ function createBarSources(data, states) {
       //We sum the portions of the current stage 
       if(row.sleep_stage !== currentStage || i === data.length-1){
         sources.push({
-          stage: currentStage,
           stageText: states[currentStage],
+          stage: statesOrder.indexOf(states[currentStage]),
           stagePortion: (stagePortion/totalTimestamps)*100,
           currentStageDebut: currentStageDebut, 
           currentStageEnd: row.timestamp
@@ -107,12 +100,12 @@ function createBarSources(data, states) {
 }
 
 //Calculate the total portion of each sleep stage (for Viz 3)
-function calculateStagesPortion(data) {
+function calculateStagesPortion(data, states, statesOrder) {
   var stageProportionCounts= [0,0,0,0,0];
   var totalTimestamp = data.length;
   //lets find how much % of the night does all stages have
   data.forEach(row => { 
-      ++stageProportionCounts[row.sleep_stage];
+      ++stageProportionCounts[statesOrder.indexOf(states[row.sleep_stage])];
   });
   
   stageProportionCounts.forEach((stagePortion,i) => {
@@ -123,11 +116,11 @@ function calculateStagesPortion(data) {
 }
 
 //Finds the index of the first element of each sleep stage (for Viz 3)
-function findFirstStageIndex(data){
+function findFirstStageIndex(states){
   var firstIndexes = [];
 
   for(var stage = 0; stage < 5; stage++){
-    firstIndexes.push(data.findIndex(element => 
+    firstIndexes.push(states.findIndex(element => 
       element.stage === stage
     ));
   } 
