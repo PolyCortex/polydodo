@@ -103,9 +103,8 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
       .append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + barHeight + ")")
-      .call(xAxis)
-      .selectAll("text")
-      .style("font-size", "18px");
+      .attr("font-size", "18px")
+      .call(xAxis)      
 
     //get tick
     d3.selectAll(".tick").select("text").style("font-weight", 540);
