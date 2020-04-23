@@ -103,7 +103,6 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
       .append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + barHeight + ")")
-      .attr("font-size", "18px")
       .call(xAxis)      
 
     //get tick
