@@ -15,14 +15,19 @@ svg {
   color: black;
 }
 
+.axis text {
+  font-weight: 540;
+  font-size: 12pt;
+}
+
 .vis2 {
   border-right: 1px solid #000000;
 }
 
-.axis path,
 .axis line {
   fill: none;
   stroke: black;
+  stroke-width: 1.5px;
   shape-rendering: crispEdges;
 }
 
@@ -42,9 +47,6 @@ svg {
   fill: none;
 }
 
-.axis text {
-  font-size: 12pt;
-}
 
 /***** Tooltip *****/
 .d3-tip {

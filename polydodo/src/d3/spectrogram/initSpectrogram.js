@@ -39,7 +39,6 @@ export const initSpectrogram = (g, node, width, height, margin) => {
     );
 
   /***** Chargement des données *****/
-  console.log(data);
   /***** Prétraitement des données *****/
   var color = d3.scaleSequential().interpolator(colorInterpolator);
 

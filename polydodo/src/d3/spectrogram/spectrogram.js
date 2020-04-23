@@ -6,15 +6,17 @@ const createSpectrogram = (countainerNode) => {
   /***** Configuration *****/
 
   /*** Dimensions ***/
-  var margin = {
+  const margin = {
     top: 100,
-    right: 150,
-    bottom: 100,
-    left: 100,
+    right: 200,
+    bottom: 50,
+    left: 70
   };
-  var canvasWidth = window.innerWidth / 1.9;
-  var barCanvasHeight = window.innerHeight / 4;
-  var spectroCanvasHeight = (window.innerHeight - barCanvasHeight) / 2;
+
+  var canvasWidth = 1000
+  var canvisHeight = 1200
+  var barCanvasHeight = canvisHeight / 4;
+  var spectroCanvasHeight = (canvisHeight - barCanvasHeight) / 2;
 
   var width = canvasWidth - margin.left - margin.right;
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
