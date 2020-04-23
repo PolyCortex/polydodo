@@ -30,11 +30,11 @@ export const createStackedBarChart = (g,sources, x, y, color, tip, height) => {
       .attr("height", height)
       .attr("fill", d => color(d.stageText))
       .on("mouseover", function(d){
-        //tip.show(d, this);
+        tip.show(d, this);
         d3.select(this).style("opacity", 0.8);
       })
       .on("mouseout", () => {
-        //tip.hide();
+        tip.hide();
         d3.select(this).style("opacity", 1);
       }) 
 }

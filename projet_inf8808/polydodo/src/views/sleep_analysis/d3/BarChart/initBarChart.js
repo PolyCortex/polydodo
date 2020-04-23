@@ -116,7 +116,7 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     tooltip.html(function (d) {
       return getBarToolTipText.call(this, d);
     });
-    g.call(tip);
+    g.call(tooltip);
 
     tipStacked.html(function (d) {
       return getStackedToolTipText.call(

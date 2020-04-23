@@ -25,7 +25,6 @@ const createBarChart = (countainerNode) => {
     var barChart = svgg.append("svg")
         .attr("width", canvasWidth)
         .attr("height", barCanvasHeight);
-    console.log(svgg);
     initializeBarChart(barChart, width, barHeight, margin)
   }
 

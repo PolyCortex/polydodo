@@ -124,11 +124,11 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   g.selectAll(".rect-stacked")
     .on("mouseover", function(d){
-      //tip.show(d, this);
+      tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
     .on("mouseout",()=>{
-      //tip.hide();
+      tip.hide();
       d3.select(this).style("opacity", 1);
     }) 
     .transition()
