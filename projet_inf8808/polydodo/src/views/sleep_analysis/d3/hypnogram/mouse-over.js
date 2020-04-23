@@ -55,10 +55,10 @@ export const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
     .attr("class", "textHover")
     .style("fill", "black")
     .attr("text-anchor", "start")
-    .attr("font-size", 14)
+    .attr("font-size", 12)
     .style("opacity", 0)
     .attr("stroke", x => color(x.name))
-    .attr("dy", (_, i) => 0.5 + i * 2 + "em");
+    .attr("dy", (_, i) => 1 + i * 1.25 + "em");
 
   const mouseMove = function () {
     const mouse = d3.mouse(this);

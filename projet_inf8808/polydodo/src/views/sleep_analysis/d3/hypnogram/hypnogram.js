@@ -15,6 +15,8 @@ import {
 import {
   createLine,
   createHypnogramChart,
+  createAxes,
+  createTitle,
 } from "./line-charts";
 
 import {
@@ -54,8 +56,9 @@ const createDrawingGroup = (svg, dimensions, margin) => {
 
 const createHypnogram = (containerNode) => {
   const svg = d3.select(containerNode);
+  const chartTitle = "Agreement between Classifier and Physionet"
   const sleepLabels = ['W', 'REM', 'N1', 'N2', 'N3'];
-  const hypnogramNames = ["predicted", "scored"];
+  const hypnogramNames = ["Classifier", "Physionet"];
   const comparativeColors = ["#006aff", "#ff7575"];
   // const labelColors = {
   //   'W': "#E3624B",
@@ -66,14 +69,14 @@ const createHypnogram = (containerNode) => {
   // };
 
   const margin = {
-    top: 10,
+    top: 50,
     right: 10,
-    bottom: 50,
-    left: 30
+    bottom: 70,
+    left: 70
   };
   const dimensions = {
     width: 1000 - margin.left - margin.right,
-    height: 300 - margin.top - margin.bottom
+    height: 350 - margin.top - margin.bottom
   };
 
   const { x, y } = initializeScales(dimensions);
@@ -81,7 +84,6 @@ const createHypnogram = (containerNode) => {
   const g = createDrawingGroup(svg, dimensions, margin);
   const line = createLine(x, y);
 
-  /***** Chargement des données *****/
   Promise.all([
     d3.csv(hypnogramData),
     d3.csv(hypnogramDataPredicted)
@@ -94,17 +96,10 @@ const createHypnogram = (containerNode) => {
     domainY(y, sleepLabels);
     const colorDomain = domainColor(data, comparativeColors);
 
-    createHypnogramChart(g, data, line, colorDomain);
-    createMouseOver(g, x, y, data, margin, dimensions, colorDomain);
-
-    g.append("g")
-      .attr("class", "x axis")
-      .attr("transform", `translate(0,${dimensions.height})`)
-      .call(xAxis);
-
-    g.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
+    const g_chart = createHypnogramChart(g, data, line, colorDomain);
+    createMouseOver(g_chart, x, y, data, margin, dimensions, colorDomain);
+    createAxes(g, xAxis, yAxis, dimensions, margin);
+    createTitle(g, chartTitle, dimensions, margin);
   });
 };
 
