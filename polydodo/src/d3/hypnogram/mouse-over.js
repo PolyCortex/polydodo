@@ -36,7 +36,8 @@ export const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
   const dateHover = g.append("text")
     .attr("class", "lineHoverDate")
     .attr("text-anchor", "middle")
-    .attr("font-size", 14)
+    .attr("font-size", 15)
+    .attr("font-weight", "bold")
     .style("opacity", 0);
 
   const circleHover = g.selectAll(".hoverCircle")
