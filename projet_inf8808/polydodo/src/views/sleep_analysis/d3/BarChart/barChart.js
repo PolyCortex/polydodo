@@ -17,12 +17,12 @@ const createBarChart = (countainerNode) => {
     var barHeight = barCanvasHeight - margin.top - margin.bottom;
   
     /***** Création des éléments *****/
-    const svgg = d3.select(countainerNode)
+    const svg = d3.select(countainerNode)
     
-    svgg.attr("width", canvasWidth)
+    svg.attr("width", canvasWidth)
       .attr("height", barCanvasHeight);
     
-    var barChart = svgg.append("svg")
+    var barChart = svg.append("svg")
         .attr("width", canvasWidth)
         .attr("height", barCanvasHeight);
     initializeBarChart(barChart, width, barHeight, margin)

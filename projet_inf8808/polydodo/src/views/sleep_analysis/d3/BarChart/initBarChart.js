@@ -3,11 +3,11 @@ import tip from "d3-tip";
 import barChartData from "assets/data/time2.csv";
 
 import {
-  barDomainColor,
-  barDomainX,
-  barDomainY,
+  domainColor,
+  domainX,
+  domainY,
   convertSource,
-  createBarSources,
+  createSources,
   calculateStagesPortion,
   findFirstStageIndex,
 } from "./preproc";
@@ -16,12 +16,11 @@ import { barLegend } from "./legend";
 
 import {
   createStackedBarChart,
-  getBarToolTipText,
+  getToolTipText,
   getStackedToolTipText
 } from "./stages-charts";
 
 import{ addTransitions } from "./transition"
-import { parseTimestampToDate } from "../hypnogram/preproc";
 
 export const initializeBarChart = (g, width, height, margin, useTransitions = true) => {
   
@@ -67,17 +66,17 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
 
     var tipStacked = tip().attr("class", "d3-tip").offset([-10, 0]);
 
-    barDomainColor(color, states);
+    domainColor(color, states);
     convertSource(data);
 
-    var sources = createBarSources(data, states, statesOrder);
+    var sources = createSources(data, states, statesOrder);
 
     //For visualisation 3
     var totalStagesPortion = calculateStagesPortion(data, states, statesOrder);
     var firstStagesIndex = findFirstStageIndex(sources);
 
-    barDomainX(x, data);
-    barDomainY(y, statesOrder);
+    domainX(x, data);
+    domainY(y, statesOrder);
 
     /***** Création du graphique Stacked bar chart *****/
     createStackedBarChart(gBarChart, sources, x, y, color, tooltip, barHeight);
@@ -113,7 +112,7 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
 
     /***** Création de l'infobulle *****/
     tooltip.html(function (d) {
-      return getBarToolTipText.call(this, d);
+      return getToolTipText.call(this, d);
     });
     g.call(tooltip);
 

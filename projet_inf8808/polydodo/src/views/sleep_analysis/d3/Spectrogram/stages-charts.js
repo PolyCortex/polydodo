@@ -1,4 +1,8 @@
-"use strict";
+import * as d3 from "d3";
+import{
+  getDurationString
+} from "../Common/duration"
+import { getHoursFromIndex } from "./preproc";
 
 /**
  * Fichier permettant de dessiner les graphiques "focus" et "contexte".
@@ -13,7 +17,7 @@
  * @param y         L'échelle de l'axe des y
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width, margin) {
+export const createSpectrgramChart = (g, sources, x, y, color, tip, height, width, margin) => {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -24,8 +28,8 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width,
       .attr("width", () => x(getHoursFromIndex(1)))
       .attr("height", y.bandwidth())
       .attr("fill", d => color(d.Intensity))
-      .on("mouseover", d => {
-        tip.show(d);
+      .on("mouseover", function(d){
+        tip.show(d, this);
         d3.select(this).style("opacity", 0.8);
       })
       .on("mouseout",() => {
@@ -63,10 +67,10 @@ function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width,
  * @return {string}       Le texte à afficher dans l'infobulle.
  */
 
-function getSpectroToolTipText(d) {
- //TODO : Fix name
+export const getToolTipText = (d) => {
+  //TODO : Fix name
   return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
-          Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`; 
-}
+          Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`;
+};
 

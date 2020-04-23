@@ -47,7 +47,7 @@ export const createStackedBarChart = (g,sources, x, y, color, tip, height) => {
  * @return {string}       Le texte à afficher dans l'infobulle.
  */
 
-export const getBarToolTipText = (d) => {
+export const getToolTipText = (d) => {
  
   var h = addZero(d.currentStageDebut.getHours());
   var m = addZero(d.currentStageDebut.getMinutes());

@@ -8,7 +8,7 @@
  * @param color   Échelle de 10 couleurs.
  * @param states  Les stage de sommeil
  */
-export const barDomainColor = (color, states) => {
+export const domainColor = (color, states) => {
   color
     .domain(states)
     .range(["#E3624B", "#B0C9D9", "#4da6fe", "#48587f", "#FFD443"]);
@@ -21,7 +21,7 @@ export const barDomainColor = (color, states) => {
  * @param xContext    Échelle en X utilisée avec le graphique "contexte".
  * @param data        Données provenant du fichier CSV.
  */
-export const barDomainX = (xFocus, data) => {
+export const domainX = (xFocus, data) => {
   xFocus.domain([data[0].timestamp, data[data.length - 1].timestamp]);
 };
 
@@ -32,7 +32,7 @@ export const barDomainX = (xFocus, data) => {
  * @param yContext    Échelle en Y utilisée avec le graphique "contexte".
  * @param sources     Données triées par nom de rue et par date (voir fonction "createSources").
  */
-export const barDomainY = (yFocus, states) => {
+export const domainY = (yFocus, states) => {
   yFocus.domain(states);
 };
 
@@ -70,7 +70,7 @@ export const convertSource = (data) => {
  *                     ...
  *                  ]
  */
-export const createBarSources = (data, states, statesOrder) => {
+export const createSources = (data, states, statesOrder) => {
   var sources = [];
   var totalTimestamps = data.length - 1;
   var currentStageDebut = data[0].timestamp;
