@@ -105,21 +105,20 @@ function secondTransition(g, data, xAxis, yAxis, height, color) {
 //Third data vizualisation
 function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height, xAxis, x, tip) {
   
-  var endHour = data[data.length - 1].currentStageEnd.getHours() + (data[data.length - 1].currentStageEnd.getMinutes()/60 );
-  var startHour = data[0].currentStageDebut.getHours() + (data[0].currentStageDebut.getMinutes()/60 );
-  var sleepTotal = endHour - startHour
+  var sleepDiff = data[data.length - 1].currentStageEnd.getTime() - data[0].currentStageDebut.getTime()
+  var sleepTotal = sleepDiff/(1000*60*60)
 
-  x.domain([0, sleepTotal])
-  var array = []
-  for (let currentTick = 0; currentTick < sleepTotal; currentTick++) {
-    array.push(currentTick);
-  }
+  var newscale = d3.scaleLinear()
+      .domain([0, sleepTotal])
+      .range([0, width])
+
   xAxis.tickFormat(d => d + " h")
-        .tickValues(array)
-
-  g.select(".x.axis").transition()
+  xAxis.scale(newscale)
+  g.select(".x.axis")
+    .transition()
+    .duration(500)
     .call(xAxis)
-    .duration(2000)
+
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   g.selectAll(".rect-stacked")
@@ -150,7 +149,7 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height
       .attr("y", d => (height*d.stage) + height/2)
       .attr("font-family", "sans-serif")
       .attr("font-size", "20px")
-      .attr("fill", "white")
+      .attr("fill", "black")
       .attr("text-anchor", "middle")
   
 }
@@ -195,4 +194,6 @@ function fourthTransition(g, data, x, firstIndexes, totalStagePortion, width, he
     .attr("y", function(d,i) {
       if(i === firstIndexes[d.stage]) return height/2;
     })
+    .attr("fill", "white")
+
 }
