@@ -23,12 +23,12 @@ const ClassificationReport = ({ rows }) => {
         </tr>
       </thead>
       <tbody>
-        {rows.map(row => {
+        {rows.map((row, i) => {
           return (
-            <tr>
+            <tr key={i}>
               <th>{row[0]}</th>
-              {row.slice(1).map(el => (
-                <td>{el}</td>
+              {row.slice(1).map((el, j) => (
+                <td key={j}>{el}</td>
               ))}
             </tr>
           );
@@ -87,7 +87,7 @@ const Performance = () => {
             level between professional scorers.
           </li>
         </ul>
-        <h3 className="mt-5">Classifier's accuracy according to Physionet</h3>
+        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
         <D3Component callback={createComparativeHypnogram} />
         <ClassificationReport
           rows={[
@@ -100,7 +100,7 @@ const Performance = () => {
           ]}
         />
         <h3 className="mt-5">
-          Classifier's accuracy according to the Sleep-EDF
+          Classifier's accuracy according to the electrophysiologist
         </h3>
         <D3Component callback={createComparativeHypnogram} />
         <ClassificationReport
