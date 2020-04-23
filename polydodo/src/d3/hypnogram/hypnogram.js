@@ -23,6 +23,7 @@ import {
   createHypnogramChart,
   createAxes,
   createTitle,
+  createLegend,
 } from "./line-charts";
 
 import {
@@ -64,14 +65,14 @@ const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, compar
   const sleepLabels = ['W', 'REM', 'N1', 'N2', 'N3'];
 
   const margin = {
-    top: 50,
+    top: 100,
     right: 10,
     bottom: 70,
     left: 70
   };
   const dimensions = {
     width: 1000 - margin.left - margin.right,
-    height: 350 - margin.top - margin.bottom
+    height: 400 - margin.top - margin.bottom
   };
 
   const { x, y } = initializeScales(dimensions);
@@ -92,6 +93,7 @@ const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, compar
     createMouseOver(g_chart, x, y, data, margin, dimensions, colorDomain);
     createAxes(g, xAxis, yAxis, dimensions, margin);
     createTitle(g, chartTitle, dimensions, margin);
+    createLegend(g, hypnogramNames, comparativeColors, dimensions, margin);
   });
 }
 

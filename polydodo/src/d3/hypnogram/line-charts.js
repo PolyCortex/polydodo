@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import _ from "lodash";
 
 export const createLine = (x, y) => {
   return d3.line()
@@ -51,6 +52,37 @@ export const createTitle = (g, title, dimensions, margin) => {
   g.append("text").text(title)
     .attr("class", "chart-title")
     .attr("text-anchor", "middle")
-    .attr("y", -(1/2)*margin.top)
+    .attr("y", -(3/4)*margin.top)
     .attr("x", (1/2)*dimensions.width);
+};
+
+export const createLegend = (g, hypnogramNames, comparativeColors, dimensions, margin) => {
+  const legendData = _.zip(hypnogramNames, comparativeColors).map(x => {
+    return {
+      "name": x[0],
+      "color": x[1],
+    };
+  });
+
+  g.selectAll(".rect.legend")
+    .data(legendData)
+  .enter().append("rect")
+    .attr("class", "legend")
+    .attr("stroke-width", 1)
+    .attr("fill", x => x.color)
+    .attr("width", "1em")
+    .attr("height", "1em")
+    .attr("y", -(1/2)*margin.top)
+    .attr("x", (_, i) => `${i * 8}em`);
+
+  g.selectAll(".text.legend")
+    .data(legendData)
+  .enter().append("text")
+    .attr("class", "legend")
+    .text(x => x.name)
+    .attr("font-size", 12)
+    .attr("dominant-baseline", "hanging")
+    .attr("y", -(1/2)*margin.top)
+    .attr("dy", 0.25+"em")
+    .attr("x", (_, i) => `${1.5 + i * 11}em`);
 };
