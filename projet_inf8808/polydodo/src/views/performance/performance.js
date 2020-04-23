@@ -5,7 +5,10 @@ import Navbar from "../../components/navbar/navbar";
 import Header from "../../components/header";
 import WIPWarning from "../../components/wip_warning";
 import Footer from "../../components/footer/footer";
+import D3Component from "../../components/d3component";
+
 import text from "./text.json";
+import { createComparativeHypnogram } from "d3/hypnogram/hypnogram";
 
 const Performance = () => {
   return (
@@ -30,8 +33,11 @@ const Performance = () => {
           <li>Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous results and maybe get an idea of the usual disagreement level between professional scorers.</li>
         </ul>
         <h3 className="mt-5">Classifier's accuracy according to Physionet</h3>
+        <D3Component callback={createComparativeHypnogram} />
         <h3 className="mt-5">Classifier's accuracy according to the Sleep-EDF</h3>
+        <D3Component callback={createComparativeHypnogram} />
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement</h3>
+        <D3Component callback={createComparativeHypnogram} />
       </Container>
       <Footer />
     </div>
