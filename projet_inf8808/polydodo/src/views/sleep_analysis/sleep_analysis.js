@@ -12,7 +12,6 @@ import WIPWarning from "../../components/wip_warning";
 
 import createHypnogram from "./d3/hypnogram/hypnogram";
 import createBarChart from "./d3/BarChart/barChart";
-import Placeholder from "../../assets/img/placeholder.png";
 
 import text from "./text.json";
 import createSpectrogram from "./d3/Spectrogram/spectrogram";
@@ -61,7 +60,6 @@ const SleepAnalysis = () => {
           You’ve been able to visualize and inspect your night of sleep, which we’ve classified only based on your EEG recordings. In a sleep lab, electrophysiology technicians generally look at your EEG, EOG and submental EMG, and then manually classify each epoch of 30 seconds that compose your night. By looking at your EEG recordings, we can see some patterns that can help electrophysiology technicians, and our classifier, discriminate sleep stages throughout the night.
         </p>
         <D3Component callback={createSpectrogram} />
-
       </Container>
       <Footer />
     </div>
