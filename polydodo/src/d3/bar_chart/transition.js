@@ -232,14 +232,14 @@ function fourthTransition(
   
   //Remove y axis and labels
   g.selectAll(".y.axis").remove();
-  d3.selectAll(".pourc").remove();
+  g.selectAll(".pourc").remove();
 
   g.select(".x.axis").transition()
   .attr("transform", "translate(0," + (height) + ")")
   .duration(5000);
 
   //first barChart
-  var stackedBar = d3.selectAll(".rect-stacked");
+  var stackedBar = g.selectAll(".rect-stacked");
 
   stackedBar 
     .transition()
@@ -260,8 +260,8 @@ function fourthTransition(
     .duration(1000)
     .attr("height", height)
     .on("end", function(d,i) { 
-      d3.selectAll(".pourcentage").style("opacity", 1);
-      d3.selectAll(".label-sleepType").style("opacity", 1);
+      g.selectAll(".pourcentage").style("opacity", 1);
+      g.selectAll(".label-sleepType").style("opacity", 1);
     });
 
   var text =  g.selectAll(".text")
