@@ -33,11 +33,11 @@ const Performance = () => {
           <li>Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous results and maybe get an idea of the usual disagreement level between professional scorers.</li>
         </ul>
         <h3 className="mt-5">Classifier's accuracy according to Physionet</h3>
-        <D3Component callback={createComparativeHypnogram} />
+        <D3Component callback={(svg) => createComparativeHypnogram(svg, ["Classifier", "Sleep-EDF"])} />
         <h3 className="mt-5">Classifier's accuracy according to the Sleep-EDF</h3>
-        <D3Component callback={createComparativeHypnogram} />
+        <D3Component callback={(svg) => createComparativeHypnogram(svg, ["Classifier", "Electrophysiologist"])} />
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement</h3>
-        <D3Component callback={createComparativeHypnogram} />
+        <D3Component callback={(svg) => createComparativeHypnogram(svg, ["Electrophysiologist", "Sleep-EDF"])} />
       </Container>
       <Footer />
     </div>

@@ -1,7 +1,13 @@
 import * as d3 from "d3";
+import _ from "lodash";
 
-import hypnogramData from "assets/data/hypnogram.csv";
+import hypnogramDataSleepEDF from "assets/data/hypnogram.csv";
 import hypnogramDataPredicted from "assets/data/hypnogram-predicted.csv";
+import hypnogramDataElectrophysiologist from "assets/data/hypnogram-electrophysiologist.csv";
+
+import hypnogramDataOpenBCIElectrophysiologist from "assets/data/hypnogram-openbci-electrophysiologist.csv";
+import hypnogramDataPredictedOpenBCI from "assets/data/hypnogram-openbci-predicted.csv";
+
 
 import {
   parseTimestampToDate,
@@ -90,7 +96,7 @@ const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, compar
 }
 
 export const createSingleHypnogram = (containerNode) => {
-  const data = [hypnogramData];
+  const data = [hypnogramDataSleepEDF];
   const chartTitle = "Hypnogram";
   const hypnogramNames = ["Classifier"];
   const comparativeColors = ["#006aff"];
@@ -107,11 +113,23 @@ export const createSingleHypnogram = (containerNode) => {
 };
 
 
-export const createComparativeHypnogram = (containerNode) => {
-  const data = [hypnogramData, hypnogramDataPredicted];
-  const chartTitle = "Agreement between Classifier and Physionet";
-  const hypnogramNames = ["Classifier", "Physionet"];
-  const comparativeColors = ["#006aff", "#ff7575"];
-
+export const createComparativeHypnogram = (containerNode, hypnogramNames) => {
+  let data = [];
+  if (_.isEqual(hypnogramNames, ["Classifier", "Sleep-EDF"])) {
+    data = [hypnogramDataPredicted, hypnogramDataSleepEDF];
+  } else if (_.isEqual(hypnogramNames, ["Classifier", "Electrophysiologist"])) {
+    data = [hypnogramDataPredictedOpenBCI, hypnogramDataOpenBCIElectrophysiologist];
+  } else if (_.isEqual(hypnogramNames, ["Electrophysiologist", "Sleep-EDF"])) {
+    data = [hypnogramDataElectrophysiologist, hypnogramDataSleepEDF];
+  }
+  
+  const chartTitle = `Agreement between ${hypnogramNames[0]} and ${hypnogramNames[1]}`;
+  const colors = {
+    "Classifier": "#efce31",
+    "Sleep-EDF": "#006aff",
+    "Electrophysiologist": "#ff7575"
+  };
+  const comparativeColors = hypnogramNames.map(x => colors[x]);
+  
   createHypnogram(containerNode, data, chartTitle, hypnogramNames, comparativeColors);
 };
