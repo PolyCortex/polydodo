@@ -44,8 +44,14 @@ export const domainY = (yFocus, states) => {
  */
 export const convertSource = (data) => {
   data.forEach((row) => {
-    row.timestamp = new Date(row.timestamp * 1000);
-    row.sleep_stage = +row.sleep_stage;
+    const date = new Date(row.timestamp * 1000);
+    row.timestamp = new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDay(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds());
   });
 };
 

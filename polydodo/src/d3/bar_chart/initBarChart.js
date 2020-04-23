@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import tip from "d3-tip";
-import barChartData from "assets/data/time2.csv";
+import barChartData from "assets/data/hypnogram.csv";
 
 import {
   domainColor,
