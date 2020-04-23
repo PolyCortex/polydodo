@@ -13,34 +13,25 @@
  * @param y         L'échelle de l'axe des y
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width, margin, xAxis, yAxis) {
+function createSpectrgrammeBarChart(g, sources, x, y, color, tip, height, width, margin) {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
     .enter()
     .append("rect")
-      .attr("x", function (d) {
-        return x(d.Timestamp);
-      })
-      .attr("y", function (d) {
-        return y(d.Frequency);
-      })
-      .attr("width", function (d) {
-        return x(getHoursFromIndex(1));
-      })
-      .attr("height", function (d) {
-        return y.bandwidth();
-      })
-      .attr("fill", function(d) { 
-        return color(d.Intensity); 
-      }).on("mouseover", function(d, i) {
+      .attr("x", d => x(d.Timestamp))
+      .attr("y", d => y(d.Frequency))
+      .attr("width", () => x(getHoursFromIndex(1)))
+      .attr("height", y.bandwidth())
+      .attr("fill", d => color(d.Intensity))
+      .on("mouseover", d => {
         tip.show(d);
         d3.select(this).style("opacity", 0.8);
       })
-      .on("mouseout",function(d){
+      .on("mouseout",() => {
         tip.hide();
         d3.select(this).style("opacity", 1);
-      }) 
+      })
 
   // Titre axe des X
   g.append("text")

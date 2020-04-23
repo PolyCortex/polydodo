@@ -12,9 +12,9 @@
     bottom: 100,
     left: 100
   };
-  var canvasWidth = 1920
-  var barCanvasHeight = 600
-  var spectroCanvasHeight = 600
+  var canvasWidth = window.innerWidth
+  var barCanvasHeight = window.innerHeight/4
+  var spectroCanvasHeight = (window.innerHeight - barCanvasHeight)/2
 
   var width = canvasWidth - margin.left - margin.right;
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
@@ -26,7 +26,7 @@
     .attr("width", canvasWidth)
     .attr("height", 2*(spectroCanvasHeight) + barCanvasHeight);
   
-  var barChart = svg.append('g')
+  var barChart = svg.append("g")
       .attr("width", canvasWidth)
       .attr("height", barCanvasHeight);
 
@@ -40,7 +40,7 @@
       .attr("width", canvasWidth)
       .attr("height", spectroCanvasHeight);
 
-  createBarChart(barChart, width, barHeight, margin)
-  //createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, spectroHeight, margin);
+  //createBarChart(barChart, width, barHeight, margin)
+  createSpectrogram(spectrogramFPZ,"Fpz_Cz", width, spectroHeight, margin);
   //createSpectrogram(spectrogramPZ,"Pz_Oz", width, spectroHeight, margin);
 })(d3, localization);

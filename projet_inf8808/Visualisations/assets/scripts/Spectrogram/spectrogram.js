@@ -1,8 +1,13 @@
 "use strict";
 
+const SECONDES_PAR_DATUM = 30
+const DATUM_PER_TIMESTAMP = 4
+const TIMESTAMP_DURATION = SECONDES_PAR_DATUM * DATUM_PER_TIMESTAMP
+const FREQUENCY_BINS= 5
+
 function createSpectrogram(g, node, width, height, margin){
   
-    /**** Interpolateur de couleurs ****/
+  /**** Interpolateur de couleurs ****/
   var colorInterpolator = d3.interpolatePlasma
 
   /***** Échelles *****/
@@ -35,16 +40,28 @@ function createSpectrogram(g, node, width, height, margin){
     .attr('class', 'd3-tip')
     .offset([-10, 0]);
 
-    var sources = createSpectroSources(data, node);
+    var frequencies =[]
+    for (let idx = 0; idx < data.Frequencies.length; idx+=FREQUENCY_BINS) {
+      var binTotal = 0
+      let jdx = 0
+      for (; jdx < FREQUENCY_BINS && idx+jdx < data.Frequencies.length; jdx++) {
+        binTotal += data.Frequencies[idx+jdx]
+      }
+      frequencies.push(binTotal/FREQUENCY_BINS)
+    }
+    console.log(frequencies)
+    console.log(data.Frequencies)
+    var sources = createSpectroSources(data, node, frequencies);
     spectroDomainColor(color, sources);
     spectroDomainColor(yColor, sources);
-
+    console.log(sources)
     spectroDomainX(x, data, node);
-    spectroDomainY(y, yAxisScale, data);
+    spectroDomainY(y, yAxisScale, frequencies);
 
     // /***** Création du graphique Stacked bar chart *****/
-    createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin, xAxis, yAxis);
-
+    createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin);
+    console.log(y.domain())
+    console.log(y.range())
     // Axes 
     spectrogram.append("g")
       .attr("class", "x axis")

@@ -24,7 +24,7 @@ function spectroDomainColor(color, sources) {
  * @param data        Données provenant du fichier JSON.
  */
 function spectroDomainX(x, data, node) {
-  x.domain([0, getHoursFromIndex(data[node].length)]);
+  x.domain([0, getHoursFromIndex(data[node].length/DATUM_PER_TIMESTAMP)]);
 }
 
 /**
@@ -34,9 +34,9 @@ function spectroDomainX(x, data, node) {
  * @param yAxisScale           Échelle en Y utilisée pour l'axe.
  * @param data        Données provenant du fichier JSON.
  */
-function spectroDomainY(y, yAxisScale,  data) {
-  y.domain(data.Frequencies);
-  yAxisScale.domain([data.Frequencies[0], data.Frequencies[data.Frequencies.length-1]])
+function spectroDomainY(y, yAxisScale, frequencies) {
+  y.domain(frequencies);
+  yAxisScale.domain([frequencies[0], frequencies[frequencies.length-1]])
 }
 
 /**
@@ -58,20 +58,33 @@ function spectroDomainY(y, yAxisScale,  data) {
  *                     ...
  *                  ]
  */
-function createSpectroSources(data, node) {
+function createSpectroSources(data, node, frequencies) {
   var sources = [];
-  for (let index = 0; index < data[node].length; index++) {
-    var intensityArray = data[node][index];
-    var timeStamp = getHoursFromIndex(index)
-    var datumArray = intensityArray.map(function(x, i){
-      return {"Frequency": data.Frequencies[i], "Intensity": x, "Timestamp":timeStamp}
-    })
-    sources = sources.concat(datumArray)
+  var nodeData = data[node]
+  for (let idx = 0; idx < nodeData.length; idx+=DATUM_PER_TIMESTAMP) {
+    for (let jdx = 0; jdx < data.Frequencies.length; jdx+=FREQUENCY_BINS){
+      var frequency = data.Frequencies[jdx]
+      var intensity = 0;
+      var currFrequencyBin = 0
+      var currTimestampBin = 0
+      for (let kdx = idx; kdx < idx+ DATUM_PER_TIMESTAMP && kdx <nodeData.length; kdx++) {
+        currTimestampBin++;
+        var currFrequencyBin = 0
+        for (let ldx = jdx; ldx < jdx+FREQUENCY_BINS && ldx < data.Frequencies.length; ldx++) {
+          currFrequencyBin++;
+          intensity += nodeData[kdx][ldx];
+        }
+      }
+      var timeStamp = getHoursFromIndex(Math.ceil(idx/DATUM_PER_TIMESTAMP))
+      
+      sources.push({"Frequency": frequencies[Math.ceil(jdx/FREQUENCY_BINS)], "Intensity": intensity/currTimestampBin/currTimestampBin, "Timestamp":timeStamp})
+
+    }
   }
 
   return sources
 }
 
-function getHoursFromIndex(index){
-  return index * 30.0 /60 /60
+function getHoursFromIndex(idx){
+  return idx * TIMESTAMP_DURATION /60.0 /60
 }
