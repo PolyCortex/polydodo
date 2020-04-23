@@ -1,5 +1,7 @@
 import * as d3 from "d3";
 
+export let firstCallback = () => {};
+
 export const addTransitions = (
   g,
   canvas,
@@ -16,64 +18,61 @@ export const addTransitions = (
   firstStageIndex,
   totalStagePortion
 ) => {
-  g.selectAll(".rect-stacked").on("click", () =>
-    firstTransition(g, sources, xAxis, yAxis, height, color)
-  );
+  // canvas
+  //   .append("rect")
+  //   .attr("x", 340)
+  //   .attr("y", 10)
+  //   .attr("width", 30)
+  //   .attr("height", 30)
+  //   .style("fill", "white")
+  //   .attr("transform", "translate(" + 100 + "," + 10 + ")")
+  //   .on("click", () =>
+  //     secondTransition(g, sources, xAxis, yAxis, height, color)
+  //   );
 
-  canvas
-    .append("rect")
-    .attr("x", 340)
-    .attr("y", 10)
-    .attr("width", 30)
-    .attr("height", 30)
-    .style("fill", "white")
-    .attr("transform", "translate(" + 100 + "," + 10 + ")")
-    .on("click", () =>
-      secondTransition(g, sources, xAxis, yAxis, height, color)
-    );
+  // canvas
+  //   .append("rect")
+  //   .attr("x", 340)
+  //   .attr("y", 10)
+  //   .attr("width", 30)
+  //   .attr("height", 30)
+  //   .style("fill", "#e6521c")
+  //   .attr("transform", "translate(" + 140 + "," + 10 + ")")
+  //   .on("click", () =>
+  //     thirdTransition(
+  //       g,
+  //       sources,
+  //       firstStageIndex,
+  //       totalStagePortion,
+  //       width,
+  //       height,
+  //       xAxis,
+  //       x,
+  //       tipStacked
+  //     )
+  //   );
 
-  canvas
-    .append("rect")
-    .attr("x", 340)
-    .attr("y", 10)
-    .attr("width", 30)
-    .attr("height", 30)
-    .style("fill", "#e6521c")
-    .attr("transform", "translate(" + 140 + "," + 10 + ")")
-    .on("click", () =>
-      thirdTransition(
-        g,
-        sources,
-        firstStageIndex,
-        totalStagePortion,
-        width,
-        height,
-        xAxis,
-        x,
-        tipStacked
-      )
-    );
-
-  canvas
-    .append("rect")
-    .attr("x", 340)
-    .attr("y", 10)
-    .attr("width", 30)
-    .attr("height", 30)
-    .style("fill", "#ffdcff")
-    .attr("transform", "translate(" + 180 + "," + 10 + ")")
-    .on("click", () => {
-      g.select(".d3-tip").remove();
-      fourthTransition(
-        g,
-        sources,
-        x,
-        firstStageIndex,
-        totalStagePortion,
-        width,
-        barHeight
-      );
-    });
+  // canvas
+  //   .append("rect")
+  //   .attr("x", 340)
+  //   .attr("y", 10)
+  //   .attr("width", 30)
+  //   .attr("height", 30)
+  //   .style("fill", "#ffdcff")
+  //   .attr("transform", "translate(" + 180 + "," + 10 + ")")
+  //   .on("click", () => {
+  //     g.select(".d3-tip").remove();
+  //     fourthTransition(
+  //       g,
+  //       sources,
+  //       x,
+  //       firstStageIndex,
+  //       totalStagePortion,
+  //       width,
+  //       barHeight
+  //     );
+  //   });
+  firstCallback = firstTransition(g, sources, xAxis, yAxis, height, color);
 };
 
 /**
@@ -85,7 +84,7 @@ export const addTransitions = (
  * @param y       L'échelle pour l'axe Y.
  * @param r       L'échelle pour le rayon des cercles.
  */
-function firstTransition(g, data, xAxis, yAxis, height, color) {
+const firstTransition = (g, data, xAxis, yAxis, height, color) => () => {
   g.selectAll(".y.axis").remove();
 
   //create Y axes

@@ -13,10 +13,10 @@ import D3Component from "../../components/d3component";
 import WIPWarning from "../../components/wip_warning";
 
 import { createSingleHypnogram } from "../../d3/hypnogram/hypnogram";
-import createBarChart from "../../d3/bar_chart/barChart";
 
 import text from "./text.json";
 import createSpectrogram from "../../d3/spectrogram/spectrogram";
+import StackedBarChartScrollyTelling from "./stacked_bar_chart_scrollytelling";
 
 const SleepAnalysis = () => {
   return (
@@ -39,7 +39,7 @@ const SleepAnalysis = () => {
         <p>
           Without further ado, this is what was your night of sleep:
         </p>
-        <D3Component callback={createBarChart} />
+        <StackedBarChartScrollyTelling />
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe different stage proportions across age, gender and different sleep disorders. We’ve also defined other measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time. In order to improve your sleep hygiene, many elements can be considered:
         </p>
@@ -101,7 +101,7 @@ const SleepAnalysis = () => {
         >
           Check out the performances
         </Button>
-        </Container>
+      </Container>
       <Footer />
     </div>
   );

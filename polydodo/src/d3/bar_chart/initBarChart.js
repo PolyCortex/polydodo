@@ -24,6 +24,7 @@ import{ addTransitions } from "./transition"
 
 export const initializeBarChart = (g, width, height, margin, useTransitions = true) => {
   
+  let transitions;
   /**** Prétraitement de donnée ****/
   var states = ["W", "N1", "N2", "N3", "REM"];
   var statesOrder = ["W", "REM", "N1", "N2", "N3"];
@@ -81,7 +82,7 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     /***** Création du graphique Stacked bar chart *****/
     createStackedBarChart(gBarChart, sources, x, y, color, tooltip, barHeight);
     if (useTransitions) {
-      addTransitions(
+      transitions = addTransitions(
         gBarChart,
         g,
         sources,
@@ -127,4 +128,6 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     /***** Création de la légende *****/
     barLegend(g, states, color);
   });
+
+  return transitions;
 }
