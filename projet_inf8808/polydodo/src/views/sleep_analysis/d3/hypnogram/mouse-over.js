@@ -40,6 +40,14 @@ export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat
     .attr("r", 2.5)
     .style("opacity", 0);
 
+  const textHover = g.append("text")
+    .attr("class", "textHover")
+    .style("fill", "black")
+    .attr("text-anchor", "start")
+    .attr("font-size", 14)
+    .style("opacity", 0);
+    // .attr("dy", (_, i) => 1 + i * 2 + "em") // to set text height
+
   const mouseMove = function () {
     const mouse = d3.mouse(this);
     const { timestamp, sleep_stage } = getHoveredData(data, x, mouse, bisectTime);
@@ -55,12 +63,23 @@ export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat
     circleHover.attr("cy", y(sleep_stage))
       .attr('cx', x(timestamp))
       .style("opacity", 1);
+      
+    textHover.attr("transform", `translate(${x(timestamp)},${(8/9)*height})`)
+      .text(`Current sleep stage: ${sleep_stage}`)
+      .style("opacity", 1);
+    
+    x(timestamp) > ((4/5)*width)
+      ? textHover.attr("text-anchor", "end")
+        .attr("dx", -10)
+      : textHover.attr("text-anchor", "start")
+        .attr("dx", 10);
   };
 
   const mouseLeave = () => {
     lineHover.style("opacity", 0);
     dateHover.style("opacity", 0);
     circleHover.style("opacity", 0);
+    textHover.style("opacity", 0);
   }
 
   g.on('mousemove', mouseMove)
