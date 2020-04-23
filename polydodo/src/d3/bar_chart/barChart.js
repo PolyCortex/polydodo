@@ -4,14 +4,15 @@ import { initializeBarChart } from "./initBarChart";
 const createBarChart = (countainerNode) => {
     /***** Configuration *****/
     /*** Dimensions ***/
-    var margin = {
+    const margin = {
       top: 100,
-      right: 0,
-      bottom: 100,
-      left: 0
+      right: 70,
+      bottom: 50,
+      left: 70
     };
-    var canvasWidth = window.innerWidth / 1.9
-    var barCanvasHeight = 800
+
+    var canvasWidth = 1000
+    var barCanvasHeight = 600
   
     var width = canvasWidth - margin.left - margin.right;
     var barHeight = barCanvasHeight - margin.top - margin.bottom;
