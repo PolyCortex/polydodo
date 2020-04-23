@@ -7,11 +7,21 @@ export const getDurationString = (duration) => {
     seconds = Math.floor(seconds)
     
     return `${addZero(hours)}h ${addZero(minutes)}min ${addZero(seconds)}secs`
-  }
-  export const getDurationSecondString = (duration) => {
-    duration = Number(duration);
-    return getDurationString(duration/3600.0)
-  }
+}
+
+export const getDurationStringHM = (duration) =>{  
+  duration = Number(duration);
+  var h = Math.floor(duration / 3600);
+  var m = Math.floor(duration % 3600 / 60);
+
+  return `${h}h${addZero(m)}`
+}
+
+export const getDurationSecondString = (duration) => {
+  duration = Number(duration);
+  return getDurationString(duration/3600.0)
+}
+
 //Will add zero to display time in this format : 00:00:00 instead of 0:0:0
 export const addZero = (i) => {
   if (i < 10) i = "0" + i;

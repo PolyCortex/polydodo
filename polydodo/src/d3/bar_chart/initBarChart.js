@@ -95,7 +95,8 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
         xAxis,
         yAxis,
         firstStagesIndex,
-        totalStagesPortion
+        totalStagesPortion,
+        totalTimeStamp
       );
     }
     // Axes

@@ -1,4 +1,11 @@
 import * as d3 from "d3";
+import{
+  getDurationStringHM
+} from "../common/duration"
+import{
+  calculateCumulation,
+  calculateCumulationAllTimeStamp
+} from "../common/cumul"
 
 export const addTransitions = (
   g,
@@ -14,7 +21,8 @@ export const addTransitions = (
   xAxis,
   yAxis,
   firstStageIndex,
-  totalStagePortion
+  totalStagePortion,
+  totalTimeStamp
 ) => {
   g.selectAll(".rect-stacked").on("click", () =>
     firstTransition(g, sources, xAxis, yAxis, height, color)
@@ -68,10 +76,13 @@ export const addTransitions = (
         g,
         sources,
         x,
+        xAxis,
         firstStageIndex,
         totalStagePortion,
         width,
-        barHeight
+        barHeight,
+        totalTimeStamp,
+        color
       );
     });
 };
@@ -136,6 +147,18 @@ function secondTransition(g, data, xAxis, yAxis, height, color) {
     .attr("x", -10);
 }
 
+function createStagesDurationAxes(data, xAxis, width){
+  var sleepDiff =
+    data[data.length - 1].currentStageEnd.getTime() -
+    data[0].currentStageDebut.getTime();
+  var sleepTotal = sleepDiff / (1000 * 60 * 60);
+
+  var newscale = d3.scaleLinear().domain([0, sleepTotal]).range([0, width]);
+
+  xAxis.scale(newscale).tickFormat((d) => d + " h");
+}
+
+
 //Third data vizualisation
 function thirdTransition(
   g,
@@ -148,14 +171,8 @@ function thirdTransition(
   x,
   tip
 ) {
-  var sleepDiff =
-    data[data.length - 1].currentStageEnd.getTime() -
-    data[0].currentStageDebut.getTime();
-  var sleepTotal = sleepDiff / (1000 * 60 * 60);
-
-  var newscale = d3.scaleLinear().domain([0, sleepTotal]).range([0, width]);
-
-  xAxis.scale(newscale).tickFormat((d) => d + " h");
+  
+  createStagesDurationAxes( data, xAxis, width);
 
   g.select(".x.axis").transition().duration(500).call(xAxis);
 
@@ -174,7 +191,10 @@ function thirdTransition(
     .attr("width", (d, i) =>
       i === firstIndexes[d.stage] ? totalStagePortion[d.stage] * width : 0
     )
-    .duration(2000);
+    .duration(2000)
+    .on("end", function(d,i) { 
+      d3.selectAll(".pourc").style("opacity", 1);
+    });
 
   //text containing the % of the sleep stage on the bar
   g.selectAll(".text")
@@ -188,59 +208,235 @@ function thirdTransition(
     })
     .attr("x", width / 20)
     .attr("y", (d) => height * d.stage + height / 2)
+    .style("opacity", 0)
     .attr("font-family", "sans-serif")
     .attr("font-size", "20px")
     .attr("fill", "black")
-    .attr("text-anchor", "middle");
+    .attr("text-anchor", "middle")
+    .style("font-size", "22px")
+    .style("font-weight", 600)
 }
 
 function fourthTransition(
   g,
   data,
   x,
+  xAxis,
   firstIndexes,
   totalStagePortion,
   width,
-  height
+  height,
+  totalTimeStamp, 
+  color
 ) {
-  g.selectAll(".rect-stacked")
+  
+  //Remove y axis and labels
+  g.selectAll(".y.axis").remove();
+  d3.selectAll(".pourc").remove();
+
+  g.select(".x.axis").transition()
+  .attr("transform", "translate(0," + (height) + ")")
+  .duration(5000);
+
+  //first barChart
+  var stackedBar = d3.selectAll(".rect-stacked");
+
+  stackedBar 
     .transition()
     .duration(2000)
-    .attr("x", function (d) {
+    .attr("x", function(d,i){
       var cumul = 0;
       for (let index = 0; index < d.stage; index++) {
         cumul += totalStagePortion[index];
       }
-      return cumul * width;
+      return cumul*width;
     })
     .transition()
     .duration(2000)
-    .attr("y", function (d, i) {
-      if (i === firstIndexes[d.stage]) return 0;
+    .attr("y", function(d,i){
+      if(i === firstIndexes[d.stage]) return 0;
     })
     .transition()
     .duration(1000)
-    .attr("height", height);
+    .attr("height", height)
+    .on("end", function(d,i) { 
+      d3.selectAll(".pourcentage").style("opacity", 1);
+      d3.selectAll(".label-sleepType").style("opacity", 1);
+    });
 
-  g.selectAll(".y.axis").remove();
+  var text =  g.selectAll(".text")
+    .data(data)
+    .enter()
+    .append("text") 
+    .attr("class","pourcentage")  
+    .style("opacity", 0)
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "20px")
+    .attr("fill", "white")
+    .attr("text-anchor", "middle")
 
-  g.select(".x.axis")
-    .transition()
-    .attr("transform", "translate(0," + height + ")")
-    .duration(5000);
-
-  g.selectAll(".pourc")
-    .transition()
-    .duration(5000)
-    .attr("x", function (d, i) {
-      var cumul = totalStagePortion[d.stage] / 2;
+  //hours
+  text.append("tspan")
+    .text(function(d,i) {
+      if(i === firstIndexes[d.stage]) 
+          return getDurationStringHM(totalStagePortion[d.stage]*totalTimeStamp*30);
+      else return "";
+    })
+    .attr("x", function(d, i) {
+      var cumul = 0;
       for (let index = 0; index < d.stage; index++) {
         cumul += totalStagePortion[index];
       }
-      return cumul * width;
+      return (cumul*width) + (totalStagePortion[d.stage]/2)*width ;
     })
-    .attr("y", function (d, i) {
-      if (i === firstIndexes[d.stage]) return height / 2;
+    .attr("y", function(d,i) {
+      if(i === firstIndexes[d.stage]) return 40;
     })
-    .attr("fill", "white");
+    .attr("font-size", "25px")
+    .attr("font-weight", 15)
+
+  //percentage
+  text.append("tspan")
+    .text(function(d,i) {
+      var rounded = Math.round(totalStagePortion[d.stage]*100 * 10) / 10
+      if(i === firstIndexes[d.stage]) 
+          return rounded + "%";
+      else return "";
+    })
+    .attr("x", function(d, i) {
+      var cumul = 0;
+      for (let index = 0; index < d.stage; index++) {
+        cumul += totalStagePortion[index];
+      }
+      return (cumul*width) + (totalStagePortion[d.stage]/2)*width ;
+    })
+    .attr("y", function(d,i) {
+      if(i === firstIndexes[d.stage]) return 60;
+    })
+    .attr("font-size", "20px")
+    .attr("font-weight", 10)
+
+  //label
+  g.append("text")
+      .attr("class", "label-sleepType")
+      .attr("x", 0)
+      .attr("y", -15)
+      .text(function(d) { return "You"})
+      .style("opacity", 0)
+      .style('fill', "black")
+      .style("font-size", "25px")
+      .style("font-weight", 600)
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle")
+ 
+  //Restless barChart
+  const restlessSleepData = [0.156, 0.098, 0.506, 0.049, 0.19]
+  var yPos = 170;
+  createSmallStackedBarChart(g, restlessSleepData, data, totalStagePortion,totalTimeStamp, x, xAxis, yPos, width, color);
+  
+  //Sleep apnea barChart
+  const sleepApneaData = [0.326, 0.216, 0.329, 0.071, 0.057];
+  yPos = 340;
+  createSmallStackedBarChart(g, sleepApneaData, data,totalStagePortion, totalTimeStamp, x, xAxis, yPos, width, color); 
+
 }
+
+
+function createSmallStackedBarChart(g, pourcentageData, data, totalStagePortion, totalTimeStamp, x, xAxis, yPos, width, color){
+ 
+  var stackedBar = g
+    .selectAll(".stacked-bar")
+    .data(pourcentageData)
+    .enter().append("g")
+
+  stackedBar
+    .append("rect")
+    .transition()
+    .delay(3000)
+    .duration(1000)
+      .attr("class", "rect-stacked")
+      .attr("x", function(d,i){
+        var cumul = calculateCumulation(pourcentageData, i);
+        return(cumul*width)
+      })
+      .attr("y", yPos)
+      .attr("width", function (d) {
+        return d*width;
+      })
+      .attr("height", 80)
+      .attr("fill", function(d,i) { 
+        return color(i); 
+      })
+     .on("end", function(d,i) { 
+        d3.selectAll(".pourcentage").style("opacity", 1);
+        d3.selectAll(".label-sleepType").style("opacity", 1);
+     });
+  
+    var text = stackedBar
+    .append("text")
+    .attr("class","pourcentage")
+    .style("opacity", 0)
+    .attr("text-anchor", "middle")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "20px")
+    .attr("fill", "white");
+
+    //hours
+    text.append("tspan")
+      .text(function(d) {                 
+        return getDurationStringHM(d*totalTimeStamp*30);
+      })
+      .attr("x", function(d,i){
+        var cumul = calculateCumulation(pourcentageData, i);
+        return (cumul*width + (d*width)/2);
+      })
+      .attr("y", (yPos + 40))
+      .attr("font-size", "25px")
+      .attr("font-weight", 15)
+    
+    //pourcentage
+    text.append("tspan")
+    .text(function(d) {                 
+      return (d*100) + "%";
+    })
+    .attr("x", function(d,i){
+      var cumul = calculateCumulation(pourcentageData, i);
+      return (cumul*width + (d*width)/2);
+    })
+    .attr("y", (yPos + 60))
+    .attr("font-size", "20px")
+    .attr("font-weight", 10)
+  
+    //create stackedbar axes
+    createStagesDurationAxes( data, xAxis, width);
+    
+    g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + (yPos + 80) + ")")
+    .transition()
+    .delay(3000)
+    .duration(4000)
+    .call(xAxis)
+    .selectAll("text")
+    .style("font-size", "18px")
+
+    //label
+    g.append("text")
+    .attr("class", "label-sleepType")
+    .attr("x", 0)
+    .attr("y", (yPos - 15))
+    .text(function(d) { 
+      if(yPos === 170) 
+          return "Restless Legs Syndrome";
+      else 
+         return "Sleep Apnea"
+     })
+    .style("opacity", 0)
+    .style('fill', "black")
+    .style("font-size", "25px")
+    .style("font-weight", 600)
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+
+}
+
