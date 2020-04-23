@@ -8,17 +8,17 @@ function createBarChart(g, width, height, margin, useTransitions = true) {
 
   /**** Dimensions ****/
   height = Math.round(height)
-  var translationHeight = Math.round(useTransitions? height / states.length: height/2);
-  var barHeight = translationHeight * 2
+  var translationHeight = Math.round(useTransitions? height / states.length: height);
+  var barHeight = translationHeight 
 
   /***** Échelles *****/
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleOrdinal()
   .range([0, Math.round(height*0.2) ,Math.round(height*0.4) , Math.round(height*0.6) ,Math.round(height*0.8) , height])
-
+  
   /****** Axes *******/
   var xAxis = d3.axisBottom(x).tickFormat(localization.getFormattedDate);
-  var yAxis= d3.axisLeft().scale(y).ticks(5, "s")
+  var yAxis= d3.axisLeft().scale(y)
   .tickSize(-width);//will create the lines in second visualisation
 
   // Groupe affichant le graphique principal ().

@@ -67,5 +67,5 @@ function getBarToolTipText(d) {
  */
 function getStackedToolTipText(d,totalStagesPortion, totalTimeStamp) {
   return `Stage : <strong> ${d.stageText} </strong><br> 
-          Durée : <strong> ${getDurationSecondString(totalStagesPortion[d.stage]*totalTimeStamp*30)} </strong><br>`;
+          Durée : <strong> ${getDurationSecondString(totalStagesPortion[d.stage]*totalTimeStamp*TIMESTAMP_DURATION)} </strong><br>`;
 }
