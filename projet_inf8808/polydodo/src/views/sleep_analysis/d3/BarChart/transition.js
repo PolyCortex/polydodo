@@ -1,6 +1,6 @@
-"use strict";
+import * as d3 from "d3";
 
-function addTransitions(g, canvas, sources, x, y, color, height, barHeight, width, tipStacked, xAxis, yAxis, firstStageIndex, totalStagePortion){
+export const addTransitions = (g, canvas, sources, x, y, color, height, barHeight, width, tipStacked, xAxis, yAxis, firstStageIndex, totalStagePortion) => {
   
     g.selectAll(".rect-stacked")
         .on("click", () => firstTransition(g,sources,xAxis,yAxis,height,color))
@@ -31,7 +31,7 @@ function addTransitions(g, canvas, sources, x, y, color, height, barHeight, widt
         .style("fill", "#ffdcff")
         .attr("transform", "translate(" + 180 + "," + 10 + ")")
         .on("click", () => {
-            d3.select(".d3-tip").remove()
+            g.select(".d3-tip").remove()
             fourthTransition(g,sources,x,firstStageIndex,totalStagePortion,width, barHeight);
         });
 }
@@ -48,34 +48,36 @@ function addTransitions(g, canvas, sources, x, y, color, height, barHeight, widt
 function firstTransition(g, data, xAxis, yAxis, height, color) {
 
   g.selectAll(".y.axis").remove();
-    //create Y axes
-    g.append("g")
-      .data(data)
-      .transition()
-      .attr("class", "y axis")
-      .duration(2000)
-      .call(yAxis)
-      .selectAll("text")//The left labels with different colors in Y axes 
-        .attr("class","y-label")
-        .attr("y", height/2)  
-        .attr("x", -10)
-        .style('fill', d => color(d))
-        .style("font-size", "20px")
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle");
-       
-    //Move every sleep stage portion to the correspending stage row
-    g.selectAll(".rect-stacked")
-      .transition()
-      .duration(2000)
-        .attr("y", d => height*d.stage)
-        .attr("height", height)
-    
-    //Move X axes
-    g.select(".x.axis").transition()
-      .attr("transform", "translate(0," + (height*5) + ")")
-      .duration(2000)
-      .call(xAxis);
+
+  //create Y axes
+  let axis = g.append("g")
+    .attr("class", "y axis")
+
+  axis.transition()
+    .duration(2000)
+    .call(yAxis)
+
+  axis.selectAll("text")
+      .attr("class","y-label")
+      .attr("y", height/2)  
+      .attr("x", -10)
+      .style('fill', d => color(d))
+      .style("font-size", "20px")
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
+
+  //Move every sleep stage portion to the correspending stage row
+  g.selectAll(".rect-stacked")
+    .transition()
+    .duration(2000)
+      .attr("y", d => height*d.stage)
+      .attr("height", height)
+  
+  //Move X axes
+  g.select(".x.axis").transition()
+    .attr("transform", "translate(0," + (height*5) + ")")
+    .duration(2000)
+    .call(xAxis);
       
   }
 
@@ -121,8 +123,8 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   g.selectAll(".rect-stacked")
-    .on("mouseover", (d) => {
-      tip.show(d);
+    .on("mouseover", function(d){
+      tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
     .on("mouseout",()=>{
