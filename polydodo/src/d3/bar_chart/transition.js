@@ -1,6 +1,9 @@
 import * as d3 from "d3";
 
 export let firstCallback = () => {};
+export let secondCallback = () => {};
+export let thirdCallback = () => {};
+export let fourthCallback = () => {};
 
 export const addTransitions = (
   g,
@@ -73,6 +76,9 @@ export const addTransitions = (
   //     );
   //   });
   firstCallback = firstTransition(g, sources, xAxis, yAxis, height, color);
+  secondCallback = secondTransition(g, sources, xAxis, yAxis, height, color);
+  thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, x, tipStacked);
+  fourthCallback = fourthTransition(g, sources, x, firstStageIndex, totalStagePortion, width, barHeight);
 };
 
 /**
@@ -117,7 +123,7 @@ const firstTransition = (g, data, xAxis, yAxis, height, color) => () => {
     .call(xAxis);
 }
 
-function secondTransition(g, data, xAxis, yAxis, height, color) {
+const secondTransition = (g, data, xAxis, yAxis, height, color) => () => {
   var newHeight = height / 10;
   g.selectAll(".rect-stacked")
     .transition()
@@ -136,7 +142,7 @@ function secondTransition(g, data, xAxis, yAxis, height, color) {
 }
 
 //Third data vizualisation
-function thirdTransition(
+const thirdTransition = (
   g,
   data,
   firstIndexes,
@@ -146,7 +152,7 @@ function thirdTransition(
   xAxis,
   x,
   tip
-) {
+) => () => {
   var sleepDiff =
     data[data.length - 1].currentStageEnd.getTime() -
     data[0].currentStageDebut.getTime();
@@ -193,7 +199,7 @@ function thirdTransition(
     .attr("text-anchor", "middle");
 }
 
-function fourthTransition(
+const fourthTransition = (
   g,
   data,
   x,
@@ -201,7 +207,7 @@ function fourthTransition(
   totalStagePortion,
   width,
   height
-) {
+) => () => {
   g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
