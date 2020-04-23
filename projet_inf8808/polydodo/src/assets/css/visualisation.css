@@ -1,17 +1,18 @@
-body {
-  /*display: table;
-  margin: 100px auto auto;*/
+/* body {
   display: inline-block;
   margin: 20px 0px ;
   font-family: Arial, sans-serif;
   background-color: #181C28;
 }
+*/
 
 svg {
-  background-color: #181C28;
-}
+  display: inline-block;
+  /* background-color: #181C28; */
+} 
+
 .axis {
-  color: white;
+  color: black;
 }
 
 .vis2 {
@@ -21,18 +22,18 @@ svg {
 .axis path,
 .axis line {
   fill: none;
-  stroke: white;
+  stroke: black;
   shape-rendering: crispEdges;
 }
 
 .y.axis path {
   fill: none;
-  stroke: white;
+  stroke: black;
   shape-rendering: crispEdges;
 }
 
 .brush .extent {
-  stroke: white;
+  stroke: black;
   fill-opacity: .125;
   shape-rendering: crispEdges;
 }
