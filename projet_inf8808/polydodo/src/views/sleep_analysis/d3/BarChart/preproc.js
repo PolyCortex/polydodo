@@ -118,7 +118,7 @@ export const calculateStagesPortion = (data, states, statesOrder) => {
 export const findFirstStageIndex = (states) => {
   var firstIndexes = [];
 
-  for (var stage = 0; stage < 5; stage++) {
+  for (let stage = 0; stage < 5; stage++) {
     firstIndexes.push(states.findIndex((element) => element.stage === stage));
   }
 

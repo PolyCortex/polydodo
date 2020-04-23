@@ -31,7 +31,7 @@ export const addTransitions = (g, canvas, sources, x, y, color, height, barHeigh
         .style("fill", "#ffdcff")
         .attr("transform", "translate(" + 180 + "," + 10 + ")")
         .on("click", () => {
-            d3.select(".d3-tip").remove()
+            g.select(".d3-tip").remove()
             fourthTransition(g,sources,x,firstStageIndex,totalStagePortion,width, barHeight);
         });
 }
@@ -48,34 +48,36 @@ export const addTransitions = (g, canvas, sources, x, y, color, height, barHeigh
 function firstTransition(g, data, xAxis, yAxis, height, color) {
 
   g.selectAll(".y.axis").remove();
-    //create Y axes
-    g.append("g")
-      .data(data)
-      .transition()
-      .attr("class", "y axis")
-      .duration(2000)
-      .call(yAxis)
-      .selectAll("text")//The left labels with different colors in Y axes 
-        .attr("class","y-label")
-        .attr("y", height/2)  
-        .attr("x", -10)
-        .style('fill', d => color(d))
-        .style("font-size", "20px")
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle");
-       
-    //Move every sleep stage portion to the correspending stage row
-    g.selectAll(".rect-stacked")
-      .transition()
-      .duration(2000)
-        .attr("y", d => height*d.stage)
-        .attr("height", height)
-    
-    //Move X axes
-    g.select(".x.axis").transition()
-      .attr("transform", "translate(0," + (height*5) + ")")
-      .duration(2000)
-      .call(xAxis);
+
+  //create Y axes
+  let axis = g.append("g")
+    .attr("class", "y axis")
+
+  axis.transition()
+    .duration(2000)
+    .call(yAxis)
+
+  axis.selectAll("text")
+      .attr("class","y-label")
+      .attr("y", height/2)  
+      .attr("x", -10)
+      .style('fill', d => color(d))
+      .style("font-size", "20px")
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
+
+  //Move every sleep stage portion to the correspending stage row
+  g.selectAll(".rect-stacked")
+    .transition()
+    .duration(2000)
+      .attr("y", d => height*d.stage)
+      .attr("height", height)
+  
+  //Move X axes
+  g.select(".x.axis").transition()
+    .attr("transform", "translate(0," + (height*5) + ")")
+    .duration(2000)
+    .call(xAxis);
       
   }
 
