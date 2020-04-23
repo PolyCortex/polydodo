@@ -6,11 +6,11 @@ const createBarChart = (countainerNode) => {
     /*** Dimensions ***/
     var margin = {
       top: 100,
-      right: 150,
+      right: 0,
       bottom: 100,
-      left: 100
+      left: 0
     };
-    var canvasWidth = window.innerWidth
+    var canvasWidth = window.innerWidth / 1.9
     var barCanvasHeight = 800
   
     var width = canvasWidth - margin.left - margin.right;

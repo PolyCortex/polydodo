@@ -12,7 +12,7 @@ const createSpectrogram = (countainerNode) => {
     bottom: 100,
     left: 100,
   };
-  var canvasWidth = window.innerWidth;
+  var canvasWidth = window.innerWidth / 1.9;
   var barCanvasHeight = window.innerHeight / 4;
   var spectroCanvasHeight = (window.innerHeight - barCanvasHeight) / 2;
 
