@@ -3,7 +3,7 @@ import{
   addZero,
   getDurationString,
   getDurationSecondString
-} from "../Common/duration"
+} from "../common/duration"
 
 /**
  * Fichier permettant de dessiner les graphiques "focus" et "contexte".

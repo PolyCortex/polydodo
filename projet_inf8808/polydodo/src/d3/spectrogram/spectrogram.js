@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { initSpectrogram } from "./initSpectrogram";
-import { initializeBarChart } from "../BarChart/initBarChart";
+import { initializeBarChart } from "../bar_chart/initBarChart";
 
 const createSpectrogram = (countainerNode) => {
   /***** Configuration *****/

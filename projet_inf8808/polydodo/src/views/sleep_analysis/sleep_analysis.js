@@ -11,10 +11,10 @@ import D3Component from "../../components/d3component";
 import WIPWarning from "../../components/wip_warning";
 
 import { createSingleHypnogram } from "../../d3/hypnogram/hypnogram";
-import createBarChart from "./d3/BarChart/barChart";
+import createBarChart from "../../d3/bar_chart/barChart";
 
 import text from "./text.json";
-import createSpectrogram from "./d3/Spectrogram/spectrogram";
+import createSpectrogram from "../../d3/spectrogram/spectrogram";
 
 const SleepAnalysis = () => {
   return (

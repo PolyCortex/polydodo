@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import{
   getDurationString
-} from "../Common/duration"
+} from "../common/duration"
 import { getHoursFromIndex } from "./preproc";
 
 /**
