@@ -78,7 +78,7 @@ const createHypnogram = (containerNode) => {
     domainY(y, sleep_labels);
 
     createHypnogramChart(g, data, line, y);
-    createMouseOver(g, x, data, margin, width, height, dateFormat);
+    createMouseOver(g, x, y, data, margin, width, height, dateFormat);
 
     g.append("g")
       .attr("class", "x axis")
