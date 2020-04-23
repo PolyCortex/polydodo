@@ -11,6 +11,7 @@ import D3Component from "../../components/d3component";
 import WIPWarning from "../../components/wip_warning";
 
 import createHypnogram from "./d3/hypnogram/hypnogram";
+import createBarChart from "./d3/BarChart/barChart";
 import Placeholder from "../../assets/img/placeholder.png";
 
 import text from "./text.json";
@@ -36,9 +37,7 @@ const SleepAnalysis = () => {
         <p>
           Without further ado, this is what was your night of sleep:
         </p>
-        <Row className="justify-content-center">
-          <img className="mt-7 mb-7" width="50%" alt="viz placeholder" src={Placeholder} />
-        </Row>
+        <D3Component callback={createBarChart} />
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe different stage proportions across age, gender and different sleep disorders. We’ve also defined other measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time. In order to improve your sleep hygiene, many elements can be considered:
         </p>
@@ -63,7 +62,7 @@ const SleepAnalysis = () => {
         <Row className="justify-content-center">
           <img className="mt-7 mb-7" width="50%" alt="viz placeholder" src={Placeholder} />
         </Row>
-      </Container >
+      </Container>
       <Footer />
     </div>
   );

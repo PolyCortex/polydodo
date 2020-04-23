@@ -1,4 +1,9 @@
-"use strict";
+import * as d3 from "d3";
+import{
+  addZero,
+  getDurationString,
+  getDurationSecondString
+} from "../Common/duration"
 
 /**
  * Fichier permettant de dessiner les graphiques "focus" et "contexte".
@@ -12,7 +17,7 @@
  * @param line      La fonction permettant de dessiner les lignes du graphique.
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-function createStackedBarChart(g,sources, x, y, color, tip, height) {
+export const createStackedBarChart = (g,sources, x, y, color, tip, height) => {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
@@ -24,16 +29,15 @@ function createStackedBarChart(g,sources, x, y, color, tip, height) {
       .attr("width", d => x(d.currentStageEnd) - x(d.currentStageDebut))
       .attr("height", height)
       .attr("fill", d => color(d.stageText))
-      .on("mouseover", d => {
-        tip.show(d);
+      .on("mouseover", function(d){
+        //tip.show(d, this);
         d3.select(this).style("opacity", 0.8);
       })
       .on("mouseout", () => {
-        tip.hide();
+        //tip.hide();
         d3.select(this).style("opacity", 1);
       }) 
 }
-
 /**
  * Obtient le texte associé à l'infobulle.
  *
@@ -43,7 +47,7 @@ function createStackedBarChart(g,sources, x, y, color, tip, height) {
  * @return {string}       Le texte à afficher dans l'infobulle.
  */
 
-function getBarToolTipText(d) {
+export const getBarToolTipText = (d) => {
  
   var h = addZero(d.currentStageDebut.getHours());
   var m = addZero(d.currentStageDebut.getMinutes());
@@ -65,7 +69,7 @@ function getBarToolTipText(d) {
  * @param d               Les données associées à la barre survollée par la souris.
  * @return {string}       Le texte à afficher dans l'infobulle.
  */
-function getStackedToolTipText(d,totalStagesPortion, totalTimeStamp) {
+export const getStackedToolTipText = (d,totalStagesPortion, totalTimeStamp) => {
   return `Stage : <strong> ${d.stageText} </strong><br> 
-          Durée : <strong> ${getDurationSecondString(totalStagesPortion[d.stage]*totalTimeStamp*TIMESTAMP_DURATION)} </strong><br>`;
+          Durée : <strong> ${getDurationSecondString(totalStagesPortion[d.stage]*totalTimeStamp*30)} </strong><br>`;
 }

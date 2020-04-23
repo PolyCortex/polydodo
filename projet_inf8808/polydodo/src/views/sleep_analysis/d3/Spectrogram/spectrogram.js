@@ -49,19 +49,16 @@ function createSpectrogram(g, node, width, height, margin){
       }
       frequencies.push(binTotal/FREQUENCY_BINS)
     }
-    console.log(frequencies)
-    console.log(data.Frequencies)
+
     var sources = createSpectroSources(data, node, frequencies);
     spectroDomainColor(color, sources);
     spectroDomainColor(yColor, sources);
-    console.log(sources)
     spectroDomainX(x, data, node);
     spectroDomainY(y, yAxisScale, frequencies);
 
     // /***** Création du graphique Stacked bar chart *****/
     createSpectrgrammeBarChart(spectrogram, sources, x, y, color, tip, height, width, margin);
-    console.log(y.domain())
-    console.log(y.range())
+
     // Axes 
     spectrogram.append("g")
       .attr("class", "x axis")

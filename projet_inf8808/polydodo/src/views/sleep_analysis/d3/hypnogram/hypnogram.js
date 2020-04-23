@@ -31,6 +31,7 @@ const initializeHypnogram = (margin, width, height, svg) => {
   };
 
   const createDrawingGroup = () => {
+    console.log(svg)
       svg.attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom);
 

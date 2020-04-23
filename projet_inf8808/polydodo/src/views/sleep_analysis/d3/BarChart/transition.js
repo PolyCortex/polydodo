@@ -1,6 +1,6 @@
-"use strict";
+import * as d3 from "d3";
 
-function addTransitions(g, canvas, sources, x, y, color, height, barHeight, width, tipStacked, xAxis, yAxis, firstStageIndex, totalStagePortion){
+export const addTransitions = (g, canvas, sources, x, y, color, height, barHeight, width, tipStacked, xAxis, yAxis, firstStageIndex, totalStagePortion) => {
   
     g.selectAll(".rect-stacked")
         .on("click", () => firstTransition(g,sources,xAxis,yAxis,height,color))
@@ -121,12 +121,12 @@ function thirdTransition(g, data, firstIndexes, totalStagePortion, width, height
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage 
   g.selectAll(".rect-stacked")
-    .on("mouseover", (d) => {
-      tip.show(d);
+    .on("mouseover", function(d){
+      //tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
     .on("mouseout",()=>{
-      tip.hide();
+      //tip.hide();
       d3.select(this).style("opacity", 1);
     }) 
     .transition()
