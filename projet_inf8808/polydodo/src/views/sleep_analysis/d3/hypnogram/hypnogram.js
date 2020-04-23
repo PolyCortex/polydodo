@@ -5,8 +5,10 @@ import hypnogramData from "assets/data/hypnogram.csv";
 import {
   parseTimestampToDate,
   convertValuesToLabels,
+  convertSources,
   domainX,
   domainY,
+  domainColor,
 } from "./preproc";
 
 import {
@@ -54,8 +56,17 @@ const initializeHypnogram = (margin, width, height, svg, dateFormat) => {
 
 const createHypnogram = (containerNode) => {
   const svg = d3.select(containerNode);
-  const sleep_labels = ['W', 'REM', 'N1', 'N2', 'N3'];
+  const sleepLabels = ['W', 'REM', 'N1', 'N2', 'N3'];
   const dateFormat = d3.timeFormat("%H:%M");
+  const hypnogramNames = ["predicted"];
+  const comparativeColors = ["#006aff", "#ff7575"];
+  const labelColors = {
+    'W': "#E3624B",
+    'REM': "#FFD443",
+    'N1': "#B0C9D9",
+    'N2': "#4da6fe",
+    'N3': "#48587f",
+  };
 
   const margin = {
     top: 10,
@@ -73,12 +84,14 @@ const createHypnogram = (containerNode) => {
   d3.csv(hypnogramData).then((data) => {
     parseTimestampToDate(data);
     convertValuesToLabels(data);
+    data = convertSources([data], hypnogramNames);
 
     domainX(x, data);
-    domainY(y, sleep_labels);
+    domainY(y, sleepLabels);
+    const colorDomain = domainColor(data, comparativeColors);
 
-    createHypnogramChart(g, data, line, y);
-    createMouseOver(g, x, y, data, margin, width, height, dateFormat);
+    createHypnogramChart(g, data, line, colorDomain);
+    createMouseOver(g, x, y, data, margin, width, height, dateFormat, colorDomain);
 
     g.append("g")
       .attr("class", "x axis")

@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import _ from "lodash";
 
 export const parseTimestampToDate = (data) => {
   data.forEach(row => {
@@ -30,12 +31,31 @@ export const convertValuesToLabels = (data) => {
   }); 
 };
 
+export const convertSources = (data, hypnogramNames) => {
+  data = _.zip(data, hypnogramNames)
+    .map(x => { return {
+      "name": x[1],
+      "values": x[0]
+    }});
+
+  return data;
+};
+
 export const domainX = (x, data) => {
   // TODO: Préciser les domaines pour les variables "xFocus" et "xContext" pour l'axe X.
-  const dates = data.map(datum => datum.timestamp);
+  const dates = data[0].values.map(datum => datum.timestamp);
   x.domain([d3.min(dates), d3.max(dates)]);
 };
 
-export const domainY = (y, sleep_labels) => {
-  y.domain(sleep_labels);
-}
+export const domainY = (y, sleepLabels) => {
+  y.domain(sleepLabels);
+};
+
+export const domainColor = (data, comparativeColors) => {
+  const numberHypnogram = data.length;
+  const colors = comparativeColors.slice(0, numberHypnogram);
+  return d3
+    .scaleOrdinal()
+    .domain(data.map(x => x.name))
+    .range(colors);
+};
