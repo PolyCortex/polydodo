@@ -2,16 +2,18 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 export const parseTimestampToDate = (data) => {
-  data.forEach(row => {
-    // To convert UNIX timestamp to JS Date, we have to convert nb of seconds to milliseconds.
-    const date = new Date(row.timestamp * 1000);
-    row.timestamp = new Date(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDay(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds());
+  data.forEach(hypno => {
+    hypno.forEach(row => {
+      // To convert UNIX timestamp to JS Date, we have to convert nb of seconds to milliseconds.
+      const date = new Date(row.timestamp * 1000);
+      row.timestamp = new Date(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDay(),
+        date.getUTCHours(),
+        date.getUTCMinutes(),
+        date.getUTCSeconds());
+    });
   });
 };
 
@@ -24,11 +26,13 @@ export const convertValuesToLabels = (data) => {
     'REM': 4,
   }
 
-  data.forEach(row => {
-    row.sleep_stage = Object
-      .keys(raw_data_labels_value)
-      .find(key => raw_data_labels_value[key] === parseInt(row.sleep_stage));
-  }); 
+  data.forEach(hypno => {
+    hypno.forEach(row => {
+      row.sleep_stage = Object
+        .keys(raw_data_labels_value)
+        .find(key => raw_data_labels_value[key] === parseInt(row.sleep_stage));
+    }); 
+  });
 };
 
 export const convertSources = (data, hypnogramNames) => {

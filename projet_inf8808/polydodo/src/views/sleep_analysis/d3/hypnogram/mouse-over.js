@@ -14,7 +14,8 @@ const getHoveredData = (data, x, mouse, bisectTime) => {
   });
 };
 
-export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat, color) => {
+export const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
+  const { width, height } = dimensions;
   const bisectTime = d3.bisector(d => d).left; // https://github.com/d3/d3-array#bisector_left
 
   // Act as a child of `g` to make sure mouse events are received from the whole chart (not only the lines)
@@ -42,8 +43,10 @@ export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat
       .data(data)
     .enter().append("circle")
     .attr("class", "hoverCircle")
-    .style("fill", "black")
-    .attr("r", 2.5)
+    .style("fill", "none")
+    .attr("stroke", x => color(x.name))
+    .attr("r", 5)
+    .attr("stroke-width", "1px")
     .style("opacity", 0);
 
   const textHover = g.selectAll(".textHover")
@@ -54,7 +57,8 @@ export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat
     .attr("text-anchor", "start")
     .attr("font-size", 14)
     .style("opacity", 0)
-    .attr("dy", (_, i) => 1 + i * 2 + "em") // to set text height
+    .attr("stroke", x => color(x.name))
+    .attr("dy", (_, i) => 0.5 + i * 2 + "em");
 
   const mouseMove = function () {
     const mouse = d3.mouse(this);
@@ -66,7 +70,7 @@ export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat
       .attr("x2", mouse[0])
       .style("opacity", 1);
 
-    dateHover.text(dateFormat(timestamp))
+    dateHover.text(d3.timeFormat("%H:%M:%S")(timestamp))
       .attr("transform", `translate(${x(timestamp)},${height + margin.bottom - 10})`)
       .style("opacity", 1);
     
@@ -74,10 +78,9 @@ export const createMouseOver = (g, x, y, data, margin, width, height, dateFormat
       .attr('cx', x(timestamp))
       .style("opacity", 1);
       
-    textHover.attr("transform", `translate(${x(timestamp)},${(8/9)*height})`)
-      .text(x => `Current sleep stage: ${x.currentValue.sleep_stage}`)
-      .style("opacity", 1)
-      .attr("stroke", x => color(x.name));
+    textHover.attr("transform", `translate(${x(timestamp)},${(5/6)*height})`)
+      .text(x => `${x.name}: ${x.currentValue.sleep_stage}`)
+      .style("opacity", 1);
     
     x(timestamp) > ((4/5)*width)
       ? textHover.attr("text-anchor", "end")
