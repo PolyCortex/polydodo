@@ -61,7 +61,6 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
   /***** Chargement des données *****/
   d3.csv(barChartData).then(function (data) {
     /***** Prétraitement des données *****/
-    parseTimestampToDate(data)
     var totalTimeStamp = data.length;
     var color = d3.scaleOrdinal();
     var tooltip= tip().attr("class", "d3-tip").offset([-10, 0]);
