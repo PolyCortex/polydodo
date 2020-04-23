@@ -10,7 +10,7 @@ import Footer from "../../components/footer/footer";
 import D3Component from "../../components/d3component";
 import WIPWarning from "../../components/wip_warning";
 
-import createHypnogram from "../../d3/hypnogram/hypnogram";
+import { createSingleHypnogram } from "../../d3/hypnogram/hypnogram";
 import Placeholder from "../../assets/img/placeholder.png";
 
 import text from "./text.json";
@@ -28,7 +28,7 @@ const SleepAnalysis = () => {
       />
       <Container className="mt-5 text-justify">
         <Row className="mb-5 justify-content-center">
-          <WIPWarning/>
+          <WIPWarning />
         </Row>
         <p>
           Of course, we are analyzing only one night of sleep so it is therefore tricky to draw general conclusions about your sleep. It is however fascinating to see how your night was.
@@ -53,7 +53,7 @@ const SleepAnalysis = () => {
         <p>
           Although we’ve looked at many aspects of your night’s sleep, we haven’t properly looked at your sleep dynamics, whereas how your sleep evolves overnight.
         </p>
-        <D3Component callback={createHypnogram} />
+        <D3Component callback={createSingleHypnogram} />
         <p>
           Sleep cycles take place in a broader process, named the circadian rhythm. It is the one that regulates our wake and sleep cycles over a 24 hours period.
         </p>

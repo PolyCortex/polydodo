@@ -53,20 +53,9 @@ const createDrawingGroup = (svg, dimensions, margin) => {
   return g;
 }
 
-
-const createHypnogram = (containerNode) => {
+const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, comparativeColors) => {
   const svg = d3.select(containerNode);
-  const chartTitle = "Agreement between Classifier and Physionet"
   const sleepLabels = ['W', 'REM', 'N1', 'N2', 'N3'];
-  const hypnogramNames = ["Classifier", "Physionet"];
-  const comparativeColors = ["#006aff", "#ff7575"];
-  // const labelColors = {
-  //   'W': "#E3624B",
-  //   'REM': "#FFD443",
-  //   'N1': "#B0C9D9",
-  //   'N2': "#4da6fe",
-  //   'N3': "#48587f",
-  // };
 
   const margin = {
     top: 50,
@@ -84,10 +73,7 @@ const createHypnogram = (containerNode) => {
   const g = createDrawingGroup(svg, dimensions, margin);
   const line = createLine(x, y);
 
-  Promise.all([
-    d3.csv(hypnogramData),
-    d3.csv(hypnogramDataPredicted)
-  ]).then((data) => {
+  Promise.all(data.map(hypnoData => d3.csv(hypnoData))).then((data) => {
     parseTimestampToDate(data);
     convertValuesToLabels(data);
     data = convertSources(data, hypnogramNames);
@@ -101,6 +87,31 @@ const createHypnogram = (containerNode) => {
     createAxes(g, xAxis, yAxis, dimensions, margin);
     createTitle(g, chartTitle, dimensions, margin);
   });
+}
+
+export const createSingleHypnogram = (containerNode) => {
+  const data = [hypnogramData];
+  const chartTitle = "Hypnogram";
+  const hypnogramNames = ["Classifier"];
+  const comparativeColors = ["#006aff"];
+
+   // const labelColors = {
+  //   'W': "#E3624B",
+  //   'REM': "#FFD443",
+  //   'N1': "#B0C9D9",
+  //   'N2': "#4da6fe",
+  //   'N3': "#48587f",
+  // };
+
+  createHypnogram(containerNode, data, chartTitle, hypnogramNames, comparativeColors);
 };
 
-export default createHypnogram;
+
+export const createComparativeHypnogram = (containerNode) => {
+  const data = [hypnogramData, hypnogramDataPredicted];
+  const chartTitle = "Agreement between Classifier and Physionet";
+  const hypnogramNames = ["Classifier", "Physionet"];
+  const comparativeColors = ["#006aff", "#ff7575"];
+
+  createHypnogram(containerNode, data, chartTitle, hypnogramNames, comparativeColors);
+};
