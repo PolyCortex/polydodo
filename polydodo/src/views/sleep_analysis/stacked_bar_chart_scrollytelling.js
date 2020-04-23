@@ -10,10 +10,10 @@ import createBarChart from "../../d3/bar_chart/barChart";
 const StackedBarChartScrollyTelling = () => {
   return (
     <Container>
-      <div style={{ position: "sticky", top: "10%", "z-index": -1}}>
+      <div style={{ position: "sticky", top: "10%", zIndex: -1}}>
         <D3Component callback={createBarChart} />
       </div>
-      <div style={{"margin-bottom": "50%"}}/>
+      <div style={{"marginBottom": "50%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>
@@ -23,22 +23,22 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Waypoint onEnter={() => {firstCallback()}} />
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>
             Wake stage is of course the stage we want to minimize when in bed. It can be decomposed into two parts:
-            <ul>
-              <li> Sleep latency : Time spent before falling asleep, which corresponds to X minutes in your case. </li>
-              <li> Wake after sleep onset (WASO): Time spent awake after first falling asleep and before waking up. </li>
-              <li> For healthy adults, it is normal to experience small awakenings during the night. Unprovoked awakenings are mostly during or after REM stages. </li>
-            </ul>
           </p>
+          <ul>
+            <li> Sleep latency : Time spent before falling asleep, which corresponds to X minutes in your case. </li>
+            <li> Wake after sleep onset (WASO): Time spent awake after first falling asleep and before waking up. </li>
+            <li> For healthy adults, it is normal to experience small awakenings during the night. Unprovoked awakenings are mostly during or after REM stages. </li>
+          </ul>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>
@@ -55,9 +55,9 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Waypoint onEnter={() => {thirdCallback()}} />
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>
@@ -65,7 +65,7 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>
@@ -73,7 +73,7 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>
@@ -81,16 +81,16 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Waypoint onEnter={() => {fourthCallback()}} />
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM stage sleep.</p>
           <p> By comparing your stage proportions with the nights within our dataset, we’ve found that the subject’s night that most corresponds is of a woman aged XX years old.</p>
         </CardBody>
       </Card>
-      <div style={{"margin-bottom": "125%"}}/>
+      <div style={{"marginBottom": "125%"}}/>
       .{/*For now, don't touch this dot!!!*/}
     </Container>
   );
