@@ -10,7 +10,7 @@ import createBarChart from "../../d3/bar_chart/barChart";
 const StackedBarChartScrollyTelling = () => {
   return (
     <Container>
-      <div style={{ position: "sticky", top: "10%", zIndex: -1}}>
+      <div style={{ position: "sticky", top: "10%"}}>
         <D3Component callback={createBarChart} />
       </div>
       <div style={{"marginBottom": "50%"}}/>
