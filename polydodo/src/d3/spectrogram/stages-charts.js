@@ -32,7 +32,7 @@ export const createSpectrgramChart = (g, sources, x, y, color, tip, height, widt
         tip.show(d, this);
         d3.select(this).style("opacity", 0.8);
       })
-      .on("mouseout",() => {
+      .on("mouseout",function() {
         tip.hide();
         d3.select(this).style("opacity", 1);
       })
