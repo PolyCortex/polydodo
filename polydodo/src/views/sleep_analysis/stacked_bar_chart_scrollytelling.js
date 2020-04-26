@@ -87,27 +87,12 @@ const StackedBarChartScrollyTelling = () => {
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
           <p>As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM stage sleep.</p>
-          <p> By comparing your stage proportions with the nights within our dataset, we’ve found that the subject’s night that most corresponds is of a woman aged XX years old.</p>
         </CardBody>
       </Card>
       <div style={{"marginBottom": "125%"}}/>
       <Waypoint onEnter={() => {fourthCallback()}} />
       <div style={{"marginBottom": "125%"}}/>
-      <Card className="shadow"  style={{ position: "relative"}}>
-        <CardBody>
-          <p>As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM stage sleep.</p>
-          <p> By comparing your stage proportions with the nights within our dataset, we’ve found that the subject’s night that most corresponds is of a woman aged XX years old.</p>
-        </CardBody>
-      </Card>
-      <div style={{"marginBottom": "125%"}}/>
       <Waypoint onEnter={() => {fifthCallback()}} />
-      <div style={{"marginBottom": "125%"}}/>
-      <Card className="shadow"  style={{ position: "relative"}}>
-        <CardBody>
-          <p>As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM stage sleep.</p>
-          <p> By comparing your stage proportions with the nights within our dataset, we’ve found that the subject’s night that most corresponds is of a woman aged XX years old.</p>
-        </CardBody>
-      </Card>
       <div style={{"marginBottom": "125%"}}/>
       .{/*For now, don't touch this dot!!!*/}
     </Container>
