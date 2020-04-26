@@ -7,10 +7,8 @@ export let fourthCallback = () => {};
 
 export const addTransitions = (
   g,
-  canvas,
   sources,
   x,
-  y,
   color,
   height,
   barHeight,
@@ -21,60 +19,6 @@ export const addTransitions = (
   firstStageIndex,
   totalStagePortion
 ) => {
-  // canvas
-  //   .append("rect")
-  //   .attr("x", 340)
-  //   .attr("y", 10)
-  //   .attr("width", 30)
-  //   .attr("height", 30)
-  //   .style("fill", "white")
-  //   .attr("transform", "translate(" + 100 + "," + 10 + ")")
-  //   .on("click", () =>
-  //     secondTransition(g, sources, xAxis, yAxis, height, color)
-  //   );
-
-  // canvas
-  //   .append("rect")
-  //   .attr("x", 340)
-  //   .attr("y", 10)
-  //   .attr("width", 30)
-  //   .attr("height", 30)
-  //   .style("fill", "#e6521c")
-  //   .attr("transform", "translate(" + 140 + "," + 10 + ")")
-  //   .on("click", () =>
-  //     thirdTransition(
-  //       g,
-  //       sources,
-  //       firstStageIndex,
-  //       totalStagePortion,
-  //       width,
-  //       height,
-  //       xAxis,
-  //       x,
-  //       tipStacked
-  //     )
-  //   );
-
-  // canvas
-  //   .append("rect")
-  //   .attr("x", 340)
-  //   .attr("y", 10)
-  //   .attr("width", 30)
-  //   .attr("height", 30)
-  //   .style("fill", "#ffdcff")
-  //   .attr("transform", "translate(" + 180 + "," + 10 + ")")
-  //   .on("click", () => {
-  //     g.select(".d3-tip").remove();
-  //     fourthTransition(
-  //       g,
-  //       sources,
-  //       x,
-  //       firstStageIndex,
-  //       totalStagePortion,
-  //       width,
-  //       barHeight
-  //     );
-  //   });
   firstCallback = firstTransition(g, sources, xAxis, yAxis, height, color);
   secondCallback = secondTransition(g, sources, xAxis, yAxis, height, color);
   thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, x, tipStacked);

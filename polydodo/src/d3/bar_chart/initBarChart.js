@@ -84,10 +84,8 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     if (useTransitions) {
       transitions = addTransitions(
         gBarChart,
-        g,
         sources,
         x,
-        y,
         color,
         translationHeight,
         barHeight,
