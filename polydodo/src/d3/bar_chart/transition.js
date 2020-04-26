@@ -11,7 +11,6 @@ export let secondCallback = () => {};
 export let thirdCallback = () => {};
 export let fourthCallback = () => {};
 export let fifthCallback = () => {};
-export let sixthCallback = () => {};
 
 export const addTransitions = (
   g,
@@ -30,11 +29,10 @@ export const addTransitions = (
   totalTimeStamp
 ) => {
   firstCallback = firstTransition(g, xAxis, yAxis, height, color);
-  secondCallback = secondTransition(g, yAxis, height);
-  thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, tipStacked);
-  fourthCallback = fourthTransition(g, sources, firstStageIndex, totalStagePortion, width, barHeight, totalTimeStamp);
-  fifthCallback = fifthTransition(gSecondBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
-  sixthCallback = sixthTransition(gThirdBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
+  secondCallback = secondTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, tipStacked);
+  thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, barHeight, totalTimeStamp);
+  fourthCallback = fourthTransition(gSecondBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
+  fifthCallback = fifthTransition(gThirdBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
 };
 
 /**
@@ -79,26 +77,8 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
     .call(xAxis);
 }
 
-const secondTransition = (g, yAxis, height) => () => {
-  var newHeight = height / 10;
-  g.selectAll(".rect-stacked")
-    .transition()
-    .duration(TRANSITION_TIME_MS)
-    .attr("y", (d) => height * d.stage)
-    .attr("height", newHeight);
-
-  g.select(".y.axis")
-    .transition()
-    .duration(2000)
-    .attr("transform", "translate(0," + 0 + ")")
-    .call(yAxis)
-    .selectAll(".y-label") //The left labels with different colors in Y axes
-    .attr("y", newHeight / 2)
-    .attr("x", -10);
-}
-
-//Third data vizualisation
-const thirdTransition = (
+//second data vizualisation
+const secondTransition = (
   g,
   data,
   firstIndexes,
@@ -146,7 +126,7 @@ const thirdTransition = (
     .style("fill", "black");
 }
 
-const fourthTransition = (
+const thirdTransition = (
   g,
   data,
   firstIndexes,
@@ -243,7 +223,7 @@ const fourthTransition = (
     .text("You");
 
 }
-const fifthTransition = (
+const fourthTransition = (
   gSecondBarChart,
   data,
   xAxis,
@@ -267,7 +247,7 @@ const fifthTransition = (
     );
 }
 
-const sixthTransition = (
+const fifthTransition = (
   gThirdBarChart,
   data,
   xAxis,
