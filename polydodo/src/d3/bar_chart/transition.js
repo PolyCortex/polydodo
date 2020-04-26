@@ -29,10 +29,43 @@ export const addTransitions = (
   totalTimeStamp
 ) => {
   firstCallback = firstTransition(g, xAxis, yAxis, height, color);
-  secondCallback = secondTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, tipStacked);
-  thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, barHeight, totalTimeStamp);
-  fourthCallback = fourthTransition(gSecondBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
-  fifthCallback = fifthTransition(gThirdBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
+  secondCallback = secondTransition(
+    g,
+    sources,
+    firstStageIndex,
+    totalStagePortion,
+    width,
+    height,
+    xAxis,
+    tipStacked
+  );
+  thirdCallback = thirdTransition(
+    g,
+    sources,
+    firstStageIndex,
+    totalStagePortion,
+    width,
+    barHeight,
+    totalTimeStamp
+  );
+  fourthCallback = fourthTransition(
+    gSecondBarChart,
+    sources,
+    xAxis,
+    width,
+    barHeight,
+    totalTimeStamp,
+    color
+  );
+  fifthCallback = fifthTransition(
+    gThirdBarChart,
+    sources,
+    xAxis,
+    width,
+    barHeight,
+    totalTimeStamp,
+    color
+  );
 };
 
 /**
@@ -75,7 +108,7 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
     .attr("transform", "translate(0," + height * 5 + ")")
     .duration(2000)
     .call(xAxis);
-}
+};
 
 //second data vizualisation
 const secondTransition = (
@@ -98,7 +131,7 @@ const secondTransition = (
       tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
-    .on("mouseout", function() {
+    .on("mouseout", function () {
       tip.hide();
       d3.select(this).style("opacity", 1);
     })
@@ -124,7 +157,7 @@ const secondTransition = (
     .attr("x", width / 20)
     .attr("y", (d) => height * d.stage + height / 2)
     .style("fill", "black");
-}
+};
 
 const thirdTransition = (
   g,
@@ -133,7 +166,7 @@ const thirdTransition = (
   totalStagePortion,
   width,
   height,
-  totalTimeStamp,
+  totalTimeStamp
 ) => () => {
   //Remove y axis and labels
   g.selectAll(".y.axis").remove();
@@ -149,19 +182,19 @@ const thirdTransition = (
 
   stackedBar
     .transition()
-    .duration(TRANSITION_TIME_MS/3)
+    .duration(TRANSITION_TIME_MS / 3)
     .attr(
       "x",
       (d) =>
         totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width
     )
     .transition()
-    .duration(TRANSITION_TIME_MS/3)
+    .duration(TRANSITION_TIME_MS / 3)
     .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 0;
     })
     .transition()
-    .duration(TRANSITION_TIME_MS/3)
+    .duration(TRANSITION_TIME_MS / 3)
     .attr("height", height)
     .on("end", () => {
       g.selectAll(".pourcentage").style("opacity", 1);
@@ -221,8 +254,7 @@ const thirdTransition = (
     .attr("x", 0)
     .attr("y", -15)
     .text("You");
-
-}
+};
 const fourthTransition = (
   gSecondBarChart,
   data,
@@ -232,27 +264,26 @@ const fourthTransition = (
   totalTimeStamp,
   color
 ) => () => {
-    //Restless barChart
-    const restlessSleepData = 
-    [
-      {stage:"W", value:0.156},
-      {stage:"REM", value:0.19},
-      {stage:"N1", value:0.098},
-      {stage:"N2", value:0.506},
-      {stage:"N3", value:0.049}
-    ]
-    createSmallStackedBarChart(
-      gSecondBarChart,
-      restlessSleepData,
-      data,
-      "Restless Legs Syndrome",
-      totalTimeStamp,
-      xAxis,
-      width,
-      height,
-      color
-    );
-}
+  //Restless barChart
+  const restlessSleepData = [
+    { stage: "W", value: 0.156 },
+    { stage: "REM", value: 0.19 },
+    { stage: "N1", value: 0.098 },
+    { stage: "N2", value: 0.506 },
+    { stage: "N3", value: 0.049 },
+  ];
+  createSmallStackedBarChart(
+    gSecondBarChart,
+    restlessSleepData,
+    data,
+    "Restless Legs Syndrome",
+    totalTimeStamp,
+    xAxis,
+    width,
+    height,
+    color
+  );
+};
 
 const fifthTransition = (
   gThirdBarChart,
@@ -264,14 +295,13 @@ const fifthTransition = (
   color
 ) => () => {
   //Sleep apnea barChart
-  const sleepApneaData =
-  [
-    {stage:"W", value:0.326},
-    {stage:"REM", value:0.057},
-    {stage:"N1", value:0.216},
-    {stage:"N2", value:0.329},
-    {stage:"N3", value:0.071}
-  ] 
+  const sleepApneaData = [
+    { stage: "W", value: 0.326 },
+    { stage: "REM", value: 0.057 },
+    { stage: "N1", value: 0.216 },
+    { stage: "N2", value: 0.329 },
+    { stage: "N3", value: 0.071 },
+  ];
   createSmallStackedBarChart(
     gThirdBarChart,
     sleepApneaData,
@@ -283,4 +313,4 @@ const fifthTransition = (
     height,
     color
   );
-}
+};

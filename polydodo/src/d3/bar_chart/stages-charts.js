@@ -3,7 +3,7 @@ import {
   addZero,
   getDurationString,
   getDurationSecondString,
-  getDurationStringHM
+  getDurationStringHM,
 } from "../common/duration";
 import { TRANSITION_TIME_MS } from "d3/common/constantes";
 
@@ -116,7 +116,11 @@ export const createSmallStackedBarChart = (
     .attr("class", "rect-stacked")
     .attr(
       "x",
-      (d, i) => pourcentageData.slice(0, i).map(a=>a.value).reduce((a, b) => a + b, 0) * width
+      (d, i) =>
+        pourcentageData
+          .slice(0, i)
+          .map((a) => a.value)
+          .reduce((a, b) => a + b, 0) * width
     )
     .attr("width", (d) => d.value * width)
     .attr("height", 80)
@@ -135,7 +139,11 @@ export const createSmallStackedBarChart = (
     .attr(
       "x",
       (d, i) =>
-        pourcentageData.slice(0, i).map(a=>a.value).reduce((a, b) => a + b, 0) * width +
+        pourcentageData
+          .slice(0, i)
+          .map((a) => a.value)
+          .reduce((a, b) => a + b, 0) *
+          width +
         (pourcentageData[i].value / 2) * width
     )
     .attr("y", height / 3)
@@ -146,13 +154,16 @@ export const createSmallStackedBarChart = (
   text
     .append("tspan")
     .text((d) => d.value * 100 + "%")
-    .attr(
-      "x",
-      (d, i) =>{
-        return pourcentageData.slice(0, i).map(a=>a.value).reduce((a, b) => a + b, 0) * width +
+    .attr("x", (d, i) => {
+      return (
+        pourcentageData
+          .slice(0, i)
+          .map((a) => a.value)
+          .reduce((a, b) => a + b, 0) *
+          width +
         (pourcentageData[i].value / 2) * width
-      }
-    )
+      );
+    })
     .attr("y", (2 * height) / 3)
     .attr("font-size", "20px")
     .attr("font-weight", 10);
