@@ -10,6 +10,8 @@ export let firstCallback = () => {};
 export let secondCallback = () => {};
 export let thirdCallback = () => {};
 export let fourthCallback = () => {};
+export let fifthCallback = () => {};
+export let sixthCallback = () => {};
 
 export const addTransitions = (
   g,
@@ -30,7 +32,9 @@ export const addTransitions = (
   firstCallback = firstTransition(g, xAxis, yAxis, height, color);
   secondCallback = secondTransition(g, yAxis, height);
   thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, tipStacked);
-  fourthCallback = fourthTransition(g, gSecondBarChart, gThirdBarChart, sources,xAxis, firstStageIndex, totalStagePortion, width, barHeight, totalTimeStamp, color);
+  fourthCallback = fourthTransition(g, sources, firstStageIndex, totalStagePortion, width, barHeight, totalTimeStamp);
+  fifthCallback = fifthTransition(gSecondBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
+  sixthCallback = sixthTransition(gThirdBarChart, sources,xAxis, width, barHeight, totalTimeStamp, color);
 };
 
 /**
@@ -144,16 +148,12 @@ const thirdTransition = (
 
 const fourthTransition = (
   g,
-  gSecondBarChart,
-  gThirdBarChart,
   data,
-  xAxis,
   firstIndexes,
   totalStagePortion,
   width,
   height,
   totalTimeStamp,
-  color
 ) => () => {
   //Remove y axis and labels
   g.selectAll(".y.axis").remove();
@@ -169,19 +169,19 @@ const fourthTransition = (
 
   stackedBar
     .transition()
-    .duration(TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS/3)
     .attr(
       "x",
       (d) =>
         totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width
     )
     .transition()
-    .duration(TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS/3)
     .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 0;
     })
     .transition()
-    .duration(TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS/3)
     .attr("height", height)
     .on("end", () => {
       g.selectAll(".pourcentage").style("opacity", 1);
@@ -242,19 +242,40 @@ const fourthTransition = (
     .attr("y", -15)
     .text("You");
 
-  //Restless barChart
-  const restlessSleepData = [0.156, 0.098, 0.506, 0.049, 0.19];
-  createSmallStackedBarChart(
-    gSecondBarChart,
-    restlessSleepData,
-    data,
-    "Restless Legs Syndrome",
-    totalTimeStamp,
-    xAxis,
-    width,
-    height,
-    color
-  );
+}
+const fifthTransition = (
+  gSecondBarChart,
+  data,
+  xAxis,
+  width,
+  height,
+  totalTimeStamp,
+  color
+) => () => {
+    //Restless barChart
+    const restlessSleepData = [0.156, 0.098, 0.506, 0.049, 0.19];
+    createSmallStackedBarChart(
+      gSecondBarChart,
+      restlessSleepData,
+      data,
+      "Restless Legs Syndrome",
+      totalTimeStamp,
+      xAxis,
+      width,
+      height,
+      color
+    );
+}
+
+const sixthTransition = (
+  gThirdBarChart,
+  data,
+  xAxis,
+  width,
+  height,
+  totalTimeStamp,
+  color
+) => () => {
   //Sleep apnea barChart
   const sleepApneaData = [0.326, 0.216, 0.329, 0.071, 0.057];
   createSmallStackedBarChart(

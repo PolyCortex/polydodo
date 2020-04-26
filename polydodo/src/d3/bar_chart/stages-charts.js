@@ -112,8 +112,7 @@ export const createSmallStackedBarChart = (
   stackedBar
     .append("rect")
     .transition()
-    .delay(3*TRANSITION_TIME_MS/4)
-    .duration(TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS)
     .attr("class", "rect-stacked")
     .attr(
       "x",
@@ -164,8 +163,7 @@ export const createSmallStackedBarChart = (
     .attr("class", "x axis")
     .attr("transform", "translate(0," + 80 + ")")
     .transition()
-    .delay(3*TRANSITION_TIME_MS/4)
-    .duration(TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS)
     .call(xAxis)
     .selectAll("text")
     .style("font-size", "18px");

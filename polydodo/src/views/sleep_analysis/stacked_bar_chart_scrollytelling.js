@@ -4,7 +4,7 @@ import { Waypoint } from 'react-waypoint';
 
 import D3Component from "../../components/d3component";
 
-import { firstCallback, thirdCallback, fourthCallback } from "../../d3/bar_chart/transition";
+import { firstCallback, thirdCallback, fourthCallback, fifthCallback, sixthCallback } from "../../d3/bar_chart/transition";
 import createBarChart from "../../d3/bar_chart/barChart";
 
 const StackedBarChartScrollyTelling = () => {
@@ -83,6 +83,24 @@ const StackedBarChartScrollyTelling = () => {
       </Card>
       <div style={{"marginBottom": "125%"}}/>
       <Waypoint onEnter={() => {fourthCallback()}} />
+      <div style={{"marginBottom": "125%"}}/>
+      <Card className="shadow"  style={{ position: "relative"}}>
+        <CardBody>
+          <p>As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM stage sleep.</p>
+          <p> By comparing your stage proportions with the nights within our dataset, we’ve found that the subject’s night that most corresponds is of a woman aged XX years old.</p>
+        </CardBody>
+      </Card>
+      <div style={{"marginBottom": "125%"}}/>
+      <Waypoint onEnter={() => {fifthCallback()}} />
+      <div style={{"marginBottom": "125%"}}/>
+      <Card className="shadow"  style={{ position: "relative"}}>
+        <CardBody>
+          <p>As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM stage sleep.</p>
+          <p> By comparing your stage proportions with the nights within our dataset, we’ve found that the subject’s night that most corresponds is of a woman aged XX years old.</p>
+        </CardBody>
+      </Card>
+      <div style={{"marginBottom": "125%"}}/>
+      <Waypoint onEnter={() => {sixthCallback()}} />
       <div style={{"marginBottom": "125%"}}/>
       <Card className="shadow"  style={{ position: "relative"}}>
         <CardBody>
