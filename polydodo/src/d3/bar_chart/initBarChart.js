@@ -17,13 +17,18 @@ import { barLegend } from "./legend";
 import {
   createStackedBarChart,
   getToolTipText,
-  getStackedToolTipText
+  getStackedToolTipText,
 } from "./stages-charts";
 
-import{ addTransitions } from "./transition"
+import { addTransitions } from "./transition";
 
-export const initializeBarChart = (g, width, height, margin, useTransitions = true) => {
-  
+export const initializeBarChart = (
+  g,
+  width,
+  height,
+  margin,
+  useTransitions = true
+) => {
   let transitions;
   /**** Prétraitement de donnée ****/
   var states = ["W", "N1", "N2", "N3", "REM"];
@@ -50,7 +55,7 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     ]);
 
   /****** Axes *******/
-  var xAxis = d3.axisBottom(x).tickFormat(d => `${d.getHours()}h`);
+  var xAxis = d3.axisBottom(x).tickFormat((d) => `${d.getHours()}h`);
   var yAxis = d3.axisLeft().scale(y).tickSize(-width); //will create the lines in second visualisation
 
   // Groupe affichant le graphique principal ().
@@ -63,7 +68,7 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     /***** Prétraitement des données *****/
     var totalTimeStamp = data.length;
     var color = d3.scaleOrdinal();
-    var tooltip= tip().attr("class", "d3-tip").offset([-10, 0]);
+    var tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
 
     var tipStacked = tip().attr("class", "d3-tip").offset([-10, 0]);
 
@@ -80,12 +85,28 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     domainY(y, statesOrder);
 
     /***** Création du graphique Stacked bar chart *****/
-    createStackedBarChart(gBarChart, sources, x, y, color, tooltip, barHeight);
+    createStackedBarChart(gBarChart, sources, x, color, tooltip, barHeight);
     if (useTransitions) {
+      var gSecondBarChart = g
+        .append("g")
+        .attr(
+          "transform",
+          "translate(" + margin.left + "," + (2 * margin.top + barHeight) + ")"
+        );
+
+      var gThirdBarChart = g
+        .append("g")
+        .attr(
+          "transform",
+          "translate(" + margin.left + "," + (3 * margin.top + 2 *barHeight) + ")"
+        );
+
       transitions = addTransitions(
         gBarChart,
+        g,
+        gSecondBarChart,
+        gThirdBarChart,
         sources,
-        x,
         color,
         translationHeight,
         barHeight,
@@ -94,7 +115,8 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
         xAxis,
         yAxis,
         firstStagesIndex,
-        totalStagesPortion
+        totalStagesPortion,
+        totalTimeStamp
       );
     }
     // Axes
@@ -102,7 +124,7 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
       .append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + barHeight + ")")
-      .call(xAxis)      
+      .call(xAxis);
 
     //get tick
     d3.selectAll(".tick").select("text").style("font-weight", 540);
@@ -126,6 +148,5 @@ export const initializeBarChart = (g, width, height, margin, useTransitions = tr
     /***** Création de la légende *****/
     barLegend(g, states, color);
   });
-
   return transitions;
-}
+};
