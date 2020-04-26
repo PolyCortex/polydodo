@@ -106,8 +106,6 @@ export const initializeBarChart = (
         gSecondBarChart,
         gThirdBarChart,
         sources,
-        x,
-        y,
         color,
         translationHeight,
         barHeight,

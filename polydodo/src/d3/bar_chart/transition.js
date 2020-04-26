@@ -1,5 +1,9 @@
 import * as d3 from "d3";
 import { getDurationStringHM } from "../common/duration";
+import {
+  createSmallStackedBarChart,
+  createStagesDurationAxes,
+} from "./stages-charts";
 
 export const addTransitions = (
   g,
@@ -7,8 +11,6 @@ export const addTransitions = (
   gSecondBarChart,
   gThirdBarChart,
   sources,
-  x,
-  y,
   color,
   height,
   barHeight,
@@ -21,7 +23,7 @@ export const addTransitions = (
   totalTimeStamp
 ) => {
   g.selectAll(".rect-stacked").on("click", () =>
-    firstTransition(g, sources, xAxis, yAxis, height, color)
+    firstTransition(g, xAxis, yAxis, height, color)
   );
 
   canvas
@@ -32,9 +34,7 @@ export const addTransitions = (
     .attr("height", 30)
     .style("fill", "white")
     .attr("transform", "translate(" + 100 + "," + 10 + ")")
-    .on("click", () =>
-      secondTransition(g, sources, xAxis, yAxis, height, color)
-    );
+    .on("click", () => secondTransition(g, yAxis, height));
 
   canvas
     .append("rect")
@@ -53,7 +53,6 @@ export const addTransitions = (
         width,
         height,
         xAxis,
-        x,
         tipStacked
       )
     );
@@ -70,11 +69,9 @@ export const addTransitions = (
       g.select(".d3-tip").remove();
       fourthTransition(
         g,
-        canvas,
         gSecondBarChart,
         gThirdBarChart,
         sources,
-        x,
         xAxis,
         firstStageIndex,
         totalStagePortion,
@@ -95,7 +92,7 @@ export const addTransitions = (
  * @param y       L'échelle pour l'axe Y.
  * @param r       L'échelle pour le rayon des cercles.
  */
-function firstTransition(g, data, xAxis, yAxis, height, color) {
+function firstTransition(g, xAxis, yAxis, height, color) {
   g.selectAll(".y.axis").remove();
 
   //create Y axes
@@ -128,7 +125,7 @@ function firstTransition(g, data, xAxis, yAxis, height, color) {
     .call(xAxis);
 }
 
-function secondTransition(g, data, xAxis, yAxis, height, color) {
+function secondTransition(g, yAxis, height) {
   var newHeight = height / 10;
   g.selectAll(".rect-stacked")
     .transition()
@@ -146,17 +143,6 @@ function secondTransition(g, data, xAxis, yAxis, height, color) {
     .attr("x", -10);
 }
 
-function createStagesDurationAxes(data, xAxis, width) {
-  var sleepDiff =
-    data[data.length - 1].currentStageEnd.getTime() -
-    data[0].currentStageDebut.getTime();
-  var sleepTotal = sleepDiff / (1000 * 60 * 60);
-
-  var newscale = d3.scaleLinear().domain([0, sleepTotal]).range([0, width]);
-
-  xAxis.scale(newscale).tickFormat((d) => d + " h");
-}
-
 //Third data vizualisation
 function thirdTransition(
   g,
@@ -166,7 +152,6 @@ function thirdTransition(
   width,
   height,
   xAxis,
-  x,
   tip
 ) {
   createStagesDurationAxes(data, xAxis, width);
@@ -189,38 +174,29 @@ function thirdTransition(
       i === firstIndexes[d.stage] ? totalStagePortion[d.stage] * width : 0
     )
     .duration(2000)
-    .on("end", function (d, i) {
-      d3.selectAll(".pourc").style("opacity", 1);
-    });
+    .on("end", () => g.selectAll(".pourcentage").style("opacity", 1));
 
   //text containing the % of the sleep stage on the bar
   g.selectAll(".text")
     .data(data)
     .enter()
     .append("text")
-    .attr("class", "pourc")
-    .text(function (d, i) {
-      var rounded = Math.round(totalStagePortion[d.stage] * 100 * 10) / 10;
-      return i === firstIndexes[d.stage] ? rounded + "%" : "";
-    })
+    .attr("class", "pourcentage")
+    .text((d, i) =>
+      i === firstIndexes[d.stage]
+        ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + "%"
+        : ""
+    )
     .attr("x", width / 20)
     .attr("y", (d) => height * d.stage + height / 2)
-    .style("opacity", 0)
-    .attr("font-family", "sans-serif")
-    .attr("font-size", "20px")
-    .attr("fill", "black")
-    .attr("text-anchor", "middle")
-    .style("font-size", "22px")
-    .style("font-weight", 600);
+    .style("fill", "black");
 }
 
 function fourthTransition(
   g,
-  canvas,
   gSecondBarChart,
   gThirdBarChart,
   data,
-  x,
   xAxis,
   firstIndexes,
   totalStagePortion,
@@ -231,7 +207,7 @@ function fourthTransition(
 ) {
   //Remove y axis and labels
   g.selectAll(".y.axis").remove();
-  g.selectAll(".pourc").remove();
+  g.selectAll(".pourcentage").remove();
 
   g.select(".x.axis")
     .transition()
@@ -251,7 +227,7 @@ function fourthTransition(
     )
     .transition()
     .duration(2000)
-    .attr("y", function (d, i) {
+    .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 0;
     })
     .transition()
@@ -267,12 +243,7 @@ function fourthTransition(
     .data(data)
     .enter()
     .append("text")
-    .attr("class", "pourcentage")
-    .style("opacity", 0)
-    .attr("font-family", "sans-serif")
-    .attr("font-size", "20px")
-    .attr("fill", "white")
-    .attr("text-anchor", "middle");
+    .attr("class", "pourcentage");
 
   //hours
   text
@@ -288,7 +259,7 @@ function fourthTransition(
         totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width +
         (totalStagePortion[d.stage] / 2) * width
     )
-    .attr("y", function (d, i) {
+    .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 40;
     })
     .attr("font-size", "25px")
@@ -308,7 +279,7 @@ function fourthTransition(
         totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width +
         (totalStagePortion[d.stage] / 2) * width
     )
-    .attr("y", function (d, i) {
+    .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 60;
     })
     .attr("font-size", "20px")
@@ -319,13 +290,7 @@ function fourthTransition(
     .attr("class", "label-sleepType")
     .attr("x", 0)
     .attr("y", -15)
-    .text("You")
-    .style("opacity", 0)
-    .style("fill", "black")
-    .style("font-size", "25px")
-    .style("font-weight", 600)
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle");
+    .text("You");
 
   //Restless barChart
   const restlessSleepData = [0.156, 0.098, 0.506, 0.049, 0.19];
@@ -335,7 +300,6 @@ function fourthTransition(
     data,
     "Restless Legs Syndrome",
     totalTimeStamp,
-    x,
     xAxis,
     width,
     height,
@@ -349,110 +313,9 @@ function fourthTransition(
     data,
     "Sleep Apnea",
     totalTimeStamp,
-    x,
     xAxis,
     width,
     height,
     color
   );
-}
-
-function createSmallStackedBarChart(
-  g,
-  pourcentageData,
-  data,
-  name,
-  totalTimeStamp,
-  x,
-  xAxis,
-  width,
-  height,
-  color
-) {
-  var stackedBar = g
-    .selectAll(".stacked-bar")
-    .data(pourcentageData)
-    .enter()
-    .append("g");
-
-  stackedBar
-    .append("rect")
-    .transition()
-    .delay(3000)
-    .duration(1000)
-    .attr("class", "rect-stacked")
-    .attr(
-      "x",
-      (d, i) => pourcentageData.slice(0, i).reduce((a, b) => a + b, 0) * width
-    )
-    .attr("width", (d) => d * width)
-    .attr("height", 80)
-    .attr("fill", (d, i) => color(i))
-    .on("end", () => {
-      g.selectAll(".pourcentage").style("opacity", 1);
-      g.selectAll(".label-sleepType").style("opacity", 1);
-    });
-
-  var text = stackedBar
-    .append("text")
-    .attr("class", "pourcentage")
-    .style("opacity", 0)
-    .attr("text-anchor", "middle")
-    .attr("font-family", "sans-serif")
-    .attr("font-size", "20px")
-    .attr("fill", "white");
-
-  //hours
-  text
-    .append("tspan")
-    .text((d) => getDurationStringHM(d * totalTimeStamp * 30))
-    .attr(
-      "x",
-      (d, i) =>
-        pourcentageData.slice(0, i).reduce((a, b) => a + b, 0) * width +
-        (pourcentageData[i] / 2) * width
-    )
-    .attr("y", height / 3)
-    .attr("font-size", "25px")
-    .attr("font-weight", 15);
-
-  //pourcentage
-  text
-    .append("tspan")
-    .text((d) => d * 100 + "%")
-    .attr(
-      "x",
-      (d, i) =>
-        pourcentageData.slice(0, i).reduce((a, b) => a + b, 0) * width +
-        (pourcentageData[i] / 2) * width
-    )
-    .attr("y", (2 * height) / 3)
-    .attr("font-size", "20px")
-    .attr("font-weight", 10);
-
-  //create stackedbar axes
-  createStagesDurationAxes(data, xAxis, width);
-
-  g.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + 80 + ")")
-    .transition()
-    .delay(3000)
-    .duration(4000)
-    .call(xAxis)
-    .selectAll("text")
-    .style("font-size", "18px");
-
-  //label
-  g.append("text")
-    .attr("class", "label-sleepType")
-    .attr("x", 0)
-    .attr("y", -15)
-    .text(name)
-    .style("opacity", 0)
-    .style("fill", "black")
-    .style("font-size", "25px")
-    .style("font-weight", 600)
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle");
 }
