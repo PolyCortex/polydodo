@@ -18,7 +18,7 @@ import {
  * @param line      La fonction permettant de dessiner les lignes du graphique.
  * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
  */
-export const createStackedBarChart = (g, sources, x, y, color, tip, height) => {
+export const createStackedBarChart = (g, sources, x, color, tip, height) => {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)

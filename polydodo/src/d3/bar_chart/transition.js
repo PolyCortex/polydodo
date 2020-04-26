@@ -5,6 +5,11 @@ import {
   createStagesDurationAxes,
 } from "./stages-charts";
 
+export let firstCallback = () => {};
+export let secondCallback = () => {};
+export let thirdCallback = () => {};
+export let fourthCallback = () => {};
+
 export const addTransitions = (
   g,
   canvas,
@@ -22,65 +27,10 @@ export const addTransitions = (
   totalStagePortion,
   totalTimeStamp
 ) => {
-  g.selectAll(".rect-stacked").on("click", () =>
-    firstTransition(g, xAxis, yAxis, height, color)
-  );
-
-  canvas
-    .append("rect")
-    .attr("x", 340)
-    .attr("y", 10)
-    .attr("width", 30)
-    .attr("height", 30)
-    .style("fill", "white")
-    .attr("transform", "translate(" + 100 + "," + 10 + ")")
-    .on("click", () => secondTransition(g, yAxis, height));
-
-  canvas
-    .append("rect")
-    .attr("x", 340)
-    .attr("y", 10)
-    .attr("width", 30)
-    .attr("height", 30)
-    .style("fill", "#e6521c")
-    .attr("transform", "translate(" + 140 + "," + 10 + ")")
-    .on("click", () =>
-      thirdTransition(
-        g,
-        sources,
-        firstStageIndex,
-        totalStagePortion,
-        width,
-        height,
-        xAxis,
-        tipStacked
-      )
-    );
-
-  canvas
-    .append("rect")
-    .attr("x", 340)
-    .attr("y", 10)
-    .attr("width", 30)
-    .attr("height", 30)
-    .style("fill", "#ffdcff")
-    .attr("transform", "translate(" + 180 + "," + 10 + ")")
-    .on("click", () => {
-      g.select(".d3-tip").remove();
-      fourthTransition(
-        g,
-        gSecondBarChart,
-        gThirdBarChart,
-        sources,
-        xAxis,
-        firstStageIndex,
-        totalStagePortion,
-        width,
-        barHeight,
-        totalTimeStamp,
-        color
-      );
-    });
+  firstCallback = firstTransition(g, xAxis, yAxis, height, color);
+  secondCallback = secondTransition(g, yAxis, height);
+  thirdCallback = thirdTransition(g, sources, firstStageIndex, totalStagePortion, width, height, xAxis, tipStacked);
+  fourthCallback = fourthTransition(g, gSecondBarChart, gThirdBarChart, sources,xAxis, firstStageIndex, totalStagePortion, width, barHeight, totalTimeStamp, color);
 };
 
 /**
@@ -92,7 +42,7 @@ export const addTransitions = (
  * @param y       L'échelle pour l'axe Y.
  * @param r       L'échelle pour le rayon des cercles.
  */
-function firstTransition(g, xAxis, yAxis, height, color) {
+const firstTransition = (g, xAxis, yAxis, height, color) => () => {
   g.selectAll(".y.axis").remove();
 
   //create Y axes
@@ -125,7 +75,7 @@ function firstTransition(g, xAxis, yAxis, height, color) {
     .call(xAxis);
 }
 
-function secondTransition(g, yAxis, height) {
+const secondTransition = (g, yAxis, height) => () => {
   var newHeight = height / 10;
   g.selectAll(".rect-stacked")
     .transition()
@@ -144,7 +94,7 @@ function secondTransition(g, yAxis, height) {
 }
 
 //Third data vizualisation
-function thirdTransition(
+const thirdTransition = (
   g,
   data,
   firstIndexes,
@@ -153,7 +103,7 @@ function thirdTransition(
   height,
   xAxis,
   tip
-) {
+) => () => {
   createStagesDurationAxes(data, xAxis, width);
 
   g.select(".x.axis").transition().duration(500).call(xAxis);
@@ -164,7 +114,7 @@ function thirdTransition(
       tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
-    .on("mouseout", () => {
+    .on("mouseout", function() {
       tip.hide();
       d3.select(this).style("opacity", 1);
     })
@@ -192,7 +142,7 @@ function thirdTransition(
     .style("fill", "black");
 }
 
-function fourthTransition(
+const fourthTransition = (
   g,
   gSecondBarChart,
   gThirdBarChart,
@@ -204,7 +154,7 @@ function fourthTransition(
   height,
   totalTimeStamp,
   color
-) {
+) => () => {
   //Remove y axis and labels
   g.selectAll(".y.axis").remove();
   g.selectAll(".pourcentage").remove();

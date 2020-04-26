@@ -29,6 +29,7 @@ export const initializeBarChart = (
   margin,
   useTransitions = true
 ) => {
+  let transitions;
   /**** Prétraitement de donnée ****/
   var states = ["W", "N1", "N2", "N3", "REM"];
   var statesOrder = ["W", "REM", "N1", "N2", "N3"];
@@ -84,7 +85,7 @@ export const initializeBarChart = (
     domainY(y, statesOrder);
 
     /***** Création du graphique Stacked bar chart *****/
-    createStackedBarChart(gBarChart, sources, x, y, color, tooltip, barHeight);
+    createStackedBarChart(gBarChart, sources, x, color, tooltip, barHeight);
     if (useTransitions) {
       var gSecondBarChart = g
         .append("g")
@@ -100,7 +101,7 @@ export const initializeBarChart = (
           "translate(" + margin.left + "," + (3 * margin.top + 2 *barHeight) + ")"
         );
 
-      addTransitions(
+      transitions = addTransitions(
         gBarChart,
         g,
         gSecondBarChart,
@@ -147,4 +148,5 @@ export const initializeBarChart = (
     /***** Création de la légende *****/
     barLegend(g, states, color);
   });
+  return transitions;
 };
