@@ -116,11 +116,11 @@ export const createSmallStackedBarChart = (
     .attr("class", "rect-stacked")
     .attr(
       "x",
-      (d, i) => pourcentageData.slice(0, i).reduce((a, b) => a + b, 0) * width
+      (d, i) => pourcentageData.slice(0, i).map(a=>a.value).reduce((a, b) => a + b, 0) * width
     )
-    .attr("width", (d) => d * width)
+    .attr("width", (d) => d.value * width)
     .attr("height", 80)
-    .attr("fill", (d, i) => color(i))
+    .attr("fill", (d) => color(d.stage))
     .on("end", () => {
       g.selectAll(".pourcentage").style("opacity", 1);
       g.selectAll(".label-sleepType").style("opacity", 1);
@@ -131,12 +131,12 @@ export const createSmallStackedBarChart = (
   //hours
   text
     .append("tspan")
-    .text((d) => getDurationStringHM(d * totalTimeStamp * 30))
+    .text((d) => getDurationStringHM(d.value * totalTimeStamp * 30))
     .attr(
       "x",
       (d, i) =>
-        pourcentageData.slice(0, i).reduce((a, b) => a + b, 0) * width +
-        (pourcentageData[i] / 2) * width
+        pourcentageData.slice(0, i).map(a=>a.value).reduce((a, b) => a + b, 0) * width +
+        (pourcentageData[i].value / 2) * width
     )
     .attr("y", height / 3)
     .attr("font-size", "25px")
@@ -145,12 +145,13 @@ export const createSmallStackedBarChart = (
   //pourcentage
   text
     .append("tspan")
-    .text((d) => d * 100 + "%")
+    .text((d) => d.value * 100 + "%")
     .attr(
       "x",
-      (d, i) =>
-        pourcentageData.slice(0, i).reduce((a, b) => a + b, 0) * width +
-        (pourcentageData[i] / 2) * width
+      (d, i) =>{
+        return pourcentageData.slice(0, i).map(a=>a.value).reduce((a, b) => a + b, 0) * width +
+        (pourcentageData[i].value / 2) * width
+      }
     )
     .attr("y", (2 * height) / 3)
     .attr("font-size", "20px")

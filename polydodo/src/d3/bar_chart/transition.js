@@ -233,7 +233,14 @@ const fourthTransition = (
   color
 ) => () => {
     //Restless barChart
-    const restlessSleepData = [0.156, 0.098, 0.506, 0.049, 0.19];
+    const restlessSleepData = 
+    [
+      {stage:"W", value:0.156},
+      {stage:"REM", value:0.19},
+      {stage:"N1", value:0.098},
+      {stage:"N2", value:0.506},
+      {stage:"N3", value:0.049}
+    ]
     createSmallStackedBarChart(
       gSecondBarChart,
       restlessSleepData,
@@ -257,7 +264,14 @@ const fifthTransition = (
   color
 ) => () => {
   //Sleep apnea barChart
-  const sleepApneaData = [0.326, 0.216, 0.329, 0.071, 0.057];
+  const sleepApneaData =
+  [
+    {stage:"W", value:0.326},
+    {stage:"REM", value:0.057},
+    {stage:"N1", value:0.216},
+    {stage:"N2", value:0.329},
+    {stage:"N3", value:0.071}
+  ] 
   createSmallStackedBarChart(
     gThirdBarChart,
     sleepApneaData,
