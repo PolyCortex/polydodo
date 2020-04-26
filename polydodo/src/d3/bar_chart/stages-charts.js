@@ -5,6 +5,7 @@ import {
   getDurationSecondString,
   getDurationStringHM
 } from "../common/duration";
+import { TRANSITION_TIME_MS } from "d3/common/constantes";
 
 /**
  * Fichier permettant de dessiner les graphiques "focus" et "contexte".
@@ -111,8 +112,8 @@ export const createSmallStackedBarChart = (
   stackedBar
     .append("rect")
     .transition()
-    .delay(3000)
-    .duration(1000)
+    .delay(3*TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS/4)
     .attr("class", "rect-stacked")
     .attr(
       "x",
@@ -163,8 +164,8 @@ export const createSmallStackedBarChart = (
     .attr("class", "x axis")
     .attr("transform", "translate(0," + 80 + ")")
     .transition()
-    .delay(3000)
-    .duration(4000)
+    .delay(3*TRANSITION_TIME_MS/4)
+    .duration(TRANSITION_TIME_MS/4)
     .call(xAxis)
     .selectAll("text")
     .style("font-size", "18px");

@@ -4,6 +4,7 @@ import {
   createSmallStackedBarChart,
   createStagesDurationAxes,
 } from "./stages-charts";
+import { TRANSITION_TIME_MS } from "d3/common/constantes";
 
 export let firstCallback = () => {};
 export let secondCallback = () => {};
@@ -48,7 +49,7 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
   //create Y axes
   let axis = g.append("g").attr("class", "y axis");
 
-  axis.transition().duration(2000).call(yAxis);
+  axis.transition().duration(TRANSITION_TIME_MS).call(yAxis);
 
   axis
     .selectAll("text")
@@ -79,7 +80,7 @@ const secondTransition = (g, yAxis, height) => () => {
   var newHeight = height / 10;
   g.selectAll(".rect-stacked")
     .transition()
-    .duration(2000)
+    .duration(TRANSITION_TIME_MS)
     .attr("y", (d) => height * d.stage)
     .attr("height", newHeight);
 
@@ -123,7 +124,7 @@ const thirdTransition = (
     .attr("width", (d, i) =>
       i === firstIndexes[d.stage] ? totalStagePortion[d.stage] * width : 0
     )
-    .duration(2000)
+    .duration(TRANSITION_TIME_MS)
     .on("end", () => g.selectAll(".pourcentage").style("opacity", 1));
 
   //text containing the % of the sleep stage on the bar
@@ -162,26 +163,26 @@ const fourthTransition = (
   g.select(".x.axis")
     .transition()
     .attr("transform", "translate(0," + height + ")")
-    .duration(5000);
+    .duration(TRANSITION_TIME_MS);
 
   //first barChart
   var stackedBar = g.selectAll(".rect-stacked");
 
   stackedBar
     .transition()
-    .duration(2000)
+    .duration(TRANSITION_TIME_MS/4)
     .attr(
       "x",
       (d) =>
         totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width
     )
     .transition()
-    .duration(2000)
+    .duration(TRANSITION_TIME_MS/4)
     .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 0;
     })
     .transition()
-    .duration(1000)
+    .duration(TRANSITION_TIME_MS/4)
     .attr("height", height)
     .on("end", () => {
       g.selectAll(".pourcentage").style("opacity", 1);
