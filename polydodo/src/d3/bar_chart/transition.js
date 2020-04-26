@@ -13,7 +13,6 @@ export let fourthCallback = () => {};
 
 export const addTransitions = (
   g,
-  canvas,
   gSecondBarChart,
   gThirdBarChart,
   sources,

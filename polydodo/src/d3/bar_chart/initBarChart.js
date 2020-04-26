@@ -103,7 +103,6 @@ export const initializeBarChart = (
 
       transitions = addTransitions(
         gBarChart,
-        g,
         gSecondBarChart,
         gThirdBarChart,
         sources,
