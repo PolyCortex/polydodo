@@ -15,12 +15,12 @@ const createSpectrogram = (countainerNode) => {
 
   var canvasWidth = 1000
   var canvisHeight = 1200
-  var barCanvasHeight = canvisHeight / 4;
+  var barCanvasHeight = canvisHeight / 6;
   var spectroCanvasHeight = (canvisHeight - barCanvasHeight) / 2;
 
   var width = canvasWidth - margin.left - margin.right;
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
-  var barHeight = barCanvasHeight - margin.top - margin.bottom;
+  var barHeight = barCanvasHeight - margin.top;
 
   /***** Création des éléments *****/
   var svg = d3.select(countainerNode);
