@@ -3,12 +3,6 @@ import pandas as pd
 import mne
 from mne.datasets.sleep_physionet._utils import _check_subjects, _fetch_one, _data_path
 
-"""
-Code extracted from `https://github.com/mne-tools/mne-python/blob/maint/0.19/mne/datasets/sleep_physionet/age.py`
-to change subject range from 20 to 82, in order to have access to the full dataset. Previously to this customization,
-a magic number was used and limited the api to get only 20 subjects.
-"""
-
 BASE_URL = 'https://physionet.org/physiobank/database/sleep-edfx/sleep-cassette/'
 AGE_SLEEP_RECORDS = './data/SC-index.csv'
 
@@ -36,6 +30,11 @@ ANNOTATIONS_EVENT_ID = {
 THIRTY_MINS_IN_SECS = 1800
 EPOCH_DURATION = 30. # in seconds
 
+"""
+Code extracted from `https://github.com/mne-tools/mne-python/blob/maint/0.19/mne/datasets/sleep_physionet/age.py`
+to change subject range from 20 to 82, in order to have access to the full dataset. Previously to this customization,
+a magic number was used and limited the api to get only 20 subjects.
+"""
 def fetch_data(subjects, recording=[1, 2], path=None, force_update=False,
                update_path=None, base_url=BASE_URL,
                verbose=None):  # noqa: D301
