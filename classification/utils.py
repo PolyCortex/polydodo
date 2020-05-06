@@ -4,7 +4,7 @@ import mne
 from mne.datasets.sleep_physionet._utils import _check_subjects, _fetch_one, _data_path
 
 BASE_URL = 'https://physionet.org/physiobank/database/sleep-edfx/sleep-cassette/'
-AGE_SLEEP_RECORDS = './data/SC-index.csv'
+AGE_SLEEP_RECORDS = 'data/SC-index.csv'
 
 EVENT_ID = {
     'Sleep stage W': 0,
@@ -35,9 +35,7 @@ Code extracted from `https://github.com/mne-tools/mne-python/blob/maint/0.19/mne
 to change subject range from 20 to 82, in order to have access to the full dataset. Previously to this customization,
 a magic number was used and limited the api to get only 20 subjects.
 """
-def fetch_data(subjects, recording=[1, 2], path=None, force_update=False,
-               update_path=None, base_url=BASE_URL,
-               verbose=None):  # noqa: D301
+def fetch_data(subjects, recording=[1, 2], path=None, local_data_path=AGE_SLEEP_RECORDS, force_update=False, update_path=None, base_url=BASE_URL, verbose=None):  # noqa: D301
     """Get paths to local copies of PhysioNet Polysomnography dataset files.
     This will fetch data from the publicly available subjects from PhysioNet's
     study of age effects on sleep in healthy subjects [1]_[2]_. This
@@ -71,7 +69,7 @@ def fetch_data(subjects, recording=[1, 2], path=None, force_update=False,
     paths : list
         List of local data paths of the given type.
     """
-    records = np.loadtxt(AGE_SLEEP_RECORDS,
+    records = np.loadtxt(local_data_path,
                          skiprows=1,
                          delimiter=',',
                          dtype={'names': ('subject', 'record', 'type', 'sha',
