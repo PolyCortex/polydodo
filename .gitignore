@@ -110,3 +110,5 @@ classification/data/*
 node_modules/
 .vscode/
 build/
+
+*.joblib
