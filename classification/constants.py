@@ -1,5 +1,5 @@
 ## Sleep label values ##
-SLEEP_STAGES_VALUES = { # before: EVENT_ID
+SLEEP_STAGES_VALUES = {
     "W": 0,
     "N1": 1,
     "N2": 2,
