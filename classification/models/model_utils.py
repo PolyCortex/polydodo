@@ -10,7 +10,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from copy import deepcopy
 
-from constants import (SLEEP_STAGES_VALUES, EPOCH_DURATION)
+from sklearn.model_selection import (GridSearchCV,
+                                     RandomizedSearchCV)
+from sklearn.metrics import (make_scorer,
+                             cohen_kappa_score)
+
+from constants import (SLEEP_STAGES_VALUES,
+                       EPOCH_DURATION)
 
 SUBJECT_COL_IDX = 0
 
@@ -141,3 +147,51 @@ def train_test_split_according_to_age(X, y, use_continuous_age, subjects_test=No
     y_train = y[train_indexes]
     
     return X_test, X_train, y_test, y_train
+
+def print_hyperparam_tuning_results(search_cv_results):
+    """Helper function to print CV results
+    Input
+    -------
+    search_cv_results: dict that comes from the `cv_results_` of `BaseSearchCV`(either `GridSearchCV` or `RandomizedSearchCV`)
+    """
+
+    for idx, rank in enumerate(search_cv_results['rank_test_score']):
+        current_param = search_cv_results['params'][idx]
+        score_mean = search_cv_results['mean_test_score'][idx]
+        score_uncertainty = search_cv_results['std_test_score'][idx]
+        print(f"{rank}. Parameter {current_param} has a score of {score_mean:0.4f} ± {score_uncertainty:0.3f}")
+        
+def evaluate_hyperparams_grid(params, estimator, X, y, cv, use_randomized=False):
+    """Evaluates params according to Cohen Kappa's agreeement.
+    Input
+    -------
+    params: Dictionary with parameters names (str) as keys and lists of parameter settings to try as values, or a list of such dictionaries, in which case the grids spanned by each dictionary in the list are explored. This enables searching over any sequence of parameter settings.
+    estimator: This is assumed to implement the scikit-learn estimator interface.
+    cv: Determines the cross-validation splitting strategy. 
+    X: np.array matrix of shape (n_samples, n_features)
+    y: np.array of shape (n_samples,)
+    use_randomized: bool that toggles between the use of `RandomizedSearchCV` or `GridSearchCV`
+    """
+    
+    if use_randomized:
+        search = RandomizedSearchCV(
+            estimator=estimator,
+            param_distributions=params,
+            scoring=make_scorer(cohen_kappa_score),
+            cv=cv,
+            n_jobs=-1,
+            verbose=1
+        )
+
+    else:
+        search = GridSearchCV(
+            estimator=estimator,
+            param_grid=params,
+            scoring=make_scorer(cohen_kappa_score),
+            cv=cv,
+            n_jobs=-1,
+            verbose=1
+        )
+
+    search.fit(X[:,2:], y)
+    print_hyperparam_tuning_results(search.cv_results_)
