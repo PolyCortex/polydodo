@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from copy import deepcopy
 
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import (GridSearchCV,
                                      RandomizedSearchCV)
 from sklearn.metrics import (make_scorer,
@@ -154,8 +157,7 @@ def print_hyperparam_tuning_results(search_cv_results):
     -------
     search_cv_results: dict that comes from the `cv_results_` of `BaseSearchCV`(either `GridSearchCV` or `RandomizedSearchCV`)
     """
-
-    for idx, rank in enumerate(search_cv_results['rank_test_score']):
+    for idx, rank in sorted(enumerate(search_cv_results['rank_test_score']), key=lambda x: x[1]):
         current_param = search_cv_results['params'][idx]
         score_mean = search_cv_results['mean_test_score'][idx]
         score_uncertainty = search_cv_results['std_test_score'][idx]
@@ -180,7 +182,8 @@ def evaluate_hyperparams_grid(params, estimator, X, y, cv, use_randomized=False)
             scoring=make_scorer(cohen_kappa_score),
             cv=cv,
             n_jobs=-1,
-            verbose=1
+            verbose=1,
+            random_state=42
         )
 
     else:
@@ -195,3 +198,52 @@ def evaluate_hyperparams_grid(params, estimator, X, y, cv, use_randomized=False)
 
     search.fit(X[:,2:], y)
     print_hyperparam_tuning_results(search.cv_results_)
+    
+def get_pipeline(classifier, dimension_reduction=None, classifier_pipeline_key='classifier'):
+    """Returns pipeline with 
+    Input
+    -------
+    params: Dictionary with parameters names (str) as keys and lists of parameter settings to try as values, or a list of such dictionaries, in which case the grids spanned by each dictionary in the list are explored. This enables searching over any sequence of parameter settings.
+    estimator: This is assumed to implement the scikit-learn estimator interface.
+    cv: Determines the cross-validation splitting strategy. 
+    X: np.array matrix of shape (n_samples, n_features)
+    y: np.array of shape (n_samples,)
+    use_randomized: bool that toggles between the use of `RandomizedSearchCV` or `GridSearchCV`
+    """
+    NB_CATEGORICAL_FEATURES = 2
+    NB_FEATURES = 48
+    
+    standardization_transformer = ColumnTransformer([
+        ('pass-through-categorical', 'passthrough', list(range(NB_CATEGORICAL_FEATURES))),
+        ('scaling-continuous', StandardScaler(copy=False), list(range(NB_CATEGORICAL_FEATURES,NB_FEATURES)))
+    ])
+    
+    if dimension_reduction is not None:
+        return Pipeline([
+            ('scaling', standardization_transformer),
+            ('dimension_reduction', dimension_reduction),
+            (classifier_pipeline_key, classifier)
+        ])
+
+    return Pipeline([
+        ('scaling', standardization_transformer),
+        (classifier_pipeline_key, classifier)
+    ])
+    
+def print_results_cv(accuracies, macro_f1_scores, weighted_f1_scores, kappa_agreements):
+    print(f"Mean accuracy          : {np.mean(accuracies):0.2f} ± {np.std(accuracies):0.3f}")
+    print(f"Mean macro F1-score    : {np.mean(macro_f1_scores):0.2f} ± {np.std(macro_f1_scores):0.3f}")
+    print(f"Mean weighted F1-score : {np.mean(weighted_f1_scores):0.2f} ± {np.std(weighted_f1_scores):0.3f}")
+    print(f"Mean Kappa's agreement : {np.mean(kappa_agreements):0.2f} ± {np.std(kappa_agreements):0.3f}")
+    
+def print_results_cv_scores(scores):
+    """Prints scores from `cross_validate` function.
+    Input
+    -------
+    scores: dictionnary with all test's scores
+    """
+    print_results_cv(scores['test_accuracy'],
+                     scores['test_f1-score-macro'],
+                     scores['test_f1-score-weighted'],
+                     scores['test_agreement'])
+    
