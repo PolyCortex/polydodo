@@ -16,6 +16,14 @@ DATASET_SLEEP_STAGES_VALUES = {
     'Sleep stage R': SLEEP_STAGES_VALUES["REM"]
 }
 
+ELECTROPHYSIOLOGIST_SLEEP_STAGES = {
+    'Sleep stage W': SLEEP_STAGES_VALUES['W'],
+    'Sleep stage N1': SLEEP_STAGES_VALUES['N1'],
+    'Sleep stage N2': SLEEP_STAGES_VALUES['N2'],
+    'Sleep stage N3': SLEEP_STAGES_VALUES['N3'],
+    'Sleep stage R': SLEEP_STAGES_VALUES['REM'],
+}
+
 N_STAGES = len(SLEEP_STAGES_VALUES.keys())
 ########################
 
