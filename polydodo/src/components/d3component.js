@@ -1,23 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useRef } from 'react';
 
-class D3Component extends React.Component {
-  static propTypes = {
-    callback: PropTypes.func.isRequired,
-  }
-
-  componentDidMount() {
-    const { callback } = this.props;
-    callback(this.svg);
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  render() {
-    return (<svg ref={ref => this.svg = ref } />);
-  }
-}
+const D3Component = ({ callback }) => {
+    const ref = useRef(null);
+    useEffect(() => callback(ref));
+    return <svg ref={ref} />;
+};
 
 export default D3Component;
