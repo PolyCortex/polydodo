@@ -1,15 +1,5 @@
 import * as d3 from "d3";
 
-/**
- * Fichier permettant de générer la légende et de gérer les interactions de celle-ci.
- */
-
-/**
- * Crée une légende à partir de la source.
- *
- * @param svg       L'élément SVG à utiliser pour créer la légende.
- * @param color     L'échelle de couleurs.
- */
 export const legend = (svg, color, y, height, width) => {
   var interpolate = d3.interpolate(color.domain()[0], color.domain()[1]);
 
