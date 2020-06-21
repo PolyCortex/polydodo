@@ -2,10 +2,7 @@ import * as d3 from "d3";
 import { initSpectrogram } from "./initSpectrogram";
 import initializeBarChart from "../bar_chart/initBarChart";
 
-const createSpectrogram = (countainerNode) => {
-  /***** Configuration *****/
-
-  /*** Dimensions ***/
+const createSpectrogram = (containerNode) => {
   const margin = {
     top: 100,
     right: 200,
@@ -22,8 +19,7 @@ const createSpectrogram = (countainerNode) => {
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
   var barHeight = barCanvasHeight - margin.top;
 
-  /***** Création des éléments *****/
-  var svg = d3.select(countainerNode);
+  var svg = d3.select(containerNode);
 
   svg
     .attr("width", canvasWidth)
