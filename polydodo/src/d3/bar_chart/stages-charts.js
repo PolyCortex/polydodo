@@ -8,7 +8,6 @@ import {
 import { TRANSITION_TIME_MS } from "../constants";
 
 export const createStackedBarChart = (g, sources, x, color, tip, height) => {
-  //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
     .data(sources)
     .enter()
@@ -106,7 +105,6 @@ export const createSmallStackedBarChart = (
 
   var text = stackedBar.append("text").attr("class", "pourcentage");
 
-  //hours
   text
     .append("tspan")
     .text((d) => getDurationStringHM(d.value * totalTimeStamp * 30))
@@ -124,7 +122,6 @@ export const createSmallStackedBarChart = (
     .attr("font-size", "25px")
     .attr("font-weight", 15);
 
-  //pourcentage
   text
     .append("tspan")
     .text((d) => d.value * 100 + "%")
@@ -142,7 +139,6 @@ export const createSmallStackedBarChart = (
     .attr("font-size", "20px")
     .attr("font-weight", 10);
 
-  //create stackedbar axes
   createStagesDurationAxes(data, xAxis, width);
 
   g.append("g")
@@ -154,7 +150,6 @@ export const createSmallStackedBarChart = (
     .selectAll("text")
     .style("font-size", "18px");
 
-  //label
   g.append("text")
     .attr("class", "label-sleepType")
     .attr("x", 0)

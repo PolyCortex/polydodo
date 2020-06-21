@@ -68,15 +68,6 @@ export const addTransitions = (
   );
 };
 
-/**
- * Réalise une transition entre les données actuellement utilisées et les nouvelles qui doivent être utilisées.
- *
- * @param g       Le groupe SVG dans lequel le graphique à bulles est dessiné.
- * @param data    Les nouvelles données à utiliser.
- * @param x       L'échelle pour l'axe X.
- * @param y       L'échelle pour l'axe Y.
- * @param r       L'échelle pour le rayon des cercles.
- */
 const firstTransition = (g, xAxis, yAxis, height, color) => () => {
   g.selectAll(".y.axis").remove();
 
@@ -102,7 +93,6 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
     .attr("y", (d) => height * d.stage)
     .attr("height", height);
 
-  //Move X axes
   g.select(".x.axis")
     .transition()
     .attr("transform", "translate(0," + height * 5 + ")")
@@ -110,7 +100,6 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
     .call(xAxis);
 };
 
-//second data vizualisation
 const secondTransition = (
   g,
   data,

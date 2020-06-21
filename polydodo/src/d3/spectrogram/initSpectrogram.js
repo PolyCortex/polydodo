@@ -8,16 +8,13 @@ import { createSpectrgramChart, getToolTipText } from "./stages-charts";
 import { FREQUENCY_BINS } from "./constants";
 
 export const initSpectrogram = (g, node, width, height, margin) => {
-  /**** Interpolateur de couleurs ****/
   var colorInterpolator = d3.interpolatePlasma;
 
-  /***** Échelles *****/
   var x = d3.scaleLinear().range([0, width]);
   var y = d3.scaleBand().range([height, 0]);
   var yColor = d3.scaleLinear().range(y.range());
   var yAxisScale = d3.scaleLinear().range(y.range());
 
-  /****** Axes *******/
   var xAxis = d3.axisBottom(x).tickFormat((d) => `${d}h`);
   var yAxis = d3.axisLeft(yAxisScale).ticks(5, "s");
 
@@ -32,8 +29,6 @@ export const initSpectrogram = (g, node, width, height, margin) => {
       "translate(" + (margin.left + width) + "," + margin.top + ")"
     );
 
-  /***** Chargement des données *****/
-  /***** Prétraitement des données *****/
   var color = d3.scaleSequential().interpolator(colorInterpolator);
 
   var tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
@@ -54,7 +49,6 @@ export const initSpectrogram = (g, node, width, height, margin) => {
   domainX(x, data, node);
   domainY(y, yAxisScale, frequencies);
 
-  // /***** Création du graphique Stacked bar chart *****/
   createSpectrgramChart(
     spectrogram,
     sources,
@@ -83,12 +77,10 @@ export const initSpectrogram = (g, node, width, height, margin) => {
     .selectAll("text")
     .style("font-size", "18px");
 
-  // /***** Création de l'infobulle *****/
   tooltip.html(function (d) {
     return getToolTipText.call(this, d);
   });
   g.call(tooltip);
 
-  // /***** Création de la légende *****/
   legend(gLegend, color, yColor, height, margin.right);
 };
