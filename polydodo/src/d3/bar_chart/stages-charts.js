@@ -4,21 +4,9 @@ import {
   getDurationString,
   getDurationSecondString,
   getDurationStringHM,
-} from "../common/duration";
-import { TRANSITION_TIME_MS } from "d3/common/constantes";
+} from "../duration";
+import { TRANSITION_TIME_MS } from "../constants";
 
-/**
- * Fichier permettant de dessiner les graphiques "focus" et "contexte".
- */
-
-/**
- * Crée le graphique focus.
- *
- * @param g         Le groupe SVG dans lequel le graphique doit être dessiné.
- * @param sources   Les données à utiliser.
- * @param line      La fonction permettant de dessiner les lignes du graphique.
- * @param color     L'échelle de couleurs ayant une couleur associée à un nom de rue.
- */
 export const createStackedBarChart = (g, sources, x, color, tip, height) => {
   //Creating all the parts of the stacked bar chart
   g.selectAll(".rect")
@@ -35,19 +23,11 @@ export const createStackedBarChart = (g, sources, x, color, tip, height) => {
       tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
-    .on("mouseout", function() {
+    .on("mouseout", function () {
       tip.hide();
       d3.select(this).style("opacity", 1);
     });
 };
-/**
- * Obtient le texte associé à l'infobulle.
- *
- * @param d               Les données associées à la barre survollée par la souris.
- * @param currentData     Les données qui sont actuellement utilisées.
- * @param formatPercent   Fonction permettant de formater correctement un pourcentage.
- * @return {string}       Le texte à afficher dans l'infobulle.
- */
 
 export const getToolTipText = (d) => {
   var h = addZero(d.currentStageDebut.getHours());
@@ -64,12 +44,6 @@ export const getToolTipText = (d) => {
           Durée: <strong> ${getDurationString(hourDiff)} </strong>`; //TO DO ADD HOURS
 };
 
-/**
- * Obtient le texte associé à l'infobulle.
- *
- * @param d               Les données associées à la barre survollée par la souris.
- * @return {string}       Le texte à afficher dans l'infobulle.
- */
 export const getStackedToolTipText = (
   d,
   totalStagesPortion,

@@ -1,10 +1,10 @@
 import * as d3 from "d3";
-import { getDurationStringHM } from "../common/duration";
+import { getDurationStringHM } from "../duration";
 import {
   createSmallStackedBarChart,
   createStagesDurationAxes,
 } from "./stages-charts";
-import { TRANSITION_TIME_MS } from "d3/common/constantes";
+import { TRANSITION_TIME_MS } from "../constants";
 
 export let firstCallback = () => {};
 export let secondCallback = () => {};
