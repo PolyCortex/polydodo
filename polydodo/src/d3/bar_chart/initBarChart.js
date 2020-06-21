@@ -35,9 +35,7 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   const { xAxis, yAxis } = initializeAxes(x, y);
   const gBarChart = createDrawingGroup(svg, MARGIN);
 
-  /***** Chargement des données *****/
   const data = await d3.csv(barChartData);
-  /***** Prétraitement des données *****/
   var totalTimeStamp = data.length;
   var tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]);
 
@@ -55,7 +53,6 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   domainX(x, data);
   domainY(y, STATES_ORDERED);
 
-  /***** Création du graphique Stacked bar chart *****/
   createStackedBarChart(gBarChart, sources, x, color, tooltip, barHeight);
   if (useTransitions) {
     var gSecondBarChart = svg.append('g').attr('transform', 'translate(' + MARGIN.LEFT + ',' + (2 * MARGIN.TOP + barHeight) + ')');
@@ -89,7 +86,6 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   //get tick
   d3.selectAll('.tick').select('text').style('font-weight', 540);
 
-  /***** Création de l'infobulle *****/
   tooltip.html(function (d) {
     return getToolTipText.call(this, d);
   });
@@ -100,7 +96,6 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   });
   svg.call(tipStacked);
 
-  /***** Création de la légende *****/
   barLegend(svg, STATES, color);
 };
 

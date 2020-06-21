@@ -1,14 +1,3 @@
-/**
- * Fichier permettant de générer la légende et de gérer les interactions de celle-ci.
- */
-
-/**
- * Crée une légende à partir de la source.
- *
- * @param svg       L'élément SVG à utiliser pour créer la légende.
- * @param sources   Données triées par nom de rue et par date.
- * @param color     Échelle de 10 couleurs.
- */
 export const barLegend = (svg, states, color) => {
   var size = 20;
 
@@ -29,10 +18,7 @@ export const barLegend = (svg, states, color) => {
     .style('fill', function (d, i) {
       return color(i);
     })
-    .attr('transform', 'translate(' + 100 + ',' + 0 + ')')
-    .on('click', function (d) {
-      //displayLine(d3.select(this), color(d));
-    });
+    .attr("transform", "translate(" + 100 + "," + 0 + ")");
 
   svg
     .selectAll('names')

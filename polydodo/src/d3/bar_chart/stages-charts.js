@@ -3,8 +3,7 @@ import { addZero, getDurationString, getDurationSecondString, getDurationStringH
 import { TRANSITION_TIME_MS } from '../constants';
 
 export const createStackedBarChart = (g, sources, x, color, tip, height) => {
-  //Creating all the parts of the stacked bar chart
-  g.selectAll('.rect')
+  g.selectAll(".rect")
     .data(sources)
     .enter()
     .append('rect')
@@ -79,7 +78,6 @@ export const createSmallStackedBarChart = (g, pourcentageData, data, name, total
 
   var text = stackedBar.append('text').attr('class', 'pourcentage');
 
-  //hours
   text
     .append('tspan')
     .text((d) => getDurationStringHM(d.value * totalTimeStamp * 30))
@@ -97,7 +95,6 @@ export const createSmallStackedBarChart = (g, pourcentageData, data, name, total
     .attr('font-size', '25px')
     .attr('font-weight', 15);
 
-  //pourcentage
   text
     .append('tspan')
     .text((d) => d.value * 100 + '%')
@@ -115,7 +112,6 @@ export const createSmallStackedBarChart = (g, pourcentageData, data, name, total
     .attr('font-size', '20px')
     .attr('font-weight', 10);
 
-  //create stackedbar axes
   createStagesDurationAxes(data, xAxis, width);
 
   g.append('g')
@@ -127,6 +123,9 @@ export const createSmallStackedBarChart = (g, pourcentageData, data, name, total
     .selectAll('text')
     .style('font-size', '18px');
 
-  //label
-  g.append('text').attr('class', 'label-sleepType').attr('x', 0).attr('y', -15).text(name);
+  g.append("text")
+    .attr("class", "label-sleepType")
+    .attr("x", 0)
+    .attr("y", -15)
+    .text(name);
 };

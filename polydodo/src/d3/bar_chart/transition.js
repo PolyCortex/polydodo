@@ -32,15 +32,6 @@ export const addTransitions = (
   fifthCallback = fifthTransition(gThirdBarChart, sources, xAxis, width, barHeight, totalTimeStamp, color);
 };
 
-/**
- * Réalise une transition entre les données actuellement utilisées et les nouvelles qui doivent être utilisées.
- *
- * @param g       Le groupe SVG dans lequel le graphique à bulles est dessiné.
- * @param data    Les nouvelles données à utiliser.
- * @param x       L'échelle pour l'axe X.
- * @param y       L'échelle pour l'axe Y.
- * @param r       L'échelle pour le rayon des cercles.
- */
 const firstTransition = (g, xAxis, yAxis, height, color) => () => {
   g.selectAll('.y.axis').remove();
 
@@ -66,16 +57,23 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
     .attr('y', (d) => height * d.stage)
     .attr('height', height);
 
-  //Move X axes
-  g.select('.x.axis')
+  g.select(".x.axis")
     .transition()
     .attr('transform', 'translate(0,' + height * 5 + ')')
     .duration(2000)
     .call(xAxis);
 };
 
-//second data vizualisation
-const secondTransition = (g, data, firstIndexes, totalStagePortion, width, height, xAxis, tip) => () => {
+const secondTransition = (
+  g,
+  data,
+  firstIndexes,
+  totalStagePortion,
+  width,
+  height,
+  xAxis,
+  tip
+) => () => {
   createStagesDurationAxes(data, xAxis, width);
 
   g.select('.x.axis').transition().duration(500).call(xAxis);
