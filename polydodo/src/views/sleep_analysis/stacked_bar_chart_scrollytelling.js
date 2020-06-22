@@ -2,16 +2,30 @@ import React from 'react';
 import { Container, Card, CardBody } from 'reactstrap';
 import { Waypoint } from 'react-waypoint';
 
-import D3Component from '../../components/d3component';
+import hypnogramCSVPath from "assets/data/hypnogram.csv";
 
-import { firstCallback, secondCallback, thirdCallback, fourthCallback, fifthCallback } from '../../d3/bar_chart/transition';
-import createBarChart from '../../d3/bar_chart/barChart';
+import D3Component from "../../components/d3component";
+
+import {
+  firstCallback,
+  secondCallback,
+  thirdCallback,
+  fourthCallback,
+  fifthCallback,
+} from "../../d3/bar_chart/transition";
+import createBarChart from "../../d3/bar_chart/barChart";
+import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
+  const csvData = useCSVData(hypnogramCSVPath);
   return (
     <Container>
-      <div style={{ position: 'sticky', top: '10%' }}>
-        <D3Component callback={createBarChart} />
+      <div style={{ position: "sticky", top: "10%" }}>
+        {csvData ? (
+          <D3Component callback={createBarChart} data={csvData} />
+        ) : (
+          "..."
+        )}
       </div>
       <div style={{ marginBottom: '50%' }} />
       <Card className="shadow" style={{ position: 'relative' }}>
