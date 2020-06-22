@@ -93,16 +93,16 @@ const Performance = () => {
           </li>
         </ul>
         <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
-        {csvDataPredicted && csvDataSleepEDF ? (
-          <D3Component
-            callback={(svg, data) =>
-              createComparativeHypnogram(svg, data, ["Classifier", "Sleep-EDF"])
-            }
-            data={[csvDataPredicted, csvDataSleepEDF]}
-          />
-        ) : (
-          "..."
-        )}
+        <D3Component
+          callback={(svg, data) =>
+            createComparativeHypnogram(svg, data, ["Classifier", "Sleep-EDF"])
+          }
+          data={
+            csvDataPredicted && csvDataSleepEDF
+              ? [csvDataPredicted, csvDataSleepEDF]
+              : null
+          }
+        />
         <ClassificationReport
           rows={[
             ["W", 92, 93, 92, 242],
@@ -116,19 +116,19 @@ const Performance = () => {
         <h3 className="mt-5">
           Classifier's accuracy according to the electrophysiologist
         </h3>
-        {csvDataPredictedOpenBCI && csvDataOpenBCIElectrophysiologist ? (
-          <D3Component
-            callback={(svg, data) =>
-              createComparativeHypnogram(svg, data, [
-                "Classifier",
-                "Electrophysiologist",
-              ])
-            }
-            data={[csvDataPredictedOpenBCI, csvDataOpenBCIElectrophysiologist]}
-          />
-        ) : (
-          "..."
-        )}
+        <D3Component
+          callback={(svg, data) =>
+            createComparativeHypnogram(svg, data, [
+              "Classifier",
+              "Electrophysiologist",
+            ])
+          }
+          data={
+            csvDataPredictedOpenBCI && csvDataOpenBCIElectrophysiologist
+              ? [csvDataPredictedOpenBCI, csvDataOpenBCIElectrophysiologist]
+              : null
+          }
+        />
         <ClassificationReport
           rows={[
             ["W", 85, 93, 92, 304],
@@ -140,19 +140,19 @@ const Performance = () => {
           ]}
         />
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement</h3>
-        {csvDataElectrophysiologist && csvDataSleepEDF ? (
-          <D3Component
-            callback={(svg, data) =>
-              createComparativeHypnogram(svg, data, [
-                "Electrophysiologist",
-                "Sleep-EDF",
-              ])
-            }
-            data={[csvDataElectrophysiologist, csvDataSleepEDF]}
-          />
-        ) : (
-          "..."
-        )}
+        <D3Component
+          callback={(svg, data) =>
+            createComparativeHypnogram(svg, data, [
+              "Electrophysiologist",
+              "Sleep-EDF",
+            ])
+          }
+          data={
+            csvDataElectrophysiologist && csvDataSleepEDF
+              ? [csvDataElectrophysiologist, csvDataSleepEDF]
+              : null
+          }
+        />
         <ClassificationReport
           rows={[
             ["W", 92, 93, 92, 304],

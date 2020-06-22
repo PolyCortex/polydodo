@@ -17,7 +17,6 @@ const createSpectrogram = (containerNode, data) => {
 
   var width = canvasWidth - margin.left - margin.right;
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
-  var barHeight = barCanvasHeight - margin.top;
 
   var svg = d3.select(containerNode);
 

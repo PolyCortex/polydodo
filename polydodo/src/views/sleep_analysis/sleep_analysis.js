@@ -84,14 +84,10 @@ const SleepAnalysis = () => {
           between sleep onset and the first REM epoch, namely REM latency, which
           corresponds to 20 minutes.
         </p>
-        {csvDataSleepEDF ? (
-          <D3Component
-            callback={createSingleHypnogram}
-            data={[csvDataSleepEDF]}
-          />
-        ) : (
-          "..."
-        )}
+        <D3Component
+          callback={createSingleHypnogram}
+          data={csvDataSleepEDF ? [csvDataSleepEDF] : null}
+        />
         <p>
           Sleep cycles take place in a broader process, named the circadian
           rhythm. It is the one that regulates our wake and sleep cycles over a
@@ -142,11 +138,7 @@ const SleepAnalysis = () => {
           </a>
           that decomposes sound frequency from your microphone.
         </p>
-        {csvDataSleepEDF ? (
-          <D3Component callback={createSpectrogram} data={csvDataSleepEDF} />
-        ) : (
-          "..."
-        )}
+        <D3Component callback={createSpectrogram} data={csvDataSleepEDF} />
         <p className="mt-5">
           Generally, when talking about brain waves, we group certain
           frequencies together into bands. There are overall five frequency
