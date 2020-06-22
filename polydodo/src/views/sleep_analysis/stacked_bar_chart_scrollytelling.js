@@ -21,11 +21,7 @@ const StackedBarChartScrollyTelling = () => {
   return (
     <Container>
       <div style={{ position: "sticky", top: "10%" }}>
-        {csvData ? (
-          <D3Component callback={createBarChart} data={csvData} />
-        ) : (
-          "..."
-        )}
+        <D3Component callback={createBarChart} data={csvData} />
       </div>
       <div style={{ marginBottom: "50%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
