@@ -2,7 +2,6 @@ import * as d3 from "d3";
 import tip from "d3-tip";
 import _ from "lodash";
 
-import barChartData from "assets/data/hypnogram.csv";
 import {
   createColorScale,
   domainX,
@@ -19,14 +18,14 @@ import {
   getStackedToolTipText,
 } from "./stages-charts";
 import { addTransitions } from "./transition";
-import { STATES_ORDERED, WIDTH, MARGIN } from "./constants";
+import { STATES_ORDERED, WIDTH, HEIGHT, MARGIN } from "./constants";
 import { STATES } from "../constants";
 
-const initializeScales = (height) => {
+const initializeScales = () => {
   const x = d3.scaleTime().range([0, WIDTH]);
   const y = d3
     .scaleOrdinal()
-    .range(_.range(0, height + 1, height / STATES.length));
+    .range(_.range(0, HEIGHT + 1, HEIGHT / STATES.length));
 
   return { x, y };
 };
@@ -42,16 +41,15 @@ const createDrawingGroup = (svg, { LEFT, TOP }) => {
   return svg.append("g").attr("transform", `translate(${LEFT}, ${TOP})`);
 };
 
-const initializeBarChart = async (svg, height, useTransitions = true) => {
+const initializeBarChart = async (svg, data, useTransitions = true) => {
   const barHeight = Math.round(
-    useTransitions ? height / STATES.length : height
+    useTransitions ? HEIGHT / STATES.length : HEIGHT
   );
 
-  const { x, y } = initializeScales(height);
+  const { x, y } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, y);
   const gBarChart = createDrawingGroup(svg, MARGIN);
 
-  const data = await d3.csv(barChartData);
   var totalTimeStamp = data.length;
   var tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
 
