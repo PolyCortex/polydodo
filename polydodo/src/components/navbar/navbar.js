@@ -15,7 +15,7 @@ import {
 import Logo from "assets/img/logo.png";
 import text from "./text.json";
 
-const OutsideLink = ({href, iconClass, linkName, tooltipText, tooltipID}) => {
+const OutsideLink = ({ href, iconClass, linkName, tooltipText, tooltipID }) => {
   return (
     <NavItem>
       <NavLink
@@ -25,7 +25,7 @@ const OutsideLink = ({href, iconClass, linkName, tooltipText, tooltipID}) => {
         target="_blank"
       >
         <i className={`fa ${iconClass}`} />
-        <span className="nav-link-inner--text d-lg-none ml-2"> {linkName} </span>
+        <span className="nav-link-inner--text d-lg-none ml-2">{linkName}</span>
       </NavLink>
       <UncontrolledTooltip delay={0} target={tooltipID}>
         {tooltipText}
@@ -60,16 +60,12 @@ class Navbar extends React.Component {
   }
 
   render() {
-
     return (
       <div
-        ref={ref => this.navbarstrapRef = ref}
+        ref={(ref) => (this.navbarstrapRef = ref)}
         className="navbar-main navbar-transparent navbar-light headroom"
       >
-        <NavbarStrap
-          id="navbar-main"
-          expand="lg"
-        >
+        <NavbarStrap id="navbar-main" expand="lg">
           <Container>
             <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
               <img alt="Polydodo" src={Logo} />
@@ -77,16 +73,24 @@ class Navbar extends React.Component {
 
             <Nav className="navbar-nav-hover align-items-lg-center" navbar>
               <NavItem>
-                <NavLink to="/" tag={Link}> {text["navbar_home"]} </NavLink>
+                <NavLink to="/" tag={Link}>
+                  {text["navbar_home"]}
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/record-my-sleep" tag={Link}> {text["navbar_record"]} </NavLink>
+                <NavLink to="/record-my-sleep" tag={Link}>
+                  {text["navbar_record"]}
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/analyze-my-sleep" tag={Link}> {text["navbar_analyze"]} </NavLink>
+                <NavLink to="/analyze-my-sleep" tag={Link}>
+                  {text["navbar_analyze"]}
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/performance" tag={Link}> {text["navbar_performance"]} </NavLink>
+                <NavLink to="/performance" tag={Link}>
+                  {text["navbar_performance"]}
+                </NavLink>
               </NavItem>
             </Nav>
 

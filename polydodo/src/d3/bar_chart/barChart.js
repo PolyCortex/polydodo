@@ -1,34 +1,12 @@
 import * as d3 from "d3";
-import { initializeBarChart } from "./initBarChart";
+import initializeBarChart from "./initBarChart";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, HEIGHT } from "./constants";
 
-const createBarChart = (countainerNode) => {
-    /***** Configuration *****/
-    /*** Dimensions ***/
-    const margin = {
-      top: 100,
-      right: 70,
-      bottom: 50,
-      left: 70
-    };
+const createBarChart = async (containerNode) => {
+  const svg = d3.select(containerNode);
+  svg.attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
 
-    var canvasWidth = 1000
-    var barCanvasHeight = 600
-  
-    var width = canvasWidth - margin.left - margin.right;
-    var barHeight = barCanvasHeight - margin.top - margin.bottom;
-  
-    /***** Création des éléments *****/
-    const svg = d3.select(countainerNode)
-    
-    svg.attr("width", canvasWidth)
-      .attr("height", barCanvasHeight);
-    
-    var barChart = svg.append("svg")
-        .attr("width", canvasWidth)
-        .attr("height", barCanvasHeight);
+  await initializeBarChart(svg, HEIGHT);
+};
 
-    return initializeBarChart(barChart, width, barHeight, margin);
-  }
-
-  export default createBarChart
-  
+export default createBarChart;

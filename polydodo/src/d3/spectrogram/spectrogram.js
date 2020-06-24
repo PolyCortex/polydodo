@@ -1,20 +1,17 @@
 import * as d3 from "d3";
 import { initSpectrogram } from "./initSpectrogram";
-import { initializeBarChart } from "../bar_chart/initBarChart";
+import initializeBarChart from "../bar_chart/initBarChart";
 
-const createSpectrogram = (countainerNode) => {
-  /***** Configuration *****/
-
-  /*** Dimensions ***/
+const createSpectrogram = (containerNode) => {
   const margin = {
     top: 100,
     right: 200,
     bottom: 50,
-    left: 70
+    left: 70,
   };
 
-  var canvasWidth = 1000
-  var canvisHeight = 1200
+  var canvasWidth = 1000;
+  var canvisHeight = 1200;
   var barCanvasHeight = canvisHeight / 6;
   var spectroCanvasHeight = (canvisHeight - barCanvasHeight) / 2;
 
@@ -22,8 +19,7 @@ const createSpectrogram = (countainerNode) => {
   var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
   var barHeight = barCanvasHeight - margin.top;
 
-  /***** Création des éléments *****/
-  var svg = d3.select(countainerNode);
+  var svg = d3.select(containerNode);
 
   svg
     .attr("width", canvasWidth)
@@ -49,7 +45,7 @@ const createSpectrogram = (countainerNode) => {
     .attr("width", canvasWidth)
     .attr("height", spectroCanvasHeight);
 
-  initializeBarChart(barChart, width, barHeight, margin, false);
+  initializeBarChart(barChart, barHeight, false);
   initSpectrogram(spectrogramFPZ, "Fpz_Cz", width, spectroHeight, margin);
   initSpectrogram(spectrogramPZ, "Pz_Oz", width, spectroHeight, margin);
 };

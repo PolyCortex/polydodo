@@ -1,17 +1,11 @@
 import * as d3 from "d3";
 import tip from "d3-tip";
+
 import data from "assets/data/spectrograms";
-
 import { domainColor, domainX, domainY, createSources } from "./preproc";
-
 import { legend } from "./legend";
-
 import { createSpectrgramChart, getToolTipText } from "./stages-charts";
-
-const SECONDS_PER_DATUM = 30;
-export const DATUM_PER_TIMESTAMP = 4;
-export const TIMESTAMP_DURATION = SECONDS_PER_DATUM * DATUM_PER_TIMESTAMP;
-export const FREQUENCY_BINS = 5;
+import { FREQUENCY_BINS } from "./constants";
 
 export const initSpectrogram = (g, node, width, height, margin) => {
   /**** Interpolateur de couleurs ****/
