@@ -13,6 +13,16 @@ Once the right dataset was chosen, the following steps were taken in order to su
 4) Testing on Open BCI data
 5) Feature and annotation formatting to csv
 
+## How to Recreate Results
+
+The order in which the notebooks should be run is the following:
+
+1) `exploration/subject_exploration.ipynb`: This notebook will generate the recording's info file, namely `recordings-info.csv`, which holds the extrapolated onset time at which the user closed the lights. It also holds the total night duration. Those information will be used to crop the recordings to only keep epochs of the subject's night.
+2) `feature_extraction.ipynb`: This notebook takes the recordings file and extract the different features. It will save two files, one that holds the features (`x_features.npy`) and the other which holds the sleep stage labels (`y_observations.npy`). If you also want to test the OpenBCI performance, it extracts the feature from the OpenBCI recordings into the `X_openbci_HP.npy` and scored labels into `y_openbci_HP.npy`.
+3) `models/{RF_HMM, KNN, NB, SVC, voting_clf}.ipynb`: These notebooks train the corresponding classifier with the previously extracted features. Each notebook also saves the trained classifier into the `trained_models` folder. Also, in order to have the hidden markov model matrices for the postprecessing step, you must run the final steps of `models/RF_HMM.ipynb`. 
+4) `data_generation.ipynb`: This notebook allows the formatting of the data so that it can be used by the front end.
+5) `prediction_{openbci, anonymous}.ipynb`: These notebooks allows you to check the accuracy of a trained classifier on a single night recording.
+
 ## Dataset & Exploration
 
 We will cover the choices that led us to Sleep-EDF as our main dataset, a brief overview and exploration results.
@@ -40,7 +50,7 @@ Overall, there are 82 subjects whom participated in this research. The following
 | EOG Horizontal | 100 Hz           | [-1009,+1009]  | uV   | [-2048,+2047] | 0.5 Hz              | -        |
 | Resp oro-nasal | 1 Hz             | [-2048,+2047]  |      | [-2048,+2047] | 0.03 Hz             | 0.9 Hz   |
 | EMG Sumbental  | 1 Hz             | [-5,+5]        | uV   | [-2500,+2500] | 16 Hz Rectification | 0.7 Hz   |
-| Temp Rectal    | 1 Hz             | [+34,+40]      | °C   | [-2849,+2731] |                     |          |
+| Temp Rectal    | 1 Hz             | [+34,+40]      | °C   | [-2849,+2731] | -                   | -        |
 
 > The EOG and EEG signals were each sampled at 100 Hz. The submental-EMG signal was electronically highpass filtered, rectified and low-pass filtered after which the resulting EMG envelope expressed in uV rms (root-mean-square) was sampled at 1Hz. Oro-nasal airflow, rectal body temperature and the event marker were also sampled at 1Hz.
 
