@@ -1,12 +1,10 @@
 # Sleep Stage Classification
-___
 
 This project aims to classify a full night of sleep based on two-channels of raw EEG signal. The sleep stage annotations should follow those of the *American Academy of Sleep Medicine (AASM) scoring manual* [[1]](https://aasm.org/clinical-resources/scoring-manual/).
 
 A particularity of this project is that the data on which we will later apply our classifier will be different from the data from which we've trained on. Indeed, since there's no large public dataset of sleep stage classification based on the hardware we use and recommend (because of its affordability), we need to train on a dataset that used different recording equipment. Thus, our pipeline should also be able to classify sleep based on EEG acquired by different types of hardware (i.e. OpenBCI).
 
 ## Project Summary
-___
 
 Once the right dataset was chosen, the following steps were taken in order to successfully classify sleep stages:
 1) Dataset exploration
@@ -16,19 +14,16 @@ Once the right dataset was chosen, the following steps were taken in order to su
 5) Feature and annotation formatting to csv
 
 ## Dataset & Exploration
-___
 
 We will cover the choices that led us to Sleep-EDF as our main dataset, a brief overview and exploration results.
 
 ### Dataset Choice: Sleep-EDF Expanded
-___
 
 The dataset we chose needed to be easily accessible and generally used within the community, so that we could easily compare with literature. We initially considered using the Sleep-EDF Expanded [[2]](https://physionet.org/content/sleep-edfx/1.0.0/), the Montreal archive of sleep studies [[3]]() and the Sleep Heart Health Study collection [[4]](). Although the former has the least number of recordings, we only kept this one, because it is accessible online, and doesn't require filling any form or ethical committee submission. Also, the dataset is quite homogenious, whereas all recordings follow the same format and montage. It then requires less data preprocessing. It also contains enough recordings to train our classifiers. Indeed, we can see that, although there are not many recordings in Sleep EDF Expanded compared to the others, each one of the recording lasts about 20 hours (8 hours asleep). It is then possible to even apply deep sleep algorithm on that dataset, so that it wouldn't be a limitation when we will explore different kinds of models. Finally, , as stated here [[4]](fiorillo et al. 2019)., Sleep-EDF Expanded, along with Sleep-EDF, are the most commonly used datasets to test sleep stage classification algorithm.
 
 On the other hand, for the next iterations of improving our classifier, the use of other dataset could be useful to train on certain age groups not captured by Sleep-EDF Expanded, or subjects with various sleep pathologies.
 
 ### Overview
-___
 
 <!-- Short desciption of the chosen dataset (context what/when/how/why), how it compares to the data we will afterwards collect (scoring manual, recording equipment, signal preprocessing) -->
 
@@ -50,24 +45,28 @@ Overall, there are 82 subjects whom participated in this research. The following
 > The EOG and EEG signals were each sampled at 100 Hz. The submental-EMG signal was electronically highpass filtered, rectified and low-pass filtered after which the resulting EMG envelope expressed in uV rms (root-mean-square) was sampled at 1Hz. Oro-nasal airflow, rectal body temperature and the event marker were also sampled at 1Hz.
 
 ### Exploration results
-___
 
 <!-- find features that discriminates sleep stages the most -->
 
+We first explored the dataset in order to find the features that will help discriminate sleep stages. In order to accomplish this, we've divided in exploration into two categories: exploration through the categorical features that came with the dataset (see `exploration/subject_exploration.ipynb`), and exploration through the two EEG signal (see `exploration/exploration.ipynb`).
+
+Firstly, a description of the subjects that participated in the recording of the dataset includes their age, their sex and the time at which they closed the lights. In order to analyze the impact of the different characteristics on sleep, we extrapolated the total time spent alseep, the total time spent in every sleep stage and the hour at which the subject went to sleep.
+
+Secondly, we explored different features that can be computed from each epoch in order to see which features allows to discriminate sleep stages. Based on different papers, we explored time domain features, frequency domain features and time domain features after applying subband filters.
+
+<!-- Talk more on the results of that exploration -->
+
 ## Feature Extraction
-___
 
 <!-- how we've managed to extract features effectively, given restrictions on memory (and time) -->
 
 ## Explored Classifiers
-___
 
+We've mostly tested on classical statistical models, and only tried one deep learning models. Having completed the fastidious work of extracting significant features from our signals, representational learning, with CNN, did not give us as good results as we had with our extracted features. Furthermore, the simpler models can be trained much faster, and gave us results that we could more easily interpret.
 
 ## Postprocessing
-___
 
 ## Results
-___
 
 
 See: https://www.kaggle.com/WinningModelDocumentationGuidelines
