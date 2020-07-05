@@ -15,14 +15,16 @@ Once the right dataset was chosen, the following steps were taken in order to su
 
 ## How to Recreate Results
 
-The order in which the notebooks should be run is the following:
+You must first install package dependencies by running the following:
 
-1) `exploration/subject_exploration.ipynb`: This notebook will generate the recording's info file, namely `recordings-info.csv`, which holds the extrapolated onset time at which the user closed the lights. It also holds the total night duration. Those information will be used to crop the recordings to only keep epochs of the subject's night.
+> pip install -r requirements.txt
+
+Afterwards, the order in which the notebooks should be run is the following:
+
+1) `exploration/subject_exploration.ipynb`: This notebook will generate the recording's info file, namely `recordings-info.csv`, which holds the extrapolated offset time at which the user closed the lights. It also holds the total night duration. Those information will be used to crop the recordings to only keep epochs of the subject's night.
 2) `feature_extraction.ipynb`: This notebook takes the recordings file and extract the different features. It will save two files, one that holds the features (`x_features.npy`) and the other which holds the sleep stage labels (`y_observations.npy`). If you also want to test the OpenBCI performance, it extracts the feature from the OpenBCI recordings into the `X_openbci_HP.npy` and scored labels into `y_openbci_HP.npy`.
 3) `models/{RF_HMM, KNN, NB, SVC, voting_clf}.ipynb`: These notebooks train the corresponding classifier with the previously extracted features. Each notebook also saves the trained classifier into the `trained_models` folder. Also, in order to have the hidden markov model matrices for the postprecessing step, you must run the final steps of `models/RF_HMM.ipynb`. 
-4) `data_generation.ipynb`: This notebook allows the formatting of the data so that it can be used by the front end.
-5) `prediction_{openbci, anonymous}.ipynb`: These notebooks allows you to check the accuracy of a trained classifier on a single night recording.
-
+4) `prediction_{openbci, anonymous}.ipynb`: These notebooks allows you to check the accuracy of a trained classifier on a single night recording. It takes in input the features, that have to be extracted beforehand, and outputs the epoch's labels.
 ## Dataset & Exploration
 
 We will cover the choices that led us to Sleep-EDF as our main dataset, a brief overview and exploration results.
@@ -48,7 +50,7 @@ Overall, there are 82 subjects whom participated in this research. The following
 | EEG Fpz-Cz     | 100 Hz           | [-192,+192]    | uV   | [-2048,+2047] | 0.5 Hz              | -        |
 | EEG Pz-Oz      | 100 Hz           | [-197,+196]    | uV   | [-2048,+2047] | 0.5 Hz              | -        |
 | EOG Horizontal | 100 Hz           | [-1009,+1009]  | uV   | [-2048,+2047] | 0.5 Hz              | -        |
-| Resp oro-nasal | 1 Hz             | [-2048,+2047]  |      | [-2048,+2047] | 0.03 Hz             | 0.9 Hz   |
+| Resp oro-nasal | 1 Hz             | [-2048,+2047]  | -    | [-2048,+2047] | 0.03 Hz             | 0.9 Hz   |
 | EMG Sumbental  | 1 Hz             | [-5,+5]        | uV   | [-2500,+2500] | 16 Hz Rectification | 0.7 Hz   |
 | Temp Rectal    | 1 Hz             | [+34,+40]      | °C   | [-2849,+2731] | -                   | -        |
 
@@ -64,19 +66,39 @@ Firstly, a description of the subjects that participated in the recording of the
 
 Secondly, we explored different features that can be computed from each epoch in order to see which features allows to discriminate sleep stages. Based on different papers, we explored time domain features, frequency domain features and time domain features after applying subband filters.
 
-<!-- Talk more on the results of that exploration -->
-
 ## Feature Extraction
 
 <!-- how we've managed to extract features effectively, given restrictions on memory (and time) -->
 
+Running the feature extraction on all the dataset involved either getting memory-optimized computing instances (i.e. GCP), or to make a pipeline processing up to a certain number of files at a time. We went with the second option, because the implementation of a pipeline would not be too complex or too long, with the help of `FeatureUnion` and `Pipeline` classes from `scikit-learn`. Furthermore, anybody can run on any computer and without having to worry with credits.
+
 ## Explored Classifiers
 
-We've mostly tested on classical statistical models, and only tried one deep learning models. Having completed the fastidious work of extracting significant features from our signals, representational learning, with CNN, did not give us as good results as we had with our extracted features. Furthermore, the simpler models can be trained much faster, and gave us results that we could more easily interpret.
+We've mostly tested on classical statistical models, and only tried one deep learning model. Having completed the fastidious work of extracting significant features from our signals, representational learning, with CNN, did not give us as good results as we had with our extracted features. Furthermore, the simpler models can be trained much faster, and gave us results that we could more easily interpreted.
 
 ## Postprocessing
+
+As we've mostly used models that considered each 30 seconds epoch as independant observations, we wanted to leverage the time dependancy of sleep stage labels through the night.
+
+<!-- Il est défini, dans la litt´erature, diff´erentes mani`eres
+d’appliquer un mod`ele de Markov cach´e `a la sortie d’un classifieur
+ou d’un r´eseau qui calcule les probabilit´es de chaque
+stade en se basant uniquement sur les signaux EEG [Jiang
+et al., 2019] [Malafeev et al., 2018]. L’impl´ementation
+choisie consiste `a d´efinir l’´etat cach´e par le stade de sommeil
+manuellement scor´ee par l’´electrophysiologue m´edicale.
+Les variables observ´ees sont quant `a elles les stades pr´edits
+par le classifieur, qui dans notre cas, seront un CNN et
+un RF. Les tables de probabilit´es de transition et de d´epart
+seront calcul´ees `a partir des donn´ees scor´ees des ensembles
+d’entraˆınement et de validation. La table de probabilit´es
+d’´emission seront calcul´es sur l’ensemble de validation et,
+dans la cas du RF, `a travers tous les folds, et dans le cas du
+CNN, sur l’´epoque ayant le meilleur score de justesse. Finalement,
+l’algorithme de Viterbi est appliqu´e afin de trouv´e
+la s´equence d’´etats cach´es la plus probable ´etant donn´e nos
+´emissions sur notre ensemble de test. -->
 
 ## Results
 
 
-See: https://www.kaggle.com/WinningModelDocumentationGuidelines
