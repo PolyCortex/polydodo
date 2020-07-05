@@ -106,9 +106,7 @@ venv.bak/
 # Other
 .DS_Store
 
-classification/data/*
-node_modules/
+data/*
 .vscode/
-build/
 
 *.joblib
