@@ -1,9 +1,5 @@
-import * as d3 from "d3";
-import {
-  TIMESTAMP_DURATION,
-  DATUM_PER_TIMESTAMP,
-  FREQUENCY_BINS,
-} from "./constants";
+import * as d3 from 'd3';
+import { TIMESTAMP_DURATION, DATUM_PER_TIMESTAMP, FREQUENCY_BINS } from './constants';
 
 export const domainColor = (color, sources) => {
   var extent = d3.extent(sources, (d) => d.Intensity);
@@ -28,18 +24,10 @@ export const createSources = (data, node, frequencies) => {
       var intensity = 0;
       var currFrequencyBin = 0;
       var currTimestampBin = 0;
-      for (
-        let kdx = idx;
-        kdx < idx + DATUM_PER_TIMESTAMP && kdx < nodeData.length;
-        kdx++
-      ) {
+      for (let kdx = idx; kdx < idx + DATUM_PER_TIMESTAMP && kdx < nodeData.length; kdx++) {
         currTimestampBin++;
         currFrequencyBin = 0;
-        for (
-          let ldx = jdx;
-          ldx < jdx + FREQUENCY_BINS && ldx < data.Frequencies.length;
-          ldx++
-        ) {
+        for (let ldx = jdx; ldx < jdx + FREQUENCY_BINS && ldx < data.Frequencies.length; ldx++) {
           currFrequencyBin++;
           intensity += nodeData[kdx][ldx];
         }

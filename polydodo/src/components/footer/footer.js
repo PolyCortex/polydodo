@@ -1,29 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {
-  Button,
-  NavItem,
-  NavLink,
-  Nav,
-  Container,
-  Row,
-  Col,
-  UncontrolledTooltip
-} from "reactstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, NavItem, NavLink, Nav, Container, Row, Col, UncontrolledTooltip } from 'reactstrap';
 
-import Partners from "./partners";
-import text from "./text.json";
+import Partners from './partners';
+import text from './text.json';
 
 const PlatformButton = ({ href, color, iconClass, tooltipText, tooltipID }) => {
   return (
     <>
-      <Button
-        className="btn-icon-only rounded-circle ml-1"
-        color={color}
-        href={href}
-        id={tooltipID}
-        target="_blank"
-      >
+      <Button className="btn-icon-only rounded-circle ml-1" color={color} href={href} id={tooltipID} target="_blank">
         <span className="btn-inner--icon">
           <i className={`fa ${iconClass}`} />
         </span>
@@ -40,25 +25,21 @@ PlatformButton.propTypes = {
   color: PropTypes.string,
   iconClass: PropTypes.string,
   tooltipText: PropTypes.string,
-  tooltipID: PropTypes.string.isRequired
+  tooltipID: PropTypes.string.isRequired,
 };
 
 PlatformButton.defaultProps = {
-  color: "secondary",
-  iconClass: "",
-  tooltipText: ""
+  color: 'secondary',
+  iconClass: '',
+  tooltipText: '',
 };
 
 const Copyright = () => {
   return (
     <div className="copyright">
-      © {new Date().getFullYear()}{" "}
-      <a
-        href="http://polycortex.polymtl.ca/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {text["footer_copyright_polycortex"]}
+      © {new Date().getFullYear()}{' '}
+      <a href="http://polycortex.polymtl.ca/" target="_blank" rel="noopener noreferrer">
+        {text['footer_copyright_polycortex']}
       </a>
     </div>
   );
@@ -69,12 +50,12 @@ const Navfooter = () => {
     <Nav className=" nav-footer justify-content-end">
       <NavItem>
         <NavLink href="http://polycortex.polymtl.ca/" target="_blank">
-          {text["footer_about-us"]}
+          {text['footer_about-us']}
         </NavLink>
       </NavItem>
       <NavItem>
         <NavLink href="https://github.com/PolyCortex" target="_blank">
-          {text["footer_license"]}
+          {text['footer_license']}
         </NavLink>
       </NavItem>
     </Nav>
@@ -88,47 +69,37 @@ class Footer extends React.Component {
         <Partners />
         <Container>
           <hr />
-          <h3 className="text-primary font-weight-light mb-2">
-            {text["support_title"]}
-          </h3>
+          <h3 className="text-primary font-weight-light mb-2">{text['support_title']}</h3>
           <Row className="row-grid align-items-center mb-5">
             <Col className="mt-sm" lg="8">
-              <h4 className=" mb-3 font-weight-light">
-                {text["support_platforms"]}
-              </h4>
+              <h4 className=" mb-3 font-weight-light">{text['support_platforms']}</h4>
               <PlatformButton
                 href="https://www.facebook.com/polycortex"
                 color="facebook"
                 iconClass="fa-facebook"
-                tooltipText={text["support_facebook_tooltip"]}
+                tooltipText={text['support_facebook_tooltip']}
                 tooltipID="tooltip_facebook"
               />
               <PlatformButton
                 href="https://www.instagram.com/polycortex/"
                 color="instagram"
                 iconClass="fa-instagram"
-                tooltipText={text["support_instagram_tooltip"]}
+                tooltipText={text['support_instagram_tooltip']}
                 tooltipID="tooltip_instagram"
               />
               <PlatformButton
                 href="https://github.com/PolyCortex"
                 color="github"
                 iconClass="fa-github"
-                tooltipText={text["support_github_tooltip"]}
+                tooltipText={text['support_github_tooltip']}
                 tooltipID="tooltip_github"
               />
             </Col>
 
             <Col className="text-lg-right" lg="4">
-              <h4 className="mb-3 font-weight-light">
-                {text["support_donate_text"]}
-              </h4>
-              <Button
-                color="success"
-                href="https://soutien.polymtl.ca/vie-etudiante"
-                target="_blank"
-              >
-                {text["support_donate_button"]}
+              <h4 className="mb-3 font-weight-light">{text['support_donate_text']}</h4>
+              <Button color="success" href="https://soutien.polymtl.ca/vie-etudiante" target="_blank">
+                {text['support_donate_button']}
               </Button>
             </Col>
           </Row>

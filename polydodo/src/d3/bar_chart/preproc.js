@@ -1,6 +1,6 @@
-import * as d3 from "d3";
+import * as d3 from 'd3';
 
-import { STATE_TO_COLOR, STATES } from "../constants";
+import { STATE_TO_COLOR, STATES } from '../constants';
 
 export const createColorScale = () => {
   const colorScale = d3.scaleOrdinal();
@@ -26,7 +26,7 @@ export const convertSource = (data) => {
       date.getUTCDay(),
       date.getUTCHours(),
       date.getUTCMinutes(),
-      date.getUTCSeconds()
+      date.getUTCSeconds(),
     );
   });
 };
