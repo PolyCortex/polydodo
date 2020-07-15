@@ -98,7 +98,3 @@ CNN, sur l’´epoque ayant le meilleur score de justesse. Finalement,
 l’algorithme de Viterbi est appliqu´e afin de trouv´e
 la s´equence d’´etats cach´es la plus probable ´etant donn´e nos
 ´emissions sur notre ensemble de test. -->
-
-## Results
-
-
