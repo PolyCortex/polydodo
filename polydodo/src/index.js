@@ -1,11 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
@@ -22,10 +17,22 @@ ReactDOM.render(
     <ScrollToTop>
       <Switch>
         <Route exact path="/" render={() => <SleepAnalysis />} />
-        <Route exact path="/record-my-sleep" render={() => <h1 className="">Under Construction... <Emoji symbol="🏗️" /></h1>} />
-        <Route exact path="/analyze-my-sleep" render={() => <SleepAnalysis />} />
+        <Route
+          exact
+          path="/record-my-sleep"
+          render={() => (
+            <h1 className="">
+              Under Construction... <Emoji symbol="🏗️" />
+            </h1>
+          )}
+        />
+        <Route
+          exact
+          path="/analyze-my-sleep"
+          render={() => <SleepAnalysis />}
+        />
         <Route exact path="/performance" render={() => <Performance />} />
-        <Redirect to='/' />
+        <Redirect to="/" />
       </Switch>
     </ScrollToTop>
   </BrowserRouter>,

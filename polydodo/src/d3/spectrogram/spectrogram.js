@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { initSpectrogram } from "./initSpectrogram";
-import initializeBarChart from "../bar_chart/initBarChart";
 
 const createSpectrogram = (containerNode, data) => {
   const margin = {
@@ -10,43 +9,30 @@ const createSpectrogram = (containerNode, data) => {
     left: 70,
   };
 
-  var canvasWidth = 1000;
-  var canvisHeight = 1200;
-  var barCanvasHeight = canvisHeight / 6;
-  var spectroCanvasHeight = (canvisHeight - barCanvasHeight) / 2;
+  const canvasWidth = 1000;
+  const canvasHeight = 1200;
+  const spectroCanvasHeight = canvasHeight / 2;
 
-  var width = canvasWidth - margin.left - margin.right;
-  var spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
+  const width = canvasWidth - margin.left - margin.right;
+  const spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
 
-  var svg = d3.select(containerNode);
+  const svg = d3.select(containerNode);
 
-  svg
-    .attr("width", canvasWidth)
-    .attr("height", 2 * spectroCanvasHeight + barCanvasHeight);
+  svg.attr("width", canvasWidth).attr("height", 2 * spectroCanvasHeight);
 
-  var barChart = svg
+  const spectrogramFPZCZ = svg
     .append("g")
-    .attr("width", canvasWidth)
-    .attr("height", barCanvasHeight);
-
-  var spectrogramFPZ = svg
-    .append("g")
-    .attr("transform", "translate(0," + barCanvasHeight + ")")
     .attr("width", canvasWidth)
     .attr("height", spectroCanvasHeight);
 
-  var spectrogramPZ = svg
+  const spectrogramPZOZ = svg
     .append("g")
-    .attr(
-      "transform",
-      "translate(0," + (barCanvasHeight + spectroCanvasHeight) + ")"
-    )
+    .attr("transform", `translate(0, ${spectroCanvasHeight})`)
     .attr("width", canvasWidth)
     .attr("height", spectroCanvasHeight);
 
-  initializeBarChart(barChart, data, false);
-  initSpectrogram(spectrogramFPZ, "Fpz_Cz", width, spectroHeight, margin);
-  initSpectrogram(spectrogramPZ, "Pz_Oz", width, spectroHeight, margin);
+  initSpectrogram(spectrogramFPZCZ, "Fpz_Cz", width, spectroHeight, margin);
+  initSpectrogram(spectrogramPZOZ, "Pz_Oz", width, spectroHeight, margin);
 };
 
 export default createSpectrogram;
