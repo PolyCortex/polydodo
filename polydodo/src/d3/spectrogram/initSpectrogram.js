@@ -65,9 +65,7 @@ export const initSpectrogram = (g, node, width, height, margin) => {
 
   spectrogram.append('g').attr('class', 'y axis').call(yAxis).selectAll('text').style('font-size', '18px');
 
-  tooltip.html(function (d) {
-    return getToolTipText.call(this, d);
-  });
+  tooltip.html((d) => getToolTipText.call(this, d));
   g.call(tooltip);
 
   legend(gLegend, color, yColor, height, margin.right);

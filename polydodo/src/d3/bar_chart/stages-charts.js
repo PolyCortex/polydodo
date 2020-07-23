@@ -24,12 +24,12 @@ export const createStackedBarChart = (g, sources, x, color, tip, height) => {
 };
 
 export const getToolTipText = (d) => {
-  var h = addZero(d.currentStageDebut.getHours());
-  var m = addZero(d.currentStageDebut.getMinutes());
-  var hf = addZero(d.currentStageEnd.getHours());
-  var mf = addZero(d.currentStageEnd.getMinutes());
+  const h = addZero(d.currentStageDebut.getHours());
+  const m = addZero(d.currentStageDebut.getMinutes());
+  const hf = addZero(d.currentStageEnd.getHours());
+  const mf = addZero(d.currentStageEnd.getMinutes());
+  let hourDiff = d.currentStageEnd - d.currentStageDebut; //in ms
 
-  var hourDiff = d.currentStageEnd - d.currentStageDebut; //in ms
   hourDiff /= 3.6e6; //in h
 
   return `Stage : <strong> ${d.stageText} </strong> <br>
