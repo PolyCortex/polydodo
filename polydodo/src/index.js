@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import 'argon-design-system-react/src/assets/vendor/nucleo/css/nucleo.css';
 import 'argon-design-system-react/src/assets/vendor/font-awesome/css/font-awesome.min.css';
@@ -26,7 +26,11 @@ ReactDOM.render(
             </h1>
           )}
         />
-        <Route exact path="/analyze-my-sleep" render={() => <SleepAnalysis />} />
+        <Route
+          exact
+          path="/analyze-my-sleep"
+          render={() => <SleepAnalysis />}
+        />
         <Route exact path="/performance" render={() => <Performance />} />
         <Redirect to="/" />
       </Switch>

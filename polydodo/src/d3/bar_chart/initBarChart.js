@@ -41,10 +41,8 @@ const createDrawingGroup = (svg, { LEFT, TOP }) => {
   return svg.append('g').attr('transform', `translate(${LEFT}, ${TOP})`);
 };
 
-const initializeBarChart = async (svg, data, useTransitions = true) => {
-  const barHeight = Math.round(
-    useTransitions ? HEIGHT / STATES.length : HEIGHT
-  );
+const initializeBarChart = async (svg, data) => {
+  const barHeight = Math.round(HEIGHT / STATES.length);
 
   const { x, y } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, y);
@@ -68,28 +66,37 @@ const initializeBarChart = async (svg, data, useTransitions = true) => {
   domainY(y, STATES_ORDERED);
 
   createStackedBarChart(gBarChart, sources, x, color, tooltip, barHeight);
-  if (useTransitions) {
-    var gSecondBarChart = svg.append('g').attr('transform', 'translate(' + MARGIN.LEFT + ',' + (2 * MARGIN.TOP + barHeight) + ')');
 
-    var gThirdBarChart = svg.append('g').attr('transform', 'translate(' + MARGIN.LEFT + ',' + (3 * MARGIN.TOP + 2 * barHeight) + ')');
-
-    addTransitions(
-      gBarChart,
-      gSecondBarChart,
-      gThirdBarChart,
-      sources,
-      color,
-      barHeight,
-      barHeight,
-      WIDTH,
-      tipStacked,
-      xAxis,
-      yAxis,
-      firstStagesIndex,
-      totalStagesPortion,
-      totalTimeStamp,
+  var gSecondBarChart = svg
+    .append("g")
+    .attr(
+      "transform",
+      "translate(" + MARGIN.LEFT + "," + (2 * MARGIN.TOP + barHeight) + ")"
     );
-  }
+
+  var gThirdBarChart = svg
+    .append("g")
+    .attr(
+      "transform",
+      "translate(" + MARGIN.LEFT + "," + (3 * MARGIN.TOP + 2 * barHeight) + ")"
+    );
+
+  addTransitions(
+    gBarChart,
+    gSecondBarChart,
+    gThirdBarChart,
+    sources,
+    color,
+    barHeight,
+    barHeight,
+    WIDTH,
+    tipStacked,
+    xAxis,
+    yAxis,
+    firstStagesIndex,
+    totalStagesPortion,
+    totalTimeStamp
+  );
   // Axes
   gBarChart
     .append('g')
