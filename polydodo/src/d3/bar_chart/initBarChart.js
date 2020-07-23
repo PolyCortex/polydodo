@@ -48,33 +48,43 @@ const initializeBarChart = async (svg, data) => {
   const { xAxis, yAxis } = initializeAxes(x, y);
   const gBarChart = createDrawingGroup(svg, MARGIN);
 
-  var totalTimeStamp = data.length;
-  var tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
+  const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
+  const tipStacked = tip().attr("class", "d3-tip").offset([-10, 0]);
 
-  var tipStacked = tip().attr("class", "d3-tip").offset([-10, 0]);
+  tooltip.html((d) => getToolTipText.call(this, d));
+  svg.call(tooltip);
+  svg.call(tipStacked);
+
+  tipStacked.html((d) =>
+    getStackedToolTipText.call(this, d, totalStagesPortion, data.length)
+  );
 
   const color = createColorScale();
   convertSource(data);
 
-  var sources = createSources(data, STATES, STATES_ORDERED);
+  const sources = createSources(data, STATES, STATES_ORDERED);
 
   //For visualisation 3
-  var totalStagesPortion = calculateStagesPortion(data, STATES, STATES_ORDERED);
-  var firstStagesIndex = findFirstStageIndex(sources);
+  const totalStagesPortion = calculateStagesPortion(
+    data,
+    STATES,
+    STATES_ORDERED
+  );
+  const firstStagesIndex = findFirstStageIndex(sources);
 
   domainX(x, data);
   domainY(y, STATES_ORDERED);
 
   createStackedBarChart(gBarChart, sources, x, color, tooltip, barHeight);
 
-  var gSecondBarChart = svg
+  const gSecondBarChart = svg
     .append("g")
     .attr(
       "transform",
       "translate(" + MARGIN.LEFT + "," + (2 * MARGIN.TOP + barHeight) + ")"
     );
 
-  var gThirdBarChart = svg
+  const gThirdBarChart = svg
     .append("g")
     .attr(
       "transform",
@@ -95,7 +105,7 @@ const initializeBarChart = async (svg, data) => {
     yAxis,
     firstStagesIndex,
     totalStagesPortion,
-    totalTimeStamp
+    data.length
   );
   // Axes
   gBarChart
@@ -106,21 +116,6 @@ const initializeBarChart = async (svg, data) => {
 
   //get tick
   d3.selectAll(".tick").select("text").style("font-weight", 540);
-
-  tooltip.html(function (d) {
-    return getToolTipText.call(this, d);
-  });
-  svg.call(tooltip);
-
-  tipStacked.html(function (d) {
-    return getStackedToolTipText.call(
-      this,
-      d,
-      totalStagesPortion,
-      totalTimeStamp
-    );
-  });
-  svg.call(tipStacked);
 
   barLegend(svg, STATES, color);
 };

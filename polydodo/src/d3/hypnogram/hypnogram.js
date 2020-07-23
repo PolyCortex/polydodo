@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 import {
-  parseTimestampToDate,
+  convertTimestampsToDates,
   convertValuesToLabels,
   convertSources,
   domainX,
@@ -19,11 +19,37 @@ import {
 import { createMouseOver } from "./mouse-over";
 import { STATES } from "../constants";
 
-const initializeScales = ({ width, height }) => {
-  const x = d3.scaleTime().range([0, width]);
+const MARGINS = {
+  top: 100,
+  right: 10,
+  bottom: 70,
+  left: 70,
+};
+
+const DIMENSIONS = {
+  width: 1000 - MARGINS.left - MARGINS.right,
+  height: 400 - MARGINS.top - MARGINS.bottom,
+};
+
+const COLORS = {
+  Classifier: "#efce31",
+  "Sleep-EDF": "#006aff",
+  Electrophysiologist: "#ff7575",
+};
+
+const preprocessData = (data, hypnogramNames) => {
+  data = convertTimestampsToDates(data);
+  data = convertValuesToLabels(data);
+  return convertSources(data, hypnogramNames);
+};
+
+const initializeScales = () => {
+  const x = d3.scaleTime().range([0, DIMENSIONS.width]);
   const y = d3
     .scaleOrdinal()
-    .range(_.range(0, height + 1, height / STATES.length));
+    .range(
+      _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STATES.length)
+    );
 
   return { x, y };
 };
@@ -35,15 +61,10 @@ const initializeAxes = (x, y) => {
   return { xAxis, yAxis };
 };
 
-const createDrawingGroup = (svg, dimensions, margin) => {
-  const { width, height } = dimensions;
-  const { left, top, right, bottom } = margin;
-  svg.attr("width", width + left + right).attr("height", height + top + bottom);
-
-  const g = svg.append("g").attr("transform", `translate(${left}, ${top})`);
-
-  return g;
-};
+const createDrawingGroup = (svg) =>
+  svg
+    .append("g")
+    .attr("transform", `translate(${MARGINS.left}, ${MARGINS.top})`);
 
 const createHypnogram = (
   containerNode,
@@ -52,44 +73,32 @@ const createHypnogram = (
   hypnogramNames,
   comparativeColors
 ) => {
-  const svg = d3.select(containerNode);
-  const sleepLabels = ["W", "REM", "N1", "N2", "N3"];
-
-  const margin = {
-    top: 100,
-    right: 10,
-    bottom: 70,
-    left: 70,
-  };
-  const dimensions = {
-    width: 1000 - margin.left - margin.right,
-    height: 400 - margin.top - margin.bottom,
-  };
-
-  const { x, y } = initializeScales(dimensions);
+  const svg = d3
+    .select(containerNode)
+    .attr("width", DIMENSIONS.width + MARGINS.left + MARGINS.right)
+    .attr("height", DIMENSIONS.height + MARGINS.top + MARGINS.bottom);
+  const { x, y } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, y);
-  const g = createDrawingGroup(svg, dimensions, margin);
+  const g = createDrawingGroup(svg);
   const line = createLine(x, y);
 
-  parseTimestampToDate(data);
-  convertValuesToLabels(data);
-  data = convertSources(data, hypnogramNames);
+  data = preprocessData(data, hypnogramNames);
 
   domainX(x, data);
-  domainY(y, sleepLabels);
+  domainY(y);
   const colorDomain = domainColor(data, comparativeColors);
 
   const g_chart = createHypnogramChart(g, data, line, colorDomain);
-  createMouseOver(g_chart, x, y, data, margin, dimensions, colorDomain);
-  createAxes(g, xAxis, yAxis, dimensions, margin);
-  createTitle(g, chartTitle, dimensions, margin);
-  createLegend(g, hypnogramNames, comparativeColors, dimensions, margin);
+  createMouseOver(g_chart, x, y, data, MARGINS, DIMENSIONS, colorDomain);
+  createAxes(g, xAxis, yAxis, DIMENSIONS, MARGINS);
+  createTitle(g, chartTitle, DIMENSIONS, MARGINS);
+  createLegend(g, hypnogramNames, comparativeColors, DIMENSIONS, MARGINS);
 };
 
 export const createSingleHypnogram = (containerNode, data) => {
   const chartTitle = "Hypnogram";
   const hypnogramNames = ["Classifier"];
-  const comparativeColors = ["#006aff"];
+  const comparativeColors = [COLORS.Classifier];
 
   createHypnogram(
     containerNode,
@@ -106,12 +115,7 @@ export const createComparativeHypnogram = (
   hypnogramNames
 ) => {
   const chartTitle = `Agreement between ${hypnogramNames[0]} and ${hypnogramNames[1]}`;
-  const colors = {
-    Classifier: "#efce31",
-    "Sleep-EDF": "#006aff",
-    Electrophysiologist: "#ff7575",
-  };
-  const comparativeColors = hypnogramNames.map((x) => colors[x]);
+  const comparativeColors = hypnogramNames.map((x) => COLORS[x]);
 
   createHypnogram(
     containerNode,
