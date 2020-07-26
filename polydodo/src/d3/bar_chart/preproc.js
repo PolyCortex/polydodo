@@ -1,20 +1,9 @@
-import * as d3 from 'd3';
+import { STATES } from "../constants";
 
-import { STATE_TO_COLOR, STATES } from '../constants';
-
-export const createColorScale = () => {
-  const colorScale = d3.scaleOrdinal();
-  const colors = STATES.map((x) => STATE_TO_COLOR[x]);
-
-  return colorScale.domain(STATES).range(colors);
-};
-
-export const domainX = (xFocus, data) => {
-  xFocus.domain([data[0].timestamp, data[data.length - 1].timestamp]);
-};
-
-export const domainY = (yFocus, states) => {
-  yFocus.domain(states);
+export const setDomainOnScales = (x, y, colors, data) => {
+  x.domain([data[0].timestamp, data[data.length - 1].timestamp]);
+  y.domain(STATES);
+  colors.domain(STATES);
 };
 
 export const convertSource = (data) => {
