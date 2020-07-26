@@ -19,7 +19,6 @@ export const addTransitions = (
   sources,
   color,
   height,
-  barHeight,
   width,
   tipStacked,
   xAxis,
@@ -45,7 +44,7 @@ export const addTransitions = (
     firstStageIndex,
     totalStagePortion,
     width,
-    barHeight,
+    height,
     totalTimeStamp
   );
   fourthCallback = fourthTransition(
@@ -53,7 +52,7 @@ export const addTransitions = (
     sources,
     xAxis,
     width,
-    barHeight,
+    height,
     totalTimeStamp,
     color
   );
@@ -62,7 +61,7 @@ export const addTransitions = (
     sources,
     xAxis,
     width,
-    barHeight,
+    height,
     totalTimeStamp,
     color
   );
@@ -95,7 +94,7 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
 
   g.select(".x.axis")
     .transition()
-    .attr("transform", "translate(0," + height * 5 + ")")
+    .attr("transform", `translate(0, ${5 * height})`)
     .duration(2000)
     .call(xAxis);
 };
@@ -163,7 +162,7 @@ const thirdTransition = (
 
   g.select(".x.axis")
     .transition()
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", `translate(0, ${height})`)
     .duration(TRANSITION_TIME_MS);
 
   //first barChart

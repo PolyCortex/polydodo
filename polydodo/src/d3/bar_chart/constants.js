@@ -1,3 +1,5 @@
+import { STATES } from "d3/constants";
+
 export const MARGIN = {
   TOP: 100,
   RIGHT: 70,
@@ -10,5 +12,6 @@ export const CANVAS_HEIGHT = 600;
 
 export const WIDTH = CANVAS_WIDTH - MARGIN.LEFT - MARGIN.RIGHT;
 export const HEIGHT = CANVAS_HEIGHT - MARGIN.TOP - MARGIN.BOTTOM;
+export const BAR_HEIGHT = HEIGHT / STATES.length;
 
 export const STATES_ORDERED = ["W", "REM", "N1", "N2", "N3"];
