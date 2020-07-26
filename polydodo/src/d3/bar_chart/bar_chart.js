@@ -16,9 +16,16 @@ import {
   createStackedBarChart,
   getToolTipText,
   getStackedToolTipText,
-} from "./stages-charts";
+} from "./stages_charts";
 import { addTransitions } from "./transition";
-import { STATES_ORDERED, WIDTH, HEIGHT, MARGIN } from "./constants";
+import {
+  STATES_ORDERED,
+  WIDTH,
+  HEIGHT,
+  MARGIN,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+} from "./constants";
 import { STATES } from "../constants";
 
 const initializeScales = () => {
@@ -120,4 +127,11 @@ const initializeBarChart = async (svg, data) => {
   barLegend(svg, STATES, color);
 };
 
-export default initializeBarChart;
+const createBarChart = async (containerNode, data) => {
+  const svg = d3.select(containerNode);
+  svg.attr("width", CANVAS_WIDTH).attr("height", CANVAS_HEIGHT);
+
+  await initializeBarChart(svg, data);
+};
+
+export default createBarChart;

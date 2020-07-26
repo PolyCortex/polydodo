@@ -13,7 +13,7 @@ import {
   fourthCallback,
   fifthCallback,
 } from "../../d3/bar_chart/transition";
-import createBarChart from "../../d3/bar_chart/barChart";
+import createBarChart from "../../d3/bar_chart/bar_chart";
 import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
