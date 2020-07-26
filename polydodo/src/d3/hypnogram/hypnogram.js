@@ -1,62 +1,31 @@
 import * as d3 from "d3";
 import _ from "lodash";
 
+import { preprocessData } from "./preproc";
+import createHypnogramChart from "./line-charts";
 import {
-  convertTimestampsToDates,
-  convertValuesToLabels,
-  convertSources,
-  domainX,
-  domainY,
-  domainColor,
-} from "./preproc";
-import {
-  createLine,
-  createHypnogramChart,
-  createAxes,
-  createTitle,
-  createLegend,
-} from "./line-charts";
-import { createMouseOver } from "./mouse-over";
+  DIMENSIONS,
+  MARGINS,
+  COMPARATIVE_COLORS,
+  SLEEP_STAGES_ORDERED_FOR_HYPNOGRAM,
+} from "./constants";
 import { STATES } from "../constants";
 
-const MARGINS = {
-  top: 100,
-  right: 10,
-  bottom: 70,
-  left: 70,
-};
-
-const DIMENSIONS = {
-  width: 1000 - MARGINS.left - MARGINS.right,
-  height: 400 - MARGINS.top - MARGINS.bottom,
-};
-
-const COLORS = {
-  Classifier: "#efce31",
-  "Sleep-EDF": "#006aff",
-  Electrophysiologist: "#ff7575",
-};
-
-const preprocessData = (data, hypnogramNames) => {
-  data = convertTimestampsToDates(data);
-  data = convertValuesToLabels(data);
-  return convertSources(data, hypnogramNames);
-};
-
-const initializeScales = () => {
+const initializeScales = (comparativeColors) => {
   const x = d3.scaleTime().range([0, DIMENSIONS.width]);
   const y = d3
     .scaleOrdinal()
     .range(
       _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STATES.length)
     );
+  const colors = d3.scaleOrdinal(comparativeColors);
 
-  return { x, y };
+  return { x, y, colors };
 };
 
 const initializeAxes = (x, y) => {
   const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"));
-  const yAxis = d3.axisLeft().scale(y);
+  const yAxis = d3.axisLeft(y);
 
   return { xAxis, yAxis };
 };
@@ -65,6 +34,13 @@ const createDrawingGroup = (svg) =>
   svg
     .append("g")
     .attr("transform", `translate(${MARGINS.left}, ${MARGINS.top})`);
+
+const setDomainOnScales = (x, y, colors, data) => {
+  const dates = data[0].values.map((datum) => datum.timestamp);
+  x.domain([d3.min(dates), d3.max(dates)]);
+  y.domain(SLEEP_STAGES_ORDERED_FOR_HYPNOGRAM);
+  colors.domain(data.map((x) => x.name));
+};
 
 const createHypnogram = (
   containerNode,
@@ -77,35 +53,33 @@ const createHypnogram = (
     .select(containerNode)
     .attr("width", DIMENSIONS.width + MARGINS.left + MARGINS.right)
     .attr("height", DIMENSIONS.height + MARGINS.top + MARGINS.bottom);
-  const { x, y } = initializeScales();
+  const { x, y, colors } = initializeScales(comparativeColors);
   const { xAxis, yAxis } = initializeAxes(x, y);
   const g = createDrawingGroup(svg);
-  const line = createLine(x, y);
 
   data = preprocessData(data, hypnogramNames);
-
-  domainX(x, data);
-  domainY(y);
-  const colorDomain = domainColor(data, comparativeColors);
-
-  const g_chart = createHypnogramChart(g, data, line, colorDomain);
-  createMouseOver(g_chart, x, y, data, MARGINS, DIMENSIONS, colorDomain);
-  createAxes(g, xAxis, yAxis, DIMENSIONS, MARGINS);
-  createTitle(g, chartTitle, DIMENSIONS, MARGINS);
-  createLegend(g, hypnogramNames, comparativeColors, DIMENSIONS, MARGINS);
-};
-
-export const createSingleHypnogram = (containerNode, data) => {
-  const chartTitle = "Hypnogram";
-  const hypnogramNames = ["Classifier"];
-  const comparativeColors = [COLORS.Classifier];
-
-  createHypnogram(
-    containerNode,
+  setDomainOnScales(x, y, colors, data);
+  createHypnogramChart(
+    g,
     data,
+    x,
+    y,
+    xAxis,
+    yAxis,
+    colors,
     chartTitle,
     hypnogramNames,
     comparativeColors
+  );
+};
+
+export const createSingleHypnogram = (containerNode, data) => {
+  createHypnogram(
+    containerNode,
+    data,
+    "Hypnogram",
+    ["Classifier"],
+    [COMPARATIVE_COLORS.Classifier]
   );
 };
 
@@ -114,14 +88,11 @@ export const createComparativeHypnogram = (
   data,
   hypnogramNames
 ) => {
-  const chartTitle = `Agreement between ${hypnogramNames[0]} and ${hypnogramNames[1]}`;
-  const comparativeColors = hypnogramNames.map((x) => COLORS[x]);
-
   createHypnogram(
     containerNode,
     data,
-    chartTitle,
+    `Agreement between ${hypnogramNames[0]} and ${hypnogramNames[1]}`,
     hypnogramNames,
-    comparativeColors
+    hypnogramNames.map((x) => COMPARATIVE_COLORS[x])
   );
 };
