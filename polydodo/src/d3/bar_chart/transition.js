@@ -3,7 +3,7 @@ import { getDurationStringHM } from "../duration";
 import {
   createSmallStackedBarChart,
   createStagesDurationAxes,
-} from "./stages-charts";
+} from "./stages_charts";
 import { TRANSITION_TIME_MS } from "../constants";
 
 export let firstCallback = () => {};

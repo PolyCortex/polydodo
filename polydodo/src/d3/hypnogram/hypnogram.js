@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 import { preprocessData } from "./preproc";
-import createHypnogramChart from "./line-charts";
+import createHypnogramChart from "./line_charts";
 import {
   DIMENSIONS,
   MARGINS,
