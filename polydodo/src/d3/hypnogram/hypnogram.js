@@ -4,14 +4,18 @@ import _ from "lodash";
 import { preprocessData } from "./preproc";
 import createHypnogramChart from "./line_charts";
 import { DIMENSIONS, MARGINS, COMPARATIVE_COLORS } from "./constants";
-import { STAGES, STAGES_ORDERED } from "../constants";
+import { STAGES_ORDERED } from "../constants";
 
 const initializeScales = (comparativeColors) => {
   const x = d3.scaleTime().range([0, DIMENSIONS.width]);
   const y = d3
     .scaleOrdinal()
     .range(
-      _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STAGES.length)
+      _.range(
+        0,
+        DIMENSIONS.height + 1,
+        DIMENSIONS.height / STAGES_ORDERED.length
+      )
     );
   const colors = d3.scaleOrdinal(comparativeColors);
 
