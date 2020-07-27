@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import * as d3 from 'd3';
 
 /**
  * Fichier permettant de générer la légende et de gérer les interactions de celle-ci.
@@ -21,50 +21,50 @@ export const legend = (svg, color, y, height, width) => {
     colors.push(color(scaleIndex));
   }
 
-  var svgDefs = svg.append("defs");
+  var svgDefs = svg.append('defs');
 
   var mainGradient = svgDefs
-    .append("linearGradient")
-    .attr("id", "mainGradient")
-    .attr("x1", "0%")
-    .attr("x2", "0%")
-    .attr("y1", "100%")
-    .attr("y2", "0%");
+    .append('linearGradient')
+    .attr('id', 'mainGradient')
+    .attr('x1', '0%')
+    .attr('x2', '0%')
+    .attr('y1', '100%')
+    .attr('y2', '0%');
 
   mainGradient
-    .selectAll("stop")
+    .selectAll('stop')
     .data(colors)
     .enter()
-    .append("stop")
-    .attr("stop-color", (d) => d)
-    .attr("offset", (d, i) => i / (colors.length - 1));
+    .append('stop')
+    .attr('stop-color', (d) => d)
+    .attr('offset', (d, i) => i / (colors.length - 1));
 
   svg
-    .append("rect")
-    .attr("fill", "url(#mainGradient)")
-    .attr("x", width / 4)
-    .attr("y", 0)
-    .attr("width", width / 4)
-    .attr("height", height);
+    .append('rect')
+    .attr('fill', 'url(#mainGradient)')
+    .attr('x', width / 4)
+    .attr('y', 0)
+    .attr('width', width / 4)
+    .attr('height', height);
 
-  var yAxis = d3.axisRight(y).ticks(5, "s");
+  var yAxis = d3.axisRight(y).ticks(5, 's');
   svg
-    .append("g")
-    .attr("class", "y axis")
-    .attr("transform", "translate(" + width / 2 + ",0)")
+    .append('g')
+    .attr('class', 'y axis')
+    .attr('transform', 'translate(' + width / 2 + ',0)')
     .call(yAxis)
-    .selectAll("text")
-    .style("font-size", "18px");
+    .selectAll('text')
+    .style('font-size', '18px');
 
   // Titre axe des Y
   svg
-    .append("text")
-    .attr("class", "y axis")
-    .attr("transform", "rotate(90)")
-    .attr("y", 0 - width)
-    .attr("x", height / 2)
-    .attr("dy", "1em")
-    .attr("fill", "currentColor")
-    .style("text-anchor", "middle")
-    .text("Puissance");
+    .append('text')
+    .attr('class', 'y axis')
+    .attr('transform', 'rotate(90)')
+    .attr('y', 0 - width)
+    .attr('x', height / 2)
+    .attr('dy', '1em')
+    .attr('fill', 'currentColor')
+    .style('text-anchor', 'middle')
+    .text('Puissance');
 };

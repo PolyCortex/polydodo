@@ -11,4 +11,4 @@ export const CANVAS_HEIGHT = 600;
 export const WIDTH = CANVAS_WIDTH - MARGIN.LEFT - MARGIN.RIGHT;
 export const HEIGHT = CANVAS_HEIGHT - MARGIN.TOP - MARGIN.BOTTOM;
 
-export const STATES_ORDERED = ["W", "REM", "N1", "N2", "N3"];
+export const STATES_ORDERED = ['W', 'REM', 'N1', 'N2', 'N3'];

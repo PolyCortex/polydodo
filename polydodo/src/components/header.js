@@ -1,20 +1,15 @@
-import React from "react";
-import _ from "lodash";
-import PropTypes from "prop-types";
-import { Col, Container } from "reactstrap";
+import React from 'react';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import { Col, Container } from 'reactstrap';
 
-const Header = ({
-  sizeClass,
-  shapeQty,
-  title,
-  subtitle,
-  description
-}) => {
-
+const Header = ({ sizeClass, shapeQty, title, subtitle, description }) => {
   return (
     <section className={`section section-lg section-shaped ${sizeClass}`}>
       <div className="shape shape-style-1 shape-dark">
-        {_.times(shapeQty, i => <span key={i} />)}
+        {_.times(shapeQty, (i) => (
+          <span key={i} />
+        ))}
       </div>
       <Container>
         <div className="col px-0">
@@ -29,13 +24,13 @@ const Header = ({
       </Container>
 
       <div className="separator separator-bottom separator-skew">
-        <svg preserveAspectRatio="none" viewBox="0 0 2560 100" x="0" y="0" >
+        <svg preserveAspectRatio="none" viewBox="0 0 2560 100" x="0" y="0">
           <polygon className="fill-white" points="2560 0 2560 110 0 100" />
         </svg>
       </div>
     </section>
   );
-}
+};
 
 Header.propTypes = {
   sizeClass: PropTypes.string,
@@ -46,11 +41,11 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-  sizeClass: "pb-150",
+  sizeClass: 'pb-150',
   shapeQty: 5,
-  title: "",
-  subtitle: "",
-  description: "",
+  title: '',
+  subtitle: '',
+  description: '',
 };
 
 export default Header;

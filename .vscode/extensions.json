@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "christian-kohler.path-intellisense",
+        "ms-python.python",
+        "2gua.rainbow-brackets",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint"
+    ]
+}

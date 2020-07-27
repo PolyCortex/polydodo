@@ -1,6 +1,6 @@
-import * as d3 from "d3";
-import { initSpectrogram } from "./initSpectrogram";
-import initializeBarChart from "../bar_chart/initBarChart";
+import * as d3 from 'd3';
+import { initSpectrogram } from './initSpectrogram';
+import initializeBarChart from '../bar_chart/initBarChart';
 
 const createSpectrogram = (containerNode) => {
   const margin = {
@@ -21,33 +21,25 @@ const createSpectrogram = (containerNode) => {
 
   var svg = d3.select(containerNode);
 
-  svg
-    .attr("width", canvasWidth)
-    .attr("height", 2 * spectroCanvasHeight + barCanvasHeight);
+  svg.attr('width', canvasWidth).attr('height', 2 * spectroCanvasHeight + barCanvasHeight);
 
-  var barChart = svg
-    .append("g")
-    .attr("width", canvasWidth)
-    .attr("height", barCanvasHeight);
+  var barChart = svg.append('g').attr('width', canvasWidth).attr('height', barCanvasHeight);
 
   var spectrogramFPZ = svg
-    .append("g")
-    .attr("transform", "translate(0," + barCanvasHeight + ")")
-    .attr("width", canvasWidth)
-    .attr("height", spectroCanvasHeight);
+    .append('g')
+    .attr('transform', 'translate(0,' + barCanvasHeight + ')')
+    .attr('width', canvasWidth)
+    .attr('height', spectroCanvasHeight);
 
   var spectrogramPZ = svg
-    .append("g")
-    .attr(
-      "transform",
-      "translate(0," + (barCanvasHeight + spectroCanvasHeight) + ")"
-    )
-    .attr("width", canvasWidth)
-    .attr("height", spectroCanvasHeight);
+    .append('g')
+    .attr('transform', 'translate(0,' + (barCanvasHeight + spectroCanvasHeight) + ')')
+    .attr('width', canvasWidth)
+    .attr('height', spectroCanvasHeight);
 
   initializeBarChart(barChart, barHeight, false);
-  initSpectrogram(spectrogramFPZ, "Fpz_Cz", width, spectroHeight, margin);
-  initSpectrogram(spectrogramPZ, "Pz_Oz", width, spectroHeight, margin);
+  initSpectrogram(spectrogramFPZ, 'Fpz_Cz', width, spectroHeight, margin);
+  initSpectrogram(spectrogramPZ, 'Pz_Oz', width, spectroHeight, margin);
 };
 
 export default createSpectrogram;

@@ -1,32 +1,18 @@
-import * as d3 from "d3";
-import tip from "d3-tip";
-import _ from "lodash";
+import * as d3 from 'd3';
+import tip from 'd3-tip';
+import _ from 'lodash';
 
-import barChartData from "assets/data/hypnogram.csv";
-import {
-  createColorScale,
-  domainX,
-  domainY,
-  convertSource,
-  createSources,
-  calculateStagesPortion,
-  findFirstStageIndex,
-} from "./preproc";
-import { barLegend } from "./legend";
-import {
-  createStackedBarChart,
-  getToolTipText,
-  getStackedToolTipText,
-} from "./stages-charts";
-import { addTransitions } from "./transition";
-import { STATES_ORDERED, WIDTH, MARGIN } from "./constants";
-import { STATES } from "../constants";
+import barChartData from 'assets/data/hypnogram.csv';
+import { createColorScale, domainX, domainY, convertSource, createSources, calculateStagesPortion, findFirstStageIndex } from './preproc';
+import { barLegend } from './legend';
+import { createStackedBarChart, getToolTipText, getStackedToolTipText } from './stages-charts';
+import { addTransitions } from './transition';
+import { STATES_ORDERED, WIDTH, MARGIN } from './constants';
+import { STATES } from '../constants';
 
 const initializeScales = (height) => {
   const x = d3.scaleTime().range([0, WIDTH]);
-  const y = d3
-    .scaleOrdinal()
-    .range(_.range(0, height + 1, height / STATES.length));
+  const y = d3.scaleOrdinal().range(_.range(0, height + 1, height / STATES.length));
 
   return { x, y };
 };
@@ -39,13 +25,11 @@ const initializeAxes = (x, y) => {
 };
 
 const createDrawingGroup = (svg, { LEFT, TOP }) => {
-  return svg.append("g").attr("transform", `translate(${LEFT}, ${TOP})`);
+  return svg.append('g').attr('transform', `translate(${LEFT}, ${TOP})`);
 };
 
 const initializeBarChart = async (svg, height, useTransitions = true) => {
-  const barHeight = Math.round(
-    useTransitions ? height / STATES.length : height
-  );
+  const barHeight = Math.round(useTransitions ? height / STATES.length : height);
 
   const { x, y } = initializeScales(height);
   const { xAxis, yAxis } = initializeAxes(x, y);
@@ -55,9 +39,9 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   const data = await d3.csv(barChartData);
   /***** Prétraitement des données *****/
   var totalTimeStamp = data.length;
-  var tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
+  var tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]);
 
-  var tipStacked = tip().attr("class", "d3-tip").offset([-10, 0]);
+  var tipStacked = tip().attr('class', 'd3-tip').offset([-10, 0]);
 
   const color = createColorScale();
   convertSource(data);
@@ -74,23 +58,9 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   /***** Création du graphique Stacked bar chart *****/
   createStackedBarChart(gBarChart, sources, x, color, tooltip, barHeight);
   if (useTransitions) {
-    var gSecondBarChart = svg
-      .append("g")
-      .attr(
-        "transform",
-        "translate(" + MARGIN.LEFT + "," + (2 * MARGIN.TOP + barHeight) + ")"
-      );
+    var gSecondBarChart = svg.append('g').attr('transform', 'translate(' + MARGIN.LEFT + ',' + (2 * MARGIN.TOP + barHeight) + ')');
 
-    var gThirdBarChart = svg
-      .append("g")
-      .attr(
-        "transform",
-        "translate(" +
-          MARGIN.LEFT +
-          "," +
-          (3 * MARGIN.TOP + 2 * barHeight) +
-          ")"
-      );
+    var gThirdBarChart = svg.append('g').attr('transform', 'translate(' + MARGIN.LEFT + ',' + (3 * MARGIN.TOP + 2 * barHeight) + ')');
 
     addTransitions(
       gBarChart,
@@ -106,18 +76,18 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
       yAxis,
       firstStagesIndex,
       totalStagesPortion,
-      totalTimeStamp
+      totalTimeStamp,
     );
   }
   // Axes
   gBarChart
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + barHeight + ")")
+    .append('g')
+    .attr('class', 'x axis')
+    .attr('transform', 'translate(0,' + barHeight + ')')
     .call(xAxis);
 
   //get tick
-  d3.selectAll(".tick").select("text").style("font-weight", 540);
+  d3.selectAll('.tick').select('text').style('font-weight', 540);
 
   /***** Création de l'infobulle *****/
   tooltip.html(function (d) {
@@ -126,12 +96,7 @@ const initializeBarChart = async (svg, height, useTransitions = true) => {
   svg.call(tooltip);
 
   tipStacked.html(function (d) {
-    return getStackedToolTipText.call(
-      this,
-      d,
-      totalStagesPortion,
-      totalTimeStamp
-    );
+    return getStackedToolTipText.call(this, d, totalStagesPortion, totalTimeStamp);
   });
   svg.call(tipStacked);
 

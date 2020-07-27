@@ -1,6 +1,6 @@
-import React from "react";
-import { Alert } from "reactstrap";
-import Emoji from "./emoji";
+import React from 'react';
+import { Alert } from 'reactstrap';
+import Emoji from './emoji';
 
 const WIPWarning = () => {
   return (
@@ -8,11 +8,10 @@ const WIPWarning = () => {
       <span>
         <Emoji symbol="🚧" />
         <strong> This is a work in progress. </strong>
-        The following data is mocked.{" "}
-        <Emoji symbol="🚧" />
+        The following data is mocked. <Emoji symbol="🚧" />
       </span>
-    </Alert >
+    </Alert>
   );
-}
+};
 
 export default WIPWarning;

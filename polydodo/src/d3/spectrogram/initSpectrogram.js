@@ -1,11 +1,11 @@
-import * as d3 from "d3";
-import tip from "d3-tip";
+import * as d3 from 'd3';
+import tip from 'd3-tip';
 
-import data from "assets/data/spectrograms";
-import { domainColor, domainX, domainY, createSources } from "./preproc";
-import { legend } from "./legend";
-import { createSpectrgramChart, getToolTipText } from "./stages-charts";
-import { FREQUENCY_BINS } from "./constants";
+import data from 'assets/data/spectrograms';
+import { domainColor, domainX, domainY, createSources } from './preproc';
+import { legend } from './legend';
+import { createSpectrgramChart, getToolTipText } from './stages-charts';
+import { FREQUENCY_BINS } from './constants';
 
 export const initSpectrogram = (g, node, width, height, margin) => {
   /**** Interpolateur de couleurs ****/
@@ -19,24 +19,17 @@ export const initSpectrogram = (g, node, width, height, margin) => {
 
   /****** Axes *******/
   var xAxis = d3.axisBottom(x).tickFormat((d) => `${d}h`);
-  var yAxis = d3.axisLeft(yAxisScale).ticks(5, "s");
+  var yAxis = d3.axisLeft(yAxisScale).ticks(5, 's');
 
   // Groupe affichant le graphique principal ().
-  var spectrogram = g
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  var gLegend = g
-    .append("g")
-    .attr(
-      "transform",
-      "translate(" + (margin.left + width) + "," + margin.top + ")"
-    );
+  var spectrogram = g.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+  var gLegend = g.append('g').attr('transform', 'translate(' + (margin.left + width) + ',' + margin.top + ')');
 
   /***** Chargement des données *****/
   /***** Prétraitement des données *****/
   var color = d3.scaleSequential().interpolator(colorInterpolator);
 
-  var tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
+  var tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]);
 
   var frequencies = [];
   for (let idx = 0; idx < data.Frequencies.length; idx += FREQUENCY_BINS) {
@@ -55,33 +48,18 @@ export const initSpectrogram = (g, node, width, height, margin) => {
   domainY(y, yAxisScale, frequencies);
 
   // /***** Création du graphique Stacked bar chart *****/
-  createSpectrgramChart(
-    spectrogram,
-    sources,
-    x,
-    y,
-    color,
-    tooltip,
-    height,
-    width,
-    margin
-  );
+  createSpectrgramChart(spectrogram, sources, x, y, color, tooltip, height, width, margin);
 
   // Axes
   spectrogram
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .append('g')
+    .attr('class', 'x axis')
+    .attr('transform', 'translate(0,' + height + ')')
     .call(xAxis)
-    .selectAll("text")
-    .style("font-size", "18px");
+    .selectAll('text')
+    .style('font-size', '18px');
 
-  spectrogram
-    .append("g")
-    .attr("class", "y axis")
-    .call(yAxis)
-    .selectAll("text")
-    .style("font-size", "18px");
+  spectrogram.append('g').attr('class', 'y axis').call(yAxis).selectAll('text').style('font-size', '18px');
 
   // /***** Création de l'infobulle *****/
   tooltip.html(function (d) {
