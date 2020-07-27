@@ -39,7 +39,7 @@ const createLine = (x, y) =>
   d3
     .line()
     .x((d) => x(d.timestamp))
-    .y((d) => y(d.sleep_stage))
+    .y((d) => y(d.sleepStage))
     .curve(d3.curveStepAfter);
 
 const createAxes = (g, xAxis, yAxis, dimensions, margin) => {

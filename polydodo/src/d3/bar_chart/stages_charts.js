@@ -1,23 +1,19 @@
 import * as d3 from "d3";
-import {
-  addZero,
-  getDurationString,
-  getDurationSecondString,
-  getDurationStringHM,
-} from "../duration";
-import { TRANSITION_TIME_MS } from "../constants";
+import { getDurationStringHM } from "../duration";
+import { TRANSITION_TIME_MS, STAGES_ORDERED } from "../constants";
+import { BAR_HEIGHT, WIDTH } from "./constants";
 
-export const createStackedBarChart = (g, sources, x, color, tip, height) => {
+export const createStackedBarChart = (g, sources, x, color, tip) => {
   g.selectAll(".rect")
     .data(sources)
     .enter()
     .append("rect")
     .attr("class", "rect-stacked")
-    .attr("x", (d) => x(d.currentStageDebut))
+    .attr("x", (d) => x(d.start))
     .attr("y", 0)
-    .attr("width", (d) => x(d.currentStageEnd) - x(d.currentStageDebut))
-    .attr("height", height)
-    .attr("fill", (d) => color(d.stageText))
+    .attr("width", (d) => x(d.end) - x(d.start))
+    .attr("height", BAR_HEIGHT)
+    .attr("fill", (d) => color(STAGES_ORDERED[d.stage]))
     .on("mouseover", function (d) {
       tip.show(d, this);
       d3.select(this).style("opacity", 0.8);
@@ -28,39 +24,11 @@ export const createStackedBarChart = (g, sources, x, color, tip, height) => {
     });
 };
 
-export const getToolTipText = (d) => {
-  const h = addZero(d.currentStageDebut.getHours());
-  const m = addZero(d.currentStageDebut.getMinutes());
-  const hf = addZero(d.currentStageEnd.getHours());
-  const mf = addZero(d.currentStageEnd.getMinutes());
-  let hourDiff = d.currentStageEnd - d.currentStageDebut; //in ms
-
-  hourDiff /= 3.6e6; //in h
-
-  return `Stage : <strong> ${d.stageText} </strong> <br>
-          Début  :  <strong> ${h} h ${m}  </strong>
-            -  Fin : <strong> ${hf} h ${mf} </strong> <br>
-          Durée: <strong> ${getDurationString(hourDiff)} </strong>`; //TO DO ADD HOURS
-};
-
-export const getStackedToolTipText = (
-  d,
-  totalStagesPortion,
-  totalTimeStamp
-) => {
-  return `Stage : <strong> ${d.stageText} </strong><br> 
-          Durée : <strong> ${getDurationSecondString(
-            totalStagesPortion[d.stage] * totalTimeStamp * 30
-          )} </strong><br>`;
-};
-
-export const createStagesDurationAxes = (data, xAxis, width) => {
-  var sleepDiff =
-    data[data.length - 1].currentStageEnd.getTime() -
-    data[0].currentStageDebut.getTime();
+export const createStagesDurationAxes = (data, xAxis) => {
+  var sleepDiff = data[data.length - 1].end.getTime() - data[0].start.getTime();
   var sleepTotal = sleepDiff / (1000 * 60 * 60);
 
-  var newscale = d3.scaleLinear().domain([0, sleepTotal]).range([0, width]);
+  var newscale = d3.scaleLinear().domain([0, sleepTotal]).range([0, WIDTH]);
 
   xAxis.scale(newscale).tickFormat((d) => d + " h");
 };
@@ -72,8 +40,6 @@ export const createSmallStackedBarChart = (
   name,
   totalTimeStamp,
   xAxis,
-  width,
-  height,
   color
 ) => {
   var stackedBar = g
@@ -93,9 +59,9 @@ export const createSmallStackedBarChart = (
         pourcentageData
           .slice(0, i)
           .map((a) => a.value)
-          .reduce((a, b) => a + b, 0) * width
+          .reduce((a, b) => a + b, 0) * WIDTH
     )
-    .attr("width", (d) => d.value * width)
+    .attr("width", (d) => d.value * WIDTH)
     .attr("height", 80)
     .attr("fill", (d) => color(d.stage))
     .on("end", () => {
@@ -115,10 +81,10 @@ export const createSmallStackedBarChart = (
           .slice(0, i)
           .map((a) => a.value)
           .reduce((a, b) => a + b, 0) *
-          width +
-        (pourcentageData[i].value / 2) * width
+          WIDTH +
+        (pourcentageData[i].value / 2) * WIDTH
     )
-    .attr("y", height / 3)
+    .attr("y", BAR_HEIGHT / 3)
     .attr("font-size", "25px")
     .attr("font-weight", 15);
 
@@ -131,15 +97,15 @@ export const createSmallStackedBarChart = (
           .slice(0, i)
           .map((a) => a.value)
           .reduce((a, b) => a + b, 0) *
-          width +
-        (pourcentageData[i].value / 2) * width
+          WIDTH +
+        (pourcentageData[i].value / 2) * WIDTH
       );
     })
-    .attr("y", (2 * height) / 3)
+    .attr("y", (2 * BAR_HEIGHT) / 3)
     .attr("font-size", "20px")
     .attr("font-weight", 10);
 
-  createStagesDurationAxes(data, xAxis, width);
+  createStagesDurationAxes(data, xAxis);
 
   g.append("g")
     .attr("class", "x axis")
