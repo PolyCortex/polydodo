@@ -36,7 +36,7 @@ const getToolTipText = (d) => {
   const sf = addZero(d.end.getSeconds());
   const hourDiff = (d.end - d.start) / 3.6e6; //in ms
 
-  return `Stage : <strong> ${STAGES_ORDERED[d.stage]} </strong> <br>
+  return `Stage : <strong> ${d.stage} </strong> <br>
             Range  :  <strong> ${h}:${m}:${s} </strong>
               - <strong> ${hf}:${mf}:${sf} </strong> <br>
             Duration: <strong> ${getDurationString(hourDiff)} </strong>`; //TO DO ADD HOURS
@@ -44,7 +44,7 @@ const getToolTipText = (d) => {
 
 const getStackedToolTipText = (d, stageTimeProportions, nbEpochs) =>
   `Stage : <strong> ${
-    STAGES_ORDERED[d.stage]
+    d.stage
   } </strong><br>  Duration : <strong> ${getDurationSecondString(
     stageTimeProportions[d.stage] * nbEpochs * EPOCH_DURATION_SEC
   )} </strong><br>`;

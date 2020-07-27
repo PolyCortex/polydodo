@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { getDurationStringHM } from "../duration";
-import { TRANSITION_TIME_MS, STAGES_ORDERED } from "../constants";
+import { TRANSITION_TIME_MS } from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
 export const createStackedBarChart = (g, sources, x, color, tip) => {
@@ -13,7 +13,7 @@ export const createStackedBarChart = (g, sources, x, color, tip) => {
     .attr("y", 0)
     .attr("width", (d) => x(d.end) - x(d.start))
     .attr("height", BAR_HEIGHT)
-    .attr("fill", (d) => color(STAGES_ORDERED[d.stage]))
+    .attr("fill", (d) => color(d.stage))
     .on("mouseover", function (d) {
       tip.show(d, this);
       d3.select(this).style('opacity', 0.8);
