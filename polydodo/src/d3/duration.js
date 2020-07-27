@@ -5,7 +5,7 @@ export const getDurationString = (duration) => {
   minutes = Math.floor(minutes);
   seconds = Math.floor(seconds);
 
-  return `${addZero(hours)}h ${addZero(minutes)}min ${addZero(seconds)}secs`;
+  return `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
 };
 
 export const getDurationStringHM = (duration) => {

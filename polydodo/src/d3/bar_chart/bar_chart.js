@@ -1,12 +1,7 @@
 import * as d3 from "d3";
 import _ from "lodash";
 
-import {
-  setDomainOnScales,
-  convertEpochsToAnnotations,
-  calculateStagesProportion,
-  findFirstStageIndex,
-} from "./preproc";
+import { setDomainOnScales, preprocessData } from "./preproc";
 import { barLegend } from "./legend";
 import { createStackedBarChart } from "./stages_charts";
 import { addTransitions } from "./transition";
@@ -20,7 +15,6 @@ import {
 } from "./constants";
 import { STAGES_ORDERED, STAGE_TO_COLOR } from "../constants";
 import { initializeTooltip } from "./mouse_over";
-import { convertTimestampsToDates } from "../utils";
 
 const initializeScales = () => {
   const x = d3.scaleTime([0, WIDTH]);
@@ -52,18 +46,11 @@ const createBarChart = (containerNode, data) => {
   const { xAxis, yAxis } = initializeAxes(x, y);
   const gBarChart = createDrawingGroup(svg);
 
-  data = convertTimestampsToDates(data);
-  const annotations = convertEpochsToAnnotations(data);
-  const totalStagesPortion = calculateStagesProportion(data);
-  const firstStagesIndex = findFirstStageIndex(annotations);
+  data = preprocessData(data);
 
-  setDomainOnScales(x, y, colors, data);
-  const { tooltip, tipStacked } = initializeTooltip(
-    svg,
-    totalStagesPortion,
-    data
-  );
-  createStackedBarChart(gBarChart, annotations, x, colors, tooltip);
+  setDomainOnScales(x, y, colors, data.epochs);
+  const { tooltip, tipStacked } = initializeTooltip(svg, data);
+  createStackedBarChart(gBarChart, data.annotations, x, colors, tooltip);
 
   const gSecondBarChart = svg
     .append("g")
@@ -83,14 +70,14 @@ const createBarChart = (containerNode, data) => {
     gBarChart,
     gSecondBarChart,
     gThirdBarChart,
-    annotations,
+    data.annotations,
     colors,
     tipStacked,
     xAxis,
     yAxis,
-    firstStagesIndex,
-    totalStagesPortion,
-    data.length
+    data.firstStageIndexes,
+    data.stageTimeProportions,
+    data.epochs.length
   );
   // Axes
   gBarChart
