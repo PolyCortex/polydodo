@@ -1,6 +1,7 @@
-import * as d3 from 'd3';
-import { getDurationString } from '../duration';
-import { getHoursFromIndex } from './preproc';
+import * as d3 from "d3";
+import moment from "moment";
+
+import { getHoursFromIndex } from "./preproc";
 
 export const createSpectrgramChart = (g, sources, x, y, color, tip, height, width, margin) => {
   //Creating all the parts of the stacked bar chart
@@ -47,5 +48,7 @@ export const getToolTipText = (d) => {
   //TODO : Fix name
   return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
-          Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`;
+          Moment: <strong> ${moment()
+            .hour(d.Timestamp)
+            .format("LTS")} </strong>`;
 };
