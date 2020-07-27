@@ -1,4 +1,4 @@
-import { STAGES } from "../constants";
+import { STAGES_ORDERED } from "../constants";
 
 export const MARGIN = {
   TOP: 90,
@@ -12,4 +12,4 @@ export const CANVAS_HEIGHT = 600;
 
 export const WIDTH = CANVAS_WIDTH - MARGIN.LEFT - MARGIN.RIGHT;
 export const HEIGHT = CANVAS_HEIGHT - MARGIN.TOP - MARGIN.BOTTOM;
-export const BAR_HEIGHT = HEIGHT / STAGES.length;
+export const BAR_HEIGHT = HEIGHT / STAGES_ORDERED.length;
