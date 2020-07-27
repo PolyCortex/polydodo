@@ -3,20 +3,15 @@ import _ from "lodash";
 
 import { preprocessData } from "./preproc";
 import createHypnogramChart from "./line_charts";
-import {
-  DIMENSIONS,
-  MARGINS,
-  COMPARATIVE_COLORS,
-  SLEEP_STAGES_ORDERED_FOR_HYPNOGRAM,
-} from "./constants";
-import { STATES } from "../constants";
+import { DIMENSIONS, MARGINS, COMPARATIVE_COLORS } from "./constants";
+import { STAGES, STAGES_ORDERED } from "../constants";
 
 const initializeScales = (comparativeColors) => {
   const x = d3.scaleTime().range([0, DIMENSIONS.width]);
   const y = d3
     .scaleOrdinal()
     .range(
-      _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STATES.length)
+      _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STAGES.length)
     );
   const colors = d3.scaleOrdinal(comparativeColors);
 
@@ -38,7 +33,7 @@ const createDrawingGroup = (svg) =>
 const setDomainOnScales = (x, y, colors, data) => {
   const dates = data[0].values.map((datum) => datum.timestamp);
   x.domain([d3.min(dates), d3.max(dates)]);
-  y.domain(SLEEP_STAGES_ORDERED_FOR_HYPNOGRAM);
+  y.domain(STAGES_ORDERED);
   colors.domain(data.map((x) => x.name));
 };
 

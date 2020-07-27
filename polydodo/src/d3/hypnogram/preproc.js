@@ -1,5 +1,7 @@
 import _ from "lodash";
 
+import { convertTimestampsToDates } from "../utils";
+
 const RAW_DATA_LABELS = {
   W: 0,
   N1: 1,
@@ -9,7 +11,7 @@ const RAW_DATA_LABELS = {
 };
 
 export const preprocessData = (data, hypnogramNames) => {
-  data = convertTimestampsToDates(data);
+  data = data.map((hypno) => convertTimestampsToDates(hypno));
   data = convertValuesToLabels(data);
 
   return _.zip(data, hypnogramNames).map((x) =>
@@ -20,33 +22,13 @@ export const preprocessData = (data, hypnogramNames) => {
   );
 };
 
-const parseTimestampToDate = (timestamp) => {
-  // To convert UNIX timestamp to JS Date, we have to convert number of seconds to milliseconds.
-  const date = new Date(timestamp * 1000);
-  return new Date(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDay(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds()
-  );
-};
-
-const convertTimestampsToDates = (data) =>
-  data.map((hypnogram) =>
-    hypnogram.map((row) =>
-      Object({ ...row, timestamp: parseTimestampToDate(row.timestamp) })
-    )
-  );
-
 const convertValuesToLabels = (data) =>
   data.map((hypno) =>
     hypno.map((row) =>
       Object({
         ...row,
-        sleep_stage: Object.keys(RAW_DATA_LABELS).find(
-          (key) => RAW_DATA_LABELS[key] === parseInt(row.sleep_stage)
+        sleepStage: Object.keys(RAW_DATA_LABELS).find(
+          (key) => RAW_DATA_LABELS[key] === parseInt(row.sleepStage)
         ),
       })
     )

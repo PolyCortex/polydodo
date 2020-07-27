@@ -1,23 +1,16 @@
 import * as d3 from "d3";
-import tip from "d3-tip";
 import _ from "lodash";
 
 import {
   setDomainOnScales,
-  convertSource,
-  createSources,
+  convertEpochsToAnnotations,
   calculateStagesPortion,
   findFirstStageIndex,
 } from "./preproc";
 import { barLegend } from "./legend";
-import {
-  createStackedBarChart,
-  getToolTipText,
-  getStackedToolTipText,
-} from "./stages_charts";
+import { createStackedBarChart } from "./stages_charts";
 import { addTransitions } from "./transition";
 import {
-  STATES_ORDERED,
   WIDTH,
   HEIGHT,
   MARGIN,
@@ -25,12 +18,14 @@ import {
   CANVAS_HEIGHT,
   BAR_HEIGHT,
 } from "./constants";
-import { STATES, STATE_TO_COLOR } from "../constants";
+import { STAGES, STATE_TO_COLOR, STAGES_ORDERED } from "../constants";
+import { initializeTooltip } from "./mouse_over";
+import { convertTimestampsToDates } from "../utils";
 
 const initializeScales = () => {
   const x = d3.scaleTime().range([0, WIDTH]);
   const y = d3.scaleOrdinal().range(_.range(0, HEIGHT + 1, BAR_HEIGHT));
-  const colors = d3.scaleOrdinal().range(STATES.map((x) => STATE_TO_COLOR[x]));
+  const colors = d3.scaleOrdinal().range(STAGES.map((x) => STATE_TO_COLOR[x]));
 
   return { x, y, colors };
 };
@@ -42,8 +37,10 @@ const initializeAxes = (x, y) => {
   return { xAxis, yAxis };
 };
 
-const createDrawingGroup = (svg, { LEFT, TOP }) => {
-  return svg.append("g").attr("transform", `translate(${LEFT}, ${TOP})`);
+const createDrawingGroup = (svg) => {
+  return svg
+    .append("g")
+    .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 };
 
 const createBarChart = (containerNode, data) => {
@@ -51,36 +48,22 @@ const createBarChart = (containerNode, data) => {
     .select(containerNode)
     .attr("width", CANVAS_WIDTH)
     .attr("height", CANVAS_HEIGHT);
-
   const { x, y, colors } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, y);
-  const gBarChart = createDrawingGroup(svg, MARGIN);
+  const gBarChart = createDrawingGroup(svg);
 
-  const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
-  const tipStacked = tip().attr("class", "d3-tip").offset([-10, 0]);
-
-  tooltip.html((d) => getToolTipText.call(this, d));
-  svg.call(tooltip);
-  svg.call(tipStacked);
-
-  tipStacked.html((d) =>
-    getStackedToolTipText.call(this, d, totalStagesPortion, data.length)
-  );
-
-  convertSource(data);
-
-  const sources = createSources(data, STATES, STATES_ORDERED);
-
-  //For visualisation 3
-  const totalStagesPortion = calculateStagesPortion(
-    data,
-    STATES,
-    STATES_ORDERED
-  );
+  data = convertTimestampsToDates(data);
+  const sources = convertEpochsToAnnotations(data);
+  const totalStagesPortion = calculateStagesPortion(data);
   const firstStagesIndex = findFirstStageIndex(sources);
 
   setDomainOnScales(x, y, colors, data);
-  createStackedBarChart(gBarChart, sources, x, colors, tooltip, BAR_HEIGHT);
+  const { tooltip, tipStacked } = initializeTooltip(
+    svg,
+    totalStagesPortion,
+    data
+  );
+  createStackedBarChart(gBarChart, sources, x, colors, tooltip);
 
   const gSecondBarChart = svg
     .append("g")
@@ -102,8 +85,6 @@ const createBarChart = (containerNode, data) => {
     gThirdBarChart,
     sources,
     colors,
-    BAR_HEIGHT,
-    WIDTH,
     tipStacked,
     xAxis,
     yAxis,
@@ -121,7 +102,7 @@ const createBarChart = (containerNode, data) => {
   //get tick
   d3.selectAll(".tick").select("text").style("font-weight", 540);
 
-  barLegend(svg, STATES, colors);
+  barLegend(svg, colors);
 };
 
 export default createBarChart;
