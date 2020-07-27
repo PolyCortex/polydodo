@@ -85,13 +85,13 @@ const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
       .style("opacity", 1);
 
     circleHover
-      .attr("cy", (x) => y(x.currentValue.sleep_stage))
+      .attr("cy", (x) => y(x.currentValue.sleepStage))
       .attr("cx", x(timestamp))
       .style("opacity", 1);
 
     textHover
       .attr("transform", `translate(${x(timestamp)},${(5 / 6) * height})`)
-      .text((x) => `${x.name}: ${x.currentValue.sleep_stage}`)
+      .text((x) => `${x.name}: ${x.currentValue.sleepStage}`)
       .style("opacity", 1);
 
     x(timestamp) > (4 / 5) * width

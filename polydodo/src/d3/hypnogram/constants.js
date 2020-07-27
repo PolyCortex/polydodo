@@ -13,10 +13,3 @@ export const COMPARATIVE_COLORS = {
   "Sleep-EDF": "#006aff",
   Electrophysiologist: "#ff7575",
 };
-export const SLEEP_STAGES_ORDERED_FOR_HYPNOGRAM = [
-  "W",
-  "REM",
-  "N1",
-  "N2",
-  "N3",
-];

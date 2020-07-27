@@ -5,6 +5,7 @@ import {
   createStagesDurationAxes,
 } from "./stages_charts";
 import { TRANSITION_TIME_MS } from "../constants";
+import { BAR_HEIGHT, WIDTH } from "./constants";
 
 export let firstCallback = () => {};
 export let secondCallback = () => {};
@@ -18,8 +19,6 @@ export const addTransitions = (
   gThirdBarChart,
   sources,
   color,
-  height,
-  width,
   tipStacked,
   xAxis,
   yAxis,
@@ -27,14 +26,12 @@ export const addTransitions = (
   totalStagePortion,
   totalTimeStamp,
 ) => {
-  firstCallback = firstTransition(g, xAxis, yAxis, height, color);
+  firstCallback = firstTransition(g, xAxis, yAxis, color);
   secondCallback = secondTransition(
     g,
     sources,
     firstStageIndex,
     totalStagePortion,
-    width,
-    height,
     xAxis,
     tipStacked
   );
@@ -43,16 +40,12 @@ export const addTransitions = (
     sources,
     firstStageIndex,
     totalStagePortion,
-    width,
-    height,
     totalTimeStamp
   );
   fourthCallback = fourthTransition(
     gSecondBarChart,
     sources,
     xAxis,
-    width,
-    height,
     totalTimeStamp,
     color
   );
@@ -60,15 +53,13 @@ export const addTransitions = (
     gThirdBarChart,
     sources,
     xAxis,
-    width,
-    height,
     totalTimeStamp,
     color
   );
 };
 
-const firstTransition = (g, xAxis, yAxis, height, color) => () => {
-  g.selectAll('.y.axis').remove();
+const firstTransition = (g, xAxis, yAxis, color) => () => {
+  g.selectAll(".y.axis").remove();
 
   //create Y axes
   let axis = g.append('g').attr('class', 'y axis');
@@ -76,25 +67,25 @@ const firstTransition = (g, xAxis, yAxis, height, color) => () => {
   axis.transition().duration(TRANSITION_TIME_MS).call(yAxis);
 
   axis
-    .selectAll('text')
-    .attr('class', 'y-label')
-    .attr('y', height / 2)
-    .attr('x', -10)
-    .style('fill', (d) => color(d))
-    .style('font-size', '20px')
-    .attr('text-anchor', 'left')
-    .style('alignment-baseline', 'middle');
+    .selectAll("text")
+    .attr("class", "y-label")
+    .attr("y", BAR_HEIGHT / 2)
+    .attr("x", -10)
+    .style("fill", (d) => color(d))
+    .style("font-size", "20px")
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle");
 
   //Move every sleep stage portion to the correspending stage row
   g.selectAll('.rect-stacked')
     .transition()
     .duration(2000)
-    .attr('y', (d) => height * d.stage)
-    .attr('height', height);
+    .attr("y", (d) => BAR_HEIGHT * d.stage)
+    .attr("height", BAR_HEIGHT);
 
   g.select(".x.axis")
     .transition()
-    .attr("transform", `translate(0, ${5 * height})`)
+    .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
     .duration(2000)
     .call(xAxis);
 };
@@ -104,12 +95,10 @@ const secondTransition = (
   data,
   firstIndexes,
   totalStagePortion,
-  width,
-  height,
   xAxis,
   tip
 ) => () => {
-  createStagesDurationAxes(data, xAxis, width);
+  createStagesDurationAxes(data, xAxis, WIDTH);
 
   g.select('.x.axis').transition().duration(500).call(xAxis);
 
@@ -124,8 +113,10 @@ const secondTransition = (
       d3.select(this).style('opacity', 1);
     })
     .transition()
-    .attr('x', 0)
-    .attr('width', (d, i) => (i === firstIndexes[d.stage] ? totalStagePortion[d.stage] * width : 0))
+    .attr("x", 0)
+    .attr("width", (d, i) =>
+      i === firstIndexes[d.stage] ? totalStagePortion[d.stage] * WIDTH : 0
+    )
     .duration(TRANSITION_TIME_MS)
     .on('end', () => g.selectAll('.pourcentage').style('opacity', 1));
 
@@ -133,22 +124,32 @@ const secondTransition = (
   g.selectAll('.text')
     .data(data)
     .enter()
-    .append('text')
-    .attr('class', 'pourcentage')
-    .text((d, i) => (i === firstIndexes[d.stage] ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + '%' : ''))
-    .attr('x', width / 20)
-    .attr('y', (d) => height * d.stage + height / 2)
-    .style('fill', 'black');
+    .append("text")
+    .attr("class", "pourcentage")
+    .text((d, i) =>
+      i === firstIndexes[d.stage]
+        ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + "%"
+        : ""
+    )
+    .attr("x", WIDTH / 20)
+    .attr("y", (d) => BAR_HEIGHT * d.stage + BAR_HEIGHT / 2)
+    .style("fill", "black");
 };
 
-const thirdTransition = (g, data, firstIndexes, totalStagePortion, width, height, totalTimeStamp) => () => {
+const thirdTransition = (
+  g,
+  data,
+  firstIndexes,
+  totalStagePortion,
+  totalTimeStamp
+) => () => {
   //Remove y axis and labels
   g.selectAll('.y.axis').remove();
   g.selectAll('.pourcentage').remove();
 
   g.select('.x.axis')
     .transition()
-    .attr("transform", `translate(0, ${height})`)
+    .attr("transform", `translate(0, ${BAR_HEIGHT})`)
     .duration(TRANSITION_TIME_MS);
 
   //first barChart
@@ -157,7 +158,11 @@ const thirdTransition = (g, data, firstIndexes, totalStagePortion, width, height
   stackedBar
     .transition()
     .duration(TRANSITION_TIME_MS / 3)
-    .attr('x', (d) => totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width)
+    .attr(
+      "x",
+      (d) =>
+        totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * WIDTH
+    )
     .transition()
     .duration(TRANSITION_TIME_MS / 3)
     .attr('y', (d, i) => {
@@ -165,20 +170,29 @@ const thirdTransition = (g, data, firstIndexes, totalStagePortion, width, height
     })
     .transition()
     .duration(TRANSITION_TIME_MS / 3)
-    .attr('height', height)
-    .on('end', () => {
-      g.selectAll('.pourcentage').style('opacity', 1);
-      g.selectAll('.label-sleepType').style('opacity', 1);
+    .attr("height", BAR_HEIGHT)
+    .on("end", () => {
+      g.selectAll(".pourcentage").style("opacity", 1);
+      g.selectAll(".label-sleepType").style("opacity", 1);
     });
 
   var text = g.selectAll('.text').data(data).enter().append('text').attr('class', 'pourcentage');
 
   //hours
   text
-    .append('tspan')
-    .text((d, i) => (i === firstIndexes[d.stage] ? getDurationStringHM(totalStagePortion[d.stage] * totalTimeStamp * 30) : ''))
-    .attr('x', (d) => totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width + (totalStagePortion[d.stage] / 2) * width)
-    .attr('y', (d, i) => {
+    .append("tspan")
+    .text((d, i) =>
+      i === firstIndexes[d.stage]
+        ? getDurationStringHM(totalStagePortion[d.stage] * totalTimeStamp * 30)
+        : ""
+    )
+    .attr(
+      "x",
+      (d) =>
+        totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * WIDTH +
+        (totalStagePortion[d.stage] / 2) * WIDTH
+    )
+    .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 40;
     })
     .attr('font-size', '25px')
@@ -186,10 +200,19 @@ const thirdTransition = (g, data, firstIndexes, totalStagePortion, width, height
 
   //percentage
   text
-    .append('tspan')
-    .text((d, i) => (i === firstIndexes[d.stage] ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + '%' : ''))
-    .attr('x', (d) => totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * width + (totalStagePortion[d.stage] / 2) * width)
-    .attr('y', (d, i) => {
+    .append("tspan")
+    .text((d, i) =>
+      i === firstIndexes[d.stage]
+        ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + "%"
+        : ""
+    )
+    .attr(
+      "x",
+      (d) =>
+        totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * WIDTH +
+        (totalStagePortion[d.stage] / 2) * WIDTH
+    )
+    .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 60;
     })
     .attr('font-size', '20px')
@@ -198,7 +221,13 @@ const thirdTransition = (g, data, firstIndexes, totalStagePortion, width, height
   //label
   g.append('text').attr('class', 'label-sleepType').attr('x', 0).attr('y', -15).text('You');
 };
-const fourthTransition = (gSecondBarChart, data, xAxis, width, height, totalTimeStamp, color) => () => {
+const fourthTransition = (
+  gSecondBarChart,
+  data,
+  xAxis,
+  totalTimeStamp,
+  color
+) => () => {
   //Restless barChart
   const restlessSleepData = [
     { stage: 'W', value: 0.156 },
@@ -207,10 +236,24 @@ const fourthTransition = (gSecondBarChart, data, xAxis, width, height, totalTime
     { stage: 'N2', value: 0.506 },
     { stage: 'N3', value: 0.049 },
   ];
-  createSmallStackedBarChart(gSecondBarChart, restlessSleepData, data, 'Restless Legs Syndrome', totalTimeStamp, xAxis, width, height, color);
+  createSmallStackedBarChart(
+    gSecondBarChart,
+    restlessSleepData,
+    data,
+    "Restless Legs Syndrome",
+    totalTimeStamp,
+    xAxis,
+    color
+  );
 };
 
-const fifthTransition = (gThirdBarChart, data, xAxis, width, height, totalTimeStamp, color) => () => {
+const fifthTransition = (
+  gThirdBarChart,
+  data,
+  xAxis,
+  totalTimeStamp,
+  color
+) => () => {
   //Sleep apnea barChart
   const sleepApneaData = [
     { stage: 'W', value: 0.326 },
@@ -219,5 +262,13 @@ const fifthTransition = (gThirdBarChart, data, xAxis, width, height, totalTimeSt
     { stage: 'N2', value: 0.329 },
     { stage: 'N3', value: 0.071 },
   ];
-  createSmallStackedBarChart(gThirdBarChart, sleepApneaData, data, 'Sleep Apnea', totalTimeStamp, xAxis, width, height, color);
+  createSmallStackedBarChart(
+    gThirdBarChart,
+    sleepApneaData,
+    data,
+    "Sleep Apnea",
+    totalTimeStamp,
+    xAxis,
+    color
+  );
 };

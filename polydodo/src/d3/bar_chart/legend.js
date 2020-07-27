@@ -1,15 +1,17 @@
-export const barLegend = (svg, states, color) => {
+import { STAGES } from "d3/constants";
+
+export const barLegend = (svg, color) => {
   var size = 20;
 
   svg
-    .selectAll('dots')
-    .data(states)
+    .selectAll("dots")
+    .data(STAGES)
     .enter()
     .append('rect')
     .attr('class', 'legend')
     .attr('x', function (d, i) {
       if (i === 0) return 30;
-      else if (i === states.length - 1) return 50 + i * 60;
+      else if (i === STAGES.length - 1) return 50 + i * 60;
       else return 30 + i * 60;
     })
     .attr('y', 40)
@@ -21,8 +23,8 @@ export const barLegend = (svg, states, color) => {
     .attr("transform", "translate(" + 100 + "," + 0 + ")");
 
   svg
-    .selectAll('names')
-    .data(states)
+    .selectAll("names")
+    .data(STAGES)
     .enter()
     .append('text')
     .attr('class', 'legend')

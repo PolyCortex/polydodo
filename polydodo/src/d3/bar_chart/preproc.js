@@ -1,64 +1,55 @@
-import { STATES } from "../constants";
+import { STAGES, STAGES_ORDERED } from "../constants";
 
 export const setDomainOnScales = (x, y, colors, data) => {
   x.domain([data[0].timestamp, data[data.length - 1].timestamp]);
-  y.domain(STATES);
-  colors.domain(STATES);
+  y.domain(STAGES);
+  colors.domain(STAGES);
 };
 
-export const convertSource = (data) => {
-  data.forEach((row) => {
-    const date = new Date(row.timestamp * 1000);
-    row.timestamp = new Date(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDay(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds(),
-    );
-  });
-};
+export const convertEpochsToAnnotations = (data) => {
+  const annotations = [];
+  const nbEpochs = data.length - 1;
+  let currentAnnotationStart = data[0].timestamp;
+  let currentSleepStage = data[0].sleepStage;
+  let currentProportion = 0;
 
-export const createSources = (data, states, statesOrder) => {
-  const sources = [];
-  const totalTimestamps = data.length - 1;
-  let currentStageDebut = data[0].timestamp;
-  let currentStage = 0;
-  let stagePortion = 0; //portion in the night of the current stage
+  const isNextAnnotation = (sleepStage, index) =>
+    sleepStage !== currentSleepStage || index === data.length - 1;
 
-  data.forEach((row, i) => {
-    stagePortion++;
-    //We sum the portions of the current stage
-    if (row.sleep_stage !== currentStage || i === data.length - 1) {
-      sources.push({
-        stageText: states[currentStage],
-        stage: statesOrder.indexOf(states[currentStage]),
-        stagePortion: (stagePortion / totalTimestamps) * 100,
-        currentStageDebut: currentStageDebut,
-        currentStageEnd: row.timestamp,
-      });
-      //next sleep stage
-      currentStageDebut = row.timestamp;
-      currentStage = row.sleep_stage;
-      stagePortion = 0;
+  const saveCurrentAnnotation = (timestamp) => {
+    annotations.push({
+      stage: STAGES_ORDERED.indexOf(STAGES[currentSleepStage]),
+      proportion: (currentProportion / nbEpochs) * 100,
+      start: currentAnnotationStart,
+      end: timestamp,
+    });
+  };
+
+  data.forEach(({ timestamp, sleepStage }, index) => {
+    currentProportion++;
+
+    if (isNextAnnotation(sleepStage, index)) {
+      saveCurrentAnnotation(timestamp);
+      currentAnnotationStart = timestamp;
+      currentSleepStage = sleepStage;
+      currentProportion = 0;
     }
   });
 
-  return sources;
+  return annotations;
 };
 
 //Calculate the total portion of each sleep stage (for Viz 3)
-export const calculateStagesPortion = (data, states, statesOrder) => {
+export const calculateStagesPortion = (data) => {
   var stageProportionCounts = [0, 0, 0, 0, 0];
   var totalTimestamp = data.length;
   //lets find how much % of the night does all stages have
   data.forEach((row) => {
-    ++stageProportionCounts[statesOrder.indexOf(states[row.sleep_stage])];
+    ++stageProportionCounts[STAGES_ORDERED.indexOf(STAGES[row.sleepStage])];
   });
 
-  stageProportionCounts.forEach((stagePortion, i) => {
-    stageProportionCounts[i] = stagePortion / totalTimestamp;
+  stageProportionCounts.forEach((proportion, i) => {
+    stageProportionCounts[i] = proportion / totalTimestamp;
   });
 
   return stageProportionCounts;
