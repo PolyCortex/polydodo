@@ -1,5 +1,6 @@
 import * as d3 from "d3";
-import { getDurationString } from "../duration";
+import moment from "moment";
+
 import { getHoursFromIndex } from "./preproc";
 
 export const createSpectrgramChart = (
@@ -57,5 +58,7 @@ export const getToolTipText = (d) => {
   //TODO : Fix name
   return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
-          Moment: <strong> ${getDurationString(d.Timestamp)} </strong>`;
+          Moment: <strong> ${moment()
+            .hour(d.Timestamp)
+            .format("LTS")} </strong>`;
 };

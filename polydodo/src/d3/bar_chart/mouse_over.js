@@ -1,11 +1,7 @@
 import tip from "d3-tip";
+import moment from "moment";
 
-import {
-  addZero,
-  getDurationString,
-  getDurationSecondString,
-} from "../duration";
-import { STAGES_ORDERED, EPOCH_DURATION_SEC } from "../constants";
+import { EPOCH_DURATION_SEC } from "../constants";
 
 export const initializeTooltip = (svg, data) => {
   const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
@@ -28,23 +24,15 @@ export const initializeTooltip = (svg, data) => {
 };
 
 const getToolTipText = (d) => {
-  const h = addZero(d.start.getHours());
-  const m = addZero(d.start.getMinutes());
-  const s = addZero(d.start.getSeconds());
-  const hf = addZero(d.end.getHours());
-  const mf = addZero(d.end.getMinutes());
-  const sf = addZero(d.end.getSeconds());
-  const hourDiff = (d.end - d.start) / 3.6e6; //in ms
-
   return `Stage : <strong> ${d.stage} </strong> <br>
-            Range  :  <strong> ${h}:${m}:${s} </strong>
-              - <strong> ${hf}:${mf}:${sf} </strong> <br>
-            Duration: <strong> ${getDurationString(hourDiff)} </strong>`; //TO DO ADD HOURS
+            Range  :  <strong> ${moment(d.start).format("HH:mm:ss")} </strong>
+              - <strong> ${moment(d.end).format("HH:mm:ss")} </strong> <br>
+            Duration: <strong> ${moment(moment(d.end).diff(d.start))
+              .utc()
+              .format("HH:mm:ss")} </strong>`;
 };
 
 const getStackedToolTipText = (d, stageTimeProportions, nbEpochs) =>
-  `Stage : <strong> ${
-    d.stage
-  } </strong><br>  Duration : <strong> ${getDurationSecondString(
-    stageTimeProportions[d.stage] * nbEpochs * EPOCH_DURATION_SEC
-  )} </strong><br>`;
+  `Stage : <strong> ${d.stage} </strong><br>  Duration : <strong> ${moment()
+    .second(stageTimeProportions[d.stage] * nbEpochs * EPOCH_DURATION_SEC)
+    .format("LTS")} </strong><br>`;

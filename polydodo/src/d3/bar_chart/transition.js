@@ -1,10 +1,15 @@
 import * as d3 from "d3";
-import { getDurationStringHM } from "../duration";
+import moment from "moment";
+
 import {
   createSmallStackedBarChart,
   createStagesDurationAxes,
 } from "./stages_charts";
-import { TRANSITION_TIME_MS } from "../constants";
+import {
+  TRANSITION_TIME_MS,
+  STAGES_ORDERED,
+  EPOCH_DURATION_SEC,
+} from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
 export let firstCallback = () => {};
@@ -80,7 +85,7 @@ const firstTransition = (g, xAxis, yAxis, color) => () => {
   g.selectAll(".rect-stacked")
     .transition()
     .duration(2000)
-    .attr("y", (d) => BAR_HEIGHT * d.stage)
+    .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
     .attr("height", BAR_HEIGHT);
 
   g.select(".x.axis")
@@ -132,7 +137,10 @@ const secondTransition = (
         : ""
     )
     .attr("x", WIDTH / 20)
-    .attr("y", (d) => BAR_HEIGHT * d.stage + BAR_HEIGHT / 2)
+    .attr(
+      "y",
+      (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage) + BAR_HEIGHT / 2
+    )
     .style("fill", "black");
 };
 
@@ -161,7 +169,9 @@ const thirdTransition = (
     .attr(
       "x",
       (d) =>
-        totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * WIDTH
+        Object.values(totalStagePortion)
+          .slice(0, STAGES_ORDERED.indexOf(d.stage))
+          .reduce((a, b) => a + b, 0) * WIDTH
     )
     .transition()
     .duration(TRANSITION_TIME_MS / 3)
@@ -188,13 +198,20 @@ const thirdTransition = (
     .append("tspan")
     .text((d, i) =>
       i === firstIndexes[d.stage]
-        ? getDurationStringHM(totalStagePortion[d.stage] * totalTimeStamp * 30)
+        ? moment()
+            .second(
+              totalStagePortion[d.stage] * totalTimeStamp * EPOCH_DURATION_SEC
+            )
+            .format("LTS")
         : ""
     )
     .attr(
       "x",
       (d) =>
-        totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * WIDTH +
+        Object.values(totalStagePortion)
+          .slice(0, STAGES_ORDERED.indexOf(d.stage))
+          .reduce((a, b) => a + b, 0) *
+          WIDTH +
         (totalStagePortion[d.stage] / 2) * WIDTH
     )
     .attr("y", (d, i) => {
@@ -214,7 +231,10 @@ const thirdTransition = (
     .attr(
       "x",
       (d) =>
-        totalStagePortion.slice(0, d.stage).reduce((a, b) => a + b, 0) * WIDTH +
+        Object.values(totalStagePortion)
+          .slice(0, STAGES_ORDERED.indexOf(d.stage))
+          .reduce((a, b) => a + b, 0) *
+          WIDTH +
         (totalStagePortion[d.stage] / 2) * WIDTH
     )
     .attr("y", (d, i) => {
