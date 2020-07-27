@@ -1,7 +1,7 @@
-import { STAGES } from "d3/constants";
+import { STAGES } from "../constants";
 
 export const MARGIN = {
-  TOP: 100,
+  TOP: 90,
   RIGHT: 70,
   BOTTOM: 50,
   LEFT: 70,

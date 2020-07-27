@@ -1,45 +1,50 @@
-import { STAGES } from "d3/constants";
+import { STAGES_ORDERED } from "d3/constants";
+import { MARGIN } from "./constants";
+
+const SQUARE_SIZE = 20;
+const LABEL_Y_OFFSET = 55;
+const COLOR_Y_OFFSET = 40;
+const MAP_STAGE_TO_LABEL_OFFSET = {
+  W: 0,
+  REM: 55,
+  N1: 135,
+  N2: 200,
+  N3: 270,
+};
+const MAP_STAGE_TO_COLOR_OFFSET = {
+  W: MAP_STAGE_TO_LABEL_OFFSET.W + 25,
+  REM: MAP_STAGE_TO_LABEL_OFFSET.REM + 50,
+  N1: MAP_STAGE_TO_LABEL_OFFSET.N1 + 35,
+  N2: MAP_STAGE_TO_LABEL_OFFSET.N2 + 35,
+  N3: MAP_STAGE_TO_LABEL_OFFSET.N3 + 35,
+};
 
 export const barLegend = (svg, color) => {
-  var size = 20;
-
-  svg
-    .selectAll("dots")
-    .data(STAGES)
-    .enter()
-    .append("rect")
-    .attr("class", "legend")
-    .attr("x", function (d, i) {
-      if (i === 0) return 30;
-      else if (i === STAGES.length - 1) return 50 + i * 60;
-      else return 30 + i * 60;
-    })
-    .attr("y", 40)
-    .attr("width", size)
-    .attr("height", size)
-    .style("fill", function (d, i) {
-      return color(i);
-    })
-    .attr("transform", "translate(" + 100 + "," + 0 + ")");
-
   svg
     .selectAll("names")
-    .data(STAGES)
+    .data(STAGES_ORDERED)
     .enter()
     .append("text")
     .attr("class", "legend")
-    .attr("x", function (d, i) {
-      return i * 60;
-    })
-    .attr("y", 53)
-    .text(function (d) {
-      return d;
-    })
-    .style("fill", function (d, i) {
-      return color(i);
-    })
+    .attr("x", (stage) => MAP_STAGE_TO_LABEL_OFFSET[stage])
+    .attr("y", LABEL_Y_OFFSET)
+    .text((d) => d)
+    .style("fill", (_, i) => color(i))
     .style("font-size", "20px")
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
-    .attr("transform", "translate(" + 100 + "," + 0 + ")");
+    .attr("transform", `translate(${MARGIN.LEFT}, 0)`);
+
+  svg
+    .selectAll("dots")
+    .data(STAGES_ORDERED)
+    .enter()
+    .append("rect")
+    .attr("class", "legend")
+    .attr("x", (stage) => MAP_STAGE_TO_COLOR_OFFSET[stage])
+    .attr("y", COLOR_Y_OFFSET)
+    .attr("width", SQUARE_SIZE)
+    .attr("height", SQUARE_SIZE)
+    .style("fill", (_, i) => color(i))
+    .attr("transform", `translate(${MARGIN.LEFT}, 0)`);
 };

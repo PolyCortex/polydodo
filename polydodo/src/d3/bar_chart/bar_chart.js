@@ -4,7 +4,7 @@ import _ from "lodash";
 import {
   setDomainOnScales,
   convertEpochsToAnnotations,
-  calculateStagesPortion,
+  calculateStagesProportion,
   findFirstStageIndex,
 } from "./preproc";
 import { barLegend } from "./legend";
@@ -18,14 +18,14 @@ import {
   CANVAS_HEIGHT,
   BAR_HEIGHT,
 } from "./constants";
-import { STAGES, STATE_TO_COLOR, STAGES_ORDERED } from "../constants";
+import { STAGES_ORDERED, STAGE_TO_COLOR } from "../constants";
 import { initializeTooltip } from "./mouse_over";
 import { convertTimestampsToDates } from "../utils";
 
 const initializeScales = () => {
-  const x = d3.scaleTime().range([0, WIDTH]);
-  const y = d3.scaleOrdinal().range(_.range(0, HEIGHT + 1, BAR_HEIGHT));
-  const colors = d3.scaleOrdinal().range(STAGES.map((x) => STATE_TO_COLOR[x]));
+  const x = d3.scaleTime([0, WIDTH]);
+  const y = d3.scaleOrdinal(_.range(0, HEIGHT + 1, BAR_HEIGHT));
+  const colors = d3.scaleOrdinal(STAGES_ORDERED.map((x) => STAGE_TO_COLOR[x]));
 
   return { x, y, colors };
 };
@@ -53,9 +53,9 @@ const createBarChart = (containerNode, data) => {
   const gBarChart = createDrawingGroup(svg);
 
   data = convertTimestampsToDates(data);
-  const sources = convertEpochsToAnnotations(data);
-  const totalStagesPortion = calculateStagesPortion(data);
-  const firstStagesIndex = findFirstStageIndex(sources);
+  const annotations = convertEpochsToAnnotations(data);
+  const totalStagesPortion = calculateStagesProportion(data);
+  const firstStagesIndex = findFirstStageIndex(annotations);
 
   setDomainOnScales(x, y, colors, data);
   const { tooltip, tipStacked } = initializeTooltip(
@@ -63,7 +63,7 @@ const createBarChart = (containerNode, data) => {
     totalStagesPortion,
     data
   );
-  createStackedBarChart(gBarChart, sources, x, colors, tooltip);
+  createStackedBarChart(gBarChart, annotations, x, colors, tooltip);
 
   const gSecondBarChart = svg
     .append("g")
@@ -83,7 +83,7 @@ const createBarChart = (containerNode, data) => {
     gBarChart,
     gSecondBarChart,
     gThirdBarChart,
-    sources,
+    annotations,
     colors,
     tipStacked,
     xAxis,
