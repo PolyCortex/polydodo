@@ -35,7 +35,7 @@ const convertEpochsToAnnotations = (data) => {
 
   const saveCurrentAnnotation = (timestamp) => {
     annotations.push({
-      stage: STAGES_ORDERED.indexOf(currentSleepStage),
+      stage: currentSleepStage,
       proportion: (currentAnnotationEpochCount / nbEpochs) * 100,
       start: currentAnnotationStart,
       end: timestamp,
@@ -64,11 +64,16 @@ const getStageTimeProportions = (data) => {
     (countPerStage) => countPerStage / data.length
   );
 
-  return STAGES_ORDERED.map((stage) => proportionPerSleepStage[stage]);
+  return proportionPerSleepStage;
 };
 
 //Finds the index of the first element of each sleep stage (for Viz 3)
 const findFirstStageIndex = (annotations) =>
-  STAGES_ORDERED.map((_, i) =>
-    annotations.findIndex((element) => element.stage === i)
+  STAGES_ORDERED.reduce(
+    (firstStageIndexes, stage) =>
+      Object({
+        ...firstStageIndexes,
+        [stage]: annotations.findIndex((element) => element.stage === stage),
+      }),
+    {}
   );
