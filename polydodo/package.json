@@ -12,10 +12,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "yarn prettier --config ../.vscode/.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\"",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
-    "compile-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
-    "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
-    "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,7 +24,8 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "bootstrap": "4.3.1",
+    "argon-design-system-react": "^1.1.0",
+    "bootstrap": "^4.5.0",
     "classnames": "2.2.6",
     "d3": "^5.16.0",
     "d3-tip": "^0.9.1",
