@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import moment from "moment";
 
-import { TRANSITION_TIME_MS, EPOCH_DURATION_SEC } from "../constants";
+import { TRANSITION_TIME_MS, EPOCH_DURATION_MS } from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
 export const createStackedBarChart = (g, sources, x, color, tip) => {
@@ -75,9 +75,7 @@ export const createSmallStackedBarChart = (
   text
     .append("tspan")
     .text((d) =>
-      moment()
-        .second(d.value * totalTimeStamp * EPOCH_DURATION_SEC)
-        .format("HH:mm:ss")
+      moment.utc(d.value * totalTimeStamp * EPOCH_DURATION_MS).format("HH:mm")
     )
     .attr(
       'x',
