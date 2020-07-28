@@ -58,7 +58,7 @@ export const getToolTipText = (d) => {
   //TODO : Fix name
   return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
           Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
-          Moment: <strong> ${moment()
-            .hour(d.Timestamp)
-            .format("LTS")} </strong>`;
+          Moment: <strong> ${moment(d.Timestamp * 3.6e6)
+            .utc()
+            .format("HH:mm:ss")} </strong>`;
 };
