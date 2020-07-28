@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import moment from "moment";
+import _ from "lodash";
 
 import {
   createSmallStackedBarChart,
@@ -8,7 +9,7 @@ import {
 import {
   TRANSITION_TIME_MS,
   STAGES_ORDERED,
-  EPOCH_DURATION_SEC,
+  EPOCH_DURATION_MS,
 } from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
@@ -28,7 +29,7 @@ export const addTransitions = (
   xAxis,
   yAxis,
   firstStageIndex,
-  totalStagePortion,
+  totalStageProportions,
   totalTimeStamp
 ) => {
   firstCallback = firstTransition(g, xAxis, yAxis, color);
@@ -36,7 +37,7 @@ export const addTransitions = (
     g,
     sources,
     firstStageIndex,
-    totalStagePortion,
+    totalStageProportions,
     xAxis,
     tipStacked
   );
@@ -44,7 +45,7 @@ export const addTransitions = (
     g,
     sources,
     firstStageIndex,
-    totalStagePortion,
+    totalStageProportions,
     totalTimeStamp
   );
   fourthCallback = fourthTransition(
@@ -99,7 +100,7 @@ const secondTransition = (
   g,
   data,
   firstIndexes,
-  totalStagePortion,
+  totalStageProportions,
   xAxis,
   tip
 ) => () => {
@@ -120,7 +121,7 @@ const secondTransition = (
     .transition()
     .attr("x", 0)
     .attr("width", (d, i) =>
-      i === firstIndexes[d.stage] ? totalStagePortion[d.stage] * WIDTH : 0
+      i === firstIndexes[d.stage] ? totalStageProportions[d.stage] * WIDTH : 0
     )
     .duration(TRANSITION_TIME_MS)
     .on("end", () => g.selectAll(".pourcentage").style("opacity", 1));
@@ -133,7 +134,7 @@ const secondTransition = (
     .attr("class", "pourcentage")
     .text((d, i) =>
       i === firstIndexes[d.stage]
-        ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + "%"
+        ? Math.round(totalStageProportions[d.stage] * 1000) / 10 + "%"
         : ""
     )
     .attr("x", WIDTH / 20)
@@ -148,7 +149,7 @@ const thirdTransition = (
   g,
   data,
   firstIndexes,
-  totalStagePortion,
+  totalStageProportions,
   totalTimeStamp
 ) => () => {
   //Remove y axis and labels
@@ -168,10 +169,11 @@ const thirdTransition = (
     .duration(TRANSITION_TIME_MS / 3)
     .attr(
       "x",
-      (d) =>
-        Object.values(totalStagePortion)
-          .slice(0, STAGES_ORDERED.indexOf(d.stage))
-          .reduce((a, b) => a + b, 0) * WIDTH
+      ({ stage }) =>
+        getCumulativeProportionOfNightAtStartOfStage(
+          stage,
+          totalStageProportions
+        ) * WIDTH
     )
     .transition()
     .duration(TRANSITION_TIME_MS / 3)
@@ -193,26 +195,28 @@ const thirdTransition = (
     .append("text")
     .attr("class", "pourcentage");
 
-  //hours
   text
     .append("tspan")
     .text((d, i) =>
       i === firstIndexes[d.stage]
-        ? moment()
-            .second(
-              totalStagePortion[d.stage] * totalTimeStamp * EPOCH_DURATION_SEC
+        ? moment
+            .utc(
+              totalStageProportions[d.stage] *
+                totalTimeStamp *
+                EPOCH_DURATION_MS
             )
-            .format("LTS")
+            .format("HH:mm")
         : ""
     )
     .attr(
       "x",
-      (d) =>
-        Object.values(totalStagePortion)
-          .slice(0, STAGES_ORDERED.indexOf(d.stage))
-          .reduce((a, b) => a + b, 0) *
-          WIDTH +
-        (totalStagePortion[d.stage] / 2) * WIDTH
+      ({ stage }) =>
+        (getCumulativeProportionOfNightAtStartOfStage(
+          stage,
+          totalStageProportions
+        ) +
+          totalStageProportions[stage] / 2) *
+        WIDTH
     )
     .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 40;
@@ -225,17 +229,18 @@ const thirdTransition = (
     .append("tspan")
     .text((d, i) =>
       i === firstIndexes[d.stage]
-        ? Math.round(totalStagePortion[d.stage] * 1000) / 10 + "%"
+        ? Math.round(totalStageProportions[d.stage] * 1000) / 10 + "%"
         : ""
     )
     .attr(
       "x",
-      (d) =>
-        Object.values(totalStagePortion)
-          .slice(0, STAGES_ORDERED.indexOf(d.stage))
-          .reduce((a, b) => a + b, 0) *
+      ({ stage }) =>
+        getCumulativeProportionOfNightAtStartOfStage(
+          stage,
+          totalStageProportions
+        ) *
           WIDTH +
-        (totalStagePortion[d.stage] / 2) * WIDTH
+        (totalStageProportions[stage] / 2) * WIDTH
     )
     .attr("y", (d, i) => {
       if (i === firstIndexes[d.stage]) return 60;
@@ -301,3 +306,17 @@ const fifthTransition = (
     color
   );
 };
+
+const getCumulativeProportionOfNightAtStartOfStage = (
+  stage,
+  totalStageProportions
+) =>
+  _.sum(
+    _.slice(
+      STAGES_ORDERED.map(
+        (stage_ordered) => totalStageProportions[stage_ordered]
+      ),
+      0,
+      _.indexOf(STAGES_ORDERED, stage)
+    )
+  );
