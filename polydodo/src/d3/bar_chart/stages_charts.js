@@ -4,23 +4,23 @@ import moment from "moment";
 import { TRANSITION_TIME_MS, EPOCH_DURATION_MS } from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
-export const createStackedBarChart = (g, sources, x, color, tip) => {
+export const createStackedBarChart = (g, annotations, x, color, tooltip) => {
   g.selectAll(".rect")
-    .data(sources)
+    .data(annotations)
     .enter()
     .append("rect")
     .attr("class", "rect-stacked")
-    .attr("x", (d) => x(d.start))
+    .attr("x", ({ start }) => x(start))
     .attr("y", 0)
-    .attr("width", (d) => x(d.end) - x(d.start))
+    .attr("width", ({ end, start }) => x(end) - x(start))
     .attr("height", BAR_HEIGHT)
-    .attr("fill", (d) => color(d.stage))
+    .attr("fill", ({ stage }) => color(stage))
     .on("mouseover", function (d) {
-      tip.show(d, this);
+      tooltip.show(d, this);
       d3.select(this).style("opacity", 0.8);
     })
     .on("mouseout", function () {
-      tip.hide();
+      tooltip.hide();
       d3.select(this).style("opacity", 1);
     });
 };
@@ -94,16 +94,16 @@ export const createSmallStackedBarChart = (
   text
     .append("tspan")
     .text((d) => d.value * 100 + "%")
-    .attr("x", (d, i) => {
-      return (
+    .attr(
+      "x",
+      (d, i) =>
         pourcentageData
           .slice(0, i)
           .map((a) => a.value)
           .reduce((a, b) => a + b, 0) *
           WIDTH +
         (pourcentageData[i].value / 2) * WIDTH
-      );
-    })
+    )
     .attr("y", (2 * BAR_HEIGHT) / 3)
     .attr("font-size", "20px")
     .attr("font-weight", 10);
