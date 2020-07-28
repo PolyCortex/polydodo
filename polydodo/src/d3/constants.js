@@ -8,3 +8,4 @@ export const STAGE_TO_COLOR = {
 };
 export const STAGES_ORDERED = ["W", "REM", "N1", "N2", "N3"];
 export const EPOCH_DURATION_SEC = 30;
+export const EPOCH_DURATION_MS = EPOCH_DURATION_SEC * 1000;
