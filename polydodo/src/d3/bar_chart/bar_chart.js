@@ -14,7 +14,7 @@ import {
   BAR_HEIGHT,
 } from "./constants";
 import { STAGES_ORDERED, STAGE_TO_COLOR } from "../constants";
-import { initializeTooltip } from "./mouse_over";
+import { initializeTooltips } from "./mouse_over";
 
 const initializeScales = () => {
   const x = d3.scaleTime([0, WIDTH]);
@@ -49,8 +49,8 @@ const createBarChart = (containerNode, data) => {
   data = preprocessData(data);
 
   setDomainOnScales(x, y, colors, data.epochs);
-  const { tooltip, tipStacked } = initializeTooltip(svg, data);
-  createStackedBarChart(gBarChart, data.annotations, x, colors, tooltip);
+  const { barToolTip, stackedToolTip } = initializeTooltips(svg, data);
+  createStackedBarChart(gBarChart, data.annotations, x, colors, barToolTip);
 
   const gSecondBarChart = svg
     .append("g")
@@ -72,7 +72,7 @@ const createBarChart = (containerNode, data) => {
     gThirdBarChart,
     data.annotations,
     colors,
-    tipStacked,
+    stackedToolTip,
     xAxis,
     yAxis,
     data.firstStageIndexes,
