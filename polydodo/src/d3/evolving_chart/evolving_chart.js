@@ -3,7 +3,7 @@ import _ from "lodash";
 import moment from "moment";
 
 import { preprocessData } from "./preproc";
-import { barLegend } from "./legend";
+import { createLegend } from "./legend";
 import {
   createTimelineChartCallbacks,
   createInstanceChartCallbacks,
@@ -54,11 +54,8 @@ const initializeAxes = (xTime, xLinear, y) => {
   return { xTimeAxis, xLinearAxis, yAxis };
 };
 
-const createDrawingGroup = (svg) => {
-  return svg
-    .append("g")
-    .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
-};
+const createDrawingGroup = (svg) =>
+  svg.append("g").attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
 const bindAnnotationsToRects = (g, annotations) =>
   g
@@ -75,24 +72,25 @@ const createEvolvingChart = (containerNode, data) => {
     .attr("height", CANVAS_HEIGHT);
   const { xTime, xLinear, y, colors } = initializeScales();
   const { xTimeAxis, xLinearAxis, yAxis } = initializeAxes(xTime, xLinear, y);
-  const gBarChart = createDrawingGroup(svg);
+  const g = createDrawingGroup(svg);
+  createLegend(svg, colors);
 
   data = preprocessData(data);
 
   setDomainOnScales(xTime, xLinear, y, colors, data.epochs);
   const { barToolTip, stackedToolTip } = initializeTooltips(svg, data);
-  bindAnnotationsToRects(gBarChart, data.annotations);
+  bindAnnotationsToRects(g, data.annotations);
 
   timelineChartCallbacks = createTimelineChartCallbacks(
-    gBarChart,
+    g,
     xTime,
+    xTimeAxis,
     colors,
-    barToolTip,
-    xTimeAxis
+    barToolTip
   );
 
   instanceChartCallbacks = createInstanceChartCallbacks(
-    gBarChart,
+    g,
     xTime,
     xTimeAxis,
     yAxis,
@@ -101,28 +99,17 @@ const createEvolvingChart = (containerNode, data) => {
   );
 
   barChartCallbacks = createBarChartCallbacks(
-    gBarChart,
+    g,
     data,
     xLinearAxis,
-    stackedToolTip,
     yAxis,
-    colors
+    colors,
+    stackedToolTip
   );
 
-  stackedBarChartCallbacks = createStackedBarChartCallbacks(
-    gBarChart,
-    data.annotations,
-    data.firstStageIndexes,
-    data.stageTimeProportions,
-    data.epochs.length
-  );
+  stackedBarChartCallbacks = createStackedBarChartCallbacks(g, data);
 
   timelineChartCallbacks.fromInitial();
-
-  //get tick
-  d3.selectAll('.tick').select('text').style('font-weight', 540);
-
-  barLegend(svg, colors);
 };
 
 export default createEvolvingChart;

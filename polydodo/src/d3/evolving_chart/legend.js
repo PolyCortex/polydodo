@@ -19,7 +19,7 @@ const MAP_STAGE_TO_COLOR_OFFSET = {
   N3: MAP_STAGE_TO_LABEL_OFFSET.N3 + 35,
 };
 
-export const barLegend = (svg, color) => {
+export const createLegend = (svg, color) => {
   svg
     .selectAll("names")
     .data(STAGES_ORDERED)
