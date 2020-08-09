@@ -1,10 +1,10 @@
-import React from 'react';
-import { Container, Card, CardBody } from 'reactstrap';
-import { Waypoint } from 'react-waypoint';
+import React from "react";
+import { Container, Card, CardBody } from "reactstrap";
 
 import hypnogramCSVPath from "assets/data/hypnogram.csv";
 
 import D3Component from "../../components/d3component";
+import WaypointDirection from "../../components/waypoint_direction";
 
 import {
   firstCallback,
@@ -18,6 +18,7 @@ import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
   const csvData = useCSVData(hypnogramCSVPath);
+
   return (
     <Container>
       <div style={{ position: "sticky", top: "10%" }}>
@@ -36,14 +37,10 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
-      <Waypoint
-        onEnter={() => {
-          firstCallback();
-        }}
-      />
-      <div style={{ marginBottom: '125%' }} />
-      <Card className="shadow" style={{ position: 'relative' }}>
+      <div style={{ marginBottom: "125%" }} />
+      <WaypointDirection onDown={firstCallback.onEnter} />
+      <div style={{ marginBottom: "125%" }} />
+      <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
           <p>Wake stage is of course the stage we want to minimize when in bed. It can be decomposed into two parts:</p>
           <ul>
@@ -79,14 +76,10 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
-      <Waypoint
-        onEnter={() => {
-          secondCallback();
-        }}
-      />
-      <div style={{ marginBottom: '125%' }} />
-      <Card className="shadow" style={{ position: 'relative' }}>
+      <div style={{ marginBottom: "125%" }} />
+      <WaypointDirection onDown={secondCallback} />
+      <div style={{ marginBottom: "125%" }} />
+      <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
           <p>
             From here, we can look at your sleep efficiency, which is the proportion of time spent asleep over the overall time spent in bed. In your
@@ -113,14 +106,10 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
-      <Waypoint
-        onEnter={() => {
-          thirdCallback();
-        }}
-      />
-      <div style={{ marginBottom: '125%' }} />
-      <Card className="shadow" style={{ position: 'relative' }}>
+      <div style={{ marginBottom: "125%" }} />
+      <WaypointDirection onDown={thirdCallback} />
+      <div style={{ marginBottom: "125%" }} />
+      <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
           <p>
             As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM
@@ -128,19 +117,12 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
-      <Waypoint
-        onEnter={() => {
-          fourthCallback();
-        }}
-      />
-      <div style={{ marginBottom: '125%' }} />
-      <Waypoint
-        onEnter={() => {
-          fifthCallback();
-        }}
-      />
-      <div style={{ marginBottom: '125%' }} />.{/*For now, don't touch this dot!!!*/}
+      <div style={{ marginBottom: "125%" }} />
+      <WaypointDirection onDown={fourthCallback} />
+      <div style={{ marginBottom: "125%" }} />
+      <WaypointDirection onDown={fifthCallback} />
+      <div style={{ marginBottom: "125%" }} />.
+      {/*For now, don't touch this dot!!!*/}
     </Container>
   );
 };
