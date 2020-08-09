@@ -21,6 +21,22 @@ export const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
     .attr("width", ({ end, start }) => x(end) - x(start))
     .attr("fill", ({ stage }) => color(stage));
 
+export const createVerticalAxis = (g, yAxis, color) =>
+  g
+    .append("g")
+    .attr("class", "y axis")
+    .style("font-size", "1.5rem")
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .call(yAxis)
+    .selectAll("text")
+    .attr("class", "y-label")
+    .attr("y", BAR_HEIGHT / 2)
+    .attr("x", -10)
+    .style("fill", (d) => color(d))
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle");
+
 export const createTimelineChart = (g, annotations, x, color, tooltip) => {
   const annotationRects = g
     .selectAll(".rect")
