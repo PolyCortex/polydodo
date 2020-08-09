@@ -4,8 +4,11 @@ import moment from "moment";
 
 import { preprocessData } from "./preproc";
 import { barLegend } from "./legend";
-import { createTimelineChart } from "./stages_charts";
-import { addTransitions } from "./transition";
+import {
+  createTimelineChart,
+  setAttrOnAnnotationRects,
+  createVerticalAxis,
+} from "./stages_charts";
 import {
   WIDTH,
   HEIGHT,
@@ -14,8 +17,14 @@ import {
   CANVAS_HEIGHT,
   BAR_HEIGHT,
 } from "./constants";
-import { STAGES_ORDERED, STAGE_TO_COLOR } from "../constants";
+import {
+  TRANSITION_TIME_MS,
+  STAGES_ORDERED,
+  STAGE_TO_COLOR,
+} from "../constants";
 import { initializeTooltips } from "./mouse_over";
+
+export let instanceChartCallbacks = {};
 
 const initializeScales = () => {
   const xTime = d3.scaleTime([0, WIDTH]);
@@ -26,7 +35,7 @@ const initializeScales = () => {
   return { xTime, xLinear, y, colors };
 };
 
-export const setDomainOnScales = (xTime, xLinear, y, colors, epochs) => {
+const setDomainOnScales = (xTime, xLinear, y, colors, epochs) => {
   const start = _.first(epochs).timestamp;
   const end = _.last(epochs).timestamp;
   const nightDuration = moment.duration(moment(end).diff(start));
@@ -51,6 +60,32 @@ const createDrawingGroup = (svg) => {
     .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 };
 
+const instanceChartState = (g, x, xTimeAxis, yAxis, color, tooltip) =>
+  Object({
+    onEnter: () => {
+      const annotationRects = g.selectAll(".rect-stacked");
+
+      g.selectAll(".y.axis").remove();
+      g.selectAll("text.pourcentage").remove();
+
+      createVerticalAxis(g, yAxis, color);
+
+      setAttrOnAnnotationRects(annotationRects, x, color, tooltip)
+        .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
+        .attr("height", BAR_HEIGHT);
+
+      g.select(".x.axis")
+        .transition()
+        .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
+        .duration(TRANSITION_TIME_MS)
+        .call(xTimeAxis);
+    },
+    onExit: () => {
+      g.selectAll(".x.axis").remove();
+      g.selectAll(".y.axis").remove();
+    },
+  });
+
 const createEvolvingChart = (containerNode, data) => {
   const svg = d3
     .select(containerNode)
@@ -66,20 +101,15 @@ const createEvolvingChart = (containerNode, data) => {
   const { barToolTip, stackedToolTip } = initializeTooltips(svg, data);
   createTimelineChart(gBarChart, data.annotations, xTime, colors, barToolTip);
 
-  addTransitions(
+  instanceChartCallbacks = instanceChartState(
     gBarChart,
-    data.annotations,
-    colors,
-    stackedToolTip,
     xTime,
     xTimeAxis,
-    xLinearAxis,
     yAxis,
-    data.firstStageIndexes,
-    data.stageTimeProportions,
-    data.epochs.length,
+    colors,
     barToolTip
   );
+
   // Axes
   gBarChart
     .append("g")
