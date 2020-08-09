@@ -1,10 +1,10 @@
 import React from "react";
 import { Container, Card, CardBody } from "reactstrap";
-import { Waypoint } from "react-waypoint";
 
 import hypnogramCSVPath from "assets/data/hypnogram.csv";
 
 import D3Component from "../../components/d3component";
+import WaypointDirection from "../../components/waypoint_direction";
 
 import {
   firstCallback,
@@ -18,6 +18,7 @@ import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
   const csvData = useCSVData(hypnogramCSVPath);
+
   return (
     <Container>
       <div style={{ position: "sticky", top: "10%" }}>
@@ -42,11 +43,7 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <Waypoint
-        onEnter={() => {
-          firstCallback();
-        }}
-      />
+      <WaypointDirection onDown={firstCallback.onEnter} />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -104,11 +101,7 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <Waypoint
-        onEnter={() => {
-          secondCallback();
-        }}
-      />
+      <WaypointDirection onDown={secondCallback} />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -142,11 +135,7 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <Waypoint
-        onEnter={() => {
-          thirdCallback();
-        }}
-      />
+      <WaypointDirection onDown={thirdCallback} />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -158,17 +147,9 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <Waypoint
-        onEnter={() => {
-          fourthCallback();
-        }}
-      />
+      <WaypointDirection onDown={fourthCallback} />
       <div style={{ marginBottom: "125%" }} />
-      <Waypoint
-        onEnter={() => {
-          fifthCallback();
-        }}
-      />
+      <WaypointDirection onDown={fifthCallback} />
       <div style={{ marginBottom: "125%" }} />.
       {/*For now, don't touch this dot!!!*/}
     </Container>

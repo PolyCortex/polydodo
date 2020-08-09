@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import moment from "moment";
 import _ from "lodash";
 
-import { setAttrOnAnnotationRects } from "./stages_charts";
+import { setAttrOnAnnotationRects, createVerticalAxis } from "./stages_charts";
 import {
   TRANSITION_TIME_MS,
   STAGES_ORDERED,
@@ -10,11 +10,11 @@ import {
 } from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
-export let firstCallback = () => {};
-export let secondCallback = () => {};
-export let thirdCallback = () => {};
-export let fourthCallback = () => {};
-export let fifthCallback = () => {};
+export let firstCallback = {};
+export let secondCallback = {};
+export let thirdCallback = {};
+export let fourthCallback = {};
+export let fifthCallback = {};
 
 export const addTransitions = (
   g,
@@ -48,37 +48,31 @@ export const addTransitions = (
   );
 };
 
-const instanceChartState = (g, x, xTimeAxis, yAxis, color, tooltip) => () => {
-  const annotationRects = g.selectAll(".rect-stacked");
+const instanceChartState = (g, x, xTimeAxis, yAxis, color, tooltip) =>
+  Object({
+    onEnter: () => {
+      const annotationRects = g.selectAll(".rect-stacked");
 
-  g.selectAll(".y.axis").remove();
-  g.selectAll("text.pourcentage").remove();
+      g.selectAll(".y.axis").remove();
+      g.selectAll("text.pourcentage").remove();
 
-  g.append("g")
-    .attr("class", "y axis")
-    .transition()
-    .duration(TRANSITION_TIME_MS)
-    .call(yAxis)
-    .selectAll("text")
-    .attr("class", "y-label")
-    .attr("y", BAR_HEIGHT / 2)
-    .attr("x", -10)
-    .style("fill", (d) => color(d))
-    .style("font-size", "20px")
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle");
+      createVerticalAxis(g, yAxis, color);
 
-  //Move every sleep stage portion to the correspending stage row
-  setAttrOnAnnotationRects(annotationRects, x, color, tooltip)
-    .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
-    .attr("height", BAR_HEIGHT);
+      setAttrOnAnnotationRects(annotationRects, x, color, tooltip)
+        .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
+        .attr("height", BAR_HEIGHT);
 
-  g.select(".x.axis")
-    .transition()
-    .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
-    .duration(TRANSITION_TIME_MS)
-    .call(xTimeAxis);
-};
+      g.select(".x.axis")
+        .transition()
+        .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
+        .duration(TRANSITION_TIME_MS)
+        .call(xTimeAxis);
+    },
+    onExit: () => {
+      g.selectAll(".x.axis").remove();
+      g.selectAll(".y.axis").remove();
+    },
+  });
 
 const secondTransition = (
   g,
