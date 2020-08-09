@@ -6,6 +6,7 @@ const WaypointDirection = ({ onUp, onDown }) => (
     onEnter={({ previousPosition }) =>
       previousPosition === Waypoint.below ? onDown() : onUp()
     }
+    bottomOffset="99%"
   />
 );
 
