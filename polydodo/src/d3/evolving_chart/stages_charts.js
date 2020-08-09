@@ -1,7 +1,8 @@
 import * as d3 from "d3";
+import _ from "lodash";
 
-import { TRANSITION_TIME_MS } from "../constants";
-import { BAR_HEIGHT } from "./constants";
+import { BAR_HEIGHT, WIDTH } from "./constants";
+import { TRANSITION_TIME_MS, STAGES_ORDERED } from "../constants";
 
 export const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
   annotationRects
@@ -36,9 +37,35 @@ export const createVerticalAxis = (g, yAxis, color) =>
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle");
 
-export const createTimeAxis = (g, xTimeAxis) =>
+export const createProportionLabels = (g, data) =>
   g
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", `translate(0, ${BAR_HEIGHT})`)
-    .call(xTimeAxis);
+    .selectAll("text.proportion")
+    .data(data.annotations)
+    .enter()
+    .append("text")
+    .attr("class", "proportion")
+    .text(({ stage }, i) =>
+      i === data.firstStageIndexes[stage]
+        ? Math.round(data.stageTimeProportions[stage] * 1000) / 10 + "%"
+        : ""
+    )
+    .attr("x", WIDTH / 20)
+    .attr(
+      "y",
+      ({ stage }) => BAR_HEIGHT * STAGES_ORDERED.indexOf(stage) + BAR_HEIGHT / 2
+    )
+    .style("fill", "black");
+
+export const getCumulativeProportionOfNightAtStartOfStage = (
+  stage,
+  totalStageProportions
+) =>
+  _.sum(
+    _.slice(
+      STAGES_ORDERED.map(
+        (stage_ordered) => totalStageProportions[stage_ordered]
+      ),
+      0,
+      _.indexOf(STAGES_ORDERED, stage)
+    )
+  );
