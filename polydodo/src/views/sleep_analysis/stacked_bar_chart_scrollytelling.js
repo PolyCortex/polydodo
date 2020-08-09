@@ -12,8 +12,8 @@ import {
   thirdCallback,
   fourthCallback,
   fifthCallback,
-} from "../../d3/bar_chart/transition";
-import createBarChart from "../../d3/bar_chart/bar_chart";
+} from "../../d3/evolving_chart/transition";
+import createEvolvingChart from "../../d3/evolving_chart/evolving_chart";
 import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
@@ -21,7 +21,7 @@ const StackedBarChartScrollyTelling = () => {
   return (
     <Container>
       <div style={{ position: "sticky", top: "10%" }}>
-        <D3Component callback={createBarChart} data={csvData} />
+        <D3Component callback={createEvolvingChart} data={csvData} />
       </div>
       <div style={{ marginBottom: '50%' }} />
       <Card className="shadow" style={{ position: 'relative' }}>

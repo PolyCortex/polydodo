@@ -3,8 +3,8 @@ import moment from "moment";
 import _ from "lodash";
 
 import {
-  createSmallStackedBarChart,
   createStagesDurationAxes,
+  setAttrOnAnnotationRects,
 } from "./stages_charts";
 import {
   TRANSITION_TIME_MS,
@@ -21,18 +21,18 @@ export let fifthCallback = () => {};
 
 export const addTransitions = (
   g,
-  gSecondBarChart,
-  gThirdBarChart,
   sources,
   color,
   tipStacked,
+  x,
   xAxis,
   yAxis,
   firstStageIndex,
   totalStageProportions,
-  totalTimeStamp
+  totalTimeStamp,
+  tooltip
 ) => {
-  firstCallback = firstTransition(g, xAxis, yAxis, color);
+  firstCallback = instanceChartState(g, x, xAxis, yAxis, color, tooltip);
   secondCallback = secondTransition(
     g,
     sources,
@@ -48,31 +48,19 @@ export const addTransitions = (
     totalStageProportions,
     totalTimeStamp
   );
-  fourthCallback = fourthTransition(
-    gSecondBarChart,
-    sources,
-    xAxis,
-    totalTimeStamp,
-    color
-  );
-  fifthCallback = fifthTransition(
-    gThirdBarChart,
-    sources,
-    xAxis,
-    totalTimeStamp,
-    color
-  );
 };
 
-const firstTransition = (g, xAxis, yAxis, color) => () => {
+const instanceChartState = (g, x, xAxis, yAxis, color, tooltip) => () => {
+  const annotationRects = g.selectAll(".rect-stacked");
+
   g.selectAll(".y.axis").remove();
+  g.selectAll("text.pourcentage").remove();
 
-  //create Y axes
-  let axis = g.append('g').attr('class', 'y axis');
-
-  axis.transition().duration(TRANSITION_TIME_MS).call(yAxis);
-
-  axis
+  g.append("g")
+    .attr("class", "y axis")
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .call(yAxis)
     .selectAll("text")
     .attr("class", "y-label")
     .attr("y", BAR_HEIGHT / 2)
@@ -83,16 +71,14 @@ const firstTransition = (g, xAxis, yAxis, color) => () => {
     .style("alignment-baseline", "middle");
 
   //Move every sleep stage portion to the correspending stage row
-  g.selectAll('.rect-stacked')
-    .transition()
-    .duration(2000)
+  setAttrOnAnnotationRects(annotationRects, x, color, tooltip)
     .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
     .attr("height", BAR_HEIGHT);
 
   g.select(".x.axis")
     .transition()
     .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
-    .duration(2000)
+    .duration(TRANSITION_TIME_MS)
     .call(xAxis);
 };
 
@@ -106,7 +92,7 @@ const secondTransition = (
 ) => () => {
   createStagesDurationAxes(data, xAxis, WIDTH);
 
-  g.select('.x.axis').transition().duration(500).call(xAxis);
+  g.select(".x.axis").transition().duration(TRANSITION_TIME_MS).call(xAxis);
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage
   g.selectAll('.rect-stacked')
@@ -127,7 +113,7 @@ const secondTransition = (
     .on('end', () => g.selectAll('.pourcentage').style('opacity', 1));
 
   //text containing the % of the sleep stage on the bar
-  g.selectAll('.text')
+  g.selectAll("text.pourcentage")
     .data(data)
     .enter()
     .append("text")
@@ -245,57 +231,6 @@ const thirdTransition = (
 
   //label
   g.append('text').attr('class', 'label-sleepType').attr('x', 0).attr('y', -15).text('You');
-};
-const fourthTransition = (
-  gSecondBarChart,
-  data,
-  xAxis,
-  totalTimeStamp,
-  color
-) => () => {
-  //Restless barChart
-  const restlessSleepData = [
-    { stage: 'W', value: 0.156 },
-    { stage: 'REM', value: 0.19 },
-    { stage: 'N1', value: 0.098 },
-    { stage: 'N2', value: 0.506 },
-    { stage: 'N3', value: 0.049 },
-  ];
-  createSmallStackedBarChart(
-    gSecondBarChart,
-    restlessSleepData,
-    data,
-    "Restless Legs Syndrome",
-    totalTimeStamp,
-    xAxis,
-    color
-  );
-};
-
-const fifthTransition = (
-  gThirdBarChart,
-  data,
-  xAxis,
-  totalTimeStamp,
-  color
-) => () => {
-  //Sleep apnea barChart
-  const sleepApneaData = [
-    { stage: 'W', value: 0.326 },
-    { stage: 'REM', value: 0.057 },
-    { stage: 'N1', value: 0.216 },
-    { stage: 'N2', value: 0.329 },
-    { stage: 'N3', value: 0.071 },
-  ];
-  createSmallStackedBarChart(
-    gThirdBarChart,
-    sleepApneaData,
-    data,
-    "Sleep Apnea",
-    totalTimeStamp,
-    xAxis,
-    color
-  );
 };
 
 const getCumulativeProportionOfNightAtStartOfStage = (

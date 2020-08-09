@@ -4,17 +4,8 @@ import moment from "moment";
 import { TRANSITION_TIME_MS, EPOCH_DURATION_MS } from "../constants";
 import { BAR_HEIGHT, WIDTH } from "./constants";
 
-export const createStackedBarChart = (g, annotations, x, color, tooltip) => {
-  g.selectAll(".rect")
-    .data(annotations)
-    .enter()
-    .append("rect")
-    .attr("class", "rect-stacked")
-    .attr("x", ({ start }) => x(start))
-    .attr("y", 0)
-    .attr("width", ({ end, start }) => x(end) - x(start))
-    .attr("height", BAR_HEIGHT)
-    .attr("fill", ({ stage }) => color(stage))
+export const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
+  annotationRects
     .on("mouseover", function (d) {
       tooltip.show(d, this);
       d3.select(this).style("opacity", 0.8);
@@ -22,7 +13,22 @@ export const createStackedBarChart = (g, annotations, x, color, tooltip) => {
     .on("mouseout", function () {
       tooltip.hide();
       d3.select(this).style("opacity", 1);
-    });
+    })
+    .attr("height", BAR_HEIGHT)
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .attr("class", "rect-stacked")
+    .attr("x", ({ start }) => x(start))
+    .attr("width", ({ end, start }) => x(end) - x(start))
+    .attr("fill", ({ stage }) => color(stage));
+
+export const createTimelineChart = (g, annotations, x, color, tooltip) => {
+  const annotationRects = g
+    .selectAll(".rect")
+    .data(annotations)
+    .enter()
+    .append("rect");
+  setAttrOnAnnotationRects(annotationRects, x, color, tooltip).attr("y", 0);
 };
 
 export const createStagesDurationAxes = (data, xAxis) => {
