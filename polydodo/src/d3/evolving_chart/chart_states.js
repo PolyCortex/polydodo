@@ -9,12 +9,22 @@ import {
   STAGES_ORDERED,
 } from "../constants";
 
-export const createTimelineChartCallbacks = (g, x, color, tooltip, xTimeAxis) =>
+export const createTimelineChartCallbacks = (
+  g,
+  xTime,
+  xTimeAxis,
+  color,
+  tooltip
+) =>
   Object({
     fromInitial: () => {
       const annotationRects = g.selectAll(".rect-stacked");
 
-      setAttrOnAnnotationRects(annotationRects, x, color, tooltip).attr("y", 0);
+      setAttrOnAnnotationRects(annotationRects, xTime, color, tooltip).attr(
+        "y",
+        0
+      );
+
       g.append("g")
         .attr("class", "x axis")
         .attr("transform", `translate(0, ${BAR_HEIGHT})`)
@@ -37,7 +47,7 @@ export const createTimelineChartCallbacks = (g, x, color, tooltip, xTimeAxis) =>
 
 export const createInstanceChartCallbacks = (
   g,
-  x,
+  xTime,
   xTimeAxis,
   yAxis,
   color,
@@ -64,7 +74,12 @@ export const createInstanceChartCallbacks = (
 
       g.select(".x.axis").transition().call(xTimeAxis);
 
-      setAttrOnAnnotationRects(g.selectAll(".rect-stacked"), x, color, tooltip);
+      setAttrOnAnnotationRects(
+        g.selectAll(".rect-stacked"),
+        xTime,
+        color,
+        tooltip
+      );
     },
   });
 
@@ -72,9 +87,9 @@ export const createBarChartCallbacks = (
   g,
   data,
   xAxisLinear,
-  tip,
   yAxis,
-  color
+  color,
+  tip
 ) =>
   Object({
     fromInstance: () => {
@@ -83,23 +98,15 @@ export const createBarChartCallbacks = (
       g.select(".x.axis").transition().call(xAxisLinear);
 
       //Move all part to the left and make the first bar of each row become the cumulative portion of the stage
-      g.selectAll(".rect-stacked")
-        .on("mouseover", function (d) {
-          tip.show(d, this);
-          d3.select(this).style("opacity", 0.8);
-        })
-        .on("mouseout", function () {
-          tip.hide();
-          d3.select(this).style("opacity", 1);
-        })
+      setTooltip(g.selectAll(".rect-stacked"), tip)
         .transition()
+        .duration(TRANSITION_TIME_MS)
         .attr("x", 0)
         .attr("width", ({ stage }, i) =>
           i === firstStageIndexes[stage]
             ? stageTimeProportions[stage] * WIDTH
             : 0
         )
-        .duration(TRANSITION_TIME_MS)
         .on("end", () => g.selectAll("text.proportion").style("opacity", 1));
 
       createProportionLabels(g, data);
@@ -128,15 +135,15 @@ export const createBarChartCallbacks = (
     },
   });
 
-export const createStackedBarChartCallbacks = (
-  g,
-  data,
-  firstIndexes,
-  totalStageProportions,
-  totalTimeStamp
-) =>
+export const createStackedBarChartCallbacks = (g, data) =>
   Object({
     fromBarChart: () => {
+      const {
+        annotations,
+        firstStageIndexes,
+        stageTimeProportions,
+        epochs,
+      } = data;
       //Remove y axis and labels
       g.selectAll(".y.axis").remove();
       g.selectAll("text.proportion").remove();
@@ -148,41 +155,33 @@ export const createStackedBarChartCallbacks = (
 
       g.selectAll(".rect-stacked")
         .transition()
-        .duration(TRANSITION_TIME_MS / 3)
+        .duration(TRANSITION_TIME_MS / 2)
         .attr(
           "x",
           ({ stage }) =>
             getCumulativeProportionOfNightAtStartOfStage(
               stage,
-              totalStageProportions
+              stageTimeProportions
             ) * WIDTH
         )
         .transition()
-        .duration(TRANSITION_TIME_MS / 3)
-        .attr("y", (d, i) => {
-          if (i === firstIndexes[d.stage]) return 0;
-        })
-        .transition()
-        .duration(TRANSITION_TIME_MS / 3)
-        .attr("height", BAR_HEIGHT)
-        .on("end", () => {
-          g.selectAll(".pourcentage").style("opacity", 1);
-          g.selectAll(".label-sleepType").style("opacity", 1);
-        });
+        .duration(TRANSITION_TIME_MS / 2)
+        .attr("y", 0);
 
       const text = g
         .selectAll(".text")
-        .data(data)
+        .data(annotations)
         .enter()
         .append("text")
         .attr("class", "proportion")
+        .style("text-anchor", "middle")
         .append("tspan")
         .text((d, i) =>
-          i === firstIndexes[d.stage]
+          i === firstStageIndexes[d.stage]
             ? moment
                 .utc(
-                  totalStageProportions[d.stage] *
-                    totalTimeStamp *
+                  stageTimeProportions[d.stage] *
+                    epochs.length *
                     EPOCH_DURATION_MS
                 )
                 .format("HH:mm")
@@ -193,13 +192,13 @@ export const createStackedBarChartCallbacks = (
           ({ stage }) =>
             (getCumulativeProportionOfNightAtStartOfStage(
               stage,
-              totalStageProportions
+              stageTimeProportions
             ) +
-              totalStageProportions[stage] / 2) *
+              stageTimeProportions[stage] / 2) *
             WIDTH
         )
         .attr("y", (d, i) => {
-          if (i === firstIndexes[d.stage]) return 40;
+          if (i === firstStageIndexes[d.stage]) return 40;
         })
         .attr("font-size", "25px")
         .attr("font-weight", 15);
@@ -207,8 +206,8 @@ export const createStackedBarChartCallbacks = (
       text
         .append("tspan")
         .text((d, i) =>
-          i === firstIndexes[d.stage]
-            ? Math.round(totalStageProportions[d.stage] * 1000) / 10 + "%"
+          i === firstStageIndexes[d.stage]
+            ? Math.round(stageTimeProportions[d.stage] * 1000) / 10 + "%"
             : ""
         )
         .attr(
@@ -216,28 +215,30 @@ export const createStackedBarChartCallbacks = (
           ({ stage }) =>
             getCumulativeProportionOfNightAtStartOfStage(
               stage,
-              totalStageProportions
+              stageTimeProportions
             ) *
               WIDTH +
-            (totalStageProportions[stage] / 2) * WIDTH
+            (stageTimeProportions[stage] / 2) * WIDTH
         )
         .attr("y", (d, i) => {
-          if (i === firstIndexes[d.stage]) return 60;
+          if (i === firstStageIndexes[d.stage]) return 60;
         })
         .attr("font-size", "20px")
         .attr("font-weight", 10);
-
-      //label
-      g.append("text")
-        .attr("class", "label-sleepType")
-        .attr("x", 0)
-        .attr("y", -15)
-        .text("You");
     },
   });
 
 const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
-  annotationRects
+  setTooltip(annotationRects, tooltip)
+    .attr("height", BAR_HEIGHT)
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .attr("x", ({ start }) => x(start))
+    .attr("width", ({ end, start }) => x(end) - x(start))
+    .attr("fill", ({ stage }) => color(stage));
+
+const setTooltip = (element, tooltip) =>
+  element
     .on("mouseover", function (d) {
       tooltip.show(d, this);
       d3.select(this).style("opacity", 0.8);
@@ -245,13 +246,7 @@ const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
     .on("mouseout", function () {
       tooltip.hide();
       d3.select(this).style("opacity", 1);
-    })
-    .attr("height", BAR_HEIGHT)
-    .transition()
-    .duration(TRANSITION_TIME_MS)
-    .attr("x", ({ start }) => x(start))
-    .attr("width", ({ end, start }) => x(end) - x(start))
-    .attr("fill", ({ stage }) => color(stage));
+    });
 
 const createVerticalAxis = (g, yAxis, color) =>
   g
