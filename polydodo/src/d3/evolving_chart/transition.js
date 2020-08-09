@@ -2,10 +2,7 @@ import * as d3 from "d3";
 import moment from "moment";
 import _ from "lodash";
 
-import {
-  createStagesDurationAxes,
-  setAttrOnAnnotationRects,
-} from "./stages_charts";
+import { setAttrOnAnnotationRects } from "./stages_charts";
 import {
   TRANSITION_TIME_MS,
   STAGES_ORDERED,
@@ -25,20 +22,21 @@ export const addTransitions = (
   color,
   tipStacked,
   x,
-  xAxis,
+  xTimeAxis,
+  xAxisLinear,
   yAxis,
   firstStageIndex,
   totalStageProportions,
   totalTimeStamp,
   tooltip
 ) => {
-  firstCallback = instanceChartState(g, x, xAxis, yAxis, color, tooltip);
+  firstCallback = instanceChartState(g, x, xTimeAxis, yAxis, color, tooltip);
   secondCallback = secondTransition(
     g,
     sources,
     firstStageIndex,
     totalStageProportions,
-    xAxis,
+    xAxisLinear,
     tipStacked
   );
   thirdCallback = thirdTransition(
@@ -50,7 +48,7 @@ export const addTransitions = (
   );
 };
 
-const instanceChartState = (g, x, xAxis, yAxis, color, tooltip) => () => {
+const instanceChartState = (g, x, xTimeAxis, yAxis, color, tooltip) => () => {
   const annotationRects = g.selectAll(".rect-stacked");
 
   g.selectAll(".y.axis").remove();
@@ -79,7 +77,7 @@ const instanceChartState = (g, x, xAxis, yAxis, color, tooltip) => () => {
     .transition()
     .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
     .duration(TRANSITION_TIME_MS)
-    .call(xAxis);
+    .call(xTimeAxis);
 };
 
 const secondTransition = (
@@ -87,12 +85,13 @@ const secondTransition = (
   data,
   firstIndexes,
   totalStageProportions,
-  xAxis,
+  xAxisLinear,
   tip
 ) => () => {
-  createStagesDurationAxes(data, xAxis, WIDTH);
-
-  g.select(".x.axis").transition().duration(TRANSITION_TIME_MS).call(xAxis);
+  g.select(".x.axis")
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .call(xAxisLinear);
 
   //Move all part to the left and make the first bar of each row become the cumulative portion of the stage
   g.selectAll('.rect-stacked')
