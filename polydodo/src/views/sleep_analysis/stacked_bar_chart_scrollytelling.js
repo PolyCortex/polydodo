@@ -6,11 +6,11 @@ import hypnogramCSVPath from "assets/data/hypnogram.csv";
 import D3Component from "../../components/d3component";
 import WaypointDirection from "../../components/waypoint_direction";
 
-import { thirdCallback } from "../../d3/evolving_chart/transition";
 import createEvolvingChart, {
   instanceChartCallbacks,
   timelineChartCallbacks,
   barChartCallbacks,
+  stackedBarChartCallbacks,
 } from "../../d3/evolving_chart/evolving_chart";
 import { useCSVData } from "../../hooks/api_hooks";
 
@@ -42,11 +42,8 @@ const StackedBarChartScrollyTelling = () => {
       </Card>
       <div style={{ marginBottom: "125%" }} />
       <WaypointDirection
-        onDown={instanceChartCallbacks.onEnter}
-        onUp={() => {
-          instanceChartCallbacks.onExit();
-          timelineChartCallbacks.onEnter();
-        }}
+        onDown={instanceChartCallbacks.fromTimeline}
+        onUp={timelineChartCallbacks.fromInstance}
       />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
@@ -106,11 +103,8 @@ const StackedBarChartScrollyTelling = () => {
       </Card>
       <div style={{ marginBottom: "125%" }} />
       <WaypointDirection
-        onDown={barChartCallbacks.onEnter}
-        onUp={() => {
-          barChartCallbacks.onExit();
-          instanceChartCallbacks.onEnter();
-        }}
+        onDown={barChartCallbacks.fromInstance}
+        onUp={instanceChartCallbacks.fromBarChart}
       />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
@@ -145,7 +139,10 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection onDown={thirdCallback} />
+      <WaypointDirection
+        onDown={stackedBarChartCallbacks.fromBarChart}
+        onUp={barChartCallbacks.fromStackedBarChart}
+      />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
