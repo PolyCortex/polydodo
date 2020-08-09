@@ -5,9 +5,9 @@ import moment from "moment";
 import { preprocessData } from "./preproc";
 import { barLegend } from "./legend";
 import {
-  createTimelineChart,
   setAttrOnAnnotationRects,
   createVerticalAxis,
+  createTimeAxis,
 } from "./stages_charts";
 import {
   WIDTH,
@@ -25,6 +25,7 @@ import {
 import { initializeTooltips } from "./mouse_over";
 
 export let instanceChartCallbacks = {};
+export let timelineChartCallbacks = {};
 
 const initializeScales = () => {
   const xTime = d3.scaleTime([0, WIDTH]);
@@ -60,7 +61,26 @@ const createDrawingGroup = (svg) => {
     .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 };
 
-const instanceChartState = (g, x, xTimeAxis, yAxis, color, tooltip) =>
+const bindAnnotationsToRects = (g, annotations) =>
+  g
+    .selectAll(".rect")
+    .data(annotations)
+    .enter()
+    .append("rect")
+    .attr("class", "rect-stacked");
+
+export const createTimelineChartCallbacks = (g, x, color, tooltip, xTimeAxis) =>
+  Object({
+    onEnter: () => {
+      const annotationRects = g.selectAll(".rect-stacked");
+
+      setAttrOnAnnotationRects(annotationRects, x, color, tooltip).attr("y", 0);
+      createTimeAxis(g, xTimeAxis);
+    },
+    onExit: () => {},
+  });
+
+const createInstanceChartCallbacks = (g, x, xTimeAxis, yAxis, color, tooltip) =>
   Object({
     onEnter: () => {
       const annotationRects = g.selectAll(".rect-stacked");
@@ -99,9 +119,17 @@ const createEvolvingChart = (containerNode, data) => {
 
   setDomainOnScales(xTime, xLinear, y, colors, data.epochs);
   const { barToolTip, stackedToolTip } = initializeTooltips(svg, data);
-  createTimelineChart(gBarChart, data.annotations, xTime, colors, barToolTip);
+  bindAnnotationsToRects(gBarChart, data.annotations);
 
-  instanceChartCallbacks = instanceChartState(
+  timelineChartCallbacks = createTimelineChartCallbacks(
+    gBarChart,
+    xTime,
+    colors,
+    barToolTip,
+    xTimeAxis
+  );
+
+  instanceChartCallbacks = createInstanceChartCallbacks(
     gBarChart,
     xTime,
     xTimeAxis,
@@ -109,13 +137,7 @@ const createEvolvingChart = (containerNode, data) => {
     colors,
     barToolTip
   );
-
-  // Axes
-  gBarChart
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", `translate(0, ${BAR_HEIGHT})`)
-    .call(xTimeAxis);
+  timelineChartCallbacks.onEnter();
 
   //get tick
   d3.selectAll(".tick").select("text").style("font-weight", 540);

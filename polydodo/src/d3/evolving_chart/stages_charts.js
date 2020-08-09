@@ -16,7 +16,6 @@ export const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
     .attr("height", BAR_HEIGHT)
     .transition()
     .duration(TRANSITION_TIME_MS)
-    .attr("class", "rect-stacked")
     .attr("x", ({ start }) => x(start))
     .attr("width", ({ end, start }) => x(end) - x(start))
     .attr("fill", ({ stage }) => color(stage));
@@ -37,11 +36,9 @@ export const createVerticalAxis = (g, yAxis, color) =>
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle");
 
-export const createTimelineChart = (g, annotations, x, color, tooltip) => {
-  const annotationRects = g
-    .selectAll(".rect")
-    .data(annotations)
-    .enter()
-    .append("rect");
-  setAttrOnAnnotationRects(annotationRects, x, color, tooltip).attr("y", 0);
-};
+export const createTimeAxis = (g, xTimeAxis) =>
+  g
+    .append("g")
+    .attr("class", "x axis")
+    .attr("transform", `translate(0, ${BAR_HEIGHT})`)
+    .call(xTimeAxis);

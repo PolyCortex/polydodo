@@ -13,6 +13,7 @@ import {
 } from "../../d3/evolving_chart/transition";
 import createEvolvingChart, {
   instanceChartCallbacks,
+  timelineChartCallbacks,
 } from "../../d3/evolving_chart/evolving_chart";
 import { useCSVData } from "../../hooks/api_hooks";
 
@@ -43,7 +44,13 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection onDown={instanceChartCallbacks.onEnter} />
+      <WaypointDirection
+        onDown={instanceChartCallbacks.onEnter}
+        onUp={() => {
+          instanceChartCallbacks.onExit();
+          timelineChartCallbacks.onEnter();
+        }}
+      />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
