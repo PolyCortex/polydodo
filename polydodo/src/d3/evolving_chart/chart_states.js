@@ -144,7 +144,11 @@ export const createStackedBarChartCallbacks = (g, data) =>
         stageTimeProportions,
         epochs,
       } = data;
-      //Remove y axis and labels
+      const firstAnnotationsByStage = _.filter(
+        annotations,
+        ({ stage }, index) => firstStageIndexes[stage] === index
+      );
+
       g.selectAll(".y.axis").remove();
       g.selectAll("text.proportion").remove();
 
@@ -170,22 +174,18 @@ export const createStackedBarChartCallbacks = (g, data) =>
 
       const text = g
         .selectAll(".text")
-        .data(annotations)
+        .data(firstAnnotationsByStage)
         .enter()
         .append("text")
         .attr("class", "proportion")
         .style("text-anchor", "middle")
         .append("tspan")
-        .text((d, i) =>
-          i === firstStageIndexes[d.stage]
-            ? moment
-                .utc(
-                  stageTimeProportions[d.stage] *
-                    epochs.length *
-                    EPOCH_DURATION_MS
-                )
-                .format("HH:mm")
-            : ""
+        .text(({ stage }) =>
+          moment
+            .utc(
+              stageTimeProportions[stage] * epochs.length * EPOCH_DURATION_MS
+            )
+            .format("HH:mm")
         )
         .attr(
           "x",
@@ -197,32 +197,26 @@ export const createStackedBarChartCallbacks = (g, data) =>
               stageTimeProportions[stage] / 2) *
             WIDTH
         )
-        .attr("y", (d, i) => {
-          if (i === firstStageIndexes[d.stage]) return 40;
-        })
+        .attr("y", 40)
         .attr("font-size", "25px")
         .attr("font-weight", 15);
 
       text
         .append("tspan")
-        .text((d, i) =>
-          i === firstStageIndexes[d.stage]
-            ? Math.round(stageTimeProportions[d.stage] * 1000) / 10 + "%"
-            : ""
+        .text(
+          ({ stage }) => `${_.round(stageTimeProportions[stage] * 100, 2)}%`
         )
         .attr(
           "x",
           ({ stage }) =>
-            getCumulativeProportionOfNightAtStartOfStage(
+            (getCumulativeProportionOfNightAtStartOfStage(
               stage,
               stageTimeProportions
-            ) *
-              WIDTH +
-            (stageTimeProportions[stage] / 2) * WIDTH
+            ) +
+              stageTimeProportions[stage] / 2) *
+            WIDTH
         )
-        .attr("y", (d, i) => {
-          if (i === firstStageIndexes[d.stage]) return 60;
-        })
+        .attr("y", 60)
         .attr("font-size", "20px")
         .attr("font-weight", 10);
     },
@@ -273,7 +267,7 @@ const createProportionLabels = (g, data) =>
     .attr("class", "proportion")
     .text(({ stage }, i) =>
       i === data.firstStageIndexes[stage]
-        ? Math.round(data.stageTimeProportions[stage] * 1000) / 10 + "%"
+        ? `${_.round(data.stageTimeProportions[stage] * 100, 2)}%`
         : ""
     )
     .attr("x", WIDTH / 20)
