@@ -104,16 +104,11 @@ const createInstanceChartCallbacks = (g, x, xTimeAxis, yAxis, color, tooltip) =>
     },
   });
 
-const createBarChartCallbacks = (
-  g,
-  data,
-  firstIndexes,
-  totalStageProportions,
-  xAxisLinear,
-  tip
-) =>
+const createBarChartCallbacks = (g, data, xAxisLinear, tip) =>
   Object({
     onEnter: () => {
+      const { annotations, firstStageIndexes, stageTimeProportions } = data;
+
       g.select(".x.axis")
         .transition()
         .duration(TRANSITION_TIME_MS)
@@ -131,35 +126,36 @@ const createBarChartCallbacks = (
         })
         .transition()
         .attr("x", 0)
-        .attr("width", (d, i) =>
-          i === firstIndexes[d.stage]
-            ? totalStageProportions[d.stage] * WIDTH
+        .attr("width", ({ stage }, i) =>
+          i === firstStageIndexes[stage]
+            ? stageTimeProportions[stage] * WIDTH
             : 0
         )
         .duration(TRANSITION_TIME_MS)
-        .on("end", () => g.selectAll(".pourcentage").style("opacity", 1));
+        .on("end", () => g.selectAll("text.proportion").style("opacity", 1));
 
       //text containing the % of the sleep stage on the bar
-      g.selectAll("text.pourcentage")
-        .data(data)
+      g.selectAll("text.proportion")
+        .data(annotations)
         .enter()
         .append("text")
-        .attr("class", "pourcentage")
-        .text((d, i) =>
-          i === firstIndexes[d.stage]
-            ? Math.round(totalStageProportions[d.stage] * 1000) / 10 + "%"
+        .attr("class", "proportion")
+        .text(({ stage }, i) =>
+          i === firstStageIndexes[stage]
+            ? Math.round(stageTimeProportions[stage] * 1000) / 10 + "%"
             : ""
         )
         .attr("x", WIDTH / 20)
         .attr(
           "y",
-          (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage) + BAR_HEIGHT / 2
+          ({ stage }) =>
+            BAR_HEIGHT * STAGES_ORDERED.indexOf(stage) + BAR_HEIGHT / 2
         )
         .style("fill", "black");
     },
     onExit: () => {
       g.selectAll(".y.axis").remove();
-      g.selectAll("text.pourcentage").remove();
+      g.selectAll("text.proportion").remove();
     },
   });
 
@@ -197,9 +193,7 @@ const createEvolvingChart = (containerNode, data) => {
 
   barChartCallbacks = createBarChartCallbacks(
     gBarChart,
-    data.annotations,
-    data.firstStageIndexes,
-    data.stageTimeProportions,
+    data,
     xLinearAxis,
     stackedToolTip
   );
