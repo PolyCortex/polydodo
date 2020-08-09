@@ -10,10 +10,10 @@ import {
   firstCallback,
   secondCallback,
   thirdCallback,
-  fourthCallback,
-  fifthCallback,
 } from "../../d3/evolving_chart/transition";
-import createEvolvingChart from "../../d3/evolving_chart/evolving_chart";
+import createEvolvingChart, {
+  instanceChartCallbacks,
+} from "../../d3/evolving_chart/evolving_chart";
 import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
@@ -38,7 +38,7 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection onDown={firstCallback.onEnter} />
+      <WaypointDirection onDown={instanceChartCallbacks.onEnter} />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -118,9 +118,9 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection onDown={fourthCallback} />
+      {/* <WaypointDirection onDown={} /> */}
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection onDown={fifthCallback} />
+      {/* <WaypointDirection onDown={} /> */}
       <div style={{ marginBottom: "125%" }} />.
       {/*For now, don't touch this dot!!!*/}
     </Container>
