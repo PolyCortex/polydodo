@@ -26,6 +26,7 @@ import { initializeTooltips } from "./mouse_over";
 
 export let instanceChartCallbacks = {};
 export let timelineChartCallbacks = {};
+export let barChartCallbacks = {};
 
 const initializeScales = () => {
   const xTime = d3.scaleTime([0, WIDTH]);
@@ -85,9 +86,6 @@ const createInstanceChartCallbacks = (g, x, xTimeAxis, yAxis, color, tooltip) =>
     onEnter: () => {
       const annotationRects = g.selectAll(".rect-stacked");
 
-      g.selectAll(".y.axis").remove();
-      g.selectAll("text.pourcentage").remove();
-
       createVerticalAxis(g, yAxis, color);
 
       setAttrOnAnnotationRects(annotationRects, x, color, tooltip)
@@ -103,6 +101,65 @@ const createInstanceChartCallbacks = (g, x, xTimeAxis, yAxis, color, tooltip) =>
     onExit: () => {
       g.selectAll(".x.axis").remove();
       g.selectAll(".y.axis").remove();
+    },
+  });
+
+const createBarChartCallbacks = (
+  g,
+  data,
+  firstIndexes,
+  totalStageProportions,
+  xAxisLinear,
+  tip
+) =>
+  Object({
+    onEnter: () => {
+      g.select(".x.axis")
+        .transition()
+        .duration(TRANSITION_TIME_MS)
+        .call(xAxisLinear);
+
+      //Move all part to the left and make the first bar of each row become the cumulative portion of the stage
+      g.selectAll(".rect-stacked")
+        .on("mouseover", function (d) {
+          tip.show(d, this);
+          d3.select(this).style("opacity", 0.8);
+        })
+        .on("mouseout", function () {
+          tip.hide();
+          d3.select(this).style("opacity", 1);
+        })
+        .transition()
+        .attr("x", 0)
+        .attr("width", (d, i) =>
+          i === firstIndexes[d.stage]
+            ? totalStageProportions[d.stage] * WIDTH
+            : 0
+        )
+        .duration(TRANSITION_TIME_MS)
+        .on("end", () => g.selectAll(".pourcentage").style("opacity", 1));
+
+      //text containing the % of the sleep stage on the bar
+      g.selectAll("text.pourcentage")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("class", "pourcentage")
+        .text((d, i) =>
+          i === firstIndexes[d.stage]
+            ? Math.round(totalStageProportions[d.stage] * 1000) / 10 + "%"
+            : ""
+        )
+        .attr("x", WIDTH / 20)
+        .attr(
+          "y",
+          (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage) + BAR_HEIGHT / 2
+        )
+        .style("fill", "black");
+    },
+    onExit: () => {
+      g.selectAll(".y.axis").remove();
+      g.selectAll("text.pourcentage").remove();
     },
   });
 
@@ -137,6 +194,16 @@ const createEvolvingChart = (containerNode, data) => {
     colors,
     barToolTip
   );
+
+  barChartCallbacks = createBarChartCallbacks(
+    gBarChart,
+    data.annotations,
+    data.firstStageIndexes,
+    data.stageTimeProportions,
+    xLinearAxis,
+    stackedToolTip
+  );
+
   timelineChartCallbacks.onEnter();
 
   //get tick

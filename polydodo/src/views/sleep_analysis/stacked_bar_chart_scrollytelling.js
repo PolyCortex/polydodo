@@ -6,14 +6,11 @@ import hypnogramCSVPath from "assets/data/hypnogram.csv";
 import D3Component from "../../components/d3component";
 import WaypointDirection from "../../components/waypoint_direction";
 
-import {
-  firstCallback,
-  secondCallback,
-  thirdCallback,
-} from "../../d3/evolving_chart/transition";
+import { thirdCallback } from "../../d3/evolving_chart/transition";
 import createEvolvingChart, {
   instanceChartCallbacks,
   timelineChartCallbacks,
+  barChartCallbacks,
 } from "../../d3/evolving_chart/evolving_chart";
 import { useCSVData } from "../../hooks/api_hooks";
 
@@ -84,7 +81,13 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection onDown={secondCallback} />
+      <WaypointDirection
+        onDown={barChartCallbacks.onEnter}
+        onUp={() => {
+          barChartCallbacks.onExit();
+          instanceChartCallbacks.onEnter();
+        }}
+      />
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>

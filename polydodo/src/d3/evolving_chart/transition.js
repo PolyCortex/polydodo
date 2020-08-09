@@ -14,56 +14,6 @@ export let firstCallback = {};
 export let secondCallback = {};
 export let thirdCallback = {};
 
-const secondTransition = (
-  g,
-  data,
-  firstIndexes,
-  totalStageProportions,
-  xAxisLinear,
-  tip
-) => () => {
-  g.select(".x.axis")
-    .transition()
-    .duration(TRANSITION_TIME_MS)
-    .call(xAxisLinear);
-
-  //Move all part to the left and make the first bar of each row become the cumulative portion of the stage
-  g.selectAll('.rect-stacked')
-    .on('mouseover', function (d) {
-      tip.show(d, this);
-      d3.select(this).style('opacity', 0.8);
-    })
-    .on('mouseout', function () {
-      tip.hide();
-      d3.select(this).style('opacity', 1);
-    })
-    .transition()
-    .attr("x", 0)
-    .attr("width", (d, i) =>
-      i === firstIndexes[d.stage] ? totalStageProportions[d.stage] * WIDTH : 0
-    )
-    .duration(TRANSITION_TIME_MS)
-    .on('end', () => g.selectAll('.pourcentage').style('opacity', 1));
-
-  //text containing the % of the sleep stage on the bar
-  g.selectAll("text.pourcentage")
-    .data(data)
-    .enter()
-    .append("text")
-    .attr("class", "pourcentage")
-    .text((d, i) =>
-      i === firstIndexes[d.stage]
-        ? Math.round(totalStageProportions[d.stage] * 1000) / 10 + "%"
-        : ""
-    )
-    .attr("x", WIDTH / 20)
-    .attr(
-      "y",
-      (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage) + BAR_HEIGHT / 2
-    )
-    .style("fill", "black");
-};
-
 const thirdTransition = (
   g,
   data,
