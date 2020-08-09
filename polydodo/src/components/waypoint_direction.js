@@ -7,6 +7,7 @@ const WaypointDirection = ({ onUp = () => {}, onDown = () => {} }) => (
       previousPosition === Waypoint.below ? onDown() : onUp()
     }
     bottomOffset="99%"
+    fireOnRapidScroll
   />
 );
 
