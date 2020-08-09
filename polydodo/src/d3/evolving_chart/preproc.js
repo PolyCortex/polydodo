@@ -3,12 +3,6 @@ import _ from "lodash";
 import { convertTimestampsToDates } from "../utils";
 import { STAGES_ORDERED, EPOCH_DURATION_SEC } from "../constants";
 
-export const setDomainOnScales = (x, y, colors, epochs) => {
-  x.domain([_.first(epochs).timestamp, _.last(epochs).timestamp]);
-  y.domain(STAGES_ORDERED);
-  colors.domain(STAGES_ORDERED);
-};
-
 export const preprocessData = (data) => {
   data = convertTimestampsToDates(data);
   const annotations = convertEpochsToAnnotations(data);
