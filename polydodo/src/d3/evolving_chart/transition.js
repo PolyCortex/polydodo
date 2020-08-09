@@ -13,66 +13,6 @@ import { BAR_HEIGHT, WIDTH } from "./constants";
 export let firstCallback = {};
 export let secondCallback = {};
 export let thirdCallback = {};
-export let fourthCallback = {};
-export let fifthCallback = {};
-
-export const addTransitions = (
-  g,
-  sources,
-  color,
-  tipStacked,
-  x,
-  xTimeAxis,
-  xAxisLinear,
-  yAxis,
-  firstStageIndex,
-  totalStageProportions,
-  totalTimeStamp,
-  tooltip
-) => {
-  firstCallback = instanceChartState(g, x, xTimeAxis, yAxis, color, tooltip);
-  secondCallback = secondTransition(
-    g,
-    sources,
-    firstStageIndex,
-    totalStageProportions,
-    xAxisLinear,
-    tipStacked
-  );
-  thirdCallback = thirdTransition(
-    g,
-    sources,
-    firstStageIndex,
-    totalStageProportions,
-    totalTimeStamp
-  );
-};
-
-const instanceChartState = (g, x, xTimeAxis, yAxis, color, tooltip) =>
-  Object({
-    onEnter: () => {
-      const annotationRects = g.selectAll(".rect-stacked");
-
-      g.selectAll(".y.axis").remove();
-      g.selectAll("text.pourcentage").remove();
-
-      createVerticalAxis(g, yAxis, color);
-
-      setAttrOnAnnotationRects(annotationRects, x, color, tooltip)
-        .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
-        .attr("height", BAR_HEIGHT);
-
-      g.select(".x.axis")
-        .transition()
-        .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`)
-        .duration(TRANSITION_TIME_MS)
-        .call(xTimeAxis);
-    },
-    onExit: () => {
-      g.selectAll(".x.axis").remove();
-      g.selectAll(".y.axis").remove();
-    },
-  });
 
 const secondTransition = (
   g,
