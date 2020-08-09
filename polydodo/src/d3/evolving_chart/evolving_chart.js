@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import { setDomainOnScales, preprocessData } from "./preproc";
 import { barLegend } from "./legend";
-import { createStackedBarChart } from "./stages_charts";
+import { createTimelineChart } from "./stages_charts";
 import { addTransitions } from "./transition";
 import {
   WIDTH,
@@ -37,7 +37,7 @@ const createDrawingGroup = (svg) => {
     .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 };
 
-const createBarChart = (containerNode, data) => {
+const createEvolvingChart = (containerNode, data) => {
   const svg = d3
     .select(containerNode)
     .attr("width", CANVAS_WIDTH)
@@ -50,34 +50,20 @@ const createBarChart = (containerNode, data) => {
 
   setDomainOnScales(x, y, colors, data.epochs);
   const { barToolTip, stackedToolTip } = initializeTooltips(svg, data);
-  createStackedBarChart(gBarChart, data.annotations, x, colors, barToolTip);
-
-  const gSecondBarChart = svg
-    .append("g")
-    .attr(
-      "transform",
-      `translate(${MARGIN.LEFT}, ${2 * MARGIN.TOP + BAR_HEIGHT})`
-    );
-
-  const gThirdBarChart = svg
-    .append("g")
-    .attr(
-      "transform",
-      `translate(${MARGIN.LEFT}, ${3 * MARGIN.TOP + 2 * BAR_HEIGHT})`
-    );
+  createTimelineChart(gBarChart, data.annotations, x, colors, barToolTip);
 
   addTransitions(
     gBarChart,
-    gSecondBarChart,
-    gThirdBarChart,
     data.annotations,
     colors,
     stackedToolTip,
+    x,
     xAxis,
     yAxis,
     data.firstStageIndexes,
     data.stageTimeProportions,
-    data.epochs.length
+    data.epochs.length,
+    barToolTip
   );
   // Axes
   gBarChart
@@ -92,4 +78,4 @@ const createBarChart = (containerNode, data) => {
   barLegend(svg, colors);
 };
 
-export default createBarChart;
+export default createEvolvingChart;

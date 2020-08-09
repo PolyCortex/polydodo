@@ -1,22 +1,16 @@
 import * as d3 from "d3";
 import _ from "lodash";
 
-import { preprocessData } from "./preproc";
 import createHypnogramChart from "./line_charts";
 import { DIMENSIONS, MARGINS, COMPARATIVE_COLORS } from "./constants";
 import { STAGES_ORDERED } from "../constants";
+import { convertTimestampsToDates } from "../utils";
 
 const initializeScales = (comparativeColors) => {
-  const x = d3.scaleTime().range([0, DIMENSIONS.width]);
-  const y = d3
-    .scaleOrdinal()
-    .range(
-      _.range(
-        0,
-        DIMENSIONS.height + 1,
-        DIMENSIONS.height / STAGES_ORDERED.length
-      )
-    );
+  const x = d3.scaleTime([0, DIMENSIONS.width]);
+  const y = d3.scaleOrdinal(
+    _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STAGES_ORDERED.length)
+  );
   const colors = d3.scaleOrdinal(comparativeColors);
 
   return { x, y, colors };
@@ -33,6 +27,17 @@ const createDrawingGroup = (svg) =>
   svg
     .append("g")
     .attr("transform", `translate(${MARGINS.left}, ${MARGINS.top})`);
+
+const preprocessData = (data, hypnogramNames) => {
+  data = data.map((hypno) => convertTimestampsToDates(hypno));
+
+  return _.zip(data, hypnogramNames).map((x) =>
+    Object({
+      name: x[1],
+      values: x[0],
+    })
+  );
+};
 
 const setDomainOnScales = (x, y, colors, data) => {
   const dates = data[0].values.map((datum) => datum.timestamp);
