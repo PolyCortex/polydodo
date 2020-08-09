@@ -30,7 +30,7 @@ const convertEpochsToAnnotations = (data) => {
   const saveCurrentAnnotation = (timestamp) => {
     annotations.push({
       stage: currentSleepStage,
-      proportion: (currentAnnotationEpochCount / nbEpochs) * 100,
+      proportion: currentAnnotationEpochCount / nbEpochs,
       start: currentAnnotationStart,
       end: timestamp,
       duration: currentAnnotationEpochCount * EPOCH_DURATION_SEC,
