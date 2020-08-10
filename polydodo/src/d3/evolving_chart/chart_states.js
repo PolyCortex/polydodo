@@ -38,15 +38,13 @@ export const createTimelineChartCallbacks = (
         .duration(TRANSITION_TIME_MS)
         .attr("y", 0);
 
-      g.select(".x.axis")
-        .transition()
-        .duration(TRANSITION_TIME_MS)
-        .attr("transform", `translate(0, ${BAR_HEIGHT})`);
+      transitionHorizontalAxis(g, BAR_HEIGHT);
     },
   });
 
 export const createInstanceChartCallbacks = (
   g,
+  data,
   xTime,
   xTimeAxis,
   yAxis,
@@ -58,18 +56,19 @@ export const createInstanceChartCallbacks = (
       const annotationRects = g.selectAll(".rect-stacked");
 
       createVerticalAxis(g, yAxis, color);
+      transitionHorizontalAxis(g, 5 * BAR_HEIGHT);
 
       annotationRects
         .transition()
         .duration(TRANSITION_TIME_MS)
         .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage));
-
-      g.select(".x.axis")
-        .transition()
-        .duration(TRANSITION_TIME_MS)
-        .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`);
     },
     fromBarChart: () => {
+      const xProportionCallback = getOffsetSleepStageProportionCallback(data);
+      g.selectAll(".rect-stacked")
+        .attr("x", xProportionCallback)
+        .attr("width", ({ end, start }) => xTime(end) - xTime(start));
+
       g.selectAll("text.proportion").remove();
 
       g.select(".x.axis").transition().call(xTimeAxis);
@@ -94,33 +93,31 @@ export const createBarChartCallbacks = (
   Object({
     fromInstance: () => {
       const { firstStageIndexes, stageTimeProportions } = data;
-
+      const xProportionCallback = getOffsetSleepStageProportionCallback(data);
       g.select(".x.axis").transition().call(xAxisLinear);
 
-      //Move all part to the left and make the first bar of each row become the cumulative portion of the stage
       setTooltip(g.selectAll(".rect-stacked"), tip)
         .transition()
         .duration(TRANSITION_TIME_MS)
-        .attr("x", 0)
-        .attr("width", ({ stage }, i) =>
-          i === firstStageIndexes[stage]
-            ? stageTimeProportions[stage] * WIDTH
-            : 0
-        )
-        .on("end", () => g.selectAll("text.proportion").style("opacity", 1));
-
-      createProportionLabels(g, data);
+        .attr("x", xProportionCallback)
+        .on("end", () => {
+          // Only keep the first rectangle of each stage to be visible
+          g.selectAll(".rect-stacked")
+            .attr("x", 0)
+            .attr("width", ({ stage }, i) =>
+              i === firstStageIndexes[stage]
+                ? stageTimeProportions[stage] * WIDTH
+                : 0
+            );
+          createProportionLabels(g, data);
+        });
     },
     fromStackedBarChart: () => {
       g.selectAll("text.label-sleepType").remove();
       g.selectAll("text.proportion").remove();
 
       createVerticalAxis(g, yAxis, color);
-
-      g.select(".x.axis")
-        .transition()
-        .duration(TRANSITION_TIME_MS)
-        .attr("transform", `translate(0, ${5 * BAR_HEIGHT})`);
+      transitionHorizontalAxis(g, 5 * BAR_HEIGHT);
 
       g.selectAll(".rect-stacked")
         .transition()
@@ -129,9 +126,7 @@ export const createBarChartCallbacks = (
         .transition()
         .duration(TRANSITION_TIME_MS / 2)
         .attr("x", 0)
-        .on("end", () => g.selectAll("text.proportion").style("opacity", 1));
-
-      createProportionLabels(g, data);
+        .on("end", () => createProportionLabels(g, data));
     },
   });
 
@@ -148,14 +143,15 @@ export const createStackedBarChartCallbacks = (g, data) =>
         annotations,
         ({ stage }, index) => firstStageIndexes[stage] === index
       );
+      const getHorizontalPositionSleepStage = ({ stage }) =>
+        (getCumulativeProportionOfNightAtStart(stage, stageTimeProportions) +
+          stageTimeProportions[stage] / 2) *
+        WIDTH;
 
       g.selectAll(".y.axis").remove();
       g.selectAll("text.proportion").remove();
 
-      g.select(".x.axis")
-        .transition()
-        .duration(TRANSITION_TIME_MS)
-        .attr("transform", `translate(0, ${BAR_HEIGHT})`);
+      transitionHorizontalAxis(g, BAR_HEIGHT);
 
       g.selectAll(".rect-stacked")
         .transition()
@@ -163,17 +159,14 @@ export const createStackedBarChartCallbacks = (g, data) =>
         .attr(
           "x",
           ({ stage }) =>
-            getCumulativeProportionOfNightAtStartOfStage(
-              stage,
-              stageTimeProportions
-            ) * WIDTH
+            getCumulativeProportionOfNightAtStart(stage, stageTimeProportions) *
+            WIDTH
         )
         .transition()
         .duration(TRANSITION_TIME_MS / 2)
         .attr("y", 0);
 
-      const text = g
-        .selectAll(".text")
+      g.selectAll(".text")
         .data(firstAnnotationsByStage)
         .enter()
         .append("text")
@@ -187,38 +180,14 @@ export const createStackedBarChartCallbacks = (g, data) =>
             )
             .format("HH:mm")
         )
-        .attr(
-          "x",
-          ({ stage }) =>
-            (getCumulativeProportionOfNightAtStartOfStage(
-              stage,
-              stageTimeProportions
-            ) +
-              stageTimeProportions[stage] / 2) *
-            WIDTH
-        )
+        .attr("x", getHorizontalPositionSleepStage)
         .attr("y", 40)
-        .attr("font-size", "25px")
-        .attr("font-weight", 15);
-
-      text
         .append("tspan")
         .text(
           ({ stage }) => `${_.round(stageTimeProportions[stage] * 100, 2)}%`
         )
-        .attr(
-          "x",
-          ({ stage }) =>
-            (getCumulativeProportionOfNightAtStartOfStage(
-              stage,
-              stageTimeProportions
-            ) +
-              stageTimeProportions[stage] / 2) *
-            WIDTH
-        )
-        .attr("y", 60)
-        .attr("font-size", "20px")
-        .attr("font-weight", 10);
+        .attr("x", getHorizontalPositionSleepStage)
+        .attr("y", 60);
     },
   });
 
@@ -258,6 +227,13 @@ const createVerticalAxis = (g, yAxis, color) =>
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle");
 
+const transitionHorizontalAxis = (g, yPosition) =>
+  g
+    .select(".x.axis")
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .attr("transform", `translate(0, ${yPosition})`);
+
 const createProportionLabels = (g, data) =>
   g
     .selectAll("text.proportion")
@@ -277,10 +253,7 @@ const createProportionLabels = (g, data) =>
     )
     .style("fill", "black");
 
-const getCumulativeProportionOfNightAtStartOfStage = (
-  stage,
-  totalStageProportions
-) =>
+const getCumulativeProportionOfNightAtStart = (stage, totalStageProportions) =>
   _.sum(
     _.slice(
       STAGES_ORDERED.map(
@@ -290,3 +263,36 @@ const getCumulativeProportionOfNightAtStartOfStage = (
       _.indexOf(STAGES_ORDERED, stage)
     )
   );
+
+const getOffsetSleepStageProportionCallback = (data) => {
+  const { annotations, stageTimeProportions } = data;
+  const cumulSumProportions = cumulSum(
+    _.mapValues(stageTimeProportions, (proportion, stage) =>
+      _.filter(annotations, (d) => d.stage === stage).map(
+        (annotation) => annotation.proportion / proportion
+      )
+    )
+  );
+  const annotationIndexSleepStage = annotations.map((annotation) => {
+    return _.indexOf(
+      _.filter(annotations, (d) => d.stage === annotation.stage),
+      annotation
+    );
+  });
+
+  return (d, index) =>
+    WIDTH *
+    stageTimeProportions[d.stage] *
+    cumulSumProportions[d.stage][annotationIndexSleepStage[index]];
+};
+
+const cumulSum = (annotationsProportionByStage) =>
+  _.mapValues(annotationsProportionByStage, (annotationsProportion) => {
+    const currentCumulSum = [0];
+    annotationsProportion.forEach((proportion, index) => {
+      if (index !== annotationsProportion.length - 1) {
+        currentCumulSum.push(proportion + currentCumulSum[index]);
+      }
+    });
+    return currentCumulSum;
+  });
