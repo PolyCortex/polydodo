@@ -91,6 +91,7 @@ const createEvolvingChart = (containerNode, data) => {
 
   instanceChartCallbacks = createInstanceChartCallbacks(
     g,
+    data,
     xTime,
     xTimeAxis,
     yAxis,
