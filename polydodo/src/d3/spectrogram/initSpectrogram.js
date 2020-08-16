@@ -4,13 +4,18 @@ import tip from "d3-tip";
 import { domainColor, domainX, domainY, createSources } from "./preproc";
 import { legend } from "./legend";
 import { createSpectrgramChart, getToolTipText } from "./stages-charts";
-import { FREQUENCY_BINS } from "./constants";
+import {
+  FREQUENCY_BINS,
+  DIMENSION,
+  SPECTROGRAM_HEIGHT,
+  MARGIN,
+} from "./constants";
 
-export const initSpectrogram = (g, node, width, height, margin, data) => {
+export const initSpectrogram = (g, node, data) => {
   var colorInterpolator = d3.interpolatePlasma;
 
-  var x = d3.scaleLinear().range([0, width]);
-  var y = d3.scaleBand().range([height, 0]);
+  var x = d3.scaleLinear().range([0, DIMENSION.WIDTH]);
+  var y = d3.scaleBand().range([SPECTROGRAM_HEIGHT, 0]);
   var yColor = d3.scaleLinear().range(y.range());
   var yAxisScale = d3.scaleLinear().range(y.range());
 
@@ -20,12 +25,12 @@ export const initSpectrogram = (g, node, width, height, margin, data) => {
   // Groupe affichant le graphique principal ().
   var spectrogram = g
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + MARGIN.LEFT + "," + MARGIN.TOP + ")");
   var gLegend = g
     .append("g")
     .attr(
       "transform",
-      "translate(" + (margin.left + width) + "," + margin.top + ")"
+      "translate(" + (MARGIN.LEFT + DIMENSION.WIDTH) + "," + MARGIN.TOP + ")"
     );
 
   var color = d3.scaleSequential().interpolator(colorInterpolator);
@@ -48,23 +53,13 @@ export const initSpectrogram = (g, node, width, height, margin, data) => {
   domainX(x, data, node);
   domainY(y, yAxisScale, frequencies);
 
-  createSpectrgramChart(
-    spectrogram,
-    sources,
-    x,
-    y,
-    color,
-    tooltip,
-    height,
-    width,
-    margin
-  );
+  createSpectrgramChart(spectrogram, sources, x, y, color, tooltip);
 
   // Axes
   spectrogram
     .append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + SPECTROGRAM_HEIGHT + ")")
     .call(xAxis)
     .selectAll("text")
     .style("font-size", "18px");
@@ -79,5 +74,5 @@ export const initSpectrogram = (g, node, width, height, margin, data) => {
   tooltip.html((d) => getToolTipText.call(this, d));
   g.call(tooltip);
 
-  legend(gLegend, color, yColor, height, margin.right);
+  legend(gLegend, color, yColor);
 };
