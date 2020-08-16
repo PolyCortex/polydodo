@@ -31,8 +31,15 @@ const createSpectrogram = (containerNode, data) => {
     .attr("width", canvasWidth)
     .attr("height", spectroCanvasHeight);
 
-  initSpectrogram(spectrogramFPZCZ, "Fpz_Cz", width, spectroHeight, margin);
-  initSpectrogram(spectrogramPZOZ, "Pz_Oz", width, spectroHeight, margin);
+  initSpectrogram(
+    spectrogramFPZCZ,
+    "Fpz_Cz",
+    width,
+    spectroHeight,
+    margin,
+    data
+  );
+  initSpectrogram(spectrogramPZOZ, "Pz_Oz", width, spectroHeight, margin, data);
 };
 
 export default createSpectrogram;
