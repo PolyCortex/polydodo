@@ -19,27 +19,41 @@ import {
 } from "./preproc";
 import { createLegend } from "./legend";
 
+const initializeScales = () =>
+  Object({
+    x: d3.scaleLinear([0, DIMENSION.WIDTH]),
+    yLinear: d3.scaleLinear([SPECTROGRAM_HEIGHT, 0]),
+    yBand: d3.scaleBand([SPECTROGRAM_HEIGHT, 0]),
+    yColor: d3.scaleLinear([SPECTROGRAM_HEIGHT, 0]),
+    color: d3.scaleSequential().interpolator(d3.interpolatePlasma),
+  });
+
+const initializeAxes = (x, y) =>
+  Object({
+    xAxis: d3.axisBottom(x).tickFormat((d) => `${d}h`),
+    yAxis: d3.axisLeft(y).ticks(5, "s"),
+  });
+
+const createDrawingGroups = (g) =>
+  Object({
+    spectrogram_drawing_group: g
+      .append("g")
+      .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`),
+    legend_drawing_group: g
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${MARGIN.LEFT + DIMENSION.WIDTH}, ${MARGIN.TOP})`
+      ),
+  });
+
 const createSpectrogramChart = (g, node, data) => {
-  const x = d3.scaleLinear().range([0, DIMENSION.WIDTH]);
-  const y = d3.scaleBand().range([SPECTROGRAM_HEIGHT, 0]);
-  const yColor = d3.scaleLinear().range(y.range());
-  const yAxisScale = d3.scaleLinear().range(y.range());
-
-  const xAxis = d3.axisBottom(x).tickFormat((d) => `${d}h`);
-  const yAxis = d3.axisLeft(yAxisScale).ticks(5, "s");
-
-  const spectrogram = g
-    .append("g")
-    .attr("transform", "translate(" + MARGIN.LEFT + "," + MARGIN.TOP + ")");
-  const gLegend = g
-    .append("g")
-    .attr(
-      "transform",
-      "translate(" + (MARGIN.LEFT + DIMENSION.WIDTH) + "," + MARGIN.TOP + ")"
-    );
-
-  const color = d3.scaleSequential().interpolator(d3.interpolatePlasma);
-
+  const { x, yLinear, yBand, yColor, color } = initializeScales();
+  const { xAxis, yAxis } = initializeAxes(x, yLinear);
+  const {
+    spectrogram_drawing_group,
+    legend_drawing_group,
+  } = createDrawingGroups(g);
   const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
 
   const frequencies = [];
@@ -56,18 +70,18 @@ const createSpectrogramChart = (g, node, data) => {
   domainColor(color, sources);
   domainColor(yColor, sources);
   domainX(x, data, node);
-  domainY(y, yAxisScale, frequencies);
+  domainY(yBand, yLinear, frequencies);
 
   //Creating all the parts of the stacked bar chart
-  spectrogram
+  spectrogram_drawing_group
     .selectAll(".rect")
     .data(sources)
     .enter()
     .append("rect")
     .attr("x", (d) => x(d.Timestamp))
-    .attr("y", (d) => y(d.Frequency))
+    .attr("y", (d) => yBand(d.Frequency))
     .attr("width", () => x(getHoursFromIndex(1)))
-    .attr("height", y.bandwidth())
+    .attr("height", yBand.bandwidth())
     .attr("fill", (d) => color(d.Intensity))
     .on("mouseover", function (d) {
       tooltip.show(d, this);
@@ -79,7 +93,7 @@ const createSpectrogramChart = (g, node, data) => {
     });
 
   // Titre axe des X
-  spectrogram
+  spectrogram_drawing_group
     .append("text")
     .attr("class", "x axis")
     .attr("y", SPECTROGRAM_HEIGHT + MARGIN.BOTTOM)
@@ -89,7 +103,7 @@ const createSpectrogramChart = (g, node, data) => {
     .text("Time");
 
   // titre axe des Y
-  spectrogram
+  spectrogram_drawing_group
     .append("text")
     .attr("class", "y axis")
     .attr("transform", "rotate(-90)")
@@ -101,15 +115,15 @@ const createSpectrogramChart = (g, node, data) => {
     .text("Frequency (Hz)");
 
   // Axes
-  spectrogram
+  spectrogram_drawing_group
     .append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + SPECTROGRAM_HEIGHT + ")")
+    .attr("transform", `translate(0, ${SPECTROGRAM_HEIGHT})`)
     .call(xAxis)
     .selectAll("text")
     .style("font-size", "18px");
 
-  spectrogram
+  spectrogram_drawing_group
     .append("g")
     .attr("class", "y axis")
     .call(yAxis)
@@ -119,7 +133,7 @@ const createSpectrogramChart = (g, node, data) => {
   tooltip.html((d) => getToolTipText.call(this, d));
   g.call(tooltip);
 
-  createLegend(gLegend, color, yColor);
+  createLegend(legend_drawing_group, color, yColor);
 };
 
 const getToolTipText = (d) => {
