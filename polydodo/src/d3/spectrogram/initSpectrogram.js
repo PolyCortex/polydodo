@@ -1,13 +1,12 @@
 import * as d3 from 'd3';
 import tip from 'd3-tip';
 
-import data from 'assets/data/spectrograms';
-import { domainColor, domainX, domainY, createSources } from './preproc';
-import { legend } from './legend';
-import { createSpectrgramChart, getToolTipText } from './stages-charts';
-import { FREQUENCY_BINS } from './constants';
+import { domainColor, domainX, domainY, createSources } from "./preproc";
+import { legend } from "./legend";
+import { createSpectrgramChart, getToolTipText } from "./stages-charts";
+import { FREQUENCY_BINS } from "./constants";
 
-export const initSpectrogram = (g, node, width, height, margin) => {
+export const initSpectrogram = (g, node, width, height, margin, data) => {
   var colorInterpolator = d3.interpolatePlasma;
 
   var x = d3.scaleLinear().range([0, width]);

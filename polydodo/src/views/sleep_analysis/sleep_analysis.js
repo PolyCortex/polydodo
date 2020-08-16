@@ -15,10 +15,11 @@ import createSpectrogram from "../../d3/spectrogram/spectrogram";
 import StackedBarChartScrollyTelling from "./stacked_bar_chart_scrollytelling";
 import { useCSVData } from "../../hooks/api_hooks";
 
-import hypnogramDataSleepEDF from "assets/data/hypnogram.csv";
+import hypnogramDataSleepEDFPath from "assets/data/hypnogram.csv";
+import spectrogramData from "assets/data/spectrograms.json";
 
 const SleepAnalysis = () => {
-  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDF);
+  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
 
   return (
     <div>
@@ -138,7 +139,7 @@ const SleepAnalysis = () => {
           </a>
           that decomposes sound frequency from your microphone.
         </p>
-        <D3Component callback={createSpectrogram} data={csvDataSleepEDF} />
+        <D3Component callback={createSpectrogram} data={spectrogramData} />
         <p className="mt-5">
           Generally, when talking about brain waves, we group certain
           frequencies together into bands. There are overall five frequency
