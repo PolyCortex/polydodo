@@ -2,8 +2,9 @@ import * as d3 from "d3";
 import moment from "moment";
 
 import { getHoursFromIndex } from "./preproc";
+import { SPECTROGRAM_HEIGHT, MARGIN, DIMENSION } from "./constants";
 
-export const createSpectrgramChart = (g, sources, x, y, color, tip, height, width, margin) => {
+export const createSpectrgramChart = (g, sources, x, y, color, tip) => {
   //Creating all the parts of the stacked bar chart
   g.selectAll('.rect')
     .data(sources)
@@ -24,24 +25,24 @@ export const createSpectrgramChart = (g, sources, x, y, color, tip, height, widt
     });
 
   // Titre axe des X
-  g.append('text')
-    .attr('class', 'x axis')
-    .attr('y', height + margin.bottom)
-    .attr('x', width / 2)
-    .attr('fill', 'currentColor')
-    .style('text-anchor', 'middle')
-    .text('Time');
+  g.append("text")
+    .attr("class", "x axis")
+    .attr("y", SPECTROGRAM_HEIGHT + MARGIN.BOTTOM)
+    .attr("x", DIMENSION.WIDTH / 2)
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Time");
 
   // titre axe des Y
-  g.append('text')
-    .attr('class', 'y axis')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', 0 - margin.left)
-    .attr('x', 0 - height / 2)
-    .attr('dy', '1em')
-    .attr('fill', 'currentColor')
-    .style('text-anchor', 'middle')
-    .text('Frequence (Hz)');
+  g.append("text")
+    .attr("class", "y axis")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -MARGIN.LEFT)
+    .attr("x", -SPECTROGRAM_HEIGHT / 2)
+    .attr("dy", "1em")
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Frequence (Hz)");
 };
 
 export const getToolTipText = (d) => {
