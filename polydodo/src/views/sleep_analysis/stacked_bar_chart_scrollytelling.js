@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Card, CardBody } from "reactstrap";
 
 import hypnogramCSVPath from "assets/data/hypnogram.csv";
@@ -16,11 +16,18 @@ import { useCSVData } from "../../hooks/api_hooks";
 
 const StackedBarChartScrollyTelling = () => {
   const csvData = useCSVData(hypnogramCSVPath);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const createEvolvingChartCallback = (svg, data) => {
+    if (!isInitialized) {
+      setIsInitialized(true);
+      createEvolvingChart(svg, data);
+    }
+  };
 
   return (
     <Container>
       <div style={{ position: "sticky", top: "10%" }}>
-        <D3Component callback={createEvolvingChart} data={csvData} />
+        <D3Component callback={createEvolvingChartCallback} data={csvData} />
       </div>
       <div style={{ marginBottom: '50%' }} />
       <Card className="shadow" style={{ position: 'relative' }}>
@@ -36,10 +43,18 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection
-        onDown={instanceChartCallbacks.fromTimeline}
-        onUp={timelineChartCallbacks.fromInstance}
-      />
+      {isInitialized && (
+        <WaypointDirection
+          onDown={() => {
+            console.log(instanceChartCallbacks.fromTimeline.toString());
+            instanceChartCallbacks.fromTimeline();
+          }}
+          onUp={() => {
+            console.log(timelineChartCallbacks.fromInstance.toString());
+            timelineChartCallbacks.fromInstance();
+          }}
+        />
+      )}
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -78,10 +93,18 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection
-        onDown={barChartCallbacks.fromInstance}
-        onUp={instanceChartCallbacks.fromBarChart}
-      />
+      {isInitialized && (
+        <WaypointDirection
+          onDown={() => {
+            console.log(barChartCallbacks.fromInstance.toString());
+            barChartCallbacks.fromInstance();
+          }}
+          onUp={() => {
+            console.log(instanceChartCallbacks.fromBarChart.toString());
+            instanceChartCallbacks.fromBarChart();
+          }}
+        />
+      )}
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -111,10 +134,18 @@ const StackedBarChartScrollyTelling = () => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: "125%" }} />
-      <WaypointDirection
-        onDown={stackedBarChartCallbacks.fromBarChart}
-        onUp={barChartCallbacks.fromStackedBarChart}
-      />
+      {isInitialized && (
+        <WaypointDirection
+          onDown={() => {
+            console.log(stackedBarChartCallbacks.fromBarChart.toString());
+            stackedBarChartCallbacks.fromBarChart();
+          }}
+          onUp={() => {
+            console.log(barChartCallbacks.fromStackedBarChart.toString());
+            barChartCallbacks.fromStackedBarChart();
+          }}
+        />
+      )}
       <div style={{ marginBottom: "125%" }} />
       <Card className="shadow" style={{ position: "relative" }}>
         <CardBody>
@@ -128,8 +159,8 @@ const StackedBarChartScrollyTelling = () => {
       {/* <WaypointDirection onDown={} /> */}
       <div style={{ marginBottom: "125%" }} />
       {/* <WaypointDirection onDown={} /> */}
-      <div style={{ marginBottom: "125%" }} />.
-      {/*For now, don't touch this dot!!!*/}
+      <div style={{ marginBottom: "125%" }} />
+      &nbsp;
     </Container>
   );
 };
