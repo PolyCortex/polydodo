@@ -11,22 +11,20 @@ import {
 import { STAGES_ORDERED } from "../constants";
 import { convertTimestampsToDates } from "../utils";
 
-const initializeScales = (comparativeColors) => {
-  const x = d3.scaleTime([0, DIMENSION.WIDTH]);
-  const y = d3.scaleOrdinal(
-    _.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)
-  );
-  const colors = d3.scaleOrdinal(comparativeColors);
+const initializeScales = (comparativeColors) =>
+  Object({
+    x: d3.scaleTime([0, DIMENSION.WIDTH]),
+    y: d3.scaleOrdinal(
+      _.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)
+    ),
+    colors: d3.scaleOrdinal(comparativeColors),
+  });
 
-  return { x, y, colors };
-};
-
-const initializeAxes = (x, y) => {
-  const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M"));
-  const yAxis = d3.axisLeft(y);
-
-  return { xAxis, yAxis };
-};
+const initializeAxes = (x, y) =>
+  Object({
+    xAxis: d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M")),
+    yAxis: d3.axisLeft(y),
+  });
 
 const createDrawingGroup = (svg) =>
   svg.append("g").attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
