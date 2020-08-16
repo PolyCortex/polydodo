@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import _ from "lodash";
 import moment from "moment";
 
-import { BAR_HEIGHT, WIDTH } from "./constants";
+import { BAR_HEIGHT, DIMENSION } from "./constants";
 import {
   EPOCH_DURATION_MS,
   TRANSITION_TIME_MS,
@@ -155,7 +155,7 @@ export const createStackedBarChartCallbacks = (g, data) =>
       const getHorizontalPositionSleepStage = ({ stage }) =>
         (getCumulativeProportionOfNightAtStart(stage, stageTimeProportions) +
           stageTimeProportions[stage] / 2) *
-        WIDTH;
+        DIMENSION.WIDTH;
       const annotationRects = g.selectAll(".rect-stacked").interrupt();
 
       g.selectAll(".y.axis").remove();
@@ -170,7 +170,7 @@ export const createStackedBarChartCallbacks = (g, data) =>
           "x",
           ({ stage }) =>
             getCumulativeProportionOfNightAtStart(stage, stageTimeProportions) *
-            WIDTH
+            DIMENSION.WIDTH
         )
         .attr(
           "width",
@@ -242,7 +242,9 @@ const getFirstRectangleProportionWidthCallback = (
   firstStageIndexes,
   stageTimeProportions
 ) => ({ stage }, i) =>
-  i === firstStageIndexes[stage] ? stageTimeProportions[stage] * WIDTH : 0;
+  i === firstStageIndexes[stage]
+    ? stageTimeProportions[stage] * DIMENSION.WIDTH
+    : 0;
 
 const createVerticalAxis = (g, yAxis, color) =>
   g
@@ -279,7 +281,7 @@ const createProportionLabels = (g, data) =>
         ? `${_.round(data.stageTimeProportions[stage] * 100, 2)}%`
         : ""
     )
-    .attr("x", WIDTH / 20)
+    .attr("x", DIMENSION.WIDTH / 20)
     .attr(
       "y",
       ({ stage }) => BAR_HEIGHT * STAGES_ORDERED.indexOf(stage) + BAR_HEIGHT / 2
@@ -314,7 +316,7 @@ const getOffsetSleepStageProportionCallback = (data) => {
   });
 
   return (d, index) =>
-    WIDTH *
+    DIMENSION.WIDTH *
     stageTimeProportions[d.stage] *
     cumulSumProportions[d.stage][annotationIndexSleepStage[index]];
 };
