@@ -45,14 +45,8 @@ const StackedBarChartScrollyTelling = () => {
       <div style={{ marginBottom: "125%" }} />
       {isInitialized && (
         <WaypointDirection
-          onDown={() => {
-            console.log(instanceChartCallbacks.fromTimeline.toString());
-            instanceChartCallbacks.fromTimeline();
-          }}
-          onUp={() => {
-            console.log(timelineChartCallbacks.fromInstance.toString());
-            timelineChartCallbacks.fromInstance();
-          }}
+          onDown={instanceChartCallbacks.fromTimeline}
+          onUp={timelineChartCallbacks.fromInstance}
         />
       )}
       <div style={{ marginBottom: "125%" }} />
@@ -95,14 +89,8 @@ const StackedBarChartScrollyTelling = () => {
       <div style={{ marginBottom: "125%" }} />
       {isInitialized && (
         <WaypointDirection
-          onDown={() => {
-            console.log(barChartCallbacks.fromInstance.toString());
-            barChartCallbacks.fromInstance();
-          }}
-          onUp={() => {
-            console.log(instanceChartCallbacks.fromBarChart.toString());
-            instanceChartCallbacks.fromBarChart();
-          }}
+          onDown={barChartCallbacks.fromInstance}
+          onUp={instanceChartCallbacks.fromBarChart}
         />
       )}
       <div style={{ marginBottom: "125%" }} />
@@ -136,14 +124,8 @@ const StackedBarChartScrollyTelling = () => {
       <div style={{ marginBottom: "125%" }} />
       {isInitialized && (
         <WaypointDirection
-          onDown={() => {
-            console.log(stackedBarChartCallbacks.fromBarChart.toString());
-            stackedBarChartCallbacks.fromBarChart();
-          }}
-          onUp={() => {
-            console.log(barChartCallbacks.fromStackedBarChart.toString());
-            barChartCallbacks.fromStackedBarChart();
-          }}
+          onDown={stackedBarChartCallbacks.fromBarChart}
+          onUp={barChartCallbacks.fromStackedBarChart}
         />
       )}
       <div style={{ marginBottom: "125%" }} />
