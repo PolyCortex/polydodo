@@ -3,6 +3,7 @@ export const DATUM_PER_TIMESTAMP = 4;
 export const TIMESTAMP_DURATION = SECONDS_PER_DATUM * DATUM_PER_TIMESTAMP;
 export const FREQUENCY_BINS = 5;
 export const NB_SPECTROGRAM = 2;
+export const FREQUENCY_KEY = "frequencies";
 
 export const MARGIN = {
   TOP: 100,
