@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import tip from "d3-tip";
+import moment from "moment";
 
 import {
   FREQUENCY_BINS,
@@ -9,13 +10,16 @@ import {
   SPECTROGRAM_CANVAS_HEIGTH,
   SPECTROGRAM_HEIGHT,
 } from "./constants";
-import { domainColor, domainX, domainY, createSources } from "./preproc";
+import {
+  domainColor,
+  domainX,
+  domainY,
+  createSources,
+  getHoursFromIndex,
+} from "./preproc";
 import { createLegend } from "./legend";
-import { createSpectrogramChart, getToolTipText } from "./stages-charts";
 
-const initSpectrogram = (g, node, data) => {
-  const colorInterpolator = d3.interpolatePlasma;
-
+const createSpectrogramChart = (g, node, data) => {
   const x = d3.scaleLinear().range([0, DIMENSION.WIDTH]);
   const y = d3.scaleBand().range([SPECTROGRAM_HEIGHT, 0]);
   const yColor = d3.scaleLinear().range(y.range());
@@ -34,7 +38,7 @@ const initSpectrogram = (g, node, data) => {
       "translate(" + (MARGIN.LEFT + DIMENSION.WIDTH) + "," + MARGIN.TOP + ")"
     );
 
-  const color = d3.scaleSequential().interpolator(colorInterpolator);
+  const color = d3.scaleSequential().interpolator(d3.interpolatePlasma);
 
   const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
 
@@ -54,7 +58,47 @@ const initSpectrogram = (g, node, data) => {
   domainX(x, data, node);
   domainY(y, yAxisScale, frequencies);
 
-  createSpectrogramChart(spectrogram, sources, x, y, color, tooltip);
+  //Creating all the parts of the stacked bar chart
+  spectrogram
+    .selectAll(".rect")
+    .data(sources)
+    .enter()
+    .append("rect")
+    .attr("x", (d) => x(d.Timestamp))
+    .attr("y", (d) => y(d.Frequency))
+    .attr("width", () => x(getHoursFromIndex(1)))
+    .attr("height", y.bandwidth())
+    .attr("fill", (d) => color(d.Intensity))
+    .on("mouseover", function (d) {
+      tooltip.show(d, this);
+      d3.select(this).style("opacity", 0.8);
+    })
+    .on("mouseout", function () {
+      tooltip.hide();
+      d3.select(this).style("opacity", 1);
+    });
+
+  // Titre axe des X
+  spectrogram
+    .append("text")
+    .attr("class", "x axis")
+    .attr("y", SPECTROGRAM_HEIGHT + MARGIN.BOTTOM)
+    .attr("x", DIMENSION.WIDTH / 2)
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Time");
+
+  // titre axe des Y
+  spectrogram
+    .append("text")
+    .attr("class", "y axis")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -MARGIN.LEFT)
+    .attr("x", -SPECTROGRAM_HEIGHT / 2)
+    .attr("dy", "1em")
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Frequency (Hz)");
 
   // Axes
   spectrogram
@@ -78,8 +122,17 @@ const initSpectrogram = (g, node, data) => {
   createLegend(gLegend, color, yColor);
 };
 
+const getToolTipText = (d) => {
+  return `Power : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
+          Frequency: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
+          Time: <strong> ${moment(d.Timestamp * 3.6e6)
+            .utc()
+            .format("HH:mm:ss")} </strong>`;
+};
+
 const createSpectrogram = (containerNode, data) => {
   const svg = d3.select(containerNode);
+  console.log(data);
 
   svg
     .attr("width", CANVAS_DIMENSION.WIDTH)
@@ -96,8 +149,8 @@ const createSpectrogram = (containerNode, data) => {
     .attr("width", CANVAS_DIMENSION.WIDTH)
     .attr("height", SPECTROGRAM_CANVAS_HEIGTH);
 
-  initSpectrogram(spectrogramFPZCZ, "Fpz_Cz", data);
-  initSpectrogram(spectrogramPZOZ, "Pz_Oz", data);
+  createSpectrogramChart(spectrogramFPZCZ, "Fpz_Cz", data);
+  createSpectrogramChart(spectrogramPZOZ, "Pz_Oz", data);
 };
 
 export default createSpectrogram;
