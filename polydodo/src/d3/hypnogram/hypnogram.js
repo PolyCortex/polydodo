@@ -2,14 +2,14 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 import createHypnogramChart from "./line_charts";
-import { DIMENSIONS, MARGINS, COMPARATIVE_COLORS } from "./constants";
+import { DIMENSION, MARGIN, COMPARATIVE_COLORS } from "./constants";
 import { STAGES_ORDERED } from "../constants";
 import { convertTimestampsToDates } from "../utils";
 
 const initializeScales = (comparativeColors) => {
-  const x = d3.scaleTime([0, DIMENSIONS.width]);
+  const x = d3.scaleTime([0, DIMENSION.WIDTH]);
   const y = d3.scaleOrdinal(
-    _.range(0, DIMENSIONS.height + 1, DIMENSIONS.height / STAGES_ORDERED.length)
+    _.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)
   );
   const colors = d3.scaleOrdinal(comparativeColors);
 
@@ -24,9 +24,7 @@ const initializeAxes = (x, y) => {
 };
 
 const createDrawingGroup = (svg) =>
-  svg
-    .append("g")
-    .attr("transform", `translate(${MARGINS.left}, ${MARGINS.top})`);
+  svg.append("g").attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
 const preprocessData = (data, hypnogramNames) => {
   data = data.map((hypno) => convertTimestampsToDates(hypno));
@@ -55,8 +53,8 @@ const createHypnogram = (
 ) => {
   const svg = d3
     .select(containerNode)
-    .attr("width", DIMENSIONS.width + MARGINS.left + MARGINS.right)
-    .attr("height", DIMENSIONS.height + MARGINS.top + MARGINS.bottom);
+    .attr("width", DIMENSION.WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
+    .attr("height", DIMENSION.HEIGHT + MARGIN.TOP + MARGIN.BOTTOM);
   const { x, y, colors } = initializeScales(comparativeColors);
   const { xAxis, yAxis } = initializeAxes(x, y);
   const g = createDrawingGroup(svg);

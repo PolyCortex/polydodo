@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 import createMouseOver from "./mouse_over";
-import { DIMENSIONS, MARGINS } from "./constants";
+import { DIMENSION, MARGIN } from "./constants";
 
 const createHypnogramChart = (
   g,
@@ -29,10 +29,10 @@ const createHypnogramChart = (
     .attr("stroke", (x) => color(x.name))
     .attr("stroke-width", 2);
 
-  createMouseOver(g_chart, x, y, data, MARGINS, DIMENSIONS, color);
-  createAxes(g, xAxis, yAxis, DIMENSIONS, MARGINS);
-  createTitle(g, chartTitle, DIMENSIONS, MARGINS);
-  createLegend(g, hypnogramNames, comparativeColors, MARGINS);
+  createMouseOver(g_chart, x, y, data, color);
+  createAxes(g, xAxis, yAxis);
+  createTitle(g, chartTitle);
+  createLegend(g, hypnogramNames, comparativeColors);
 };
 
 const createLine = (x, y) =>
@@ -42,12 +42,12 @@ const createLine = (x, y) =>
     .y((d) => y(d.sleepStage))
     .curve(d3.curveStepAfter);
 
-const createAxes = (g, xAxis, yAxis, dimensions, margin) => {
-  const { height, width } = dimensions;
+const createAxes = (g, xAxis, yAxis) => {
+  const { HEIGHT, WIDTH } = DIMENSION;
 
   g.append("g")
     .attr("class", "x axis")
-    .attr("transform", `translate(0,${height})`)
+    .attr("transform", `translate(0,${HEIGHT})`)
     .call(xAxis);
 
   g.append("g").attr("class", "y axis").call(yAxis);
@@ -55,27 +55,27 @@ const createAxes = (g, xAxis, yAxis, dimensions, margin) => {
   g.append("text")
     .text("Time")
     .attr("text-anchor", "end")
-    .attr("x", width)
-    .attr("y", height + (2 / 3) * margin.bottom);
+    .attr("x", WIDTH)
+    .attr("y", HEIGHT + (2 / 3) * MARGIN.BOTTOM);
 
   g.append("text")
     .text("Sleep stage")
     .attr("text-anchor", "middle")
     .attr("transform", "rotate(-90)")
-    .attr("x", -height / 2)
-    .attr("y", -(2 / 3) * margin.left);
+    .attr("x", -HEIGHT / 2)
+    .attr("y", -(2 / 3) * MARGIN.LEFT);
 };
 
-const createTitle = (g, title, dimensions, margin) => {
+const createTitle = (g, title) => {
   g.append("text")
     .text(title)
     .attr("class", "chart-title")
     .attr("text-anchor", "middle")
-    .attr("y", -(3 / 4) * margin.top)
-    .attr("x", (1 / 2) * dimensions.width);
+    .attr("y", -(3 / 4) * MARGIN.TOP)
+    .attr("x", (1 / 2) * DIMENSION.WIDTH);
 };
 
-const createLegend = (g, hypnogramNames, comparativeColors, margin) => {
+const createLegend = (g, hypnogramNames, comparativeColors) => {
   const legendData = _.zip(hypnogramNames, comparativeColors).map((x) => {
     return {
       name: x[0],
@@ -92,7 +92,7 @@ const createLegend = (g, hypnogramNames, comparativeColors, margin) => {
     .attr("fill", (x) => x.color)
     .attr("width", "1em")
     .attr("height", "1em")
-    .attr("y", -(1 / 2) * margin.top)
+    .attr("y", -(1 / 2) * MARGIN.TOP)
     .attr("x", (_, i) => `${i * 8}em`);
 
   g.selectAll(".text.legend")
@@ -103,7 +103,7 @@ const createLegend = (g, hypnogramNames, comparativeColors, margin) => {
     .text((x) => x.name)
     .attr("font-size", 12)
     .attr("dominant-baseline", "hanging")
-    .attr("y", -(1 / 2) * margin.top)
+    .attr("y", -(1 / 2) * MARGIN.TOP)
     .attr("dy", 0.25 + "em")
     .attr("x", (_, i) => `${1.5 + i * 11}em`);
 };
