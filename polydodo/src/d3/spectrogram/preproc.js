@@ -19,8 +19,8 @@ export const createSources = (data, node, frequencies) => {
   const sources = [];
   const nodeData = data[node];
   for (let idx = 0; idx < nodeData.length; idx += DATUM_PER_TIMESTAMP) {
-    for (let jdx = 0; jdx < data.Frequencies.length; jdx += FREQUENCY_BINS) {
-      // const frequency = data.Frequencies[jdx];
+    for (let jdx = 0; jdx < data.frequencies.length; jdx += FREQUENCY_BINS) {
+      // const frequency = data.frequencies[jdx];
       let intensity = 0;
       let currFrequencyBin = 0;
       let currTimestampBin = 0;
@@ -31,7 +31,11 @@ export const createSources = (data, node, frequencies) => {
       ) {
         currTimestampBin++;
         currFrequencyBin = 0;
-        for (let ldx = jdx; ldx < jdx + FREQUENCY_BINS && ldx < data.Frequencies.length; ldx++) {
+        for (
+          let ldx = jdx;
+          ldx < jdx + FREQUENCY_BINS && ldx < data.frequencies.length;
+          ldx++
+        ) {
           currFrequencyBin++;
           intensity += nodeData[kdx][ldx];
         }
