@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import tip from "d3-tip";
 import moment from "moment";
+import _ from "lodash";
 
 import {
   FREQUENCY_BINS,
@@ -9,6 +10,7 @@ import {
   CANVAS_DIMENSION,
   SPECTROGRAM_CANVAS_HEIGTH,
   SPECTROGRAM_HEIGHT,
+  FREQUENCY_KEY,
 } from "./constants";
 import {
   domainColor,
@@ -57,11 +59,11 @@ const createSpectrogramChart = (g, node, data) => {
   const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
 
   const frequencies = [];
-  for (let idx = 0; idx < data.Frequencies.length; idx += FREQUENCY_BINS) {
+  for (let idx = 0; idx < data.frequencies.length; idx += FREQUENCY_BINS) {
     let binTotal = 0;
     let jdx = 0;
-    for (; jdx < FREQUENCY_BINS && idx + jdx < data.Frequencies.length; jdx++) {
-      binTotal += data.Frequencies[idx + jdx];
+    for (; jdx < FREQUENCY_BINS && idx + jdx < data.frequencies.length; jdx++) {
+      binTotal += data.frequencies[idx + jdx];
     }
     frequencies.push(binTotal / FREQUENCY_BINS);
   }
@@ -152,19 +154,20 @@ const createSpectrogram = (containerNode, data) => {
     .attr("width", CANVAS_DIMENSION.WIDTH)
     .attr("height", CANVAS_DIMENSION.HEIGHT);
 
-  const spectrogramFPZCZ = svg
-    .append("g")
-    .attr("width", CANVAS_DIMENSION.WIDTH)
-    .attr("height", SPECTROGRAM_CANVAS_HEIGTH);
+  const channelNames = _.filter(
+    _.keys(data),
+    (keyName) => keyName !== FREQUENCY_KEY
+  );
 
-  const spectrogramPZOZ = svg
-    .append("g")
-    .attr("transform", `translate(0, ${SPECTROGRAM_CANVAS_HEIGTH})`)
-    .attr("width", CANVAS_DIMENSION.WIDTH)
-    .attr("height", SPECTROGRAM_CANVAS_HEIGTH);
+  _.forEach(channelNames, (channelName, index) => {
+    const currentSpectrogramDrawingGroup = svg
+      .append("g")
+      .attr("transform", `translate(0, ${index * SPECTROGRAM_CANVAS_HEIGTH})`)
+      .attr("width", CANVAS_DIMENSION.WIDTH)
+      .attr("height", SPECTROGRAM_CANVAS_HEIGTH);
 
-  createSpectrogramChart(spectrogramFPZCZ, "Fpz_Cz", data);
-  createSpectrogramChart(spectrogramPZOZ, "Pz_Oz", data);
+    createSpectrogramChart(currentSpectrogramDrawingGroup, channelName, data);
+  });
 };
 
 export default createSpectrogram;
