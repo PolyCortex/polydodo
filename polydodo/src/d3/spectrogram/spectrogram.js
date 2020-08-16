@@ -1,45 +1,27 @@
 import * as d3 from "d3";
 import { initSpectrogram } from "./initSpectrogram";
+import { CANVAS_DIMENSION, SPECTROGRAM_CANVAS_HEIGTH } from "./constants";
 
 const createSpectrogram = (containerNode, data) => {
-  const margin = {
-    top: 100,
-    right: 200,
-    bottom: 50,
-    left: 70,
-  };
-
-  const canvasWidth = 1000;
-  const canvasHeight = 1200;
-  const spectroCanvasHeight = canvasHeight / 2;
-
-  const width = canvasWidth - margin.left - margin.right;
-  const spectroHeight = spectroCanvasHeight - margin.top - margin.bottom;
-
   const svg = d3.select(containerNode);
 
-  svg.attr("width", canvasWidth).attr("height", 2 * spectroCanvasHeight);
+  svg
+    .attr("width", CANVAS_DIMENSION.WIDTH)
+    .attr("height", CANVAS_DIMENSION.HEIGHT);
 
   const spectrogramFPZCZ = svg
     .append("g")
-    .attr("width", canvasWidth)
-    .attr("height", spectroCanvasHeight);
+    .attr("width", CANVAS_DIMENSION.WIDTH)
+    .attr("height", SPECTROGRAM_CANVAS_HEIGTH);
 
   const spectrogramPZOZ = svg
     .append("g")
-    .attr("transform", `translate(0, ${spectroCanvasHeight})`)
-    .attr("width", canvasWidth)
-    .attr("height", spectroCanvasHeight);
+    .attr("transform", `translate(0, ${SPECTROGRAM_CANVAS_HEIGTH})`)
+    .attr("width", CANVAS_DIMENSION.WIDTH)
+    .attr("height", SPECTROGRAM_CANVAS_HEIGTH);
 
-  initSpectrogram(
-    spectrogramFPZCZ,
-    "Fpz_Cz",
-    width,
-    spectroHeight,
-    margin,
-    data
-  );
-  initSpectrogram(spectrogramPZOZ, "Pz_Oz", width, spectroHeight, margin, data);
+  initSpectrogram(spectrogramFPZCZ, "Fpz_Cz", data);
+  initSpectrogram(spectrogramPZOZ, "Pz_Oz", data);
 };
 
 export default createSpectrogram;
