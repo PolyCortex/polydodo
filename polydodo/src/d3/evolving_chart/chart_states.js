@@ -18,12 +18,9 @@ export const createTimelineChartCallbacks = (
 ) =>
   Object({
     fromInitial: () => {
-      const annotationRects = g.selectAll(".rect-stacked");
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
 
-      setAttrOnAnnotationRects(annotationRects, xTime, color, tooltip).attr(
-        "y",
-        0
-      );
+      setAttrOnAnnotationRects(annotationRects, xTime, 0, color, tooltip);
 
       g.append("g")
         .attr("class", "x axis")
@@ -31,12 +28,11 @@ export const createTimelineChartCallbacks = (
         .call(xTimeAxis);
     },
     fromInstance: () => {
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
+
       g.selectAll(".y.axis").remove();
 
-      g.selectAll(".rect-stacked")
-        .transition()
-        .duration(TRANSITION_TIME_MS)
-        .attr("y", 0);
+      setAttrOnAnnotationRects(annotationRects, xTime, 0, color, tooltip);
 
       transitionHorizontalAxis(g, BAR_HEIGHT);
     },
@@ -53,29 +49,34 @@ export const createInstanceChartCallbacks = (
 ) =>
   Object({
     fromTimeline: () => {
-      const annotationRects = g.selectAll(".rect-stacked");
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
 
       createVerticalAxis(g, yAxis, color);
-      transitionHorizontalAxis(g, 5 * BAR_HEIGHT);
-
-      annotationRects
-        .transition()
-        .duration(TRANSITION_TIME_MS)
-        .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage));
+      transitionHorizontalAxis(g, STAGES_ORDERED.length * BAR_HEIGHT);
+      setAttrOnAnnotationRects(
+        annotationRects,
+        xTime,
+        getVerticalPositionCallback,
+        color,
+        tooltip
+      );
     },
     fromBarChart: () => {
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
       const xProportionCallback = getOffsetSleepStageProportionCallback(data);
-      g.selectAll(".rect-stacked")
+      annotationRects
         .attr("x", xProportionCallback)
         .attr("width", ({ end, start }) => xTime(end) - xTime(start));
 
       g.selectAll("text.proportion").remove();
 
-      g.select(".x.axis").transition().call(xTimeAxis);
+      g.select(".x.axis").interrupt().transition().call(xTimeAxis);
+      transitionHorizontalAxis(g, STAGES_ORDERED.length * BAR_HEIGHT);
 
       setAttrOnAnnotationRects(
-        g.selectAll(".rect-stacked"),
+        annotationRects,
         xTime,
+        getVerticalPositionCallback,
         color,
         tooltip
       );
@@ -93,33 +94,41 @@ export const createBarChartCallbacks = (
   Object({
     fromInstance: () => {
       const { firstStageIndexes, stageTimeProportions } = data;
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
       const xProportionCallback = getOffsetSleepStageProportionCallback(data);
-      g.select(".x.axis").transition().call(xAxisLinear);
 
-      setTooltip(g.selectAll(".rect-stacked"), tip)
+      g.select(".x.axis").transition().call(xAxisLinear);
+      transitionHorizontalAxis(g, STAGES_ORDERED.length * BAR_HEIGHT);
+
+      setTooltip(annotationRects, tip)
         .transition()
         .duration(TRANSITION_TIME_MS)
+        .attr("y", getVerticalPositionCallback)
         .attr("x", xProportionCallback)
         .on("end", () => {
           // Only keep the first rectangle of each stage to be visible
           g.selectAll(".rect-stacked")
             .attr("x", 0)
-            .attr("width", ({ stage }, i) =>
-              i === firstStageIndexes[stage]
-                ? stageTimeProportions[stage] * WIDTH
-                : 0
+            .attr(
+              "width",
+              getFirstRectangleProportionWidthCallback(
+                firstStageIndexes,
+                stageTimeProportions
+              )
             );
           createProportionLabels(g, data);
         });
     },
     fromStackedBarChart: () => {
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
+
       g.selectAll("text.label-sleepType").remove();
       g.selectAll("text.proportion").remove();
 
       createVerticalAxis(g, yAxis, color);
-      transitionHorizontalAxis(g, 5 * BAR_HEIGHT);
+      transitionHorizontalAxis(g, STAGES_ORDERED.length * BAR_HEIGHT);
 
-      g.selectAll(".rect-stacked")
+      annotationRects
         .transition()
         .duration(TRANSITION_TIME_MS / 2)
         .attr("y", (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage))
@@ -147,13 +156,14 @@ export const createStackedBarChartCallbacks = (g, data) =>
         (getCumulativeProportionOfNightAtStart(stage, stageTimeProportions) +
           stageTimeProportions[stage] / 2) *
         WIDTH;
+      const annotationRects = g.selectAll(".rect-stacked").interrupt();
 
       g.selectAll(".y.axis").remove();
       g.selectAll("text.proportion").remove();
 
       transitionHorizontalAxis(g, BAR_HEIGHT);
 
-      g.selectAll(".rect-stacked")
+      annotationRects
         .transition()
         .duration(TRANSITION_TIME_MS / 2)
         .attr(
@@ -161,6 +171,13 @@ export const createStackedBarChartCallbacks = (g, data) =>
           ({ stage }) =>
             getCumulativeProportionOfNightAtStart(stage, stageTimeProportions) *
             WIDTH
+        )
+        .attr(
+          "width",
+          getFirstRectangleProportionWidthCallback(
+            firstStageIndexes,
+            stageTimeProportions
+          )
         )
         .transition()
         .duration(TRANSITION_TIME_MS / 2)
@@ -191,12 +208,19 @@ export const createStackedBarChartCallbacks = (g, data) =>
     },
   });
 
-const setAttrOnAnnotationRects = (annotationRects, x, color, tooltip) =>
+const setAttrOnAnnotationRects = (
+  annotationRects,
+  x,
+  yPosition,
+  color,
+  tooltip
+) =>
   setTooltip(annotationRects, tooltip)
     .attr("height", BAR_HEIGHT)
     .transition()
     .duration(TRANSITION_TIME_MS)
     .attr("x", ({ start }) => x(start))
+    .attr("y", yPosition)
     .attr("width", ({ end, start }) => x(end) - x(start))
     .attr("fill", ({ stage }) => color(stage));
 
@@ -210,6 +234,15 @@ const setTooltip = (element, tooltip) =>
       tooltip.hide();
       d3.select(this).style("opacity", 1);
     });
+
+const getVerticalPositionCallback = (d) =>
+  BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage);
+
+const getFirstRectangleProportionWidthCallback = (
+  firstStageIndexes,
+  stageTimeProportions
+) => ({ stage }, i) =>
+  i === firstStageIndexes[stage] ? stageTimeProportions[stage] * WIDTH : 0;
 
 const createVerticalAxis = (g, yAxis, color) =>
   g
