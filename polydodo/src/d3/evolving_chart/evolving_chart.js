@@ -10,14 +10,7 @@ import {
   createBarChartCallbacks,
   createStackedBarChartCallbacks,
 } from "./chart_states";
-import {
-  WIDTH,
-  HEIGHT,
-  MARGIN,
-  CANVAS_WIDTH,
-  CANVAS_HEIGHT,
-  BAR_HEIGHT,
-} from "./constants";
+import { MARGIN, CANVAS_DIMENSION, BAR_HEIGHT, DIMENSION } from "./constants";
 import { STAGES_ORDERED, STAGE_TO_COLOR } from "../constants";
 import { initializeTooltips } from "./mouse_over";
 
@@ -27,6 +20,7 @@ export let barChartCallbacks = {};
 export let stackedBarChartCallbacks = {};
 
 const initializeScales = () => {
+  const { WIDTH, HEIGHT } = DIMENSION;
   const xTime = d3.scaleTime([0, WIDTH]);
   const xLinear = d3.scaleLinear([0, WIDTH]);
   const y = d3.scaleOrdinal(_.range(0, HEIGHT + 1, BAR_HEIGHT));
@@ -49,7 +43,7 @@ const setDomainOnScales = (xTime, xLinear, y, colors, epochs) => {
 const initializeAxes = (xTime, xLinear, y) => {
   const xTimeAxis = d3.axisBottom(xTime).tickFormat((d) => `${d.getHours()}h`);
   const xLinearAxis = d3.axisBottom(xLinear).tickFormat((d) => `${d}h`);
-  const yAxis = d3.axisLeft(y).tickSize(-WIDTH); //will create the lines in second visualisation
+  const yAxis = d3.axisLeft(y).tickSize(-DIMENSION.WIDTH); //will create the lines in second visualisation
 
   return { xTimeAxis, xLinearAxis, yAxis };
 };
@@ -68,8 +62,8 @@ const bindAnnotationsToRects = (g, annotations) =>
 const createEvolvingChart = (containerNode, data) => {
   const svg = d3
     .select(containerNode)
-    .attr("width", CANVAS_WIDTH)
-    .attr("height", CANVAS_HEIGHT);
+    .attr("width", CANVAS_DIMENSION.WIDTH)
+    .attr("height", CANVAS_DIMENSION.HEIGHT);
   const { xTime, xLinear, y, colors } = initializeScales();
   const { xTimeAxis, xLinearAxis, yAxis } = initializeAxes(xTime, xLinear, y);
   const g = createDrawingGroup(svg);
