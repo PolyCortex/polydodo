@@ -4,7 +4,7 @@ import moment from "moment";
 import { getHoursFromIndex } from "./preproc";
 import { SPECTROGRAM_HEIGHT, MARGIN, DIMENSION } from "./constants";
 
-export const createSpectrgramChart = (g, sources, x, y, color, tip) => {
+export const createSpectrogramChart = (g, sources, x, y, color, tip) => {
   //Creating all the parts of the stacked bar chart
   g.selectAll('.rect')
     .data(sources)
@@ -42,14 +42,13 @@ export const createSpectrgramChart = (g, sources, x, y, color, tip) => {
     .attr("dy", "1em")
     .attr("fill", "currentColor")
     .style("text-anchor", "middle")
-    .text("Frequence (Hz)");
+    .text("Frequency (Hz)");
 };
 
 export const getToolTipText = (d) => {
-  //TODO : Fix name
-  return `Puissance : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
-          Fréquence: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
-          Moment: <strong> ${moment(d.Timestamp * 3.6e6)
+  return `Power : <strong> ${d.Intensity.toFixed(2)} </strong> dB<br>\
+          Frequency: <strong> ${d.Frequency.toFixed(2)} </strong> Hz <br>\
+          Time: <strong> ${moment(d.Timestamp * 3.6e6)
             .utc()
             .format("HH:mm:ss")} </strong>`;
 };

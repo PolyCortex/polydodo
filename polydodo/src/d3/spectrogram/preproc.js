@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { TIMESTAMP_DURATION, DATUM_PER_TIMESTAMP, FREQUENCY_BINS } from './constants';
 
 export const domainColor = (color, sources) => {
-  var extent = d3.extent(sources, (d) => d.Intensity);
+  const extent = d3.extent(sources, (d) => d.Intensity);
   color.domain(extent);
 };
 
@@ -16,15 +16,19 @@ export const domainY = (y, yAxisScale, frequencies) => {
 };
 
 export const createSources = (data, node, frequencies) => {
-  var sources = [];
-  var nodeData = data[node];
+  const sources = [];
+  const nodeData = data[node];
   for (let idx = 0; idx < nodeData.length; idx += DATUM_PER_TIMESTAMP) {
     for (let jdx = 0; jdx < data.Frequencies.length; jdx += FREQUENCY_BINS) {
-      // var frequency = data.Frequencies[jdx];
-      var intensity = 0;
-      var currFrequencyBin = 0;
-      var currTimestampBin = 0;
-      for (let kdx = idx; kdx < idx + DATUM_PER_TIMESTAMP && kdx < nodeData.length; kdx++) {
+      // const frequency = data.Frequencies[jdx];
+      let intensity = 0;
+      let currFrequencyBin = 0;
+      let currTimestampBin = 0;
+      for (
+        let kdx = idx;
+        kdx < idx + DATUM_PER_TIMESTAMP && kdx < nodeData.length;
+        kdx++
+      ) {
         currTimestampBin++;
         currFrequencyBin = 0;
         for (let ldx = jdx; ldx < jdx + FREQUENCY_BINS && ldx < data.Frequencies.length; ldx++) {
@@ -32,7 +36,7 @@ export const createSources = (data, node, frequencies) => {
           intensity += nodeData[kdx][ldx];
         }
       }
-      var timeStamp = getHoursFromIndex(Math.ceil(idx / DATUM_PER_TIMESTAMP));
+      const timeStamp = getHoursFromIndex(Math.ceil(idx / DATUM_PER_TIMESTAMP));
 
       sources.push({
         Frequency: frequencies[Math.ceil(jdx / FREQUENCY_BINS)],
