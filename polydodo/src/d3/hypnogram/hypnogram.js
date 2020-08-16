@@ -2,7 +2,12 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 import createHypnogramChart from "./line_charts";
-import { DIMENSION, MARGIN, COMPARATIVE_COLORS } from "./constants";
+import {
+  DIMENSION,
+  MARGIN,
+  COMPARATIVE_COLORS,
+  CANVAS_DIMENSION,
+} from "./constants";
 import { STAGES_ORDERED } from "../constants";
 import { convertTimestampsToDates } from "../utils";
 
@@ -53,8 +58,8 @@ const createHypnogram = (
 ) => {
   const svg = d3
     .select(containerNode)
-    .attr("width", DIMENSION.WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
-    .attr("height", DIMENSION.HEIGHT + MARGIN.TOP + MARGIN.BOTTOM);
+    .attr("width", CANVAS_DIMENSION.WIDTH)
+    .attr("height", CANVAS_DIMENSION.HEIGHT);
   const { x, y, colors } = initializeScales(comparativeColors);
   const { xAxis, yAxis } = initializeAxes(x, y);
   const g = createDrawingGroup(svg);
