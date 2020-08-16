@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { DIMENSION, MARGIN } from "./constants";
 
 const getHoveredData = (data, x, mouse, bisectTime) => {
   const timestamps = data[0].values.map((x) => x.timestamp);
@@ -15,20 +16,20 @@ const getHoveredData = (data, x, mouse, bisectTime) => {
   });
 };
 
-const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
-  const { width, height } = dimensions;
+const createMouseOver = (g, x, y, data, color) => {
+  const { WIDTH, HEIGHT } = DIMENSION;
   const bisectTime = d3.bisector((d) => d).left; // https://github.com/d3/d3-array#bisector_left
 
   // Act as a child of `g` to make sure mouse events are received from the whole chart (not only the lines)
   g.append("rect")
-    .attr("width", width)
-    .attr("height", height)
+    .attr("width", WIDTH)
+    .attr("height", HEIGHT)
     .attr("opacity", 0);
 
   const lineHover = g
     .append("line")
     .attr("class", "lineHover")
-    .attr("y1", height)
+    .attr("y1", HEIGHT)
     .attr("y2", 0)
     .attr("stroke-width", 1)
     .style("stroke", "#999")
@@ -80,7 +81,7 @@ const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
       .text(d3.timeFormat("%H:%M:%S")(timestamp))
       .attr(
         "transform",
-        `translate(${x(timestamp)},${height + margin.bottom - 10})`
+        `translate(${x(timestamp)},${HEIGHT + MARGIN.BOTTOM - 10})`
       )
       .style("opacity", 1);
 
@@ -90,11 +91,11 @@ const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
       .style("opacity", 1);
 
     textHover
-      .attr("transform", `translate(${x(timestamp)},${(5 / 6) * height})`)
+      .attr("transform", `translate(${x(timestamp)},${(5 / 6) * HEIGHT})`)
       .text((x) => `${x.name}: ${x.currentValue.sleepStage}`)
       .style("opacity", 1);
 
-    x(timestamp) > (4 / 5) * width
+    x(timestamp) > (4 / 5) * WIDTH
       ? textHover.attr("text-anchor", "end").attr("dx", -10)
       : textHover.attr("text-anchor", "start").attr("dx", 10);
   };
