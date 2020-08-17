@@ -16,7 +16,7 @@ export const MARGIN = {
 };
 export const CANVAS_DIMENSION = {
   WIDTH: 1000,
-  HEIGHT: 1000,
+  HEIGHT: 700,
 };
 export const DIMENSION = {
   WIDTH: CANVAS_DIMENSION.WIDTH - MARGIN.LEFT - MARGIN.RIGHT,
