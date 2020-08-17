@@ -8,9 +8,9 @@ import {
   SPECTROGRAM_CANVAS_HEIGTH,
   SPECTROGRAM_HEIGHT,
   FREQUENCY_KEY,
-  TIMESTAMP_DURATION,
   TITLE_FONT_SIZE,
 } from "./constants";
+import { EPOCH_DURATION_SEC } from "../constants";
 import { createLegend } from "./legend";
 
 const initializeScales = () =>
@@ -61,7 +61,7 @@ const preprocessData = (powerAmplitudesByTimestamp, frequencies) =>
   );
 
 const getHoursFromIndex = (idx) => {
-  return (idx * TIMESTAMP_DURATION) / 60.0 / 60;
+  return (idx * EPOCH_DURATION_SEC) / 60.0 / 60;
 };
 
 const createDrawingGroups = (g) =>
@@ -129,6 +129,15 @@ const createAxes = (g, xAxis, yAxis) => {
     .style("font-size", TITLE_FONT_SIZE);
 };
 
+const createTitle = (g, channelName) =>
+  g
+    .append("text")
+    .attr("x", DIMENSION.WIDTH / 2)
+    .attr("y", -MARGIN.TOP / 3)
+    .style("text-anchor", "middle")
+    .style("font-size", TITLE_FONT_SIZE)
+    .text(`Spectrogram of channel ${channelName}`);
+
 const createSpectrogramRectangles = (canvas, scalesAndAxesBySpectrogram) => {
   const context = canvas.node().getContext("2d");
 
@@ -154,10 +163,14 @@ const createSpectrogramRectangles = (canvas, scalesAndAxesBySpectrogram) => {
   });
 };
 
-const createSpectrogramAxesAndLegend = (svg, scalesAndAxesBySpectrogram) => {
+const createSpectrogramAxesAndLegend = (
+  svg,
+  scalesAndAxesBySpectrogram,
+  channelNames
+) =>
   _.forEach(
-    scalesAndAxesBySpectrogram,
-    ({ xAxis, yAxis, color, yColor }, index) => {
+    _.zip(scalesAndAxesBySpectrogram, channelNames),
+    ([{ xAxis, yAxis, color, yColor }, channel], index) => {
       const currentSpectrogramDrawingGroup = svg
         .append("g")
         .attr(
@@ -172,11 +185,11 @@ const createSpectrogramAxesAndLegend = (svg, scalesAndAxesBySpectrogram) => {
         legendDrawingGroup,
       } = createDrawingGroups(currentSpectrogramDrawingGroup);
 
+      createTitle(spectrogramDrawingGroup, channel);
       createAxes(spectrogramDrawingGroup, xAxis, yAxis);
       createLegend(legendDrawingGroup, color, yColor);
     }
   );
-};
 
 const createSpectrogram = (containerNode, data) => {
   /*
@@ -208,7 +221,7 @@ const createSpectrogram = (containerNode, data) => {
     .attr("height", CANVAS_DIMENSION.HEIGHT);
 
   createSpectrogramRectangles(canvas, scalesAndAxesBySpectrogram);
-  createSpectrogramAxesAndLegend(svg, scalesAndAxesBySpectrogram);
+  createSpectrogramAxesAndLegend(svg, scalesAndAxesBySpectrogram, channelNames);
 };
 
 export default createSpectrogram;

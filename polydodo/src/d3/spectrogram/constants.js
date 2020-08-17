@@ -1,7 +1,6 @@
 import _ from "lodash";
 
-const PADDING = 50;
-export const TIMESTAMP_DURATION = 30;
+const PADDING = 100;
 export const NB_SPECTROGRAM = 2;
 export const FREQUENCY_KEY = "frequencies";
 export const NB_POINTS_COLOR_INTERPOLATION = 3;
