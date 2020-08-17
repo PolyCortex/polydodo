@@ -1,10 +1,7 @@
 import _ from "lodash";
 
-const SECONDS_PER_DATUM = 30;
 const PADDING = 50;
-export const FREQUENCY_BINS = 1;
-export const DATUM_PER_TIMESTAMP = 1;
-export const TIMESTAMP_DURATION = SECONDS_PER_DATUM * DATUM_PER_TIMESTAMP;
+export const TIMESTAMP_DURATION = 30;
 export const NB_SPECTROGRAM = 2;
 export const FREQUENCY_KEY = "frequencies";
 
