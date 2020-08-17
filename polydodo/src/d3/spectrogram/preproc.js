@@ -1,29 +1,10 @@
-import * as d3 from "d3";
-import _ from "lodash";
 import {
   TIMESTAMP_DURATION,
   DATUM_PER_TIMESTAMP,
   FREQUENCY_BINS,
 } from "./constants";
 
-export const domainColor = (color, sources) => {
-  const extent = d3.extent(sources, (d) => d.Intensity);
-  color.domain(extent);
-};
-
-export const domainX = (x, data, node) => {
-  x.domain([0, getHoursFromIndex(data[node].length / DATUM_PER_TIMESTAMP)]);
-};
-
-export const domainY = (y, yAxisScale, frequencies) => {
-  y.domain(frequencies);
-  yAxisScale.domain([
-    _.first(frequencies),
-    _.last(frequencies),
-  ]);
-};
-
-export const createSources = (data, node, frequencies) => {
+export const preprocessData = (data, node, frequencies) => {
   const sources = [];
   const nodeData = data[node];
   for (let idx = 0; idx < nodeData.length; idx += DATUM_PER_TIMESTAMP) {
