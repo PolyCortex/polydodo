@@ -9,6 +9,7 @@ import {
   SPECTROGRAM_HEIGHT,
   FREQUENCY_KEY,
   TIMESTAMP_DURATION,
+  TITLE_FONT_SIZE,
 } from "./constants";
 import { createLegend } from "./legend";
 
@@ -95,6 +96,39 @@ const getScalesAndAxes = (data, channel) => {
   return { data: preprocessedData, x, yBand, yColor, color, xAxis, yAxis };
 };
 
+const createAxes = (g, xAxis, yAxis) => {
+  g.append("text")
+    .attr("class", "x axis")
+    .attr("y", SPECTROGRAM_HEIGHT + MARGIN.BOTTOM)
+    .attr("x", DIMENSION.WIDTH / 2)
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Time");
+
+  g.append("text")
+    .attr("class", "y axis")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -MARGIN.LEFT)
+    .attr("x", -SPECTROGRAM_HEIGHT / 2)
+    .attr("dy", "1em")
+    .attr("fill", "currentColor")
+    .style("text-anchor", "middle")
+    .text("Frequency (Hz)");
+
+  g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", `translate(0, ${SPECTROGRAM_HEIGHT})`)
+    .call(xAxis)
+    .selectAll("text")
+    .style("font-size", TITLE_FONT_SIZE);
+
+  g.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .selectAll("text")
+    .style("font-size", TITLE_FONT_SIZE);
+};
+
 const createSpectrogramRectangles = (canvas, scalesAndAxesBySpectrogram) => {
   const context = canvas.node().getContext("2d");
 
@@ -138,44 +172,7 @@ const createSpectrogramAxesAndLegend = (svg, scalesAndAxesBySpectrogram) => {
         legendDrawingGroup,
       } = createDrawingGroups(currentSpectrogramDrawingGroup);
 
-      // Titre axe des X
-      spectrogramDrawingGroup
-        .append("text")
-        .attr("class", "x axis")
-        .attr("y", SPECTROGRAM_HEIGHT + MARGIN.BOTTOM)
-        .attr("x", DIMENSION.WIDTH / 2)
-        .attr("fill", "currentColor")
-        .style("text-anchor", "middle")
-        .text("Time");
-
-      // titre axe des Y
-      spectrogramDrawingGroup
-        .append("text")
-        .attr("class", "y axis")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -MARGIN.LEFT)
-        .attr("x", -SPECTROGRAM_HEIGHT / 2)
-        .attr("dy", "1em")
-        .attr("fill", "currentColor")
-        .style("text-anchor", "middle")
-        .text("Frequency (Hz)");
-
-      // Axes
-      spectrogramDrawingGroup
-        .append("g")
-        .attr("class", "x axis")
-        .attr("transform", `translate(0, ${SPECTROGRAM_HEIGHT})`)
-        .call(xAxis)
-        .selectAll("text")
-        .style("font-size", "18px");
-
-      spectrogramDrawingGroup
-        .append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .selectAll("text")
-        .style("font-size", "18px");
-
+      createAxes(spectrogramDrawingGroup, xAxis, yAxis);
       createLegend(legendDrawingGroup, color, yColor);
     }
   );
