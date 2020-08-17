@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import _ from "lodash";
 import {
   TIMESTAMP_DURATION,
   DATUM_PER_TIMESTAMP,
@@ -16,7 +17,10 @@ export const domainX = (x, data, node) => {
 
 export const domainY = (y, yAxisScale, frequencies) => {
   y.domain(frequencies);
-  yAxisScale.domain([frequencies[0], frequencies[frequencies.length - 1]]);
+  yAxisScale.domain([
+    _.first(frequencies),
+    _.last(frequencies),
+  ]);
 };
 
 export const createSources = (data, node, frequencies) => {
