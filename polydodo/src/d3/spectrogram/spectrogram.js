@@ -38,10 +38,10 @@ const initializeAxes = (x, y) =>
 
 const createDrawingGroups = (g) =>
   Object({
-    spectrogram_drawing_group: g
+    spectrogramDrawingGroup: g
       .append("g")
       .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`),
-    legend_drawing_group: g
+    legendDrawingGroup: g
       .append("g")
       .attr(
         "transform",
@@ -49,13 +49,12 @@ const createDrawingGroups = (g) =>
       ),
   });
 
-const createSpectrogramChart = (g, node, data) => {
+const createSpectrogramChart = (g, channel, data) => {
   const { x, yLinear, yBand, yColor, color } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, yLinear);
-  const {
-    spectrogram_drawing_group,
-    legend_drawing_group,
-  } = createDrawingGroups(g);
+  const { spectrogramDrawingGroup, legendDrawingGroup } = createDrawingGroups(
+    g
+  );
   const tooltip = tip().attr("class", "d3-tip").offset([-10, 0]);
 
   const frequencies = [];
@@ -68,14 +67,15 @@ const createSpectrogramChart = (g, node, data) => {
     frequencies.push(binTotal / FREQUENCY_BINS);
   }
 
-  const sources = createSources(data, node, frequencies);
+  console.log(frequencies);
+  const sources = createSources(data, channel, frequencies);
   domainColor(color, sources);
   domainColor(yColor, sources);
-  domainX(x, data, node);
+  domainX(x, data, channel);
   domainY(yBand, yLinear, frequencies);
 
   //Creating all the parts of the stacked bar chart
-  spectrogram_drawing_group
+  spectrogramDrawingGroup
     .selectAll(".rect")
     .data(sources)
     .enter()
@@ -95,7 +95,7 @@ const createSpectrogramChart = (g, node, data) => {
     });
 
   // Titre axe des X
-  spectrogram_drawing_group
+  spectrogramDrawingGroup
     .append("text")
     .attr("class", "x axis")
     .attr("y", SPECTROGRAM_HEIGHT + MARGIN.BOTTOM)
@@ -105,7 +105,7 @@ const createSpectrogramChart = (g, node, data) => {
     .text("Time");
 
   // titre axe des Y
-  spectrogram_drawing_group
+  spectrogramDrawingGroup
     .append("text")
     .attr("class", "y axis")
     .attr("transform", "rotate(-90)")
@@ -117,7 +117,7 @@ const createSpectrogramChart = (g, node, data) => {
     .text("Frequency (Hz)");
 
   // Axes
-  spectrogram_drawing_group
+  spectrogramDrawingGroup
     .append("g")
     .attr("class", "x axis")
     .attr("transform", `translate(0, ${SPECTROGRAM_HEIGHT})`)
@@ -125,7 +125,7 @@ const createSpectrogramChart = (g, node, data) => {
     .selectAll("text")
     .style("font-size", "18px");
 
-  spectrogram_drawing_group
+  spectrogramDrawingGroup
     .append("g")
     .attr("class", "y axis")
     .call(yAxis)
@@ -135,7 +135,7 @@ const createSpectrogramChart = (g, node, data) => {
   tooltip.html((d) => getToolTipText.call(this, d));
   g.call(tooltip);
 
-  createLegend(legend_drawing_group, color, yColor);
+  createLegend(legendDrawingGroup, color, yColor);
 };
 
 const getToolTipText = (d) => {
