@@ -8,8 +8,8 @@ import {
   SPECTROGRAM_CANVAS_HEIGTH,
   SPECTROGRAM_HEIGHT,
   FREQUENCY_KEY,
+  TIMESTAMP_DURATION,
 } from "./constants";
-import { preprocessData, getHoursFromIndex } from "./preproc";
 import { createLegend } from "./legend";
 
 const initializeScales = () =>
@@ -44,6 +44,25 @@ const setDomainOnScales = (
   yColor.domain(d3.extent(preprocessedData, ({ Intensity }) => Intensity));
 };
 
+const preprocessData = (powerAmplitudesByTimestamp, frequencies) =>
+  _.flatMap(
+    powerAmplitudesByTimestamp,
+    (powerAmplitudeSingleTimestamp, index) =>
+      _.map(
+        _.zip(powerAmplitudeSingleTimestamp, frequencies),
+        ([intensity, frequency]) =>
+          Object({
+            Intensity: intensity,
+            Frequency: frequency,
+            Timestamp: getHoursFromIndex(index),
+          })
+      )
+  );
+
+const getHoursFromIndex = (idx) => {
+  return (idx * TIMESTAMP_DURATION) / 60.0 / 60;
+};
+
 const createDrawingGroups = (g) =>
   Object({
     spectrogramDrawingGroup: g
@@ -60,7 +79,7 @@ const createDrawingGroups = (g) =>
 const getScalesAndAxes = (data, channel) => {
   const { x, yLinear, yBand, yColor, color } = initializeScales();
   const { xAxis, yAxis } = initializeAxes(x, yLinear);
-  const preprocessedData = preprocessData(data, channel, data.frequencies);
+  const preprocessedData = preprocessData(data[channel], data.frequencies);
 
   setDomainOnScales(
     data[channel],
