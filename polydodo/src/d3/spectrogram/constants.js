@@ -4,10 +4,12 @@ const PADDING = 50;
 export const TIMESTAMP_DURATION = 30;
 export const NB_SPECTROGRAM = 2;
 export const FREQUENCY_KEY = "frequencies";
+export const NB_POINTS_COLOR_INTERPOLATION = 3;
+export const TITLE_FONT_SIZE = "18px";
 
 export const MARGIN = {
   TOP: 50,
-  RIGHT: 200,
+  RIGHT: 120,
   BOTTOM: 50,
   LEFT: 70,
 };

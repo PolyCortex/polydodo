@@ -1,53 +1,52 @@
 import * as d3 from "d3";
-import { MARGIN, SPECTROGRAM_HEIGHT } from "./constants";
+import _ from "lodash";
+import {
+  MARGIN,
+  SPECTROGRAM_HEIGHT,
+  NB_POINTS_COLOR_INTERPOLATION,
+  TITLE_FONT_SIZE,
+} from "./constants";
 
 export const createLegend = (svg, color, y) => {
   const interpolate = d3.interpolate(color.domain()[0], color.domain()[1]);
 
-  const colors = [];
-  const totalPoints = 3;
-  for (let index = 0; index <= totalPoints; index++) {
-    const interpolateIndex = index / totalPoints;
-    const scaleIndex = interpolate(interpolateIndex);
-    colors.push(color(scaleIndex));
-  }
+  const colors = _.map(_.range(NB_POINTS_COLOR_INTERPOLATION + 1), (x) =>
+    color(interpolate(x / NB_POINTS_COLOR_INTERPOLATION))
+  );
 
   const svgDefs = svg.append("defs");
+  const GRADIENT_ID = "mainGradient";
 
-  const mainGradient = svgDefs
+  svgDefs
     .append("linearGradient")
-    .attr("id", "mainGradient")
+    .attr("id", GRADIENT_ID)
     .attr("x1", "0%")
     .attr("x2", "0%")
     .attr("y1", "100%")
-    .attr("y2", "0%");
-
-  mainGradient
+    .attr("y2", "0%")
     .selectAll("stop")
     .data(colors)
     .enter()
     .append("stop")
     .attr("stop-color", (d) => d)
-    .attr("offset", (d, i) => i / (colors.length - 1));
+    .attr("offset", (_, i) => i / (colors.length - 1));
 
   svg
     .append("rect")
-    .attr("fill", "url(#mainGradient)")
-    .attr("x", MARGIN.RIGHT / 4)
+    .attr("fill", `url(#${GRADIENT_ID})`)
+    .attr("x", MARGIN.RIGHT / 10)
     .attr("y", 0)
-    .attr("width", MARGIN.RIGHT / 4)
+    .attr("width", MARGIN.RIGHT / 6)
     .attr("height", SPECTROGRAM_HEIGHT);
 
   const yAxis = d3.axisRight(y).ticks(5, "s");
   svg
     .append("g")
     .attr("class", "y axis")
-    .attr("transform", "translate(" + MARGIN.RIGHT / 2 + ",0)")
+    .attr("transform", `translate(${MARGIN.RIGHT / 3.7},0)`)
     .call(yAxis)
-    .selectAll("text")
-    .style("font-size", "18px");
+    .selectAll("text");
 
-  // Titre axe des Y
   svg
     .append("text")
     .attr("class", "y axis")
@@ -57,5 +56,6 @@ export const createLegend = (svg, color, y) => {
     .attr("dy", "1em")
     .attr("fill", "currentColor")
     .style("text-anchor", "middle")
-    .text("Puissance");
+    .style("font-size", TITLE_FONT_SIZE)
+    .text("Power (uV²/Hz)");
 };
