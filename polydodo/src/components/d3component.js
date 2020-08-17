@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Spinner, Row, Col } from "reactstrap";
 
-const D3Component = React.memo(({ callback, data }) => {
+const D3Component = React.memo(({ callback, data, useDiv = false }) => {
   if (data === null)
     return (
       <Row>
@@ -15,7 +15,7 @@ const D3Component = React.memo(({ callback, data }) => {
   useEffect(() => {
     callback(ref.current, data);
   });
-  return <svg ref={ref} />;
+  return useDiv ? <div ref={ref} /> : <svg ref={ref} />;
 });
 
 D3Component.propTypes = {

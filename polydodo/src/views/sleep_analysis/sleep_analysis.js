@@ -139,7 +139,11 @@ const SleepAnalysis = () => {
           </a>
           that decomposes sound frequency from your microphone.
         </p>
-        <D3Component callback={createSpectrogram} data={spectrogramData} />
+        <D3Component
+          callback={createSpectrogram}
+          data={spectrogramData}
+          useDiv
+        />
         <p className="mt-5">
           Generally, when talking about brain waves, we group certain
           frequencies together into bands. There are overall five frequency
