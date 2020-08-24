@@ -1,10 +1,10 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 const PADDING = 100;
 export const NB_SPECTROGRAM = 2;
-export const FREQUENCY_KEY = "frequencies";
+export const FREQUENCY_KEY = 'frequencies';
 export const NB_POINTS_COLOR_INTERPOLATION = 3;
-export const TITLE_FONT_SIZE = "18px";
+export const TITLE_FONT_SIZE = '18px';
 
 export const MARGIN = {
   TOP: 50,
@@ -29,6 +29,4 @@ export const SPECTROGRAM_CANVAS_HEIGTH = _.range(NB_SPECTROGRAM).map((x) => {
   }
   return height;
 });
-export const SPECTROGRAM_HEIGHT =
-  (CANVAS_DIMENSION.HEIGHT - MARGIN.BOTTOM - MARGIN.TOP - PADDING) /
-  NB_SPECTROGRAM;
+export const SPECTROGRAM_HEIGHT = (CANVAS_DIMENSION.HEIGHT - MARGIN.BOTTOM - MARGIN.TOP - PADDING) / NB_SPECTROGRAM;

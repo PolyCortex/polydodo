@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Container, Card, CardBody } from "reactstrap";
+import React, { useState } from 'react';
+import { Container, Card, CardBody } from 'reactstrap';
 
-import hypnogramCSVPath from "assets/data/hypnogram.csv";
+import hypnogramCSVPath from 'assets/data/hypnogram.csv';
 
-import D3Component from "../../components/d3component";
-import WaypointDirection from "../../components/waypoint_direction";
+import D3Component from '../../components/d3component';
+import WaypointDirection from '../../components/waypoint_direction';
 
 import createEvolvingChart, {
   instanceChartCallbacks,
   timelineChartCallbacks,
   barChartCallbacks,
   stackedBarChartCallbacks,
-} from "../../d3/evolving_chart/evolving_chart";
-import { useCSVData } from "../../hooks/api_hooks";
+} from '../../d3/evolving_chart/evolving_chart';
+import { useCSVData } from '../../hooks/api_hooks';
 
 const StackedBarChartScrollyTelling = () => {
   const csvData = useCSVData(hypnogramCSVPath);
@@ -26,7 +26,7 @@ const StackedBarChartScrollyTelling = () => {
 
   return (
     <Container>
-      <div style={{ position: "sticky", top: "10%" }}>
+      <div style={{ position: 'sticky', top: '10%' }}>
         <D3Component callback={createEvolvingChartCallback} data={csvData} />
       </div>
       <div style={{ marginBottom: '50%' }} />
@@ -42,15 +42,10 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: "125%" }} />
-      {isInitialized && (
-        <WaypointDirection
-          onDown={instanceChartCallbacks.fromTimeline}
-          onUp={timelineChartCallbacks.fromInstance}
-        />
-      )}
-      <div style={{ marginBottom: "125%" }} />
-      <Card className="shadow" style={{ position: "relative" }}>
+      <div style={{ marginBottom: '125%' }} />
+      {isInitialized && <WaypointDirection onDown={instanceChartCallbacks.fromTimeline} onUp={timelineChartCallbacks.fromInstance} />}
+      <div style={{ marginBottom: '125%' }} />
+      <Card className="shadow" style={{ position: 'relative' }}>
         <CardBody>
           <p>Wake stage is of course the stage we want to minimize when in bed. It can be decomposed into two parts:</p>
           <ul>
@@ -86,15 +81,10 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: "125%" }} />
-      {isInitialized && (
-        <WaypointDirection
-          onDown={barChartCallbacks.fromInstance}
-          onUp={instanceChartCallbacks.fromBarChart}
-        />
-      )}
-      <div style={{ marginBottom: "125%" }} />
-      <Card className="shadow" style={{ position: "relative" }}>
+      <div style={{ marginBottom: '125%' }} />
+      {isInitialized && <WaypointDirection onDown={barChartCallbacks.fromInstance} onUp={instanceChartCallbacks.fromBarChart} />}
+      <div style={{ marginBottom: '125%' }} />
+      <Card className="shadow" style={{ position: 'relative' }}>
         <CardBody>
           <p>
             From here, we can look at your sleep efficiency, which is the proportion of time spent asleep over the overall time spent in bed. In your
@@ -121,15 +111,10 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: "125%" }} />
-      {isInitialized && (
-        <WaypointDirection
-          onDown={stackedBarChartCallbacks.fromBarChart}
-          onUp={barChartCallbacks.fromStackedBarChart}
-        />
-      )}
-      <div style={{ marginBottom: "125%" }} />
-      <Card className="shadow" style={{ position: "relative" }}>
+      <div style={{ marginBottom: '125%' }} />
+      {isInitialized && <WaypointDirection onDown={stackedBarChartCallbacks.fromBarChart} onUp={barChartCallbacks.fromStackedBarChart} />}
+      <div style={{ marginBottom: '125%' }} />
+      <Card className="shadow" style={{ position: 'relative' }}>
         <CardBody>
           <p>
             As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in N3. The remaining 25% is REM
@@ -137,11 +122,11 @@ const StackedBarChartScrollyTelling = () => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: "125%" }} />
+      <div style={{ marginBottom: '125%' }} />
       {/* <WaypointDirection onDown={} /> */}
-      <div style={{ marginBottom: "125%" }} />
+      <div style={{ marginBottom: '125%' }} />
       {/* <WaypointDirection onDown={} /> */}
-      <div style={{ marginBottom: "125%" }} />
+      <div style={{ marginBottom: '125%' }} />
       &nbsp;
     </Container>
   );

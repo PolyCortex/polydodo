@@ -1,7 +1,7 @@
-import _ from "lodash";
+import _ from 'lodash';
 
-import { convertTimestampsToDates } from "../utils";
-import { STAGES_ORDERED, EPOCH_DURATION_SEC } from "../constants";
+import { convertTimestampsToDates } from '../utils';
+import { STAGES_ORDERED, EPOCH_DURATION_SEC } from '../constants';
 
 export const preprocessData = (data) => {
   data = convertTimestampsToDates(data);
@@ -24,8 +24,7 @@ const convertEpochsToAnnotations = (data) => {
   let currentSleepStage = data[0].sleepStage;
   let currentAnnotationEpochCount = 0;
 
-  const isNextAnnotation = (sleepStage, index) =>
-    sleepStage !== currentSleepStage || index === data.length - 1;
+  const isNextAnnotation = (sleepStage, index) => sleepStage !== currentSleepStage || index === data.length - 1;
 
   const saveCurrentAnnotation = (timestamp) => {
     annotations.push({
@@ -53,10 +52,7 @@ const convertEpochsToAnnotations = (data) => {
 
 const getStageTimeProportions = (data) => {
   const nbEpochPerSleepStage = _.countBy(data.map((x) => x.sleepStage));
-  const proportionPerSleepStage = _.mapValues(
-    nbEpochPerSleepStage,
-    (countPerStage) => countPerStage / data.length
-  );
+  const proportionPerSleepStage = _.mapValues(nbEpochPerSleepStage, (countPerStage) => countPerStage / data.length);
 
   return proportionPerSleepStage;
 };
@@ -69,5 +65,5 @@ const findFirstStageIndex = (annotations) =>
         ...firstStageIndexes,
         [stage]: annotations.findIndex((element) => element.stage === stage),
       }),
-    {}
+    {},
   );
