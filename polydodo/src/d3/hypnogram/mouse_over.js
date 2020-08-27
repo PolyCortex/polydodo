@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { DIMENSION, MARGIN } from './constants';
 
 const getHoveredData = (data, x, mouse, bisectTime) => {
   const timestamps = data[0].values.map((x) => x.timestamp);
@@ -12,17 +13,17 @@ const getHoveredData = (data, x, mouse, bisectTime) => {
   });
 };
 
-export const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
-  const { width, height } = dimensions;
+const createMouseOver = (g, x, y, data, color) => {
+  const { WIDTH, HEIGHT } = DIMENSION;
   const bisectTime = d3.bisector((d) => d).left; // https://github.com/d3/d3-array#bisector_left
 
   // Act as a child of `g` to make sure mouse events are received from the whole chart (not only the lines)
-  g.append('rect').attr('width', width).attr('height', height).attr('opacity', 0);
+  g.append('rect').attr('width', WIDTH).attr('height', HEIGHT).attr('opacity', 0);
 
   const lineHover = g
     .append('line')
     .attr('class', 'lineHover')
-    .attr('y1', height)
+    .attr('y1', HEIGHT)
     .attr('y2', 0)
     .attr('stroke-width', 1)
     .style('stroke', '#999')
@@ -72,20 +73,20 @@ export const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
 
     dateHover
       .text(d3.timeFormat('%H:%M:%S')(timestamp))
-      .attr('transform', `translate(${x(timestamp)},${height + margin.bottom - 10})`)
+      .attr('transform', `translate(${x(timestamp)},${HEIGHT + MARGIN.BOTTOM - 10})`)
       .style('opacity', 1);
 
     circleHover
-      .attr('cy', (x) => y(x.currentValue.sleep_stage))
+      .attr('cy', (x) => y(x.currentValue.sleepStage))
       .attr('cx', x(timestamp))
       .style('opacity', 1);
 
     textHover
-      .attr('transform', `translate(${x(timestamp)},${(5 / 6) * height})`)
-      .text((x) => `${x.name}: ${x.currentValue.sleep_stage}`)
+      .attr('transform', `translate(${x(timestamp)},${(5 / 6) * HEIGHT})`)
+      .text((x) => `${x.name}: ${x.currentValue.sleepStage}`)
       .style('opacity', 1);
 
-    x(timestamp) > (4 / 5) * width ? textHover.attr('text-anchor', 'end').attr('dx', -10) : textHover.attr('text-anchor', 'start').attr('dx', 10);
+    x(timestamp) > (4 / 5) * WIDTH ? textHover.attr('text-anchor', 'end').attr('dx', -10) : textHover.attr('text-anchor', 'start').attr('dx', 10);
   };
 
   const mouseLeave = () => {
@@ -97,3 +98,5 @@ export const createMouseOver = (g, x, y, data, margin, dimensions, color) => {
 
   g.on('mousemove', mouseMove).on('mouseleave', mouseLeave);
 };
+
+export default createMouseOver;

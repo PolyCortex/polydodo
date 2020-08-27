@@ -13,8 +13,14 @@ import { createSingleHypnogram } from '../../d3/hypnogram/hypnogram';
 import text from './text.json';
 import createSpectrogram from '../../d3/spectrogram/spectrogram';
 import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
+import { useCSVData } from '../../hooks/api_hooks';
+
+import hypnogramDataSleepEDFPath from 'assets/data/hypnogram.csv';
+import spectrogramData from 'assets/data/spectrograms.json';
 
 const SleepAnalysis = () => {
+  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
+
   return (
     <div>
       <Navbar />
@@ -46,6 +52,7 @@ const SleepAnalysis = () => {
             tea and decaffeinated coffee are unexpected sources of caffeine.
           </li>
           <li>Routine: going to sleep about at the same time, in a darkened and quiet environment.</li>
+          <li>Routine: going to sleep about at the same time, in a darkened and quiet environment.</li>
         </ul>
         <p>
           Although we’ve looked at many aspects of your night’s sleep, we haven’t properly looked at your sleep dynamics, whereas how your sleep
@@ -61,7 +68,7 @@ const SleepAnalysis = () => {
           typically range from four to six, each one lasting from 90 to 110 minutes. Another commonly looked at measurement is the time between sleep
           onset and the first REM epoch, namely REM latency, which corresponds to 20 minutes.
         </p>
-        <D3Component callback={createSingleHypnogram} />
+        <D3Component callback={createSingleHypnogram} data={csvDataSleepEDF ? [csvDataSleepEDF] : null} />
         <p>
           Sleep cycles take place in a broader process, named the circadian rhythm. It is the one that regulates our wake and sleep cycles over a 24
           hours period.
@@ -96,7 +103,7 @@ const SleepAnalysis = () => {
           </a>
           that decomposes sound frequency from your microphone.
         </p>
-        <D3Component callback={createSpectrogram} />
+        <D3Component callback={createSpectrogram} data={spectrogramData} useDiv />
         <p className="mt-5">
           Generally, when talking about brain waves, we group certain frequencies together into bands. There are overall five frequency bands, where
           each has a general associated behaviour, or state of mind. We will cover those when looking at time frames corresponding to each sleep

@@ -9,36 +9,47 @@ import D3Component from '../../components/d3component';
 
 import text from './text.json';
 import { createComparativeHypnogram } from 'd3/hypnogram/hypnogram';
+import { useCSVData } from '../../hooks/api_hooks';
 
-const ClassificationReport = ({ rows }) => {
-  return (
-    <Table size="sm" responsive>
-      <thead>
-        <tr>
-          <th></th>
-          <th>Precision (%)</th>
-          <th>Recall (%)</th>
-          <th>F1-Score (%)</th>
-          <th>Support</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, i) => {
-          return (
-            <tr key={i}>
-              <th>{row[0]}</th>
-              {row.slice(1).map((el, j) => (
-                <td key={j}>{el}</td>
-              ))}
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
-  );
-};
+import hypnogramDataSleepEDF from 'assets/data/hypnogram.csv';
+import hypnogramDataPredicted from 'assets/data/hypnogram-predicted.csv';
+import hypnogramDataElectrophysiologist from 'assets/data/hypnogram-electrophysiologist.csv';
+import hypnogramDataOpenBCIElectrophysiologist from 'assets/data/hypnogram-openbci-electrophysiologist.csv';
+import hypnogramDataPredictedOpenBCI from 'assets/data/hypnogram-openbci-predicted.csv';
+
+const ClassificationReport = ({ rows }) => (
+  <Table size="sm" responsive>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Precision (%)</th>
+        <th>Recall (%)</th>
+        <th>F1-Score (%)</th>
+        <th>Support</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row, i) => {
+        return (
+          <tr key={i}>
+            <th>{row[0]}</th>
+            {row.slice(1).map((el, j) => (
+              <td key={j}>{el}</td>
+            ))}
+          </tr>
+        );
+      })}
+    </tbody>
+  </Table>
+);
 
 const Performance = () => {
+  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDF);
+  const csvDataPredicted = useCSVData(hypnogramDataPredicted);
+  const csvDataElectrophysiologist = useCSVData(hypnogramDataElectrophysiologist);
+  const csvDataOpenBCIElectrophysiologist = useCSVData(hypnogramDataOpenBCIElectrophysiologist);
+  const csvDataPredictedOpenBCI = useCSVData(hypnogramDataPredictedOpenBCI);
+
   return (
     <div>
       <Navbar />
@@ -78,7 +89,10 @@ const Performance = () => {
           </li>
         </ul>
         <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
-        <D3Component callback={(svg) => createComparativeHypnogram(svg, ['Classifier', 'Sleep-EDF'])} />
+        <D3Component
+          callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
+          data={csvDataPredicted && csvDataSleepEDF ? [csvDataPredicted, csvDataSleepEDF] : null}
+        />
         <ClassificationReport
           rows={[
             ['W', 92, 93, 92, 242],
@@ -90,7 +104,10 @@ const Performance = () => {
           ]}
         />
         <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist</h3>
-        <D3Component callback={(svg) => createComparativeHypnogram(svg, ['Classifier', 'Electrophysiologist'])} />
+        <D3Component
+          callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Electrophysiologist'])}
+          data={csvDataPredictedOpenBCI && csvDataOpenBCIElectrophysiologist ? [csvDataPredictedOpenBCI, csvDataOpenBCIElectrophysiologist] : null}
+        />
         <ClassificationReport
           rows={[
             ['W', 85, 93, 92, 304],
@@ -102,7 +119,10 @@ const Performance = () => {
           ]}
         />
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement</h3>
-        <D3Component callback={(svg) => createComparativeHypnogram(svg, ['Electrophysiologist', 'Sleep-EDF'])} />
+        <D3Component
+          callback={(svg, data) => createComparativeHypnogram(svg, data, ['Electrophysiologist', 'Sleep-EDF'])}
+          data={csvDataElectrophysiologist && csvDataSleepEDF ? [csvDataElectrophysiologist, csvDataSleepEDF] : null}
+        />
         <ClassificationReport
           rows={[
             ['W', 92, 93, 92, 304],
