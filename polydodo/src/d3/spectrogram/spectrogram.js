@@ -1,7 +1,15 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
 
-import { MARGIN, CANVAS_WIDTH_TO_HEIGHT_RATIO, FREQUENCY_KEY, TITLE_FONT_SIZE, NB_SPECTROGRAM, PADDING } from './constants';
+import {
+  MARGIN,
+  CANVAS_WIDTH_TO_HEIGHT_RATIO,
+  FREQUENCY_KEY,
+  TITLE_FONT_SIZE,
+  NB_SPECTROGRAM,
+  PADDING,
+  CANVAS_HEIGHT_WINDOW_FACTOR,
+} from './constants';
 import { EPOCH_DURATION_SEC } from '../constants';
 import { createLegend } from './legend';
 
@@ -155,7 +163,7 @@ const createSpectrogram = (containerNode, data) => {
   */
   const parentDiv = d3.select(containerNode);
   const canvasWidth = parentDiv.node().getBoundingClientRect().width;
-  const canvasHeight = Math.min(canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO, window.innerHeight * 0.6);
+  const canvasHeight = Math.min(canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO, window.innerHeight * CANVAS_HEIGHT_WINDOW_FACTOR);
   const dimensions = {
     canvasWidth: canvasWidth,
     canvasHeight: canvasHeight,
