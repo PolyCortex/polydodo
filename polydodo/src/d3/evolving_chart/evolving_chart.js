@@ -48,7 +48,7 @@ const createDrawingGroup = (svg) => svg.append('g').attr('transform', `translate
 const bindAnnotationsToRects = (g, annotations) => g.selectAll('.rect').data(annotations).enter().append('rect').attr('class', 'rect-stacked');
 
 const createEvolvingChart = (containerNode, data) => {
-  const svg = d3.select(containerNode).attr('width', CANVAS_DIMENSION.WIDTH).attr('height', CANVAS_DIMENSION.HEIGHT);
+  const svg = d3.select(containerNode).attr('viewBox', `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
   const { xTime, xLinear, y, colors } = initializeScales();
   const { xTimeAxis, xLinearAxis, yAxis } = initializeAxes(xTime, xLinear, y);
   const g = createDrawingGroup(svg);

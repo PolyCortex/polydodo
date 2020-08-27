@@ -40,7 +40,7 @@ const setDomainOnScales = (x, y, colors, data) => {
 };
 
 const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, comparativeColors) => {
-  const svg = d3.select(containerNode).attr('width', CANVAS_DIMENSION.WIDTH).attr('height', CANVAS_DIMENSION.HEIGHT);
+  const svg = d3.select(containerNode).attr('viewBox', `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
   const { x, y, colors } = initializeScales(comparativeColors);
   const { xAxis, yAxis } = initializeAxes(x, y);
   const g = createDrawingGroup(svg);
