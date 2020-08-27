@@ -62,8 +62,7 @@ const bindAnnotationsToRects = (g, annotations) =>
 const createEvolvingChart = (containerNode, data) => {
   const svg = d3
     .select(containerNode)
-    .attr("width", CANVAS_DIMENSION.WIDTH)
-    .attr("height", CANVAS_DIMENSION.HEIGHT);
+    .attr("viewBox", `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
   const { xTime, xLinear, y, colors } = initializeScales();
   const { xTimeAxis, xLinearAxis, yAxis } = initializeAxes(xTime, xLinear, y);
   const g = createDrawingGroup(svg);

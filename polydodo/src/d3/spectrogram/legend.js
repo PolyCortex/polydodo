@@ -2,12 +2,11 @@ import * as d3 from "d3";
 import _ from "lodash";
 import {
   MARGIN,
-  SPECTROGRAM_HEIGHT,
   NB_POINTS_COLOR_INTERPOLATION,
   TITLE_FONT_SIZE,
 } from "./constants";
 
-export const createLegend = (svg, color, y) => {
+export const createLegend = (svg, color, y, spectrogramHeight) => {
   const interpolate = d3.interpolate(color.domain()[0], color.domain()[1]);
 
   const colors = _.map(_.range(NB_POINTS_COLOR_INTERPOLATION + 1), (x) =>
@@ -30,14 +29,13 @@ export const createLegend = (svg, color, y) => {
     .append("stop")
     .attr("stop-color", (d) => d)
     .attr("offset", (_, i) => i / (colors.length - 1));
-
   svg
     .append("rect")
     .attr("fill", `url(#${GRADIENT_ID})`)
     .attr("x", MARGIN.RIGHT / 10)
     .attr("y", 0)
     .attr("width", MARGIN.RIGHT / 6)
-    .attr("height", SPECTROGRAM_HEIGHT);
+    .attr("height", spectrogramHeight);
 
   const yAxis = d3.axisRight(y).ticks(5, "s");
   svg
@@ -52,7 +50,7 @@ export const createLegend = (svg, color, y) => {
     .attr("class", "y axis")
     .attr("transform", "rotate(90)")
     .attr("y", -MARGIN.RIGHT)
-    .attr("x", SPECTROGRAM_HEIGHT / 2)
+    .attr("x", spectrogramHeight / 2)
     .attr("dy", "1em")
     .attr("fill", "currentColor")
     .style("text-anchor", "middle")
