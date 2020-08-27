@@ -1,33 +1,37 @@
-import * as d3 from "d3";
-import _ from "lodash";
+import * as d3 from 'd3';
+import _ from 'lodash';
 
-import createHypnogramChart from "./line_charts";
-import {
-  DIMENSION,
-  MARGIN,
-  COMPARATIVE_COLORS,
-  CANVAS_DIMENSION,
-} from "./constants";
-import { STAGES_ORDERED } from "../constants";
-import { convertTimestampsToDates } from "../utils";
+import createHypnogramChart from './line_charts';
+import { DIMENSION, MARGIN, COMPARATIVE_COLORS, CANVAS_DIMENSION } from './constants';
+import { STAGES_ORDERED } from '../constants';
+import { convertTimestampsToDates } from '../utils';
 
 const initializeScales = (comparativeColors) =>
   Object({
     x: d3.scaleTime([0, DIMENSION.WIDTH]),
-    y: d3.scaleOrdinal(
-      _.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)
-    ),
+    y: d3.scaleOrdinal(_.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)),
+    colors: d3.scaleOrdinal(comparativeColors),
+  });
+
+import createHypnogramChart from './line_charts';
+import { DIMENSION, MARGIN, COMPARATIVE_COLORS, CANVAS_DIMENSION } from './constants';
+import { STAGES_ORDERED } from '../constants';
+import { convertTimestampsToDates } from '../utils';
+
+const initializeScales = (comparativeColors) =>
+  Object({
+    x: d3.scaleTime([0, DIMENSION.WIDTH]),
+    y: d3.scaleOrdinal(_.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)),
     colors: d3.scaleOrdinal(comparativeColors),
   });
 
 const initializeAxes = (x, y) =>
   Object({
-    xAxis: d3.axisBottom(x).tickFormat(d3.timeFormat("%H:%M")),
+    xAxis: d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')),
     yAxis: d3.axisLeft(y),
   });
 
-const createDrawingGroup = (svg) =>
-  svg.append("g").attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
+const createDrawingGroup = (svg) => svg.append('g').attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
 const preprocessData = (data, hypnogramNames) => {
   data = data.map((hypno) => convertTimestampsToDates(hypno));
@@ -36,7 +40,7 @@ const preprocessData = (data, hypnogramNames) => {
     Object({
       name: x[1],
       values: x[0],
-    })
+    }),
   );
 };
 
@@ -47,56 +51,27 @@ const setDomainOnScales = (x, y, colors, data) => {
   colors.domain(data.map((x) => x.name));
 };
 
-const createHypnogram = (
-  containerNode,
-  data,
-  chartTitle,
-  hypnogramNames,
-  comparativeColors
-) => {
-  const svg = d3
-    .select(containerNode)
-    .attr("viewBox", `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
+const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, comparativeColors) => {
+  const svg = d3.select(containerNode).attr('viewBox', `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
   const { x, y, colors } = initializeScales(comparativeColors);
   const { xAxis, yAxis } = initializeAxes(x, y);
   const g = createDrawingGroup(svg);
 
   data = preprocessData(data, hypnogramNames);
   setDomainOnScales(x, y, colors, data);
-  createHypnogramChart(
-    g,
-    data,
-    x,
-    y,
-    xAxis,
-    yAxis,
-    colors,
-    chartTitle,
-    hypnogramNames,
-    comparativeColors
-  );
+  createHypnogramChart(g, data, x, y, xAxis, yAxis, colors, chartTitle, hypnogramNames, comparativeColors);
 };
 
 export const createSingleHypnogram = (containerNode, data) => {
-  createHypnogram(
-    containerNode,
-    data,
-    "Hypnogram",
-    ["Classifier"],
-    [COMPARATIVE_COLORS.Classifier]
-  );
+  createHypnogram(containerNode, data, 'Hypnogram', ['Classifier'], [COMPARATIVE_COLORS.Classifier]);
 };
 
-export const createComparativeHypnogram = (
-  containerNode,
-  data,
-  hypnogramNames
-) => {
+export const createComparativeHypnogram = (containerNode, data, hypnogramNames) => {
   createHypnogram(
     containerNode,
     data,
     `Agreement between ${hypnogramNames[0]} and ${hypnogramNames[1]}`,
     hypnogramNames,
-    hypnogramNames.map((x) => COMPARATIVE_COLORS[x])
+    hypnogramNames.map((x) => COMPARATIVE_COLORS[x]),
   );
 };

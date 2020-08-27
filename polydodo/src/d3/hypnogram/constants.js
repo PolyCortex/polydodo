@@ -13,7 +13,7 @@ export const DIMENSION = {
   HEIGHT: CANVAS_DIMENSION.HEIGHT - MARGIN.TOP - MARGIN.BOTTOM,
 };
 export const COMPARATIVE_COLORS = {
-  Classifier: "#efce31",
-  "Sleep-EDF": "#006aff",
-  Electrophysiologist: "#ff7575",
+  Classifier: '#efce31',
+  'Sleep-EDF': '#006aff',
+  Electrophysiologist: '#ff7575',
 };

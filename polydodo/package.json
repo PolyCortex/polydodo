@@ -11,10 +11,8 @@
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
-    "compile-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
-    "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
-    "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true"
+    "format": "yarn prettier --config ../.vscode/.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\"",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -26,7 +24,8 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "bootstrap": "4.3.1",
+    "argon-design-system-react": "^1.1.0",
+    "bootstrap": "^4.5.0",
     "classnames": "2.2.6",
     "d3": "^5.16.0",
     "d3-tip": "^0.9.1",
@@ -53,6 +52,7 @@
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "jquery": "3.4.1",
+    "prettier": "^2.0.5",
     "typescript": "3.7.5"
   }
 }

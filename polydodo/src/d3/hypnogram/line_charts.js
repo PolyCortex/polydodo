@@ -1,33 +1,22 @@
-import * as d3 from "d3";
-import _ from "lodash";
+import * as d3 from 'd3';
+import _ from 'lodash';
 
-import createMouseOver from "./mouse_over";
-import { DIMENSION, MARGIN } from "./constants";
+import createMouseOver from './mouse_over';
+import { DIMENSION, MARGIN } from './constants';
 
-const createHypnogramChart = (
-  g,
-  data,
-  x,
-  y,
-  xAxis,
-  yAxis,
-  color,
-  chartTitle,
-  hypnogramNames,
-  comparativeColors
-) => {
+const createHypnogramChart = (g, data, x, y, xAxis, yAxis, color, chartTitle, hypnogramNames, comparativeColors) => {
   const line = createLine(x, y);
-  const g_chart = g.append("g").attr("class", "hypnogram-lines");
+  const g_chart = g.append('g').attr('class', 'hypnogram-lines');
   g_chart
     .selectAll()
     .data(data)
     .enter()
-    .append("path")
-    .attr("class", "line")
-    .attr("fill", "none")
-    .attr("d", (x) => line(x.values))
-    .attr("stroke", (x) => color(x.name))
-    .attr("stroke-width", 2);
+    .append('path')
+    .attr('class', 'line')
+    .attr('fill', 'none')
+    .attr('d', (x) => line(x.values))
+    .attr('stroke', (x) => color(x.name))
+    .attr('stroke-width', 2);
 
   createMouseOver(g_chart, x, y, data, color);
   createAxes(g, xAxis, yAxis);
@@ -45,34 +34,31 @@ const createLine = (x, y) =>
 const createAxes = (g, xAxis, yAxis) => {
   const { HEIGHT, WIDTH } = DIMENSION;
 
-  g.append("g")
-    .attr("class", "x axis")
-    .attr("transform", `translate(0,${HEIGHT})`)
-    .call(xAxis);
+  g.append('g').attr('class', 'x axis').attr('transform', `translate(0,${HEIGHT})`).call(xAxis);
 
-  g.append("g").attr("class", "y axis").call(yAxis);
+  g.append('g').attr('class', 'y axis').call(yAxis);
 
-  g.append("text")
-    .text("Time")
-    .attr("text-anchor", "end")
-    .attr("x", WIDTH)
-    .attr("y", HEIGHT + (2 / 3) * MARGIN.BOTTOM);
+  g.append('text')
+    .text('Time')
+    .attr('text-anchor', 'end')
+    .attr('x', WIDTH)
+    .attr('y', HEIGHT + (2 / 3) * MARGIN.BOTTOM);
 
-  g.append("text")
-    .text("Sleep stage")
-    .attr("text-anchor", "middle")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -HEIGHT / 2)
-    .attr("y", -(2 / 3) * MARGIN.LEFT);
+  g.append('text')
+    .text('Sleep stage')
+    .attr('text-anchor', 'middle')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -HEIGHT / 2)
+    .attr('y', -(2 / 3) * MARGIN.LEFT);
 };
 
 const createTitle = (g, title) => {
-  g.append("text")
+  g.append('text')
     .text(title)
-    .attr("class", "chart-title")
-    .attr("text-anchor", "middle")
-    .attr("y", -(3 / 4) * MARGIN.TOP)
-    .attr("x", (1 / 2) * DIMENSION.WIDTH);
+    .attr('class', 'chart-title')
+    .attr('text-anchor', 'middle')
+    .attr('y', -(3 / 4) * MARGIN.TOP)
+    .attr('x', (1 / 2) * DIMENSION.WIDTH);
 };
 
 const createLegend = (g, hypnogramNames, comparativeColors) => {
@@ -83,29 +69,29 @@ const createLegend = (g, hypnogramNames, comparativeColors) => {
     };
   });
 
-  g.selectAll(".rect.legend")
+  g.selectAll('.rect.legend')
     .data(legendData)
     .enter()
-    .append("rect")
-    .attr("class", "legend")
-    .attr("stroke-width", 1)
-    .attr("fill", (x) => x.color)
-    .attr("width", "1em")
-    .attr("height", "1em")
-    .attr("y", -(1 / 2) * MARGIN.TOP)
-    .attr("x", (_, i) => `${i * 8}em`);
+    .append('rect')
+    .attr('class', 'legend')
+    .attr('stroke-width', 1)
+    .attr('fill', (x) => x.color)
+    .attr('width', '1em')
+    .attr('height', '1em')
+    .attr('y', -(1 / 2) * MARGIN.TOP)
+    .attr('x', (_, i) => `${i * 8}em`);
 
-  g.selectAll(".text.legend")
+  g.selectAll('.text.legend')
     .data(legendData)
     .enter()
-    .append("text")
-    .attr("class", "legend")
+    .append('text')
+    .attr('class', 'legend')
     .text((x) => x.name)
-    .attr("font-size", 12)
-    .attr("dominant-baseline", "hanging")
-    .attr("y", -(1 / 2) * MARGIN.TOP)
-    .attr("dy", 0.25 + "em")
-    .attr("x", (_, i) => `${1.5 + i * 11}em`);
+    .attr('font-size', 12)
+    .attr('dominant-baseline', 'hanging')
+    .attr('y', -(1 / 2) * MARGIN.TOP)
+    .attr('dy', 0.25 + 'em')
+    .attr('x', (_, i) => `${1.5 + i * 11}em`);
 };
 
 export default createHypnogramChart;

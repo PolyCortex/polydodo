@@ -1,4 +1,4 @@
-import { STAGES_ORDERED } from "../constants";
+import { STAGES_ORDERED } from '../constants';
 
 export const CANVAS_DIMENSION = {
   WIDTH: 1000,
