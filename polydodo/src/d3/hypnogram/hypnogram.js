@@ -13,18 +13,6 @@ const initializeScales = (comparativeColors) =>
     colors: d3.scaleOrdinal(comparativeColors),
   });
 
-import createHypnogramChart from './line_charts';
-import { DIMENSION, MARGIN, COMPARATIVE_COLORS, CANVAS_DIMENSION } from './constants';
-import { STAGES_ORDERED } from '../constants';
-import { convertTimestampsToDates } from '../utils';
-
-const initializeScales = (comparativeColors) =>
-  Object({
-    x: d3.scaleTime([0, DIMENSION.WIDTH]),
-    y: d3.scaleOrdinal(_.range(0, DIMENSION.HEIGHT + 1, DIMENSION.HEIGHT / STAGES_ORDERED.length)),
-    colors: d3.scaleOrdinal(comparativeColors),
-  });
-
 const initializeAxes = (x, y) =>
   Object({
     xAxis: d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M')),
