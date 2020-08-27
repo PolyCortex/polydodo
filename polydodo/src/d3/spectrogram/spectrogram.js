@@ -233,7 +233,10 @@ const createSpectrogram = (containerNode, data) => {
   */
   const parentDiv = d3.select(containerNode);
   const canvasWidth = parentDiv.node().getBoundingClientRect().width;
-  const canvasHeight = canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO;
+  const canvasHeight = Math.min(
+    canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO,
+    window.innerHeight * 0.6
+  );
   const dimensions = {
     canvasWidth: canvasWidth,
     canvasHeight: canvasHeight,
