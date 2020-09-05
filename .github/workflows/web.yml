@@ -1,0 +1,36 @@
+name: Web
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: abelfodil/protoc-action@v1
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: --cwd web install
+      - run: protoc --proto_path=protos protos/* --js_out=web/src/protos
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: --cwd web build
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.ref == 'master' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          dockerfile: web/Dockerfile
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          registry: docker.pkg.github.com/polycortex/polydodo
+          repository: web
+          tags: latest

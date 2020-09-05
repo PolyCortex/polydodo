@@ -1,0 +1,22 @@
+name: Backend
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'master' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          dockerfile: backend/Dockerfile
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          registry: docker.pkg.github.com/polycortex/polydodo
+          repository: backend
+          tags: latest
