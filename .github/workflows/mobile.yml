@@ -1,0 +1,43 @@
+name: Mobile
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+defaults:
+  run:
+    working-directory: mobile
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+      - uses: subosito/flutter-action@v1
+      - uses: abelfodil/protoc-action@v1
+        with:
+          enable-dart: true
+
+      - run: protoc --proto_path=protos protos/* --dart_out=mobile/lib/protos
+        working-directory: .
+
+      - run: flutter pub get
+
+      - run: flutter test
+
+      - run: flutter build apk
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Android app
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+
+      - run: flutter build ios --release --no-codesign
+      - uses: actions/upload-artifact@v2
+        with:
+          name: iOS app
+          path: mobile/build/ios/iphoneos/Runner.app
