@@ -113,7 +113,7 @@ const drawLegend = (svg, color, y, spectrogramHeight) => {
     .text('Power (uV²/Hz)');
 };
 
-createSpectrogramAxesAndLegend = (
+const drawSpectrogramAxesAndLegend = (
   svg,
   scalesAndAxesBySpectrogram,
   data,
