@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-import { convertTimestampsToDates } from '../utils';
-import { STAGES_ORDERED, EPOCH_DURATION_SEC } from '../constants';
+import { convertTimestampsToDates, convertEpochsToAnnotations } from '../utils';
+import { STAGES_ORDERED } from '../constants';
 
 export const preprocessData = (data) => {
   data = convertTimestampsToDates(data);
@@ -15,39 +15,6 @@ export const preprocessData = (data) => {
     stageTimeProportions,
     firstStageIndexes,
   };
-};
-
-const convertEpochsToAnnotations = (data) => {
-  const annotations = [];
-  const nbEpochs = data.length;
-  let currentAnnotationStart = data[0].timestamp;
-  let currentSleepStage = data[0].sleepStage;
-  let currentAnnotationEpochCount = 0;
-
-  const isNextAnnotation = (sleepStage, index) => sleepStage !== currentSleepStage || index === data.length - 1;
-
-  const saveCurrentAnnotation = (timestamp) => {
-    annotations.push({
-      stage: currentSleepStage,
-      proportion: currentAnnotationEpochCount / nbEpochs,
-      start: currentAnnotationStart,
-      end: timestamp,
-      duration: currentAnnotationEpochCount * EPOCH_DURATION_SEC,
-    });
-  };
-
-  data.forEach(({ timestamp, sleepStage }, index) => {
-    currentAnnotationEpochCount++;
-
-    if (isNextAnnotation(sleepStage, index)) {
-      saveCurrentAnnotation(timestamp);
-      currentAnnotationStart = timestamp;
-      currentSleepStage = sleepStage;
-      currentAnnotationEpochCount = 0;
-    }
-  });
-
-  return annotations;
 };
 
 const getStageTimeProportions = (data) => {

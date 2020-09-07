@@ -11,12 +11,15 @@ import {
   PADDING,
   CANVAS_HEIGHT_WINDOW_FACTOR,
 } from './constants';
-import { EPOCH_DURATION_SEC } from '../constants';
 import { createLegend } from './legend';
+import { convertTimestampsToDates } from '../utils';
 
 const getDimensions = (parentDiv) => {
   const canvasWidth = parentDiv.node().getBoundingClientRect().width;
-  const canvasHeight = Math.min(canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO, window.innerHeight * CANVAS_HEIGHT_WINDOW_FACTOR);
+  const canvasHeight = Math.min(
+    canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO,
+    window.innerHeight * CANVAS_HEIGHT_WINDOW_FACTOR,
+  );
   const spectrogramsHeight = canvasHeight - MARGIN.TOP - MARGIN.BOTTOM;
   const singleSpectrogramCanvasHeight = _.range(NB_SPECTROGRAM).map((x) => {
     let height = spectrogramsHeight / NB_SPECTROGRAM;
@@ -40,7 +43,7 @@ const getDimensions = (parentDiv) => {
 
 const initializeScales = ({ spectrogramWidth, singleSpectrogramHeight }) =>
   Object({
-    x: d3.scaleLinear([0, spectrogramWidth]),
+    x: d3.scaleTime([0, spectrogramWidth]),
     yLinear: d3.scaleLinear([singleSpectrogramHeight, 0]),
     yBand: d3.scaleBand([singleSpectrogramHeight, 0]),
     yColor: d3.scaleLinear([singleSpectrogramHeight, 0]),
@@ -49,48 +52,78 @@ const initializeScales = ({ spectrogramWidth, singleSpectrogramHeight }) =>
 
 const initializeAxes = (x, y) =>
   Object({
-    xAxis: d3.axisBottom(x).tickFormat((d) => `${d}h`),
+    xAxis: d3.axisBottom(x).tickFormat((d) => `${d.getHours()}h`),
     yAxis: d3.axisLeft(y).ticks(5, 's'),
   });
 
-const setDomainOnScales = (currentData, frequencies, preprocessedData, x, yBand, yLinear, color, yColor) => {
-  x.domain([0, getHoursFromIndex(currentData.length)]);
+const setDomainOnScales = (
+  { rectangles, frequencies },
+  x,
+  yBand,
+  yLinear,
+  color,
+  yColor,
+) => {
+  x.domain([_.first(rectangles).Timestamp, _.last(rectangles).Timestamp]);
   yBand.domain(frequencies);
   yLinear.domain([_.first(frequencies), _.last(frequencies)]);
-  color.domain(d3.extent(preprocessedData, ({ Intensity }) => Intensity));
-  yColor.domain(d3.extent(preprocessedData, ({ Intensity }) => Intensity));
+  color.domain(d3.extent(rectangles, ({ Intensity }) => Intensity));
+  yColor.domain(d3.extent(rectangles, ({ Intensity }) => Intensity));
 };
 
-const preprocessData = (powerAmplitudesByTimestamp, frequencies) =>
-  _.flatMap(powerAmplitudesByTimestamp, (powerAmplitudeSingleTimestamp, index) =>
-    _.map(_.zip(powerAmplitudeSingleTimestamp, frequencies), ([intensity, frequency]) =>
-      Object({
-        Intensity: intensity,
-        Frequency: frequency,
-        Timestamp: getHoursFromIndex(index),
-      }),
-    ),
-  );
+const preprocessData = (channel, data) => {
+  const powerAmplitudesByTimestamp = data[channel];
+  const frequencies = data[FREQUENCY_KEY];
+  const hypnogram = convertTimestampsToDates(data[HYPNOGRAM_KEY]);
 
-const getHoursFromIndex = (idx) => (idx * EPOCH_DURATION_SEC) / 3600;
+  return {
+    channel,
+    frequencies,
+    rectangles: _.flatMap(
+      _.zip(powerAmplitudesByTimestamp, hypnogram),
+      ([powerAmplitudeSingleTimestamp, { sleepStage, timestamp }]) =>
+        _.map(
+          _.zip(powerAmplitudeSingleTimestamp, frequencies),
+          ([intensity, frequency]) =>
+            Object({
+              Intensity: intensity,
+              Frequency: frequency,
+              Timestamp: timestamp,
+            }),
+        ),
+    ),
+  };
+};
 
 const createDrawingGroups = (g, spectrogramWidth) =>
   Object({
-    spectrogramDrawingGroup: g.append('g').attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`),
-    legendDrawingGroup: g.append('g').attr('transform', `translate(${MARGIN.LEFT + spectrogramWidth}, ${MARGIN.TOP})`),
+    spectrogramDrawingGroup: g
+      .append('g')
+      .attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`),
+    legendDrawingGroup: g
+      .append('g')
+      .attr(
+        'transform',
+        `translate(${MARGIN.LEFT + spectrogramWidth}, ${MARGIN.TOP})`,
+      ),
   });
 
-const getScalesAndAxes = (data, channel, dimensions) => {
+const getScalesAndAxes = (data, dimensions) => {
   const { x, yLinear, yBand, yColor, color } = initializeScales(dimensions);
   const { xAxis, yAxis } = initializeAxes(x, yLinear);
-  const preprocessedData = preprocessData(data[channel], data.frequencies);
 
-  setDomainOnScales(data[channel], data.frequencies, preprocessedData, x, yBand, yLinear, color, yColor);
+  setDomainOnScales(data, x, yBand, yLinear, color, yColor);
 
-  return { data: preprocessedData, x, yBand, yColor, color, xAxis, yAxis };
+  return { x, yBand, yColor, color, xAxis, yAxis };
 };
 
-const createAxes = (g, xAxis, yAxis, singleSpectrogramHeight, spectrogramWidth) => {
+const createAxes = (
+  g,
+  xAxis,
+  yAxis,
+  singleSpectrogramHeight,
+  spectrogramWidth,
+) => {
   g.append('text')
     .attr('class', 'x axis')
     .attr('y', singleSpectrogramHeight + MARGIN.BOTTOM)
@@ -116,7 +149,11 @@ const createAxes = (g, xAxis, yAxis, singleSpectrogramHeight, spectrogramWidth) 
     .selectAll('text')
     .style('font-size', TITLE_FONT_SIZE);
 
-  g.append('g').attr('class', 'y axis').call(yAxis).selectAll('text').style('font-size', TITLE_FONT_SIZE);
+  g.append('g')
+    .attr('class', 'y axis')
+    .call(yAxis)
+    .selectAll('text')
+    .style('font-size', TITLE_FONT_SIZE);
 };
 
 const createTitle = (g, channelName, spectrogramWidth) =>
@@ -128,42 +165,82 @@ const createTitle = (g, channelName, spectrogramWidth) =>
     .style('font-size', TITLE_FONT_SIZE)
     .text(`Spectrogram of channel ${channelName}`);
 
-const createSpectrogramRectangles = (canvas, scalesAndAxesBySpectrogram, { singleSpectrogramCanvasHeight }) => {
+const createSpectrogramRectangles = (
+  canvas,
+  scalesAndAxesBySpectrogram,
+  data,
+  { singleSpectrogramCanvasHeight },
+) => {
   const context = canvas.node().getContext('2d');
 
-  _.each(scalesAndAxesBySpectrogram, ({ x, yBand, color, data }, index) => {
-    context.resetTransform();
-    context.translate(MARGIN.LEFT, MARGIN.TOP + index * singleSpectrogramCanvasHeight[index]);
+  _.each(
+    _.zip(scalesAndAxesBySpectrogram, data),
+    ([{ x, yBand, color }, { rectangles, frequencies }], index) => {
+      const rectangleWidth =
+        x(rectangles[frequencies.length].Timestamp) -
+        x(rectangles[0].Timestamp);
 
-    _.each(data, ({ Timestamp, Frequency, Intensity }) => {
-      context.beginPath();
-      context.fillRect(x(Timestamp), yBand(Frequency), x(getHoursFromIndex(1)), yBand.bandwidth());
-      context.fillStyle = color(Intensity);
-      context.fill();
-      context.stroke();
-    });
-  });
+      context.resetTransform();
+      context.translate(
+        MARGIN.LEFT,
+        MARGIN.TOP + index * singleSpectrogramCanvasHeight[index],
+      );
+
+      _.each(rectangles, ({ Timestamp, Frequency, Intensity }) => {
+        context.beginPath();
+        context.fillRect(
+          x(Timestamp),
+          yBand(Frequency),
+          rectangleWidth,
+          yBand.bandwidth(),
+        );
+        context.fillStyle = color(Intensity);
+        context.fill();
+        context.stroke();
+      });
+    },
+  );
 };
 
 const createSpectrogramAxesAndLegend = (
   svg,
   scalesAndAxesBySpectrogram,
-  channelNames,
-  { canvasWidth, spectrogramWidth, singleSpectrogramCanvasHeight, singleSpectrogramHeight },
+  data,
+  {
+    canvasWidth,
+    spectrogramWidth,
+    singleSpectrogramCanvasHeight,
+    singleSpectrogramHeight,
+  },
 ) =>
-  _.forEach(_.zip(scalesAndAxesBySpectrogram, channelNames), ([{ xAxis, yAxis, color, yColor }, channel], index) => {
-    const currentSpectrogramDrawingGroup = svg
-      .append('g')
-      .attr('transform', `translate(0, ${index * singleSpectrogramCanvasHeight[index]})`)
-      .attr('width', canvasWidth)
-      .attr('height', singleSpectrogramCanvasHeight[index]);
+  _.forEach(
+    _.zip(scalesAndAxesBySpectrogram, data),
+    ([{ xAxis, yAxis, color, yColor }, { channel }], index) => {
+      const currentSpectrogramDrawingGroup = svg
+        .append('g')
+        .attr(
+          'transform',
+          `translate(0, ${index * singleSpectrogramCanvasHeight[index]})`,
+        )
+        .attr('width', canvasWidth)
+        .attr('height', singleSpectrogramCanvasHeight[index]);
 
-    const { spectrogramDrawingGroup, legendDrawingGroup } = createDrawingGroups(currentSpectrogramDrawingGroup, spectrogramWidth);
+      const {
+        spectrogramDrawingGroup,
+        legendDrawingGroup,
+      } = createDrawingGroups(currentSpectrogramDrawingGroup, spectrogramWidth);
 
-    createTitle(spectrogramDrawingGroup, channel, spectrogramWidth);
-    createAxes(spectrogramDrawingGroup, xAxis, yAxis, singleSpectrogramHeight, spectrogramWidth);
-    createLegend(legendDrawingGroup, color, yColor, singleSpectrogramHeight);
-  });
+      createTitle(spectrogramDrawingGroup, channel, spectrogramWidth);
+      createAxes(
+        spectrogramDrawingGroup,
+        xAxis,
+        yAxis,
+        singleSpectrogramHeight,
+        spectrogramWidth,
+      );
+      createLegend(legendDrawingGroup, color, yColor, singleSpectrogramHeight);
+    },
+  );
 
 const createSpectrogram = (containerNode, data) => {
   /*
@@ -177,18 +254,40 @@ const createSpectrogram = (containerNode, data) => {
   */
   const parentDiv = d3.select(containerNode);
   const dimensions = getDimensions(parentDiv);
-  const channelNames = _.filter(_.keys(data), (keyName) => !_.includes([FREQUENCY_KEY, HYPNOGRAM_KEY], keyName));
-  const scalesAndAxesBySpectrogram = _.map(channelNames, (name) => getScalesAndAxes(data, name, dimensions));
 
   const canvas = parentDiv
     .append('canvas')
     .attr('width', dimensions.canvasWidth)
     .attr('height', dimensions.canvasHeight)
     .style('position', 'absolute');
-  const svg = parentDiv.append('svg').attr('width', dimensions.canvasWidth).attr('height', dimensions.canvasHeight);
+  const svg = parentDiv
+    .append('svg')
+    .attr('width', dimensions.canvasWidth)
+    .attr('height', dimensions.canvasHeight);
 
-  createSpectrogramRectangles(canvas, scalesAndAxesBySpectrogram, dimensions);
-  createSpectrogramAxesAndLegend(svg, scalesAndAxesBySpectrogram, channelNames, dimensions);
+  const channelNames = _.filter(
+    _.keys(data),
+    (keyName) => !_.includes([FREQUENCY_KEY, HYPNOGRAM_KEY], keyName),
+  );
+  const preprocessedData = _.map(channelNames, (channel) =>
+    preprocessData(channel, data),
+  );
+  const scalesAndAxesBySpectrogram = _.map(preprocessedData, (data) =>
+    getScalesAndAxes(data, dimensions),
+  );
+
+  createSpectrogramRectangles(
+    canvas,
+    scalesAndAxesBySpectrogram,
+    preprocessedData,
+    dimensions,
+  );
+  createSpectrogramAxesAndLegend(
+    svg,
+    scalesAndAxesBySpectrogram,
+    preprocessedData,
+    dimensions,
+  );
 };
 
 export default createSpectrogram;
