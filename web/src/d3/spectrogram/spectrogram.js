@@ -5,6 +5,7 @@ import {
   MARGIN,
   CANVAS_WIDTH_TO_HEIGHT_RATIO,
   FREQUENCY_KEY,
+  HYPNOGRAM_KEY,
   TITLE_FONT_SIZE,
   NB_SPECTROGRAM,
   PADDING,
@@ -173,7 +174,7 @@ const createSpectrogram = (containerNode, data) => {
     singleSpectrogramHeight: (canvasHeight - MARGIN.BOTTOM - MARGIN.TOP - PADDING) / NB_SPECTROGRAM,
   };
 
-  const channelNames = _.filter(_.keys(data), (keyName) => keyName !== FREQUENCY_KEY);
+  const channelNames = _.filter(_.keys(data), (keyName) => !_.includes([FREQUENCY_KEY, HYPNOGRAM_KEY], keyName));
   const scalesAndAxesBySpectrogram = _.map(channelNames, (name) => getScalesAndAxes(data, name, dimensions));
 
   const canvas = parentDiv

@@ -9,6 +9,7 @@ import D3Component from '../../components/d3component';
 import WIPWarning from '../../components/wip_warning';
 
 import { createSingleHypnogram } from '../../d3/hypnogram/hypnogram';
+import { HYPNOGRAM_KEY } from '../../d3/spectrogram/constants';
 
 import text from './text.json';
 import createSpectrogram from '../../d3/spectrogram/spectrogram';
@@ -20,6 +21,7 @@ import spectrogramData from 'assets/data/spectrograms.json';
 
 const SleepAnalysis = () => {
   const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
+  const spectrogramWithHypnogramData = csvDataSleepEDF ? { ...spectrogramData, [HYPNOGRAM_KEY]: csvDataSleepEDF } : null;
 
   return (
     <div>
@@ -104,7 +106,7 @@ const SleepAnalysis = () => {
           </a>
           that decomposes sound frequency from your microphone.
         </p>
-        <D3Component callback={createSpectrogram} data={spectrogramData} useDiv />
+        <D3Component callback={createSpectrogram} data={spectrogramWithHypnogramData} useDiv />
         <p className="mt-5">
           Generally, when talking about brain waves, we group certain frequencies together into bands. There are overall five frequency bands, where
           each has a general associated behaviour, or state of mind. We will cover those when looking at time frames corresponding to each sleep
