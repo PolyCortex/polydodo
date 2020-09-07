@@ -14,6 +14,30 @@ import {
 import { EPOCH_DURATION_SEC } from '../constants';
 import { createLegend } from './legend';
 
+const getDimensions = (parentDiv) => {
+  const canvasWidth = parentDiv.node().getBoundingClientRect().width;
+  const canvasHeight = Math.min(canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO, window.innerHeight * CANVAS_HEIGHT_WINDOW_FACTOR);
+  const spectrogramsHeight = canvasHeight - MARGIN.TOP - MARGIN.BOTTOM;
+  const singleSpectrogramCanvasHeight = _.range(NB_SPECTROGRAM).map((x) => {
+    let height = spectrogramsHeight / NB_SPECTROGRAM;
+    if (x === 0) {
+      height += MARGIN.TOP;
+    } else if (x === NB_SPECTROGRAM - 1) {
+      height += MARGIN.BOTTOM;
+    }
+    return height;
+  });
+
+  return {
+    canvasWidth,
+    canvasHeight,
+    spectrogramsHeight,
+    singleSpectrogramCanvasHeight,
+    spectrogramWidth: canvasWidth - MARGIN.LEFT - MARGIN.RIGHT,
+    singleSpectrogramHeight: (spectrogramsHeight - PADDING) / NB_SPECTROGRAM,
+  };
+};
+
 const initializeScales = ({ spectrogramWidth, singleSpectrogramHeight }) =>
   Object({
     x: d3.scaleLinear([0, spectrogramWidth]),
@@ -141,17 +165,6 @@ const createSpectrogramAxesAndLegend = (
     createLegend(legendDrawingGroup, color, yColor, singleSpectrogramHeight);
   });
 
-const getSpectrogramCanvasHeight = (spectrogramHeight) =>
-  _.range(NB_SPECTROGRAM).map((x) => {
-    let height = spectrogramHeight / NB_SPECTROGRAM;
-    if (x === 0) {
-      height += MARGIN.TOP;
-    } else if (x === NB_SPECTROGRAM - 1) {
-      height += MARGIN.BOTTOM;
-    }
-    return height;
-  });
-
 const createSpectrogram = (containerNode, data) => {
   /*
   Considering the number of rectangles to display is well over 1k,
@@ -163,17 +176,7 @@ const createSpectrogram = (containerNode, data) => {
   setting the first element's position, in this case the canvas, to absolute.
   */
   const parentDiv = d3.select(containerNode);
-  const canvasWidth = parentDiv.node().getBoundingClientRect().width;
-  const canvasHeight = Math.min(canvasWidth * CANVAS_WIDTH_TO_HEIGHT_RATIO, window.innerHeight * CANVAS_HEIGHT_WINDOW_FACTOR);
-  const dimensions = {
-    canvasWidth: canvasWidth,
-    canvasHeight: canvasHeight,
-    spectrogramWidth: canvasWidth - MARGIN.LEFT - MARGIN.RIGHT,
-    spectrogramsHeight: canvasHeight - MARGIN.TOP - MARGIN.BOTTOM,
-    singleSpectrogramCanvasHeight: getSpectrogramCanvasHeight(canvasHeight - MARGIN.TOP - MARGIN.BOTTOM),
-    singleSpectrogramHeight: (canvasHeight - MARGIN.BOTTOM - MARGIN.TOP - PADDING) / NB_SPECTROGRAM,
-  };
-
+  const dimensions = getDimensions(parentDiv);
   const channelNames = _.filter(_.keys(data), (keyName) => !_.includes([FREQUENCY_KEY, HYPNOGRAM_KEY], keyName));
   const scalesAndAxesBySpectrogram = _.map(channelNames, (name) => getScalesAndAxes(data, name, dimensions));
 
