@@ -1,0 +1,38 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3c7ce497.chunk.css",
+    "main.js": "/static/js/main.a03a12c8.chunk.js",
+    "main.js.map": "/static/js/main.a03a12c8.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.8a15f5f6.js",
+    "runtime-main.js.map": "/static/js/runtime-main.8a15f5f6.js.map",
+    "static/css/2.b8824c81.chunk.css": "/static/css/2.b8824c81.chunk.css",
+    "static/js/2.4efdc28d.chunk.js": "/static/js/2.4efdc28d.chunk.js",
+    "static/js/2.4efdc28d.chunk.js.map": "/static/js/2.4efdc28d.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.0f1893bdd5fa3770d02d7a24e5df5a98.js": "/precache-manifest.0f1893bdd5fa3770d02d7a24e5df5a98.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.b8824c81.chunk.css.map": "/static/css/2.b8824c81.chunk.css.map",
+    "static/css/main.3c7ce497.chunk.css.map": "/static/css/main.3c7ce497.chunk.css.map",
+    "static/js/2.4efdc28d.chunk.js.LICENSE.txt": "/static/js/2.4efdc28d.chunk.js.LICENSE.txt",
+    "static/media/aep.png": "/static/media/aep.fda414f1.png",
+    "static/media/diptrace.png": "/static/media/diptrace.e3ba6abc.png",
+    "static/media/font-awesome.min.css": "/static/media/fontawesome-webfont.fee66e71.woff",
+    "static/media/hypnogram-electrophysiologist.csv": "/static/media/hypnogram-electrophysiologist.9ec7437f.csv",
+    "static/media/hypnogram-openbci-electrophysiologist.csv": "/static/media/hypnogram-openbci-electrophysiologist.f61cd2b4.csv",
+    "static/media/hypnogram-openbci-predicted.csv": "/static/media/hypnogram-openbci-predicted.c2f4d4bd.csv",
+    "static/media/hypnogram-predicted.csv": "/static/media/hypnogram-predicted.426e51a0.csv",
+    "static/media/hypnogram.csv": "/static/media/hypnogram.391fef8a.csv",
+    "static/media/logo.png": "/static/media/logo.bcea7572.png",
+    "static/media/ntx.png": "/static/media/ntx.bdd09ab5.png",
+    "static/media/nucleo.css": "/static/media/nucleo-icons.f82ec6ba.ttf",
+    "static/media/polymtl.png": "/static/media/polymtl.3034d991.png",
+    "static/media/protocase.png": "/static/media/protocase.53bfde7a.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8a15f5f6.js",
+    "static/css/2.b8824c81.chunk.css",
+    "static/js/2.4efdc28d.chunk.js",
+    "static/css/main.3c7ce497.chunk.css",
+    "static/js/main.a03a12c8.chunk.js"
+  ]
+}
