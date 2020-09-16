@@ -9,9 +9,14 @@ import {
   NB_SPECTROGRAM,
   PADDING,
   CANVAS_HEIGHT_WINDOW_FACTOR,
+  NOT_HIGHLIGHTED_RECTANGLE_OPACITY,
 } from './constants';
+import { STAGES_ORDERED } from '../constants';
 import drawSpectrogramAxesAndLegend from './axes_legend';
 import { convertTimestampsToDates } from '../utils';
+
+// keys are the sleep stage for which we want to display the spectrogram
+export let spectrogramCallbacks = {};
 
 const getDimensions = (parentDiv) => {
   const canvasWidth = parentDiv.node().getBoundingClientRect().width;
@@ -58,6 +63,7 @@ const preprocessData = (channel, data) => {
               intensity,
               frequency,
               timestamp,
+              sleepStage,
             }),
         ),
     ),
@@ -108,8 +114,11 @@ const drawSpectrogramRectangles = (
   scalesAndAxesBySpectrogram,
   data,
   { singleSpectrogramCanvasHeight },
+  highlightedSleepStage,
 ) => {
   const context = canvas.node().getContext('2d');
+  const isHighlightNotSelectedOrEqual = (sleepStage) =>
+    !highlightedSleepStage || sleepStage == highlightedSleepStage;
 
   _.each(
     _.zip(scalesAndAxesBySpectrogram, data),
@@ -124,7 +133,7 @@ const drawSpectrogramRectangles = (
         MARGIN.TOP + index * singleSpectrogramCanvasHeight[index],
       );
 
-      _.each(rectangles, ({ timestamp, frequency, intensity }) => {
+      _.each(rectangles, ({ timestamp, frequency, intensity, sleepStage }) => {
         context.beginPath();
         context.fillRect(
           x(timestamp),
@@ -132,6 +141,9 @@ const drawSpectrogramRectangles = (
           rectangleWidth,
           yBand.bandwidth(),
         );
+        context.globalAlpha = isHighlightNotSelectedOrEqual(sleepStage)
+          ? 1
+          : NOT_HIGHLIGHTED_RECTANGLE_OPACITY;
         context.fillStyle = color(intensity);
         context.fill();
         context.stroke();
@@ -174,18 +186,31 @@ const createSpectrogram = (containerNode, data) => {
     getScalesAndAxes(data, dimensions),
   );
 
-  drawSpectrogramRectangles(
-    canvas,
-    scalesAndAxesBySpectrogram,
-    preprocessedData,
-    dimensions,
+  const createSpectrogramWithHighlightedStageCallback = (
+    highlightedSleepStage,
+  ) => () => {
+    drawSpectrogramRectangles(
+      canvas,
+      scalesAndAxesBySpectrogram,
+      preprocessedData,
+      dimensions,
+      highlightedSleepStage,
+    );
+    drawSpectrogramAxesAndLegend(
+      svg,
+      scalesAndAxesBySpectrogram,
+      preprocessedData,
+      dimensions,
+    );
+  };
+
+  spectrogramCallbacks = _.zipObject(
+    [null, ...STAGES_ORDERED],
+    _.map([null, ...STAGES_ORDERED], (stage) =>
+      createSpectrogramWithHighlightedStageCallback(stage),
+    ),
   );
-  drawSpectrogramAxesAndLegend(
-    svg,
-    scalesAndAxesBySpectrogram,
-    preprocessedData,
-    dimensions,
-  );
+  spectrogramCallbacks[null]();
 };
 
 export default createSpectrogram;
