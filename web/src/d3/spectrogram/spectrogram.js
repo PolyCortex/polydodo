@@ -189,6 +189,13 @@ const createSpectrogram = (containerNode, data) => {
   const createSpectrogramWithHighlightedStageCallback = (
     highlightedSleepStage,
   ) => () => {
+    const ctx = canvas.node().getContext('2d');
+    ctx.resetTransform();
+    ctx.clearRect(0, 0, dimensions.canvasWidth, dimensions.canvasHeight);
+    ctx.stroke();
+
+    svg.selectAll('*').remove();
+
     drawSpectrogramRectangles(
       canvas,
       scalesAndAxesBySpectrogram,
