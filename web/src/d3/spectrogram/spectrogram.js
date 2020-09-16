@@ -118,7 +118,7 @@ const drawSpectrogramRectangles = (
 ) => {
   const context = canvas.node().getContext('2d');
   const isHighlightNotSelectedOrEqual = (sleepStage) =>
-    !highlightedSleepStage || sleepStage == highlightedSleepStage;
+    !highlightedSleepStage || sleepStage === highlightedSleepStage;
 
   _.each(
     _.zip(scalesAndAxesBySpectrogram, data),

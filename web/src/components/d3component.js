@@ -21,6 +21,7 @@ const D3Component = React.memo(({ callback, data, useDiv = false }) => {
 D3Component.propTypes = {
   callback: PropTypes.func.isRequired,
   data: PropTypes.any,
+  useDiv: PropTypes.bool,
 };
 
 export default D3Component;
