@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,23 +45,112 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final FlutterBlue flutterBlue = FlutterBlue.instance;
+  final List<BluetoothDevice> devicesList = new List<BluetoothDevice>();
+  final Map<Guid, List<int>> readValues = new Map<Guid, List<int>>();
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
+  static String BLE_SERVICE = "fe84";
+  static String BLE_RECEIVE = "2d30c082";
+  static String BLE_SEND = "2d30c083";
+  static String BLE_DISCONNECT = "2d30c084";
+
+
+  BluetoothDevice _connectedDevice;
+  List<BluetoothService> _services;
+  List<BluetoothCharacteristic> _characteristics;
+
+  void addDeviceTolist(final BluetoothDevice device) {
+    if (!widget.devicesList.contains(device)) {
+      setState(() {
+        widget.devicesList.add(device);
+        print(widget.devicesList);
+      });
+    }
+  }
+
+  void connectDevice(BluetoothDevice device) async {
+    try {
+      await device.connect();
+    } catch (e) {
+      if (e.code != 'already_connected') {
+        throw e;
+      }
+    } finally {
+      _services = await device.discoverServices();
+    }
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _connectedDevice = device;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.flutterBlue.connectedDevices
+        .asStream()
+        .listen((List<BluetoothDevice> devices) {
+      for (BluetoothDevice device in devices) {
+        addDeviceTolist(device);
+      }
+    });
+    widget.flutterBlue.scanResults.listen((List<ScanResult> results) {
+      for (ScanResult result in results) {
+        addDeviceTolist(result.device);
+      }
+    });
+    widget.flutterBlue.startScan();
+  }
+
+  ListView buildListViewOfDevices() {
+    return ListView.builder(
+        itemCount: widget.devicesList.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+                onTap: () => connectDevice(widget.devicesList[index]),
+                title: Text(widget.devicesList[index].name),
+                subtitle: Text(widget.devicesList[index].id.toString())),
+          );
+        });
+  }
+
+  ListView buildListViewOfConnectedDevice() {
+    return ListView.builder(
+        itemCount: _services.length,
+        itemBuilder: (context, index) {
+          return Card(
+              child: ListTile(
+                onTap: () => setState(() => {_characteristics = _services[index].characteristics}),
+                title: Text(_services[index].uuid.toString().contains("fe84") ? "YES" : "NO"),
+          ));
+        });
+  }
+
+  ListView buildListViewOfCharacteristics() {
+    return ListView.builder(
+        itemCount: _characteristics.length,
+        itemBuilder: (context, index) {
+          return Card(
+              child: ListTile(
+                title: Text(_characteristics[index].uuid.toString().contains("2d30c082") ? "YES" : "NO"),
+          ));
+        });
+  }
+
+  ListView _buildView() {
+    if (_connectedDevice != null) {
+      if (_characteristics != null)
+        return buildListViewOfCharacteristics();
+      else
+        return buildListViewOfConnectedDevice();
+    }
+    return buildListViewOfDevices();
   }
 
   @override
@@ -77,41 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: _buildView(),
     );
   }
 }
