@@ -13,7 +13,7 @@ import ScrollToTop from 'components/scroll_to_top';
 import Emoji from 'components/emoji';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <ScrollToTop>
       <Switch>
         <Route exact path="/" render={() => <SleepAnalysis />} />
