@@ -2,18 +2,16 @@ import React from 'react';
 import { Container, Row, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import Navbar from '../../components/navbar/navbar';
-import Header from '../../components/header';
-import Footer from '../../components/footer/footer';
-import D3Component from '../../components/d3component';
-import WIPWarning from '../../components/wip_warning';
+import Header from 'components/header';
+import D3Component from 'components/d3component';
+import WIPWarning from 'components/wip_warning';
 
-import { createSingleHypnogram } from '../../d3/hypnogram/hypnogram';
+import { createSingleHypnogram } from 'd3/hypnogram/hypnogram';
 
 import text from './text.json';
-import createSpectrogram from '../../d3/spectrogram/spectrogram';
+import createSpectrogram from 'd3/spectrogram/spectrogram';
 import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
-import { useCSVData } from '../../hooks/api_hooks';
+import { useCSVData } from 'hooks/api_hooks';
 
 import hypnogramDataSleepEDFPath from 'assets/data/hypnogram.csv';
 import spectrogramData from 'assets/data/spectrograms.json';
@@ -23,7 +21,6 @@ const SleepAnalysis = () => {
 
   return (
     <div>
-      <Navbar />
       <Header
         sizeClass={'pb-150'}
         shapeQty={7}
@@ -123,7 +120,6 @@ const SleepAnalysis = () => {
           Check out the performances
         </Button>
       </Container>
-      <Footer />
     </div>
   );
 };

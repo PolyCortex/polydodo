@@ -3,16 +3,16 @@ import { Container, Card, CardBody } from 'reactstrap';
 
 import hypnogramCSVPath from 'assets/data/hypnogram.csv';
 
-import D3Component from '../../components/d3component';
-import WaypointDirection from '../../components/waypoint_direction';
+import D3Component from 'components/d3component';
+import WaypointDirection from 'components/waypoint_direction';
 
 import createEvolvingChart, {
   instanceChartCallbacks,
   timelineChartCallbacks,
   barChartCallbacks,
   stackedBarChartCallbacks,
-} from '../../d3/evolving_chart/evolving_chart';
-import { useCSVData } from '../../hooks/api_hooks';
+} from 'd3/evolving_chart/evolving_chart';
+import { useCSVData } from 'hooks/api_hooks';
 
 const StackedBarChartScrollyTelling = () => {
   const csvData = useCSVData(hypnogramCSVPath);
