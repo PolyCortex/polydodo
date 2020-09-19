@@ -21,6 +21,10 @@ jobs:
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: --cwd web build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Webapp
+          path: web/build
 
   release:
     runs-on: ubuntu-latest
@@ -28,11 +32,12 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
+      - uses: actions/download-artifact@v2
         with:
-          dockerfile: web/Dockerfile
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
-          registry: docker.pkg.github.com/polycortex/polydodo
-          repository: web
-          tags: latest
+          path: .
+      - uses: JamesIves/github-pages-deploy-action@3.6.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: Webapp
+          CLEAN: true
