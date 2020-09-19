@@ -13,6 +13,7 @@ import Footer from 'components/footer';
 import Navbar from 'components/navbar';
 import SleepAnalysis from 'views/sleep-analysis';
 import Performance from 'views/performance';
+import AnalyzeSleep from 'views/analyze-sleep';
 import ScrollToTop from 'components/scroll_to_top';
 import Emoji from 'components/emoji';
 
@@ -48,7 +49,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/" render={() => <SleepAnalysis />} />
         <Route exact path="/record-my-sleep" render={underConstruction} />
-        <Route exact path="/analyze-my-sleep" render={underConstruction} />
+        <Route exact path="/analyze-my-sleep" render={() => <AnalyzeSleep />} />
         <Route exact path="/performance" render={() => <Performance />} />
         <Redirect to="/" />
       </Switch>
