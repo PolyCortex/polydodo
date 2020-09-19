@@ -4,6 +4,7 @@ import {
   MARGIN,
   NB_POINTS_COLOR_INTERPOLATION,
   TITLE_FONT_SIZE,
+  TITLE_POSITION_Y,
 } from './constants';
 
 const createDrawingGroups = (g, spectrogramWidth) =>
@@ -23,7 +24,7 @@ const drawTitle = (g, channelName, spectrogramWidth) =>
   g
     .append('text')
     .attr('x', spectrogramWidth / 2)
-    .attr('y', -MARGIN.TOP / 3)
+    .attr('y', TITLE_POSITION_Y)
     .style('text-anchor', 'middle')
     .style('font-size', TITLE_FONT_SIZE)
     .text(`Spectrogram of channel ${channelName}`);

@@ -9,13 +9,20 @@ export const convertTimestampsToDates = (data) =>
   );
 
 export const convertEpochsToAnnotations = (data) => {
+  // Epochs (original data format):
+  //    Epochs are equal-length spans of data extracted from raw continuous data [from MNE library glossary].
+  //    In our case, each epoch corresponds to a 30s portion of the night with its corresponding sleep stage label.
+  // Annotations (destination data format):
+  //    An annotation is defined by an onset, a duration, and a string description [from MNE library glossary].
+  //    In our case, an annotation is a contiguous period of the night where a subject stayed in the same sleep stage.
+
   const annotations = [];
   const nbEpochs = data.length;
   let currentAnnotationStart = data[0].timestamp;
   let currentSleepStage = data[0].sleepStage;
   let currentAnnotationEpochCount = 0;
 
-  const isNextAnnotation = (sleepStage, index) =>
+  const isSleepStageTransition = (sleepStage, index) =>
     sleepStage !== currentSleepStage || index === data.length - 1;
 
   const saveCurrentAnnotation = (timestamp) => {
@@ -31,7 +38,7 @@ export const convertEpochsToAnnotations = (data) => {
   data.forEach(({ timestamp, sleepStage }, index) => {
     currentAnnotationEpochCount++;
 
-    if (isNextAnnotation(sleepStage, index)) {
+    if (isSleepStageTransition(sleepStage, index)) {
       saveCurrentAnnotation(timestamp);
       currentAnnotationStart = timestamp;
       currentSleepStage = sleepStage;

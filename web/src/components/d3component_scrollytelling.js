@@ -19,11 +19,13 @@ const D3ComponentScrollyTelling = ({
   return <D3Component callback={createCallback} data={data} useDiv={useDiv} />;
 };
 
-D3Component.propTypes = {
+D3ComponentScrollyTelling.propTypes = {
   callback: PropTypes.func.isRequired,
   isInitialized: PropTypes.bool,
   setIsInitialized: PropTypes.func,
   data: PropTypes.any,
+  // Using a div node instead of a svg node allows usage of child components of other types:
+  // i.g., for performance issues, we used both canvas & svg child elements in a visualisation.
   useDiv: PropTypes.bool,
 };
 

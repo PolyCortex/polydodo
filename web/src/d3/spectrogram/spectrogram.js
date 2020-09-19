@@ -16,6 +16,7 @@ import drawSpectrogramAxesAndLegend from './axes_legend';
 import { convertTimestampsToDates } from '../utils';
 
 // keys are the sleep stage for which we want to display the spectrogram
+// accepted keys are: null (when all stages are highlighted), W, N1, N2, N3, REM
 export let spectrogramCallbacks = {};
 
 const getDimensions = (parentDiv) => {
@@ -117,8 +118,8 @@ const drawSpectrogramRectangles = (
   highlightedSleepStage,
 ) => {
   const context = canvas.node().getContext('2d');
-  const isHighlightNotSelectedOrEqual = (sleepStage) =>
-    !highlightedSleepStage || sleepStage === highlightedSleepStage;
+  const isHighlighted = (sleepStage) =>
+    highlightedSleepStage === null || highlightedSleepStage === sleepStage;
 
   _.each(
     _.zip(scalesAndAxesBySpectrogram, data),
@@ -141,7 +142,7 @@ const drawSpectrogramRectangles = (
           rectangleWidth,
           yBand.bandwidth(),
         );
-        context.globalAlpha = isHighlightNotSelectedOrEqual(sleepStage)
+        context.globalAlpha = isHighlighted(sleepStage)
           ? 1
           : NOT_HIGHLIGHTED_RECTANGLE_OPACITY;
         context.fillStyle = color(intensity);
