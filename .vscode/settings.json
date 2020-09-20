@@ -23,8 +23,12 @@
       "--grpc_python_out=backend/protos",
       "--plugin=protoc-gen-grpc_python=/usr/bin/grpc_python_plugin",
       "--js_out=web/src/protos",
-      "--plugin=protoc-gen-grpc_node=/usr/bin/grpc_node_plugin",
-      "--grpc_node_out=web/src/protos"
+      "--grpc_node_out=web/src/protos",
+      "--plugin=protoc-gen-grpc_node=/usr/bin/grpc_node_plugin"
     ]
-  }
+  },
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "autopep8",
+  "python.pythonPath": "backend/.venv/bin/python"
 }
