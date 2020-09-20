@@ -16,6 +16,15 @@
   },
   "protoc": {
     "compile_on_save": true,
-    "options": ["--proto_path=protos", "--dart_out=mobile/lib/protos", "--python_out=backend/protos", "--js_out=web/src/protos"]
+    "options": [
+      "--proto_path=protos",
+      "--dart_out=mobile/lib/protos",
+      "--python_out=backend/protos",
+      "--grpc_python_out=backend/protos",
+      "--plugin=protoc-gen-grpc_python=/usr/bin/grpc_python_plugin",
+      "--js_out=web/src/protos",
+      "--plugin=protoc-gen-grpc_node=/usr/bin/grpc_node_plugin",
+      "--grpc_node_out=web/src/protos"
+    ]
   }
 }

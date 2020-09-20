@@ -1,46 +1,41 @@
-from flask import Flask, render_template, url_for, request, redirect
-import os
-from resampling import convert_csv_to_raw 
-from werkzeug.utils import secure_filename
+# Copyright 2015 gRPC authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""The Python implementation of the GRPC helloworld.Greeter server."""
 
-ALLOWED_EXTENSIONS = {'csv'}
+from concurrent import futures
+import logging
 
-def allowed_filename(filename):
-    if not '.' in filename:
-        print('No extension in filename')
-        return False
+import grpc
 
-    ext = filename.rsplit('.', 1)[1]
-    if ext.lower() in ALLOWED_EXTENSIONS:
-        return True
-    else:
-        print('That file extension is not allowed')
-        return False 
-    
+import backend.protos.helloworld_pb2
+import backend.protos.helloworld_pb2_grpc
 
-app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+class Greeter(helloworld_pb2_grpc.GreeterServicer):
 
-@app.route('/upload-csv', methods =['GET','POST'])
-def upload_csv():
-    if request.method == 'POST':
-        if request.files:
-            csv = request.files['csv']
+    def SayHello(self, request, context):
+        return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
 
-            if csv.filename =='':
-                print('No filename or no selected file')
-                return redirect(request.url)
 
-            if allowed_filename(csv.filename):
-                filename = secure_filename(csv.filename) #useless si on save pas le fichier je crois
-                print(csv)
-                convert_csv_to_raw(csv)
-                return redirect(request.url)
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+    server.add_insecure_port('[::]:50051')
+    server.start()
+    server.wait_for_termination()
 
-    return render_template('upload_csv.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    logging.basicConfig()
+    serve()
