@@ -1,15 +1,13 @@
 import React from 'react';
 import { Container, Row, Table } from 'reactstrap';
 
-import Navbar from '../../components/navbar/navbar';
-import Header from '../../components/header';
-import WIPWarning from '../../components/wip_warning';
-import Footer from '../../components/footer/footer';
-import D3Component from '../../components/d3component';
+import Header from 'components/header';
+import WIPWarning from 'components/wip_warning';
+import D3Component from 'components/d3component';
 
 import text from './text.json';
 import { createComparativeHypnogram } from 'd3/hypnogram/hypnogram';
-import { useCSVData } from '../../hooks/api_hooks';
+import { useCSVData } from 'hooks/api_hooks';
 
 import hypnogramDataSleepEDF from 'assets/data/hypnogram.csv';
 import hypnogramDataPredicted from 'assets/data/hypnogram-predicted.csv';
@@ -52,7 +50,6 @@ const Performance = () => {
 
   return (
     <div>
-      <Navbar />
       <Header
         sizeClass={'pb-100'}
         shapeQty={7}
@@ -134,7 +131,6 @@ const Performance = () => {
           ]}
         />
       </Container>
-      <Footer />
     </div>
   );
 };

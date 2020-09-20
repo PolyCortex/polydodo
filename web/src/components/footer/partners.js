@@ -4,11 +4,11 @@ import { Container, Row } from 'reactstrap';
 
 import text from './text.json';
 
-import Polymtl from '../../assets/img/partners/polymtl.png';
-import AEP from '../../assets/img/partners/aep.png';
-import Protocase from '../../assets/img/partners/protocase.png';
-import NTX from '../../assets/img/partners/ntx.png';
-import Diptrace from '../../assets/img/partners/diptrace.png';
+import Polymtl from 'assets/img/partners/polymtl.png';
+import AEP from 'assets/img/partners/aep.png';
+import Protocase from 'assets/img/partners/protocase.png';
+import NTX from 'assets/img/partners/ntx.png';
+import Diptrace from 'assets/img/partners/diptrace.png';
 
 const Partner = ({ img, alt, width }) => {
   return <img alt={alt} className="img-center img-fluid" src={img} style={{ width: `${width}px` }} />;
