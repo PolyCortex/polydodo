@@ -13,8 +13,8 @@ import createSpectrogram from 'd3/spectrogram/spectrogram';
 import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
 import { useCSVData } from 'hooks/api_hooks';
 
-import hypnogramDataSleepEDFPath from 'assets/data/hypnogram.csv';
-import spectrogramData from 'assets/data/spectrograms.json';
+import hypnogramDataSleepEDFPath from 'assets/data/hypnogram-openbci-predicted.csv';
+import spectrogramData from 'assets/data/spectrograms-openbci-predicted.json';
 
 const SleepAnalysis = () => {
   const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);

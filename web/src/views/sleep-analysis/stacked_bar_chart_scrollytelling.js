@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, CardBody } from 'reactstrap';
 
-import hypnogramCSVPath from 'assets/data/hypnogram.csv';
+import hypnogramCSVPath from 'assets/data/hypnogram-openbci-predicted.csv';
 
 import D3Component from 'components/d3component';
 import WaypointDirection from 'components/waypoint_direction';
