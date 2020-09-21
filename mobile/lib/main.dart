@@ -1,6 +1,25 @@
+import 'package:grpc/grpc.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'protos/helloworld.pb.dart';
+
+void main() async {
+  // GRPC TEST
+  final channel = ClientChannel(
+    'localhost',
+    port: 9090,
+    options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+  );
+  final stub = GreeterClient(channel);
+
+  try {
+    var response = await stub.sayHello(HelloRequest()..name = 'world');
+    print('Greeter client received: ${response.message}');
+  } catch (e) {
+    print('Caught error: $e');
+  }
+  await channel.shutdown();
+  // END OF TEST
   runApp(MyApp());
 }
 

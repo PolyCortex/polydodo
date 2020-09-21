@@ -6,7 +6,7 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 
 ### GRPC and proto generation
 
-In order to be able to proceed to GRPC and proto generation, you need to run `sh ./install_grpc_plugins` under the protos/ folder.
+In order to be able to proceed to GRPC and proto generation, you need to run `sh ./install_grpc_python_plugin` under the protos/ folder.
 
 ### Backend development
 

@@ -17,14 +17,12 @@
   "protoc": {
     "compile_on_save": true,
     "options": [
-      "--proto_path=protos",
-      "--dart_out=mobile/lib/protos",
-      "--python_out=backend/protos",
-      "--grpc_python_out=backend/protos",
+      "--dart_out=mobile/lib",
+      "--python_out=backend",
+      "--grpc_python_out=backend",
       "--plugin=protoc-gen-grpc_python=/usr/bin/grpc_python_plugin",
-      "--js_out=web/src/protos",
-      "--grpc_node_out=web/src/protos",
-      "--plugin=protoc-gen-grpc_node=/usr/bin/grpc_node_plugin"
+      "--js_out=import_style=commonjs:web/src",
+      "--grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src"
     ]
   },
   "python.linting.enabled": true,

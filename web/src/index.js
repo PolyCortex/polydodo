@@ -12,27 +12,16 @@ import Performance from 'views/performance/performance';
 import ScrollToTop from 'components/scroll_to_top';
 import Emoji from 'components/emoji';
 
-// --------------
 
-var messages = require('./helloworld_pb');
-var services = require('./helloworld_grpc_pb');
+// GRPC TEST
+import {HelloRequest, HelloReply} from 'protos/helloworld_pb';
+import {GreeterClient} from 'protos/helloworld_grpc_web_pb';
 
-var grpc = require('grpc');
-
-var client = new services.GreeterClient('localhost:50051', grpc.credentials.createInsecure());
-var request = new messages.HelloRequest();
-var user;
-if (process.argv.length >= 3) {
-  user = process.argv[2];
-} else {
-  user = 'world';
-}
-request.setName(user);
-client.sayHello(request, function (err, response) {
-  console.log('Greeting:', response.getMessage());
-});
-
-// --------------
+const client = new GreeterClient('http://localhost:8080');
+const request = new HelloRequest();
+request.setName('World');
+client.sayHello(request, {}, (err, response) => console.log(response.getMessage()));
+// END OF TEST
 
 ReactDOM.render(
   <BrowserRouter basename={process.env.PUBLIC_URL}>
