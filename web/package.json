@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "Polycortex",
   "license": "MIT",
+  "homepage": "https://polycortex.github.io/polydodo",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",

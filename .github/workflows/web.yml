@@ -1,0 +1,43 @@
+name: Web
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: abelfodil/protoc-action@v1
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: --cwd web install
+      - run: protoc --proto_path=protos protos/* --js_out=web/src/protos
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: --cwd web build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Webapp
+          path: web/build
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          path: .
+      - uses: JamesIves/github-pages-deploy-action@3.6.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: Webapp
+          CLEAN: true
