@@ -20,7 +20,9 @@ import {GreeterClient} from 'protos/helloworld_grpc_web_pb';
 const client = new GreeterClient('http://localhost:8080');
 const request = new HelloRequest();
 request.setName('World');
-client.sayHello(request, {}, (err, response) => console.log(response.getMessage()));
+client.sayHello(request, {}, (err, response) => {
+  err ? console.log(err): console.log(response.getMessage())
+});
 // END OF TEST
 
 ReactDOM.render(

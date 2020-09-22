@@ -17,7 +17,7 @@
   "protoc": {
     "compile_on_save": true,
     "options": [
-      "--dart_out=mobile/lib",
+      "--dart_out=grpc:mobile/lib",
       "--python_out=backend",
       "--grpc_python_out=backend",
       "--plugin=protoc-gen-grpc_python=/usr/bin/grpc_python_plugin",
