@@ -7,14 +7,15 @@ import 'protos/helloworld.pb.dart';
 void main() async {
   // GRPC TEST
   final channel = ClientChannel(
-    'localhost',
+    '10.0.2.2', // Emulator alias to host's loopback interface (when server is running on computer)
+    // 'localhost', // When server is running on phone
     port: 9090,
     options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
   );
   final stub = GreeterClient(channel);
 
   try {
-    var response = await stub.sayHello(HelloRequest()..name = 'world');
+    final response = await stub.sayHello(HelloRequest()..name = 'world');
     print('Greeter client received: ${response.message}');
   } catch (e) {
     print('Caught error: $e');
