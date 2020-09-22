@@ -14,8 +14,6 @@ To start the server:
 
 > python backend/app.py
 
-If you want to use the backend with the flutter app, you can't run the Envoy Proxy concurrently (only one process can access the 9090 port).
-
 ## Get requirements:
 
 > python -m venv .venv
