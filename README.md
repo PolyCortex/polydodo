@@ -6,7 +6,13 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 
 ### GRPC and proto generation
 
+First thing to do is to install protoc via dart's protoc_plugin. To do so:
+
+> flutter pub global activate protoc_plugin
+
 In order to be able to proceed to GRPC and proto generation, you need to run `sh ./install_grpc_python_plugin` under the protos/ folder.
+
+When you'll save `.proto` files, this will automatically generate langage specific code to use GRPC.
 
 ### Backend development
 
