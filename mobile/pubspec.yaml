@@ -37,14 +37,7 @@ dependencies:
   protobuf: ^1.0.1
   share: ^0.6.5
   uuid: ^2.2.2
-  hive: ^1.4.4
   usb_serial: ^0.2.4
-  flutter_blue: ^0.7.2
-  bloc: ^6.0.3
-  flutter_bloc: ^6.0.5
-  battery: ^1.0.5
-  share: ^0.6.5
-  archive: ^2.0.13
   binary: ^2.0.0
   csv: ^4.0.3
   path_provider: ^1.6.16
