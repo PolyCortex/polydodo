@@ -20,10 +20,16 @@ class Wallet {
       );
     }
     money -= amount;
-    receiver.receive(amount);
+    receiver._receive(amount);
   }
 
-  void receive(Money amount) {
+  void _receive(Money amount) {
     money += amount;
   }
+
+  @override
+  bool operator ==(other) => this.id == other.id;
+
+  @override
+  int get hashCode => super.hashCode;
 }

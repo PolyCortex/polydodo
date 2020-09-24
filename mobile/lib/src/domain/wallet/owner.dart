@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'package:polydodo/src/domain/unique_id.dart';
 
 class Owner {
@@ -8,8 +10,12 @@ class Owner {
   final String lastName;
   final int age;
 
-  Owner(this.id, this.firstName, this.lastName, this.age)
-      : assert(id != null),
+  Owner({
+    @required this.id,
+    @required this.firstName,
+    @required this.lastName,
+    @required this.age,
+  })  : assert(id != null),
         assert(firstName != null),
         assert(lastName != null) {
     if (firstName.length <= 0 || lastName.length <= 0) {
