@@ -10,8 +10,8 @@ import WaypointDirection from '../../components/waypoint_direction';
 
 import { useCSVData } from '../../hooks/api_hooks';
 
-import hypnogramDataSleepEDFPath from 'assets/data/hypnogram.csv';
-import spectrogramData from 'assets/data/spectrograms.json';
+import hypnogramDataSleepEDFPath from 'assets/data/hypnogram-openbci-predicted.csv';
+import spectrogramData from 'assets/data/spectrograms-openbci-predicted.json';
 
 const SpectrogramScrollyTelling = () => {
   const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
