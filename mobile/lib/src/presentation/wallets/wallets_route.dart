@@ -18,7 +18,6 @@ class WalletsRoute extends StatelessWidget {
       appBar: AppBar(title: Text('Polydodo')),
       body: BlocConsumer<WalletsCubit, WalletsState>(
         listener: (context, state) {
-          print(state.runtimeType);
           if (state is WalletsLoadFailure) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text('Unable to load Wallets because ${state.cause}'),
