@@ -1,4 +1,4 @@
-import 'package:Polydodo/protos/helloworld.pbgrpc.dart';
+import 'package:polydodo/protos/helloworld.pbgrpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:flutter/material.dart';
 
