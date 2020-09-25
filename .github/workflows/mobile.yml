@@ -25,7 +25,7 @@ jobs:
         with:
           enable-dart: true
 
-      - run: protoc --proto_path=protos protos/* --dart_out=mobile/lib/protos
+      - run: protoc --proto_path=protos protos/* --dart_out=grpc:mobile/lib/protos
         working-directory: .
 
       - run: flutter pub get
