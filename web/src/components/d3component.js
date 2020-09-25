@@ -21,6 +21,9 @@ const D3Component = React.memo(({ callback, data, useDiv = false }) => {
 D3Component.propTypes = {
   callback: PropTypes.func.isRequired,
   data: PropTypes.any,
+  // Using a div node instead of a svg node allows usage of child components of other types:
+  // i.g., for performance issues, we used both canvas & svg child elements in a visualisation.
+  useDiv: PropTypes.bool,
 };
 
 export default D3Component;

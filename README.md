@@ -2,18 +2,40 @@
 
 This projects aims to offer a comprehensive guide to **record polysomnographic EEG data from home** with an OpenBCI, a website to **upload sleep data** to our classifier and an **interactive visualisation** tool to observe the classified night of sleep.
 
-## Requirements
+## Dev requirements
 
-### GRPC and proto generation
+### gRPC
 
-First thing to do is to install protoc via dart's protoc_plugin. To do so:
+- Install `gRPC` package from your distribution's package manager
+- Install `protoc` compiler
 
-> flutter pub global activate protoc_plugin
+### Web
 
-In order to be able to proceed to GRPC and proto generation, you need to run `sh ./install_grpc_python_plugin` under the protos/ folder.
+- Install Yarn package manager
+- `yarn global add protoc-gen-grpc-web`
+- Add `$HOME/.yarn/bin` to `PATH`
 
-When you'll save `.proto` files, this will automatically generate langage specific code to use GRPC.
+### Python
 
-### Backend development
+- Install Python 3 and pip
+- Consider using `venv` to create a virtual environment
+- Install `protoc-gen-grpc_python` using a package manager or by compiling the [source code](https://github.com/grpc/grpc) 
+- Create a simlink named `protoc-gen-grpc_python` to `grpc_python_plugin` using `ln -nsf $(which grpc_python_plugin) /some/where/in/your/path/protoc-gen-grpc_python`
 
-You'll need install venv with `python -m pip install virtualenv`. Then you can create a virtual environment. Be sure that you link your venv `python` executable to your code editor/terminal.
+### Flutter
+
+- Install the latest stable version of flutter
+- Run `flutter pub global activate protoc_plugin`
+- Add `$HOME/.pub-cache/bin` to `PATH`
+
+### VS Code
+
+- Install VS Code
+- Install the project's recommended extensions
+
+## Dev workflow
+
+- Open root folder on VS Code
+- Install node modules by running `yarn install --cwd web`
+- Fetch Flutter dependencies through the `Flutter` extension
+- Compile all protos through `proto3` extension
