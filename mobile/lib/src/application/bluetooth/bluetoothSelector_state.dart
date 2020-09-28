@@ -1,11 +1,11 @@
-import 'package:polydodo/src/domain/bluetooth/bluetooth.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 abstract class BluetoothStates {}
 
 class BluetoothInitial extends BluetoothStates {}
 
 class BluetoothSearching extends BluetoothInitial {
-  final List<Bluetooth> devices;
+  final List<BluetoothDevice> devices;
 
   BluetoothSearching(this.devices);
 }

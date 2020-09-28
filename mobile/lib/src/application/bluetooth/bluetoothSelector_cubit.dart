@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:polydodo/src/domain/domain.dart';
 import 'bluetoothSelector_state.dart';
 
@@ -19,7 +20,7 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
         .onError((e) => emit(BluetoothSearchError(e)));
   }
 
-  void connect(Bluetooth bluetoothDevice) async {
+  void connect(BluetoothDevice bluetoothDevice) async {
     emit(BluetoothConnecting());
 
     _bluetoothRepository
