@@ -30,7 +30,6 @@ class BluetoothRepository implements IBluetoothRepository {
     flutterBlue.startScan();
   }
 
-  @override
   Future<void> addDevice(BluetoothDevice device) async {
     await Future.delayed(Duration(milliseconds: 400));
     Bluetooth d = new Bluetooth(device);
