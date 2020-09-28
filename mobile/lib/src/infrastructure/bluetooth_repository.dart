@@ -49,7 +49,6 @@ class BluetoothRepository implements IBluetoothRepository {
     selectedDevice.device.discoverServices().then((services) => {
           for (BluetoothService service in services)
             {
-              print("Found Service"),
               if (service.toString().contains(Bluetooth.BLE_SERVICE))
                 {
                   for (BluetoothCharacteristic characteristic
@@ -59,7 +58,6 @@ class BluetoothRepository implements IBluetoothRepository {
                           .toString()
                           .contains(Bluetooth.BLE_RECEIVE))
                         {
-                          print("Found receive"),
                           selectedDevice
                               .setReceiveCharacteristic(characteristic)
                         }
@@ -67,7 +65,6 @@ class BluetoothRepository implements IBluetoothRepository {
                           .toString()
                           .contains(Bluetooth.BLE_SEND))
                         {
-                          print("Found send"),
                           selectedDevice
                               .setSendCharacteristic(characteristic)
                         }
@@ -78,9 +75,6 @@ class BluetoothRepository implements IBluetoothRepository {
   }
 
   Future<Stream<List<int>>> startDataStream() async {
-    print(selectedDevice.receive);
-    print("haha");
-    print(selectedDevice.send);
     await selectedDevice.receive.setNotifyValue(true);
 
     String b = 'b';
