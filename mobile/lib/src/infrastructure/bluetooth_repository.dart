@@ -5,6 +5,10 @@ import 'package:polydodo/src/domain/bluetooth/i_bluetooth_repository.dart';
 import 'package:polydodo/src/domain/bluetooth/bluetooth.dart';
 
 class BluetoothRepository implements IBluetoothRepository {
+  
+  static const startStreamChar = 'b';
+  static const stopStreamChar = 's';
+
   Bluetooth selectedDevice;
   static List<Bluetooth> bluetoothPersistency = [];
   final streamController = StreamController<List<Bluetooth>>();
@@ -64,10 +68,7 @@ class BluetoothRepository implements IBluetoothRepository {
                       else if (characteristic
                           .toString()
                           .contains(Bluetooth.BLE_SEND))
-                        {
-                          selectedDevice
-                              .setSendCharacteristic(characteristic)
-                        }
+                        {selectedDevice.setSendCharacteristic(characteristic)}
                     }
                 }
             }
@@ -77,15 +78,13 @@ class BluetoothRepository implements IBluetoothRepository {
   Future<Stream<List<int>>> startDataStream() async {
     await selectedDevice.receive.setNotifyValue(true);
 
-    String b = 'b';
-    await selectedDevice.send.write(b.codeUnits);
+    await selectedDevice.send.write(startStreamChar.codeUnits);
     return selectedDevice.receive.value;
   }
 
   void stopDataStream() async {
-    String s = 's';
     await selectedDevice.receive.setNotifyValue(false);
-    await selectedDevice.send.write(s.codeUnits);
+    await selectedDevice.send.write(stopStreamChar.codeUnits);
   }
 
   @override
