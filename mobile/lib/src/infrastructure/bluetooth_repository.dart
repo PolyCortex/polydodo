@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:polydodo/src/domain/bluetooth/i_bluetooth_repository.dart';
+import 'package:polydodo/src/domain/domain.dart';
 
 class BluetoothRepository implements IBluetoothRepository {
   static const String BLE_SERVICE = "fe84";
