@@ -4,7 +4,7 @@ abstract class BluetoothStates {}
 
 class BluetoothInitial extends BluetoothStates {}
 
-class BluetoothSearching extends BluetoothInitial {
+class BluetoothSearching extends BluetoothStates {
   final List<BluetoothDevice> devices;
 
   BluetoothSearching(this.devices);

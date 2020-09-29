@@ -1,6 +1,8 @@
 // EEGData can be extended later to add our metrics
+import 'package:polydodo/src/domain/domain.dart';
+
 class EEGData {
-  String id;
+  UniqueId id;
   List<List> _values;
   int sampleCounter = 0;
 
@@ -10,5 +12,5 @@ class EEGData {
 
   List<List> get values => _values;
 
-  String get fileName => id;
+  String get fileName => id.toString();
 }
