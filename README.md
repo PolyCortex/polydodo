@@ -19,7 +19,7 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 
 - Install Python 3 and pip
 - Consider using `venv` to create a virtual environment
-- Install `protoc-gen-grpc_python` using a package manager or by compiling the [source code](https://github.com/grpc/grpc) 
+- Install gRPC using a package manager or by compiling the [source code](https://github.com/grpc/grpc) 
 - Create a simlink named `protoc-gen-grpc_python` to `grpc_python_plugin` using `ln -nsf $(which grpc_python_plugin) /some/where/in/your/path/protoc-gen-grpc_python`
 
 ### Flutter

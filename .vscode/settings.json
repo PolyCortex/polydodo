@@ -16,6 +16,7 @@
   },
   "protoc": {
     "compile_on_save": true,
+    "compile_all_path": "protos",
     "options": [
       "--dart_out=grpc:mobile/lib",
       "--python_out=backend",
