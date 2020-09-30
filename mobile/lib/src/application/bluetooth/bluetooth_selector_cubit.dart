@@ -25,7 +25,7 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
 
     _bluetoothRepository
         .connect(bluetoothDevice)
-        .then((value) => emit(BluetoothConnectionSucess()))
+        .then((value) => emit(BluetoothConnectionSuccess()))
         .catchError((e) => {emit(BluetoothConnectionFailure(e))});
   }
 }

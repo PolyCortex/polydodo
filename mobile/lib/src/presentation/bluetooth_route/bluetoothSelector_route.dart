@@ -25,7 +25,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
               content:
                   Text('Unable to connect to device because ${state.cause}'),
             ));
-          } else if (state is BluetoothConnectionSucess) {
+          } else if (state is BluetoothConnectionSuccess) {
             Navigator.push(
                 context,
                 MaterialPageRoute(

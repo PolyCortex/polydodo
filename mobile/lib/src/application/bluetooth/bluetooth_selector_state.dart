@@ -18,7 +18,7 @@ class BluetoothSearchError extends BluetoothStates {
 
 class BluetoothConnecting extends BluetoothStates {}
 
-class BluetoothConnectionSucess extends BluetoothStates {}
+class BluetoothConnectionSuccess extends BluetoothStates {}
 
 class BluetoothConnectionFailure extends BluetoothStates {
   final Exception cause;

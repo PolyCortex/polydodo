@@ -34,8 +34,7 @@ class BluetoothRepository implements IBluetoothRepository {
     flutterBlue.startScan();
   }
 
-  Future<void> addDevice(BluetoothDevice device) async {
-    await Future.delayed(Duration(milliseconds: 400));
+  void addDevice(BluetoothDevice device) {
     final idx = bluetoothPersistency.indexOf(device);
     idx == -1 ? bluetoothPersistency.add(device) : bluetoothPersistency[idx] = device;
     streamController.add(bluetoothPersistency);
