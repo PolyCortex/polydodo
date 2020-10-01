@@ -8,7 +8,8 @@ class EEGDataRepository implements IEEGDataRepository {
   EEGData recordingData;
 
   void createRecordingFromStream(Stream<List<int>> stream) {
-    recordingData = new EEGData(UniqueId.from(DateTime.now().toString()), initializeData());
+    recordingData =
+        new EEGData(UniqueId.from(DateTime.now().toString()), initializeData());
     stream.listen((value) {
       addData(value);
     });
