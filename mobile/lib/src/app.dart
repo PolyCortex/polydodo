@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polydodo/src/presentation/bluetooth_route/bluetoothSelector_route.dart';
+import 'package:polydodo/src/presentation/wallets/wallets_route.dart';
 
-import 'presentation/presentation.dart';
 import 'locator.dart';
 import 'theme.dart';
 

@@ -1,4 +1,5 @@
-import 'package:polydodo/src/domain/domain.dart';
+import 'package:polydodo/src/domain/bluetooth/i_bluetooth_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
 
 import 'data_states.dart';
 import 'package:bloc/bloc.dart';

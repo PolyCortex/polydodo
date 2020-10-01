@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:polydodo/src/domain/domain.dart';
+import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
+import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
+import 'package:polydodo/src/domain/unique_id.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData recordingData;

@@ -4,19 +4,19 @@ abstract class BluetoothStates {}
 
 class BluetoothInitial extends BluetoothStates {}
 
-class BluetoothSearching extends BluetoothStates {
+class BluetoothSearchInProgress extends BluetoothStates {
   final List<BluetoothDevice> devices;
 
-  BluetoothSearching(this.devices);
+  BluetoothSearchInProgress(this.devices);
 }
 
-class BluetoothSearchError extends BluetoothStates {
+class BluetoothSearchFailure extends BluetoothStates {
   final Exception cause;
 
-  BluetoothSearchError(this.cause);
+  BluetoothSearchFailure(this.cause);
 }
 
-class BluetoothConnecting extends BluetoothStates {}
+class BluetoothConnectionInProgress extends BluetoothStates {}
 
 class BluetoothConnectionSuccess extends BluetoothStates {}
 

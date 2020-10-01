@@ -1,5 +1,5 @@
 // EEGData can be extended later to add our metrics
-import 'package:polydodo/src/domain/domain.dart';
+import '../unique_id.dart';
 
 class EEGData {
   UniqueId id;

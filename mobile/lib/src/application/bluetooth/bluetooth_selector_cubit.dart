@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:polydodo/src/domain/domain.dart';
+import 'package:polydodo/src/domain/bluetooth/i_bluetooth_repository.dart';
 import 'bluetooth_selector_state.dart';
 
 class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
@@ -16,12 +16,12 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
     _bluetoothRepository.initializeBluetooth();
     _bluetoothRepository
         .watch()
-        .listen((devices) => emit(BluetoothSearching(devices)))
-        .onError((e) => emit(BluetoothSearchError(e)));
+        .listen((devices) => emit(BluetoothSearchInProgress(devices)))
+        .onError((e) => emit(BluetoothSearchFailure(e)));
   }
 
   void connect(BluetoothDevice bluetoothDevice) async {
-    emit(BluetoothConnecting());
+    emit(BluetoothConnectionInProgress());
 
     _bluetoothRepository
         .connect(bluetoothDevice)

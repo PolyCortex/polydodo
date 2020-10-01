@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/application.dart';
-import 'package:polydodo/src/presentation/presentation.dart';
+import 'package:polydodo/src/application/bluetooth/bluetooth_selector_cubit.dart';
+import 'package:polydodo/src/application/bluetooth/bluetooth_selector_state.dart';
+import 'package:polydodo/src/presentation/recording/recording_route.dart';
 
 class BluetoothSelectorRoute extends StatelessWidget {
   static const name = 'bluetoothRoute';
@@ -15,7 +16,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
       body: BlocConsumer<BluetoothSelectorCubit, BluetoothStates>(
         listener: (context, state) {
           print(state.runtimeType);
-          if (state is BluetoothSearchError) {
+          if (state is BluetoothSearchFailure) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
                   'Unable to search for bluetooth devices because ${state.cause}'),
@@ -34,7 +35,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is BluetoothSearching)
+          if (state is BluetoothSearchInProgress)
             return ListView.builder(
                 itemCount: state.devices.length,
                 itemBuilder: (context, index) {
