@@ -32,13 +32,13 @@ jobs:
 
       - run: flutter test
 
-      - run: flutter build apk -v
+      - run: flutter build apk
       - uses: actions/upload-artifact@v2
         with:
           name: Android app
           path: mobile/build/app/outputs/flutter-apk/app-release.apk
 
-      - run: flutter build ios --release --no-codesign -v
+      - run: flutter build ios --release --no-codesign
       - uses: actions/upload-artifact@v2
         with:
           name: iOS app
