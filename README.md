@@ -42,5 +42,6 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 
 ## Running the server locally
 
-- `docker build . -f backend/Dockerfile -t polydodo`
-- `docker run -p 8080:8080 polydodo`
+- [Login](https://docs.github.com/en/free-pro-team@latest/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages#authenticating-with-a-personal-access-token) to Github Docker registry
+- `docker pull docker.pkg.github.com/polycortex/polydodo/backend:latest`
+- `docker run -p 8080:8080 docker.pkg.github.com/polycortex/polydodo/backend:latest`
