@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:polydodo/src/domain/bluetooth/i_bluetooth_repository.dart';
 
@@ -51,17 +52,28 @@ class BluetoothRepository implements IBluetoothRepository {
   }
 
   Future<void> connect(BluetoothDevice bluetoothDevice) async {
+    selectedDevice = bluetoothDevice;
+
     bluetoothPersistency.clear();
     flutterSubscription.pause();
     flutterBlue.stopScan();
 
-    selectedDevice = bluetoothDevice;
-    await bluetoothDevice
-        .connect()
-        .then((value) => findRelevantCharacteristics())
-        .timeout(Duration(seconds: 4),
-            onTimeout: () =>
-                {disconnect(), throw Exception("Connection Timed out")});
+    try {
+      await bluetoothDevice
+          .connect()
+          .then((value) => findRelevantCharacteristics())
+          .timeout(Duration(seconds: 6),
+              onTimeout: () =>
+                  {disconnect(), throw Exception("Connection Timed out")});
+    } catch (e) {
+      print(e);
+      if (e is PlatformException) {
+        if (e.code != "already_connected")
+          throw Exception(e.details);
+      }
+      else
+        throw e;
+    }
 
     return;
   }
@@ -75,26 +87,19 @@ class BluetoothRepository implements IBluetoothRepository {
 
   void findRelevantCharacteristics() {
     selectedDevice.discoverServices().then((services) => {
-          for (BluetoothService service in services)
-            {
-              if (service.toString().contains(BLE_SERVICE))
-                {
-                  for (BluetoothCharacteristic characteristic
-                      in service.characteristics)
-                    {
-                      if (characteristic.toString().contains(BLE_RECEIVE))
-                        {receiveCharacteristic = characteristic}
-                      else if (characteristic.toString().contains(BLE_SEND))
-                        {sendCharacteristic = characteristic}
-                    }
-                }
-            }
+          for (BluetoothCharacteristic characteristic in (services.where(
+            (service) => service.uuid.toString().contains(BLE_SERVICE))).first .characteristics)
+          {
+            if (characteristic.uuid.toString().contains(BLE_RECEIVE))
+              {receiveCharacteristic = characteristic}
+            else if (characteristic.uuid.toString().contains(BLE_SEND))
+              {sendCharacteristic = characteristic}
+          },
+          if (receiveCharacteristic == null)
+            throw Exception('Device is missing receive Characteristic'),
+          if (sendCharacteristic == null)
+            throw Exception('Device is missing send Characteristic')
         });
-
-    if (receiveCharacteristic == null)
-      throw Exception('Device is missing receive Characteristic');
-    if (sendCharacteristic == null)
-      throw Exception('Device is missing send Characteristic');
   }
 
   Future<Stream<List<int>>> startDataStream() async {

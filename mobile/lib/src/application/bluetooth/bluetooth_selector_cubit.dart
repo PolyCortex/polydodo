@@ -17,7 +17,7 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
 
   void startSearching() {
     _bluetoothRepository.initializeBluetooth();
-    
+
     if (!subscriptionInitialized) {
       subscriptionInitialized = true;
       _bluetoothRepository
@@ -39,6 +39,7 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
   }
 
   void resetSearch() {
+    _bluetoothRepository.disconnect();
     startSearching();
   }
 }
