@@ -16,7 +16,7 @@
   "eslintConfig": {
     "extends": "react-app",
     "ignorePatterns": [
-      "**/*_pb.js"
+      "src/protos/"
     ]
   },
   "browserslist": [
