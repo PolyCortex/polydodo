@@ -18,7 +18,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
           if (state is BluetoothSearchError) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                  'Unable to search for bluetooth devices Wallets because ${state.cause}'),
+                  'Unable to search for bluetooth devices because ${state.cause}'),
             ));
           } else if (state is BluetoothConnectionFailure) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -40,8 +40,9 @@ class BluetoothSelectorRoute extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                        onTap: () => BlocProvider.of<BluetoothSelectorCubit>(context)
-                            .connect(state.devices[index]),
+                        onTap: () =>
+                            BlocProvider.of<BluetoothSelectorCubit>(context)
+                                .connect(state.devices[index]),
                         title: Text(state.devices[index].name),
                         subtitle: Text(state.devices[index].id.toString())),
                   );
