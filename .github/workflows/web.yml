@@ -17,7 +17,7 @@ jobs:
       - uses: abelfodil/protoc-action@v1
         with:
           enable-grpc-web: true
-      - run: protoc --proto_path=protos protos/* --js_out=web/src/protos --grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src/protos
+      - run: protoc protos/* --js_out=import_style=commonjs:web/src --grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src
       - run: yarn --cwd web install
       - run: yarn --cwd web build
       - uses: actions/upload-artifact@v2
