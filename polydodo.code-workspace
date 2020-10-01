@@ -9,11 +9,11 @@
       "path": "ai"
     },
     {
-      "name": "Backend",
+      "name": "Server",
       "path": "backend"
     },
     {
-      "name": "Mobile",
+      "name": "Mobile client",
       "path": "mobile"
     },
     {
