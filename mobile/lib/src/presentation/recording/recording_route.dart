@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< Updated upstream
-import 'package:polydodo/src/application/application.dart';
-=======
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_states.dart';
->>>>>>> Stashed changes
 
 class RecordingRoute extends StatelessWidget {
   static const name = 'recordingRoute';
