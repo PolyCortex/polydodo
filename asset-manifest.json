@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/polydodo/static/css/main.3c7ce497.chunk.css",
-    "main.js": "/polydodo/static/js/main.b803872a.chunk.js",
-    "main.js.map": "/polydodo/static/js/main.b803872a.chunk.js.map",
+    "main.js": "/polydodo/static/js/main.04208e59.chunk.js",
+    "main.js.map": "/polydodo/static/js/main.04208e59.chunk.js.map",
     "runtime-main.js": "/polydodo/static/js/runtime-main.ef5adf4f.js",
     "runtime-main.js.map": "/polydodo/static/js/runtime-main.ef5adf4f.js.map",
-    "static/css/2.78796bb9.chunk.css": "/polydodo/static/css/2.78796bb9.chunk.css",
-    "static/js/2.ff8e1712.chunk.js": "/polydodo/static/js/2.ff8e1712.chunk.js",
-    "static/js/2.ff8e1712.chunk.js.map": "/polydodo/static/js/2.ff8e1712.chunk.js.map",
+    "static/css/2.5a379331.chunk.css": "/polydodo/static/css/2.5a379331.chunk.css",
+    "static/js/2.f51d05fd.chunk.js": "/polydodo/static/js/2.f51d05fd.chunk.js",
+    "static/js/2.f51d05fd.chunk.js.map": "/polydodo/static/js/2.f51d05fd.chunk.js.map",
     "index.html": "/polydodo/index.html",
-    "precache-manifest.63db88d7247f6cd6ec5b19c92718eb72.js": "/polydodo/precache-manifest.63db88d7247f6cd6ec5b19c92718eb72.js",
+    "precache-manifest.a649ca75da2f21acad854e5c9facebd7.js": "/polydodo/precache-manifest.a649ca75da2f21acad854e5c9facebd7.js",
     "service-worker.js": "/polydodo/service-worker.js",
-    "static/css/2.78796bb9.chunk.css.map": "/polydodo/static/css/2.78796bb9.chunk.css.map",
+    "static/css/2.5a379331.chunk.css.map": "/polydodo/static/css/2.5a379331.chunk.css.map",
     "static/css/main.3c7ce497.chunk.css.map": "/polydodo/static/css/main.3c7ce497.chunk.css.map",
-    "static/js/2.ff8e1712.chunk.js.LICENSE.txt": "/polydodo/static/js/2.ff8e1712.chunk.js.LICENSE.txt",
+    "static/js/2.f51d05fd.chunk.js.LICENSE.txt": "/polydodo/static/js/2.f51d05fd.chunk.js.LICENSE.txt",
     "static/media/aep.png": "/polydodo/static/media/aep.fda414f1.png",
     "static/media/diptrace.png": "/polydodo/static/media/diptrace.e3ba6abc.png",
     "static/media/font-awesome.min.css": "/polydodo/static/media/fontawesome-webfont.fee66e71.woff",
@@ -30,9 +30,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.ef5adf4f.js",
-    "static/css/2.78796bb9.chunk.css",
-    "static/js/2.ff8e1712.chunk.js",
+    "static/css/2.5a379331.chunk.css",
+    "static/js/2.f51d05fd.chunk.js",
     "static/css/main.3c7ce497.chunk.css",
-    "static/js/main.b803872a.chunk.js"
+    "static/js/main.04208e59.chunk.js"
   ]
 }
