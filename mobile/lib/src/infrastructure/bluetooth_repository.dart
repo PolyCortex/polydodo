@@ -36,7 +36,9 @@ class BluetoothRepository implements IBluetoothRepository {
 
   void addDevice(BluetoothDevice device) {
     final idx = bluetoothPersistency.indexOf(device);
-    idx == -1 ? bluetoothPersistency.add(device) : bluetoothPersistency[idx] = device;
+    idx == -1
+        ? bluetoothPersistency.add(device)
+        : bluetoothPersistency[idx] = device;
     streamController.add(bluetoothPersistency);
   }
 
@@ -59,18 +61,10 @@ class BluetoothRepository implements IBluetoothRepository {
                   for (BluetoothCharacteristic characteristic
                       in service.characteristics)
                     {
-                      if (characteristic
-                          .toString()
-                          .contains(BLE_RECEIVE))
-                        {
-                          receiveCharacteristic = characteristic
-                        }
-                      else if (characteristic
-                          .toString()
-                          .contains(BLE_SEND))
-                        {
-                          sendCharacteristic = characteristic
-                        }
+                      if (characteristic.toString().contains(BLE_RECEIVE))
+                        {receiveCharacteristic = characteristic}
+                      else if (characteristic.toString().contains(BLE_SEND))
+                        {sendCharacteristic = characteristic}
                     }
                 }
             }
