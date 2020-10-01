@@ -14,23 +14,31 @@ class BluetoothRepository implements IBluetoothRepository {
   BluetoothCharacteristic sendCharacteristic;
   BluetoothCharacteristic receiveCharacteristic;
 
+  FlutterBlue flutterBlue;
+  StreamSubscription<List<ScanResult>> flutterSubscription;
   static List<BluetoothDevice> bluetoothPersistency = [];
   final streamController = StreamController<List<BluetoothDevice>>();
 
   void initializeBluetooth() {
-    FlutterBlue flutterBlue = FlutterBlue.instance;
-    flutterBlue.connectedDevices
-        .asStream()
-        .listen((List<BluetoothDevice> devices) {
-      for (BluetoothDevice device in devices) {
-        addDevice(device);
-      }
-    });
-    flutterBlue.scanResults.listen((List<ScanResult> results) {
-      for (ScanResult result in results) {
-        addDevice(result.device);
-      }
-    });
+    if (flutterSubscription == null) {
+      flutterBlue = FlutterBlue.instance;
+      flutterBlue.connectedDevices
+          .asStream()
+          .asBroadcastStream()
+          .listen((List<BluetoothDevice> devices) {
+        for (BluetoothDevice device in devices) {
+          addDevice(device);
+        }
+      });
+      flutterSubscription =
+          flutterBlue.scanResults.listen((List<ScanResult> results) {
+        for (ScanResult result in results) {
+          addDevice(result.device);
+        }
+      });
+    } else {
+      flutterSubscription.resume();
+    }
     flutterBlue.startScan();
   }
 
@@ -43,13 +51,26 @@ class BluetoothRepository implements IBluetoothRepository {
   }
 
   Future<void> connect(BluetoothDevice bluetoothDevice) async {
-    await bluetoothDevice.connect().then((value) =>
-        {selectedDevice = bluetoothDevice, findRelevantCharacteristics()});
+    bluetoothPersistency.clear();
+    flutterSubscription.pause();
+    flutterBlue.stopScan();
+
+    selectedDevice = bluetoothDevice;
+    await bluetoothDevice
+        .connect()
+        .then((value) => findRelevantCharacteristics())
+        .timeout(Duration(seconds: 4),
+            onTimeout: () =>
+                {disconnect(), throw Exception("Connection Timed out")});
+
     return;
   }
 
   void disconnect() async {
-    await selectedDevice.disconnect();
+    if (selectedDevice != null) {
+      await selectedDevice.disconnect();
+      selectedDevice = null;
+    }
   }
 
   void findRelevantCharacteristics() {
@@ -69,6 +90,11 @@ class BluetoothRepository implements IBluetoothRepository {
                 }
             }
         });
+
+    if (receiveCharacteristic == null)
+      throw Exception('Device is missing receive Characteristic');
+    if (sendCharacteristic == null)
+      throw Exception('Device is missing send Characteristic');
   }
 
   Future<Stream<List<int>>> startDataStream() async {

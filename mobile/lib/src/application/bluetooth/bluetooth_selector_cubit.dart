@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -6,6 +8,7 @@ import 'bluetooth_selector_state.dart';
 
 class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
   final IBluetoothRepository _bluetoothRepository;
+  bool subscriptionInitialized = false;
 
   BluetoothSelectorCubit(this._bluetoothRepository)
       : super(BluetoothInitial()) {
@@ -14,10 +17,15 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
 
   void startSearching() {
     _bluetoothRepository.initializeBluetooth();
-    _bluetoothRepository
-        .watch()
-        .listen((devices) => emit(BluetoothSearchInProgress(devices)))
-        .onError((e) => emit(BluetoothSearchFailure(e)));
+    
+    if (!subscriptionInitialized) {
+      subscriptionInitialized = true;
+      _bluetoothRepository
+          .watch()
+          .asBroadcastStream()
+          .listen((devices) => emit(BluetoothSearchInProgress(devices)))
+          .onError((e) => emit(BluetoothSearchFailure(e)));
+    }
   }
 
   void connect(BluetoothDevice bluetoothDevice) async {
@@ -26,6 +34,11 @@ class BluetoothSelectorCubit extends Cubit<BluetoothStates> {
     _bluetoothRepository
         .connect(bluetoothDevice)
         .then((value) => emit(BluetoothConnectionSuccess()))
-        .catchError((e) => {emit(BluetoothConnectionFailure(e))});
+        .catchError(
+            (e) => {emit(BluetoothConnectionFailure(e)), resetSearch()});
+  }
+
+  void resetSearch() {
+    startSearching();
   }
 }
