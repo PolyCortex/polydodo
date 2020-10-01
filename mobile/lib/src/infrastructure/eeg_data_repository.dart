@@ -5,13 +5,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
+import 'constants.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData recordingData;
 
   void createRecordingFromStream(Stream<List<int>> stream) {
     recordingData =
-        new EEGData(UniqueId.from(DateTime.now().toString()), initializeData());
+        new EEGData(UniqueId.from(DateTime.now().toString()), new List<List>());
     stream.listen((value) {
       addData(value);
     });
@@ -23,6 +24,7 @@ class EEGDataRepository implements IEEGDataRepository {
     final pathOfTheFileToWrite =
         directory.path + '/' + recordingData.fileName + ".txt";
     File file = File(pathOfTheFileToWrite);
+    recordingData.values.insertAll(0, OPEN_BCI_HEADER);
     String csv = const ListToCsvConverter().convert(recordingData.values);
     await file.writeAsString(csv);
   }
@@ -30,33 +32,6 @@ class EEGDataRepository implements IEEGDataRepository {
   // todo: implement export and import
   void importData() {}
   void exportData() {}
-
-  List<List> initializeData() {
-    List<List> values = new List<List>();
-    values.add(["%OpenBCI Raw EEG Data"]);
-    values.add(["%Number of channels = 4"]);
-    values.add(["%Sample Rate = 200 Hz"]);
-    values.add(["%Board = OpenBCI_GUI\$BoardGanglionBLE"]);
-    values.add([
-      "Sample Index",
-      " EXG Channel 0",
-      " EXG Channel 1",
-      " EXG Channel 2",
-      " EXG Channel 3",
-      " Accel Channel 0",
-      " Accel Channel 1",
-      " Accel Channel 2",
-      " Other",
-      " Other",
-      " Other",
-      " Other",
-      " Other",
-      " Timestamp",
-      " Timestamp (Formatted)"
-    ]);
-
-    return values;
-  }
 
   void addData(event) async {
     int packetID = event[0];
