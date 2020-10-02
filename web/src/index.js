@@ -17,6 +17,18 @@ import AnalyzeSleep from 'views/analyze-sleep';
 import ScrollToTop from 'components/scroll_to_top';
 import Emoji from 'components/emoji';
 
+// GRPC TEST
+import { HelloRequest } from 'protos/helloworld_pb';
+import { GreeterClient } from 'protos/helloworld_grpc_web_pb';
+
+const client = new GreeterClient('http://localhost:8080');
+const request = new HelloRequest();
+request.setName('World');
+client.sayHello(request, {}, (err, response) => {
+  err ? console.log(err) : console.log(response.getMessage());
+});
+// END OF TEST
+
 const underConstruction = () => {
   const text = {
     header_title: 'Under',

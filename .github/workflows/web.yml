@@ -13,14 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
       - uses: abelfodil/protoc-action@v1
-      - uses: borales/actions-yarn@v2.3.0
         with:
-          cmd: --cwd web install
-      - run: protoc --proto_path=protos protos/* --js_out=web/src/protos
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: --cwd web build
+          enable-grpc-web: true
+      - run: protoc protos/* --js_out=import_style=commonjs:web/src --grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src
+      - run: yarn --cwd web install
+      - run: yarn --cwd web build
       - uses: actions/upload-artifact@v2
         with:
           name: Webapp

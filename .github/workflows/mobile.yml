@@ -19,13 +19,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: "8.x"
       - uses: subosito/flutter-action@v1
       - uses: abelfodil/protoc-action@v1
         with:
           enable-dart: true
 
-      - run: protoc --proto_path=protos protos/* --dart_out=mobile/lib/protos
+      - run: protoc --proto_path=protos protos/* --dart_out=grpc:mobile/lib/protos
         working-directory: .
 
       - run: flutter pub get

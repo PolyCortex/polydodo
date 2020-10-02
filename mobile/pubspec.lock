@@ -179,6 +179,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.4"
+  googleapis_auth:
+    dependency: transitive
+    description:
+      name: googleapis_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.12"
+  grpc:
+    dependency: "direct main"
+    description:
+      name: grpc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0"
   hive:
     dependency: "direct main"
     description:
@@ -186,6 +200,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.4"
+<<<<<<< HEAD
   intl:
     dependency: transitive
     description:
@@ -193,6 +208,29 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+=======
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.2"
+  http2:
+    dependency: transitive
+    description:
+      name: http2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.4"
+>>>>>>> master
   matcher:
     dependency: transitive
     description:
@@ -227,6 +265,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "1.7.0"
   path_provider:
     dependency: "direct main"
@@ -270,6 +309,16 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1"
+=======
+    version: "1.8.0-nullsafety"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.2"
+>>>>>>> master
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -311,7 +360,7 @@ packages:
       name: share
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.5"
+    version: "0.6.5+1"
   sky_engine:
     dependency: transitive
     description: flutter
