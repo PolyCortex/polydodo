@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package protos.polydodo;
+
+import "protos/google/protobuf/timestamp.proto";
+
+
+service ClassificationService {
+  rpc  GetSleepStages (stream GetSleepStagesRequest) returns (GetSleepStagesResponse) {}
+}
+
+message SubjectInformation {
+  uint32 age = 1;
+  enum Sex {
+    FEMALE = 0;
+    MALE = 1;
+  }
+  Sex sex = 2;
+}
+
+message SleepJournal {
+  google.protobuf.Timestamp recordingStartTime = 1;
+  google.protobuf.Timestamp bedTime = 2;
+  google.protobuf.Timestamp outOfBedTime = 3;
+  google.protobuf.Timestamp recordingStopTime = 4;
+}
+
+message EEGFileMetaData {
+  string fileName = 1;
+  string fileType = 2;
+
+  SleepJournal journal = 3;
+  SubjectInformation subjectInformation = 4;
+}
+
+message EEGFile {
+  bytes content = 1;
+}
+
+message GetSleepStagesRequest {
+  oneof request {
+    EEGFileMetaData metadata = 1;
+    EEGFile file = 2;
+  }
+}
+
+message GetSleepStagesResponse {
+
+}
