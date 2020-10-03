@@ -9,16 +9,35 @@ service ClassificationService {
   rpc  GetSleepStages (stream GetSleepStagesRequest) returns (GetSleepStagesResponse) {}
 }
 
+enum Sex {
+  FEMALE = 0;
+  MALE = 1;
+}
+
+enum AcquisitionBoard {
+  OPENBCI_GANGLION = 0;
+  OPENBCI_CYTON = 1;
+}
+
+enum FileType {
+  BINARY = 0;
+  CSV = 1;
+}
+
+enum SleepStage {
+  W = 0;
+  N1 = 1;
+  N2 = 2;
+  N3 = 3;
+  REM = 4;
+}
+
 /*
 * GetSleepStagesRequest
 */
 
 message SubjectInformation {
   uint32 age = 1;
-  enum Sex {
-    FEMALE = 0;
-    MALE = 1;
-  }
   Sex sex = 2;
 }
 
@@ -30,9 +49,8 @@ message SleepJournal {
 }
 
 message EEGFileMetaData {
-  string fileName = 1;    // TODO: as-t'on vraiment besoin du nom du fichier?
-  string fileType = 2;    // TODO: on pourrait peut-être faire un enum pour n'accepter que les fichiers inscrits
-  int32 samplingRate = 3; // TODO: ou spécifier le board (avec enum)
+  AcquisitionBoard board = 1;
+  FileType fileType = 2;
 
   SleepJournal journal = 4;
   SubjectInformation subjectInformation = 5;
@@ -56,22 +74,14 @@ message GetSleepStagesRequest {
 * GetSleepStagesResponse
 */
 
-enum SleepStage {
-  W = 0;
-  N1 = 1;
-  N2 = 2;
-  N3 = 3;
-  REM = 4;
-}
-
 message LabelledEpoch {
   google.protobuf.Timestamp timestamp = 1;
   SleepStage sleepStage = 2;
 }
 
 message Annotation {
-  google.protobuf.Timestamp onset = 1;    // [timestamp] time at which the annotation started
-  google.protobuf.Timestamp offset = 2;   // [timestamp] time at which the annotation ended
+  google.protobuf.Timestamp onset = 1;    // time at which the annotation started
+  google.protobuf.Timestamp offset = 2;   // time at which the annotation ended
   uint32 proportion = 3;                  // [ratio] proportion of the night (between bed & out of bed time)
   uint32 duration = 4;                    // [seconds] duration of this annotation
 }
@@ -89,8 +99,8 @@ message Spectrogram {
 }
 
 message SleepReport {
-  google.protobuf.Timestamp sleepOnset = 1;   // [timestamp] time at which the subject fell asleep
-  google.protobuf.Timestamp sleepOffset = 2;  // [timestamp] time at which the subject woke up
+  google.protobuf.Timestamp sleepOnset = 1;   // time at which the subject fell asleep
+  google.protobuf.Timestamp sleepOffset = 2;  // time at which the subject woke up
 
   uint32 totalRecordingTime = 3;        // [seconds] total amount of time during which the recording equipment is activated (either streaming or recording).
   uint32 totalBedTime = 4;              // [seconds] total amount of time during which the patient is in bed with recording equipment activated.
