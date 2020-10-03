@@ -8,14 +8,24 @@ import 'package:polydodo/src/domain/unique_id.dart';
 import 'constants.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
+  bool initializeStream = false;
   EEGData recordingData;
+  List lastSampleData = [0, 0, 0, 0, 0];
+  int packetLoss;
+  int totalPackets;
+  int nextPacketId;
 
   void createRecordingFromStream(Stream<List<int>> stream) {
     recordingData =
         new EEGData(UniqueId.from(DateTime.now().toString()), new List<List>());
-    stream.listen((value) {
-      addData(value);
-    });
+    packetLoss = 0;
+    totalPackets = 0;
+    if (!initializeStream) {
+      initializeStream = true;
+      stream.listen((value) {
+        addData(value);
+      });
+    }
   }
 
   void stopRecordingFromStream() async {
@@ -24,8 +34,10 @@ class EEGDataRepository implements IEEGDataRepository {
     final pathOfTheFileToWrite =
         directory.path + '/' + recordingData.fileName + ".txt";
     File file = File(pathOfTheFileToWrite);
-    recordingData.values.insertAll(0, OPEN_BCI_HEADER);
-    String csv = const ListToCsvConverter().convert(recordingData.values);
+    List<List> fileContent = new List<List>();
+    fileContent.addAll(OPEN_BCI_HEADER);
+    fileContent.addAll(recordingData.values);
+    String csv = const ListToCsvConverter().convert(fileContent);
     await file.writeAsString(csv);
   }
 
@@ -33,20 +45,52 @@ class EEGDataRepository implements IEEGDataRepository {
   void importData() {}
   void exportData() {}
 
-  void addData(event) async {
+  void addData(List event) async {
+    //print("Lost packets: " + packetLoss.toString());
+    //print("Total packets: " + totalPackets.toString());
+    //print("Lost percentage: " +
+    //   (packetLoss.toDouble() / totalPackets.toDouble()).toString());
+    if (event.length != 20) {
+      print("Invalid Event");
+      return;
+    }
+    totalPackets++;
     int packetID = event[0];
 
     // todo: handle packet id 0 (raw data) and possibly impedence for signal validation
-    if (packetID >= 101 && packetID <= 200) {
-      List data = formatData(event);
-      data = handleNegativesAndConvertToVolts(data);
+    if (packetID == 0) {
+      nextPacketId = 101;
+
+      List data = parseRaw(event);
+      data = convertToMicrovolts(data, false);
+
+      recordingData.values.add(data.sublist(0, 15));
+    } else if (packetID >= 101 && packetID <= 200) {
+      // print(packetID);
+      // print(nextPacketId);
+      packetLoss += packetID - nextPacketId;
+      nextPacketId = packetID + 1;
+      List data = parse19Bit(event);
+      data = convertToMicrovolts(data, true);
 
       recordingData.values.add(data.sublist(0, 15));
       recordingData.values.add(data.sublist(15, 30));
     }
   }
 
-  List formatData(event) {
+  List parseRaw(event) {
+    List data = getListForCSV();
+
+    data[0] = recordingData.sampleCounter++;
+    data[1] = (event[1] << 16) | (event[2] << 8) | event[3];
+    data[2] = (event[4] << 16) | (event[5] << 8) | event[6];
+    data[3] = (event[7] << 16) | (event[8] << 8) | event[9];
+    data[4] = (event[10] << 16) | (event[11] << 8) | event[12];
+
+    return data;
+  }
+
+  List parse19Bit(event) {
     // Test event, comment scale factor
     // event = [ 101, 0, 0, 0, 0, 8, 0, 5, 0, 0, 72, 0, 9, 240, 1, 176, 0, 48, 0, 8]; // Positive Test
     // Expected [[0, 2, 10, 4], [262148, 507910, 393222, 8]]
@@ -85,19 +129,27 @@ class EEGDataRepository implements IEEGDataRepository {
     return data;
   }
 
-  List handleNegativesAndConvertToVolts(data) {
+  List convertToMicrovolts(List data, bool isDelta) {
     for (int i = 1; i < 5; ++i) {
       for (int j = 0; j < 2; ++j) {
+        if (j == 1 && !isDelta) break;
+
         int offset = 15 * j;
         String binary = data[i + offset].toRadixString(2);
 
-        if (binary[binary.length - 1] == '1') {
+        // Handle negatives
+        if (isDelta && binary[binary.length - 1] == '1') {
           data[i + offset] = (~data[i + offset] & 524287 | 1) * -1;
         }
 
         // Convert to microvolts using the scale factor
         data[i + offset] =
             data[i + offset].toDouble() * (1200000 / (8388607.0 * 1.5 * 51.0));
+
+        // Convert delta
+        if (isDelta) data[i + offset] = lastSampleData[i] - data[i + offset];
+
+        lastSampleData[i] = data[i + offset];
       }
     }
 
