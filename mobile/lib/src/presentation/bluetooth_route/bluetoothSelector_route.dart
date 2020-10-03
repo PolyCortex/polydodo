@@ -49,7 +49,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
                   );
                 });
           else
-            return new ListView();
+            return Container();
         },
       ),
     );
