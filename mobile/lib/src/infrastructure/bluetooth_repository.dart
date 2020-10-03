@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:polydodo/src/domain/bluetooth/i_bluetooth_repository.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
+import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
+import 'package:polydodo/src/domain/unique_id.dart';
 
-class BluetoothRepository implements IBluetoothRepository {
+class BluetoothRepository implements IAcquisitionDeviceRepository {
   static const String BLE_SERVICE = "fe84";
   static const String BLE_RECEIVE = "2d30c082";
   static const String BLE_SEND = "2d30c083";
@@ -17,8 +19,8 @@ class BluetoothRepository implements IBluetoothRepository {
 
   FlutterBlue flutterBlue;
   StreamSubscription<List<ScanResult>> flutterSubscription;
-  static List<BluetoothDevice> bluetoothPersistency = [];
-  final streamController = StreamController<List<BluetoothDevice>>();
+  static List<AcquisitionDevice> bluetoothPersistency = [];
+  final streamController = StreamController<List<AcquisitionDevice>>();
 
   void initializeBluetooth() {
     if (flutterSubscription == null) {
@@ -43,7 +45,11 @@ class BluetoothRepository implements IBluetoothRepository {
     flutterBlue.startScan();
   }
 
-  void addDevice(BluetoothDevice device) {
+  void addDevice(BluetoothDevice bluetoothDevice) {
+    AcquisitionDevice device = AcquisitionDevice(
+        UniqueId.from(bluetoothDevice.id.toString()),
+        bluetoothDevice.name,
+        bluetoothDevice);
     final idx = bluetoothPersistency.indexOf(device);
     idx == -1
         ? bluetoothPersistency.add(device)
@@ -51,15 +57,15 @@ class BluetoothRepository implements IBluetoothRepository {
     streamController.add(bluetoothPersistency);
   }
 
-  Future<void> connect(BluetoothDevice bluetoothDevice) async {
-    selectedDevice = bluetoothDevice;
+  Future<void> connect(AcquisitionDevice device) async {
+    selectedDevice = device.interface;
 
     bluetoothPersistency.clear();
     flutterSubscription.pause();
     flutterBlue.stopScan();
 
     try {
-      await bluetoothDevice
+      await device.interface
           .connect()
           .then((value) => findRelevantCharacteristics())
           .timeout(Duration(seconds: 6),
@@ -68,10 +74,8 @@ class BluetoothRepository implements IBluetoothRepository {
     } catch (e) {
       print(e);
       if (e is PlatformException) {
-        if (e.code != "already_connected")
-          throw Exception(e.details);
-      }
-      else
+        if (e.code != "already_connected") throw Exception(e.details);
+      } else
         throw e;
     }
 
@@ -88,13 +92,15 @@ class BluetoothRepository implements IBluetoothRepository {
   void findRelevantCharacteristics() {
     selectedDevice.discoverServices().then((services) => {
           for (BluetoothCharacteristic characteristic in (services.where(
-            (service) => service.uuid.toString().contains(BLE_SERVICE))).first .characteristics)
-          {
-            if (characteristic.uuid.toString().contains(BLE_RECEIVE))
-              {receiveCharacteristic = characteristic}
-            else if (characteristic.uuid.toString().contains(BLE_SEND))
-              {sendCharacteristic = characteristic}
-          },
+                  (service) => service.uuid.toString().contains(BLE_SERVICE)))
+              .first
+              .characteristics)
+            {
+              if (characteristic.uuid.toString().contains(BLE_RECEIVE))
+                {receiveCharacteristic = characteristic}
+              else if (characteristic.uuid.toString().contains(BLE_SEND))
+                {sendCharacteristic = characteristic}
+            },
           if (receiveCharacteristic == null)
             throw Exception('Device is missing receive Characteristic'),
           if (sendCharacteristic == null)
@@ -115,5 +121,5 @@ class BluetoothRepository implements IBluetoothRepository {
   }
 
   @override
-  Stream<List<BluetoothDevice>> watch() => streamController.stream;
+  Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }
