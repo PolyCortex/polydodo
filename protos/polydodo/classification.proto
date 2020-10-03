@@ -9,6 +9,10 @@ service ClassificationService {
   rpc  GetSleepStages (stream GetSleepStagesRequest) returns (GetSleepStagesResponse) {}
 }
 
+/*
+* GetSleepStagesRequest
+*/
+
 message SubjectInformation {
   uint32 age = 1;
   enum Sex {
@@ -26,11 +30,15 @@ message SleepJournal {
 }
 
 message EEGFileMetaData {
-  string fileName = 1;
-  string fileType = 2;
+  string fileName = 1;    // TODO: as-t'on vraiment besoin du nom du fichier?
+  string fileType = 2;    // TODO: on pourrait peut-être faire un enum pour n'accepter que les fichiers inscrits
+  int32 samplingRate = 3; // TODO: ou spécifier le board (avec enum)
 
-  SleepJournal journal = 3;
-  SubjectInformation subjectInformation = 4;
+  SleepJournal journal = 4;
+  SubjectInformation subjectInformation = 5;
+
+  bool includeSpectrogram = 6;
+  bool includeAnnotations = 7;
 }
 
 message EEGFile {
@@ -44,6 +52,64 @@ message GetSleepStagesRequest {
   }
 }
 
-message GetSleepStagesResponse {
+/*
+* GetSleepStagesResponse
+*/
 
+enum SleepStage {
+  W = 0;
+  N1 = 1;
+  N2 = 2;
+  N3 = 3;
+  REM = 4;
+}
+
+message LabelledEpoch {
+  google.protobuf.Timestamp timestamp = 1;
+  SleepStage sleepStage = 2;
+}
+
+message Annotation {
+  google.protobuf.Timestamp onset = 1;    // [timestamp] time at which the annotation started
+  google.protobuf.Timestamp offset = 2;   // [timestamp] time at which the annotation ended
+  uint32 proportion = 3;                  // [ratio] proportion of the night (between bed & out of bed time)
+  uint32 duration = 4;                    // [seconds] duration of this annotation
+}
+
+message Spectrogram {
+  message SpectrogramElement {
+    float frequency = 1;
+    float intensity = 2;
+    LabelledEpoch epoch = 3;
+  }
+
+  string channel = 1;
+  repeated SpectrogramElement rectangles = 2;
+  repeated float frequencies = 3;
+}
+
+message SleepReport {
+  google.protobuf.Timestamp sleepOnset = 1;   // [timestamp] time at which the subject fell asleep
+  google.protobuf.Timestamp sleepOffset = 2;  // [timestamp] time at which the subject woke up
+
+  uint32 totalRecordingTime = 3;        // [seconds] total amount of time during which the recording equipment is activated (either streaming or recording).
+  uint32 totalBedTime = 4;              // [seconds] total amount of time during which the patient is in bed with recording equipment activated.
+  uint32 totalSleepTime = 5;            // [seconds] total amount of time during which the patient is sleeping (does not include W) between sleep onset & sleep offset (also named: Efficient sleep)
+  uint32 totalWakeAfterSleepOnset = 6;  // [seconds] total amount of time during which the patient is awake between sleep onset & sleep offset (acronym: WASO)
+
+  uint32 sleepLatency = 7;        // [seconds] difference between bed time and sleep onset
+  uint32 remLatency = 8;          // [seconds] difference between bed time and REM onset
+
+  uint32 nbAwakenings = 9;         // number of times the subject woke up between sleep onset & offset
+  uint32 nbStageShifts = 10;       // number of times the subject transitionned from one stage to another between sleep onset & offset
+
+  uint32 sleepEfficiency = 11;     // [ratio] total sleep time over the total amount of time spent in bed
+}
+
+message GetSleepStagesResponse {
+  SleepReport sleepReport = 1;
+
+  repeated LabelledEpoch epochs = 2;
+  repeated Annotation annotations = 3;
+  repeated Spectrogram spectrograms = 4;
 }
