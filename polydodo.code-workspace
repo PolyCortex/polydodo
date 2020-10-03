@@ -27,6 +27,7 @@
   ],
   "settings": {
     "prettier.configPath": "../.prettierrc.yaml",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "eslint.packageManager": "yarn",
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
@@ -39,6 +40,9 @@
     },
     "[json]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[dart]": {
+      "editor.defaultFormatter": "Dart-Code.dart-code"
     },
     "protoc": {
       "compile_on_save": true,
