@@ -27,7 +27,6 @@
   ],
   "settings": {
     "prettier.configPath": "../.prettierrc.yaml",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "eslint.packageManager": "yarn",
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
