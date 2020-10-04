@@ -16,7 +16,7 @@ class DeviceSelectorCubit extends Cubit<DeviceState> {
   }
 
   void startSearching() {
-    _deviceRepository.initializeBluetooth();
+    _deviceRepository.initializeRepository();
 
     if (_acquisitionDeviceStream == null) {
       _acquisitionDeviceStream = _deviceRepository

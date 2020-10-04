@@ -24,7 +24,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
 
   BluetoothRepository(this.flutterBlue);
 
-  void initializeBluetooth() {
+  void initializeRepository() {
     if (_bluetoothScanSubscription == null) {
       flutterBlue.connectedDevices
           .asStream()
