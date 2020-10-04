@@ -4,29 +4,18 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 
 ## Dev requirements
 
-### gRPC
-
-- Install `gRPC` package from your distribution's package manager
-- Install `protoc` compiler
-
 ### Web
 
 - Install Yarn package manager
-- `yarn global add protoc-gen-grpc-web`
-- Add `$HOME/.yarn/bin` to `PATH`
 
 ### Python
 
 - Install Python 3 and pip
 - Consider using `venv` to create a virtual environment
-- Install gRPC using a package manager or by compiling the [source code](https://github.com/grpc/grpc)
-- Create a simlink named `protoc-gen-grpc_python` to `grpc_python_plugin` using `ln -nsf $(which grpc_python_plugin) /some/where/in/your/path/protoc-gen-grpc_python`
 
 ### Flutter
 
 - Install the latest stable version of flutter
-- Run `flutter pub global activate protoc_plugin`
-- Add `$HOME/.pub-cache/bin` to `PATH`
 
 ### VS Code
 
@@ -36,9 +25,10 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 ## Dev workflow
 
 - Open workspace `polydodo.code-workspace`
+- Install Python packages by running `pip install --user -r backend/requirements.txt`
 - Install node modules by running `yarn install --cwd web`
 - Fetch Flutter dependencies through the `Flutter` extension
-- Compile all protos through `proto3` extension
+- Start dev server by running `python backend/app.py`
 
 ## Running the server locally
 
