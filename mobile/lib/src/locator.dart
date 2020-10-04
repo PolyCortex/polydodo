@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get_it/get_it.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
@@ -16,8 +17,8 @@ final _serviceLocator = GetIt.asNewInstance();
 
 void registerServices() {
   _serviceLocator.registerSingleton<IWalletRepository>(MockWalletRepository());
-  _serviceLocator
-      .registerSingleton<IAcquisitionDeviceRepository>(BluetoothRepository());
+  _serviceLocator.registerSingleton<IAcquisitionDeviceRepository>(
+      BluetoothRepository(FlutterBlue.instance));
   _serviceLocator.registerSingleton<IEEGDataRepository>(EEGDataRepository());
 }
 

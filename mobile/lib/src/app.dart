@@ -19,7 +19,6 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'PolyDodo',
         theme: theme,
-        home: BluetoothSelectorRoute(),
         initialRoute: BluetoothSelectorRoute.name,
         routes: {
           WalletsRoute.name: (context) => WalletsRoute(),

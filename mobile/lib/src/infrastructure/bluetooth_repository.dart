@@ -18,13 +18,14 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   BluetoothCharacteristic receiveCharacteristic;
 
   FlutterBlue flutterBlue;
-  StreamSubscription<List<ScanResult>> flutterSubscription;
-  static List<AcquisitionDevice> bluetoothPersistency = [];
+  StreamSubscription<List<ScanResult>> _bluetoothScanSubscription;
+  List<AcquisitionDevice> bluetoothPersistency = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
+  BluetoothRepository(this.flutterBlue);
+
   void initializeBluetooth() {
-    if (flutterSubscription == null) {
-      flutterBlue = FlutterBlue.instance;
+    if (_bluetoothScanSubscription == null) {
       flutterBlue.connectedDevices
           .asStream()
           .asBroadcastStream()
@@ -33,14 +34,14 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
           addDevice(device);
         }
       });
-      flutterSubscription =
+      _bluetoothScanSubscription =
           flutterBlue.scanResults.listen((List<ScanResult> results) {
         for (ScanResult result in results) {
           addDevice(result.device);
         }
       });
     } else {
-      flutterSubscription.resume();
+      _bluetoothScanSubscription.resume();
     }
     flutterBlue.startScan();
   }
@@ -61,7 +62,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     selectedDevice = device.interface;
 
     bluetoothPersistency.clear();
-    flutterSubscription.pause();
+    _bluetoothScanSubscription.pause();
     flutterBlue.stopScan();
 
     try {
