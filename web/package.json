@@ -8,7 +8,7 @@
   "homepage": "https://polycortex.github.io/polydodo",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "yarn prettier --config ../.vscode/.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\""
@@ -32,10 +32,8 @@
     "headroom.js": "^0.11.0",
     "moment": "^2.27.0",
     "node-sass": "4.14.1",
-    "nouislider": "14.1.1",
     "prop-types": "^15.7.2",
     "react": "16.12.0",
-    "react-datetime": "2.16.3",
     "react-dom": "16.12.0",
     "react-hook-form": "^6.8.4",
     "react-router": "5.1.2",
@@ -46,13 +44,7 @@
     "yarn": "^1.22.4"
   },
   "devDependencies": {
-    "@types/googlemaps": "3.39.2",
-    "@types/markerclustererplus": "2.1.33",
-    "@types/react": "16.9.19",
     "eslint-plugin-flowtype": "3.13.0",
-    "gulp": "4.0.2",
-    "gulp-append-prepend": "1.0.8",
-    "prettier": "^2.0.5",
-    "typescript": "3.7.5"
+    "prettier": "^2.0.5"
   }
 }
