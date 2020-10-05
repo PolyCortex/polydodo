@@ -14,10 +14,7 @@
     "format": "yarn prettier --config ../.vscode/.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\""
   },
   "eslintConfig": {
-    "extends": "react-app",
-    "ignorePatterns": [
-      "src/protos/"
-    ]
+    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",
@@ -26,15 +23,12 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@grpc/grpc-js": "^1.1.7",
-    "@grpc/proto-loader": "^0.5.5",
     "argon-design-system-react": "^1.1.0",
+    "axios": "^0.20.0",
     "bootstrap": "^4.5.0",
     "classnames": "2.2.6",
     "d3": "^5.16.0",
     "d3-tip": "^0.9.1",
-    "google-protobuf": "^3.13.0",
-    "grpc-web": "^1.2.1",
     "headroom.js": "^0.11.0",
     "moment": "^2.27.0",
     "node-sass": "4.14.1",

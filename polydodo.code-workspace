@@ -20,14 +20,9 @@
       "name": "Web client",
       "path": "web"
     },
-    {
-      "name": "Protos",
-      "path": "protos"
-    }
   ],
   "settings": {
     "prettier.configPath": "../.prettierrc.yaml",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "eslint.packageManager": "yarn",
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
@@ -40,17 +35,6 @@
     },
     "[json]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "protoc": {
-      "compile_on_save": true,
-      "compile_all_path": "protos",
-      "options": [
-        "--dart_out=grpc:mobile/lib",
-        "--python_out=backend",
-        "--grpc_python_out=backend",
-        "--js_out=import_style=commonjs:web/src",
-        "--grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src"
-      ]
     },
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
@@ -66,8 +50,7 @@
       "eamodio.gitlens",
       "editorconfig.editorconfig",
       "dbaeumer.vscode-eslint",
-      "dart-code.flutter",
-      "zxh404.vscode-proto3"
+      "dart-code.flutter"
     ]
   }
 }
