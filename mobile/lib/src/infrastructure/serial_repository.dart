@@ -11,7 +11,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   static const stopStreamChar = 's';
 
   UsbDevice _selectedDevice;
-  UsbPort _usbPort;
+  UsbPort _serialPort;
   List<AcquisitionDevice> serialPersistency = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
@@ -34,36 +34,36 @@ class SerialRepository implements IAcquisitionDeviceRepository {
 
   Future<void> connect(AcquisitionDevice device) async {
     _selectedDevice = device.interface;
-    _usbPort = await _selectedDevice.create();
-    bool openResult = await _usbPort.open();
+    _serialPort = await _selectedDevice.create();
+    bool openResult = await _serialPort.open();
 
     if (!openResult) {
       print("Could not open port");
     }
 
-    await _usbPort.setDTR(true);
-    await _usbPort.setRTS(true);
+    await _serialPort.setDTR(true);
+    await _serialPort.setRTS(true);
 
-    _usbPort.setPortParameters(
+    _serialPort.setPortParameters(
         115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
   }
 
   void disconnect() async {
-    if (_selectedDevice != null && _usbPort != null) {
-      await _usbPort.close();
+    if (_selectedDevice != null && _serialPort != null) {
+      await _serialPort.close();
       _selectedDevice = null;
-      _usbPort = null;
+      _serialPort = null;
     }
   }
 
   Future<Stream<List<int>>> startDataStream() async {
-    _usbPort.write(Uint8List.fromList(startStreamChar.codeUnits));
+    _serialPort.write(Uint8List.fromList(startStreamChar.codeUnits));
 
-    return _usbPort.inputStream;
+    return _serialPort.inputStream;
   }
 
   void stopDataStream() {
-    _usbPort.write(Uint8List.fromList(stopStreamChar.codeUnits));
+    _serialPort.write(Uint8List.fromList(stopStreamChar.codeUnits));
   }
 
   Stream<List<AcquisitionDevice>> watch() => streamController.stream;
