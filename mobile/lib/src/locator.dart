@@ -17,8 +17,8 @@ final _serviceLocator = GetIt.asNewInstance();
 
 void registerServices() {
   _serviceLocator.registerSingleton<IWalletRepository>(MockWalletRepository());
-  _serviceLocator.registerSingleton<IAcquisitionDeviceRepository>(
-      BluetoothRepository(FlutterBlue.instance));
+  _serviceLocator
+      .registerSingleton<IAcquisitionDeviceRepository>(BluetoothRepository());
   _serviceLocator.registerSingleton<IEEGDataRepository>(EEGDataRepository());
 }
 

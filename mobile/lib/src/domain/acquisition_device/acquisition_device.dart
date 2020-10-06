@@ -1,14 +1,13 @@
 import 'package:equatable/equatable.dart';
+import 'package:polydodo/src/domain/entity.dart';
 
 import '../unique_id.dart';
 
-class AcquisitionDevice extends Equatable {
-  final UniqueId id;
+class AcquisitionDevice extends Entity {
   final String name;
-  final interface;
 
-  AcquisitionDevice(this.id, this.name, this.interface);
-
-  @override
-  List<Object> get props => [id];
+  AcquisitionDevice(
+    id,
+    this.name,
+  ) : super(id);
 }
