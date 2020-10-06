@@ -5,6 +5,7 @@ from backend.config.constants import (
     EEG_CHANNELS,
     AGE_FEATURE_BINS,
 )
+from backend.features.pipeline import get_feature_union
 from backend.features.utils import (
     drop_other_channels,
     crop_raw_data,
@@ -23,6 +24,7 @@ def get_eeg_features(raw_data):
             chan_data
         )
 
+        feature_union = get_feature_union()
         X_features = feature_union.transform(X_file_channel)
         features_file.append(X_features)
 
