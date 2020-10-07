@@ -1,3 +1,6 @@
+from mne.time_frequency import psd_welch
+
+
 def get_data_from_epochs(epochs):
     """
     epochs: mne.Epochs
@@ -5,6 +8,16 @@ def get_data_from_epochs(epochs):
     returns np array of shape (nb_epochs, sampling_rate*epoch_length)
     """
     return epochs.get_data().squeeze()
+
+
+def get_psds_from_epochs(epochs):
+    """Extracts power spectrum densities from epochs
+    Returns
+    --------
+    psds with associated frequencies calculated with the welch method.
+    """
+    psds, freqs = psd_welch(epochs, fmin=0.5, fmax=30.)
+    return psds, freqs
 
 
 def get_transformer(get_feature):
