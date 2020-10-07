@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
+import { analyzeSleep } from 'requests/analayze-sleep';
 
 const dateFieldSuffix = '-date';
 const timeFieldSuffix = '-time';
@@ -21,15 +22,22 @@ const mergeDateTimeFields = (data) =>
         .filter(([fieldName, value]) => fieldName.startsWith(fieldPrefix))
         .map(([fieldName, value]) => value)
         .join(' '),
-    ),
+    ).getTime(),
   ]);
+
+const onSubmit = async (data) => {
+  let formData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
+  formData = { ...formData, file: formData.file[0] };
+  try {
+    const results = await analyzeSleep(formData).toPromise();
+    console.log(results);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const UploadForm = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    const newFormData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
-    console.log(newFormData);
-  };
 
   return (
     <Container style={{ padding: '2em 0' }}>
@@ -44,8 +52,8 @@ const UploadForm = () => {
               accept=".csv, text/plain"
               bsSize="lg"
               type="file"
-              id="openbci-file"
-              name="openbci-file"
+              id="file"
+              name="file"
               label="Upload an OpenBCI CSV file"
             />
 
@@ -58,18 +66,6 @@ const UploadForm = () => {
                     <option>Cython</option>
                     <option>Ganglion</option>
                   </CustomInput>
-                </Col>
-              </Row>
-            </FormGroup>
-
-            <FormGroup inline>
-              <Label>Name</Label>
-              <Row form>
-                <Col md={6}>
-                  <Input innerRef={register} required type="text" name="firstName" id="firstName" placeholder="First name" />
-                </Col>
-                <Col md={6}>
-                  <Input innerRef={register} required type="text" name="lastName" id="lastName" placeholder="Last name" />
                 </Col>
               </Row>
             </FormGroup>
@@ -96,8 +92,8 @@ const UploadForm = () => {
                   <FormGroup>
                     <Label>Time when OpenBCI stream started</Label>
                     <InputGroup>
-                      <Input innerRef={register} required type="date" name={`stream-start${dateFieldSuffix}`} id={`stream-start${dateFieldSuffix}`} />
-                      <Input innerRef={register} required type="time" name={`stream-start${timeFieldSuffix}`} id={`stream-start${timeFieldSuffix}`} />
+                      <Input innerRef={register} required type="date" name={`stream_start${dateFieldSuffix}`} id={`stream_start${dateFieldSuffix}`} />
+                      <Input innerRef={register} required type="time" name={`stream_start${timeFieldSuffix}`} id={`stream_start${timeFieldSuffix}`} />
                     </InputGroup>
                   </FormGroup>
                 </Col>

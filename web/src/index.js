@@ -16,10 +16,6 @@ import Performance from 'views/performance';
 import AnalyzeSleep from 'views/analyze-sleep';
 import ScrollToTop from 'components/scroll_to_top';
 import Emoji from 'components/emoji';
-import * as axios from 'axios';
-
-// Communication with server (test)
-axios.get('http://localhost:8080').then(console.log);
 
 const underConstruction = () => {
   const text = {
