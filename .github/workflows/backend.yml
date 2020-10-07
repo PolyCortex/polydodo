@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: docker/build-push-action@v1
         with:
-          context: backend
+          dockerfile: backend/Dockerfile
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: docker.pkg.github.com/polycortex/polydodo
