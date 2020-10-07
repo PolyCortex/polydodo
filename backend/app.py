@@ -1,12 +1,8 @@
-import os
-from flask import Flask, flash, request
-from werkzeug.utils import secure_filename
+from flask import Flask, request
 from flask_cors import CORS
 from waitress import serve
 from http import HTTPStatus
 
-
-SERVER_FOLDER = os.path.dirname(os.path.realpath(__file__))
 
 app = Flask(__name__)
 
