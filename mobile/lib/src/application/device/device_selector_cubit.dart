@@ -27,15 +27,17 @@ class DeviceSelectorCubit extends Cubit<DeviceState> {
     }
   }
 
-  void connect(AcquisitionDevice device) async {
+  Future<void> connect(AcquisitionDevice device) async {
     emit(DeviceConnectionInProgress());
 
-    _deviceRepository.connect(device).then(
-        (value) => {
-              _acquisitionDeviceStream.cancel(),
-              emit(DeviceConnectionSuccess())
-            },
-        onError: (e) => {emit(DeviceConnectionFailure(e)), resetSearch()});
+    try {
+      await _deviceRepository.connect(device);
+      _acquisitionDeviceStream.cancel();
+      emit(DeviceConnectionSuccess());
+    } catch (e) {
+      emit(DeviceConnectionFailure(e));
+      resetSearch();
+    }
   }
 
   void resetSearch() {
