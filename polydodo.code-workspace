@@ -19,7 +19,7 @@
     {
       "name": "Web client",
       "path": "web"
-    },
+    }
   ],
   "settings": {
     "prettier.configPath": "../.prettierrc.yaml",
@@ -35,6 +35,9 @@
     },
     "[json]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[dart]": {
+      "editor.defaultFormatter": "Dart-Code.dart-code"
     },
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
