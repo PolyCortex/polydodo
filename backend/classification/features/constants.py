@@ -1,4 +1,4 @@
-from backend.config.constants import (
+from classification.config.constants import (
     DATASET_SAMPLE_RATE,
     EPOCH_DURATION,
 )

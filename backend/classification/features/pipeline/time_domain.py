@@ -4,7 +4,7 @@ from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import (FunctionTransformer)
 
 
-from backend.features.pipeline.utils import (
+from classification.features.pipeline.utils import (
     get_transformer,
     get_transformer_list,
     get_data_from_epochs_transformer,

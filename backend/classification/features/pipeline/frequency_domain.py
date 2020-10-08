@@ -2,10 +2,10 @@ import numpy as np
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import (FunctionTransformer)
 
-from backend.features.pipeline.utils import (
+from classification.features.pipeline.utils import (
     get_psds_from_epochs_transformer,
 )
-from backend.features.constants import (
+from classification.features.constants import (
     FREQ_BANDS_RANGE,
 )
 

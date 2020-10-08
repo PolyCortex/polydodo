@@ -1,6 +1,6 @@
 import numpy as np
 
-from backend.features.extraction import (
+from classification.features.extraction import (
     get_eeg_features,
     get_categorical_features,
 )

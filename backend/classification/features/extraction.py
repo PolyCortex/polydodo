@@ -1,12 +1,12 @@
 """Feature extraction tools based off a two channel EEG recording"""
 import numpy as np
 
-from backend.config.constants import (
+from classification.config.constants import (
     EEG_CHANNELS,
     AGE_FEATURE_BINS,
 )
-from backend.features.pipeline import get_feature_union
-from backend.features.utils import (
+from classification.features.pipeline import get_feature_union
+from classification.features.utils import (
     drop_other_channels,
     crop_raw_data,
     convert_to_epochs,

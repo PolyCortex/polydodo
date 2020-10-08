@@ -1,6 +1,6 @@
 import mne
 
-from backend.features.constants import MAX_TIME
+from classification.features.constants import MAX_TIME
 
 
 def drop_other_channels(raw_data, channel_to_keep):

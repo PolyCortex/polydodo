@@ -1,5 +1,5 @@
 """defines functions to predict sleep stages based off EEG signals"""
-from backend.features import get_features
+from classification.features import get_features
 
 
 def predict(raw_eeg, age, sex):

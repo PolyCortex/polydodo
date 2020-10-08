@@ -1,12 +1,12 @@
 from sklearn.pipeline import FeatureUnion
 
-from backend.features.pipeline.time_domain_transformers import (
+from classification.features.pipeline.time_domain_transformers import (
     get_time_domain_pipeline
 )
-from backend.features.pipeline.frequency_domain_transformers import (
+from classification.features.pipeline.frequency_domain_transformers import (
     get_frequency_domain_pipeline
 )
-from backend.features.pipeline.subband_transformers import (
+from classification.features.pipeline.subband_transformers import (
     get_subband_feature_union
 )
 
