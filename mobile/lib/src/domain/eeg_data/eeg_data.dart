@@ -1,14 +1,13 @@
 // EEGData can be extended later to add our metrics
-import '../unique_id.dart';
+import 'package:polydodo/src/domain/entity.dart';
 
-class EEGData {
-  UniqueId id;
+class EEGData extends Entity {
   List<List> _values;
   int sampleCounter = 0;
 
-  EEGData(this.id, this._values)
-      : assert(id != null),
-        assert(_values != null);
+  EEGData(id, this._values)
+      : assert(_values != null),
+        super(id);
 
   List<List> get values => _values;
 
