@@ -12,7 +12,7 @@ const filterInDateTimeFields = (data) =>
     .map((field) => field.replace(timeFieldSuffix, ''));
 
 const filterOutDateTimeFields = (data) =>
-  Object.entries(data).filter(([fieldName, value]) => !(fieldName.endsWith(dateFieldSuffix) || fieldName.endsWith(timeFieldSuffix)));
+  Object.entries(data).filter(([name, value]) => !(name.endsWith(dateFieldSuffix) || name.endsWith(timeFieldSuffix)));
 
 const mergeDateTimeFields = (data) =>
   filterInDateTimeFields(data).map((fieldPrefix) => [
@@ -81,7 +81,16 @@ const UploadForm = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label for="age">Age</Label>
-                  <Input innerRef={register} required type="number" name="age" id="age" min="0" max="125" placeholder="Enter your age" />
+                  <Input
+                    innerRef={register}
+                    required
+                    type="number"
+                    name="age"
+                    id="age"
+                    min="0"
+                    max="125"
+                    placeholder="Enter your age"
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -92,8 +101,20 @@ const UploadForm = () => {
                   <FormGroup>
                     <Label>Time when OpenBCI stream started</Label>
                     <InputGroup>
-                      <Input innerRef={register} required type="date" name={`stream_start${dateFieldSuffix}`} id={`stream_start${dateFieldSuffix}`} />
-                      <Input innerRef={register} required type="time" name={`stream_start${timeFieldSuffix}`} id={`stream_start${timeFieldSuffix}`} />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="date"
+                        name={`stream_start${dateFieldSuffix}`}
+                        id={`stream_start${dateFieldSuffix}`}
+                      />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="time"
+                        name={`stream_start${timeFieldSuffix}`}
+                        id={`stream_start${timeFieldSuffix}`}
+                      />
                     </InputGroup>
                   </FormGroup>
                 </Col>
@@ -101,8 +122,20 @@ const UploadForm = () => {
                   <FormGroup>
                     <Label>I went to bed at</Label>
                     <InputGroup>
-                      <Input innerRef={register} required type="date" name={`bedtime${dateFieldSuffix}`} id={`bedtime${dateFieldSuffix}`} />
-                      <Input innerRef={register} required type="time" name={`bedtime${timeFieldSuffix}`} id={`bedtime${timeFieldSuffix}`} />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="date"
+                        name={`bedtime${dateFieldSuffix}`}
+                        id={`bedtime${dateFieldSuffix}`}
+                      />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="time"
+                        name={`bedtime${timeFieldSuffix}`}
+                        id={`bedtime${timeFieldSuffix}`}
+                      />
                     </InputGroup>
                   </FormGroup>
                 </Col>
@@ -112,8 +145,20 @@ const UploadForm = () => {
                   <FormGroup>
                     <Label>I think I fell asleep at</Label>
                     <InputGroup>
-                      <Input innerRef={register} required type="date" name={`sleeping${dateFieldSuffix}`} id={`sleeping${dateFieldSuffix}`} />
-                      <Input innerRef={register} required type="time" name={`sleeping${timeFieldSuffix}`} id={`sleeping${timeFieldSuffix}`} />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="date"
+                        name={`sleeping${dateFieldSuffix}`}
+                        id={`sleeping${dateFieldSuffix}`}
+                      />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="time"
+                        name={`sleeping${timeFieldSuffix}`}
+                        id={`sleeping${timeFieldSuffix}`}
+                      />
                     </InputGroup>
                   </FormGroup>
                 </Col>
@@ -121,8 +166,20 @@ const UploadForm = () => {
                   <FormGroup>
                     <Label>And woke up at</Label>
                     <InputGroup>
-                      <Input innerRef={register} required type="date" name={`wakeup${dateFieldSuffix}`} id={`wakeup${dateFieldSuffix}`} />
-                      <Input innerRef={register} required type="time" name={`wakeup${timeFieldSuffix}`} id={`wakeup${timeFieldSuffix}`} />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="date"
+                        name={`wakeup${dateFieldSuffix}`}
+                        id={`wakeup${dateFieldSuffix}`}
+                      />
+                      <Input
+                        innerRef={register}
+                        required
+                        type="time"
+                        name={`wakeup${timeFieldSuffix}`}
+                        id={`wakeup${timeFieldSuffix}`}
+                      />
                     </InputGroup>
                   </FormGroup>
                 </Col>

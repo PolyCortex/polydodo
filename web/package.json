@@ -11,7 +11,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "yarn prettier --config ../.vscode/.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\""
+    "format": "yarn prettier --config ../.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\""
   },
   "eslintConfig": {
     "extends": "react-app"
