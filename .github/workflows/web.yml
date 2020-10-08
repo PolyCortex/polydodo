@@ -14,10 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - uses: abelfodil/protoc-action@v1
-        with:
-          enable-grpc-web: true
-      - run: protoc protos/* --js_out=import_style=commonjs:web/src --grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src
+
       - run: yarn --cwd web install
       - run: yarn --cwd web build
       - uses: actions/upload-artifact@v2
