@@ -16,5 +16,5 @@ class UniqueId extends Equatable {
   List<Object> get props => [_id];
 
   @override
-  bool get stringify => true;
+  toString() => _id;
 }
