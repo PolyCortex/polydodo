@@ -10,7 +10,6 @@ import 'package:polydodo/src/infrastructure/serial_repository.dart';
 import 'application/wallets/wallets_cubit.dart';
 import 'domain/eeg_data/i_eeg_data_repository.dart';
 import 'domain/wallet/i_wallet_repository.dart';
-import 'infrastructure/bluetooth_repository.dart';
 import 'infrastructure/eeg_data_repository.dart';
 
 /// Private GetIt instance as we want all DI to be performed here in this file

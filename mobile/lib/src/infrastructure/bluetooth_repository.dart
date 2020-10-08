@@ -13,19 +13,22 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   static const startStreamChar = 'b';
   static const stopStreamChar = 's';
 
-  BluetoothDevice selectedDevice;
-  BluetoothCharacteristic sendCharacteristic;
-  BluetoothCharacteristic receiveCharacteristic;
+  BluetoothDevice _selectedDevice;
+  BluetoothCharacteristic _sendCharacteristic;
+  BluetoothCharacteristic _receiveCharacteristic;
 
   FlutterBlue flutterBlue;
   StreamSubscription<List<ScanResult>> _bluetoothScanSubscription;
-  List<AcquisitionDevice> bluetoothPersistency = [];
+  List<AcquisitionDevice> _acquisitionDevicePersistency = [];
+  List<BluetoothDevice> _bluetoothDevices = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
-  BluetoothRepository(this.flutterBlue);
+  BluetoothRepository();
 
   void initializeRepository() {
     if (_bluetoothScanSubscription == null) {
+      flutterBlue = FlutterBlue.instance;
+
       flutterBlue.connectedDevices
           .asStream()
           .asBroadcastStream()
@@ -48,32 +51,38 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
 
   void addDevice(BluetoothDevice bluetoothDevice) {
     AcquisitionDevice device = AcquisitionDevice(
-        UniqueId.from(bluetoothDevice.id.toString()),
-        bluetoothDevice.name,
-        bluetoothDevice);
-    final idx = bluetoothPersistency.indexOf(device);
-    idx == -1
-        ? bluetoothPersistency.add(device)
-        : bluetoothPersistency[idx] = device;
-    streamController.add(bluetoothPersistency);
+        UniqueId.from(bluetoothDevice.id.toString()), bluetoothDevice.name);
+
+    final idx = _acquisitionDevicePersistency.indexOf(device);
+
+    if (idx == -1) {
+      _acquisitionDevicePersistency.add(device);
+      _bluetoothDevices.add(bluetoothDevice);
+    } else {
+      _acquisitionDevicePersistency[idx] = device;
+      _bluetoothDevices[idx] = bluetoothDevice;
+    }
+
+    streamController.add(_acquisitionDevicePersistency);
   }
 
   Future<void> connect(AcquisitionDevice device) async {
-    selectedDevice = device.interface;
+    _selectedDevice =
+        _bluetoothDevices[_acquisitionDevicePersistency.indexOf(device)];
 
-    bluetoothPersistency.clear();
+    _acquisitionDevicePersistency.clear();
+    _bluetoothDevices.clear();
     _bluetoothScanSubscription.pause();
     flutterBlue.stopScan();
 
     try {
-      await device.interface
+      await _selectedDevice
           .connect()
           .then((value) => findRelevantCharacteristics())
           .timeout(Duration(seconds: 6),
               onTimeout: () =>
                   {disconnect(), throw Exception("Connection Timed out")});
     } catch (e) {
-      print(e);
       if (e is PlatformException) {
         if (e.code != "already_connected") throw Exception(e.details);
       } else
@@ -84,41 +93,41 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   }
 
   void disconnect() async {
-    if (selectedDevice != null) {
-      await selectedDevice.disconnect();
-      selectedDevice = null;
+    if (_selectedDevice != null) {
+      await _selectedDevice.disconnect();
+      _selectedDevice = null;
     }
   }
 
   void findRelevantCharacteristics() {
-    selectedDevice.discoverServices().then((services) => {
+    _selectedDevice.discoverServices().then((services) => {
           for (BluetoothCharacteristic characteristic in (services.where(
                   (service) => service.uuid.toString().contains(BLE_SERVICE)))
               .first
               .characteristics)
             {
               if (characteristic.uuid.toString().contains(BLE_RECEIVE))
-                {receiveCharacteristic = characteristic}
+                {_receiveCharacteristic = characteristic}
               else if (characteristic.uuid.toString().contains(BLE_SEND))
-                {sendCharacteristic = characteristic}
+                {_sendCharacteristic = characteristic}
             },
-          if (receiveCharacteristic == null)
+          if (_receiveCharacteristic == null)
             throw Exception('Device is missing receive Characteristic'),
-          if (sendCharacteristic == null)
+          if (_sendCharacteristic == null)
             throw Exception('Device is missing send Characteristic')
         });
   }
 
   Future<Stream<List<int>>> startDataStream() async {
-    await receiveCharacteristic.setNotifyValue(true);
+    await _receiveCharacteristic.setNotifyValue(true);
 
-    await sendCharacteristic.write(startStreamChar.codeUnits);
-    return receiveCharacteristic.value;
+    await _sendCharacteristic.write(startStreamChar.codeUnits);
+    return _receiveCharacteristic.value;
   }
 
   void stopDataStream() async {
-    await receiveCharacteristic.setNotifyValue(false);
-    await sendCharacteristic.write(stopStreamChar.codeUnits);
+    await _receiveCharacteristic.setNotifyValue(false);
+    await _sendCharacteristic.write(stopStreamChar.codeUnits);
   }
 
   @override
