@@ -12,37 +12,37 @@ class SerialRepository implements IAcquisitionDeviceRepository {
 
   UsbDevice _selectedDevice;
   UsbPort _serialPort;
-  List<AcquisitionDevice> serialPersistency = [];
+  List<AcquisitionDevice> _acquisitionDevicePersistency = [];
+  List<UsbDevice> _serialDevices = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
   void initializeRepository() {
-    serialPersistency.clear();
-    UsbSerial.listDevices().then((devices) => addDevice(devices));
+    _acquisitionDevicePersistency.clear();
+    _serialDevices.clear();
+    UsbSerial.listDevices().then((devices) => addDevices(devices));
   }
 
-  void addDevice(List<UsbDevice> serialDevices) {
+  void addDevices(List<UsbDevice> serialDevices) {
     for (UsbDevice serialDevice in serialDevices) {
       AcquisitionDevice device = AcquisitionDevice(
           UniqueId.from(serialDevice.deviceId.toString()),
-          serialDevice.productName,
-          serialDevice);
+          serialDevice.productName);
 
-      serialPersistency.add(device);
+      _acquisitionDevicePersistency.add(device);
+      _serialDevices.add(serialDevice);
     }
-    streamController.add(serialPersistency);
+    streamController.add(_acquisitionDevicePersistency);
   }
 
   Future<void> connect(AcquisitionDevice device) async {
-    _selectedDevice = device.interface;
+    _selectedDevice =
+        _serialDevices[_acquisitionDevicePersistency.indexOf(device)];
     _serialPort = await _selectedDevice.create();
     bool openResult = await _serialPort.open();
 
     if (!openResult) {
       print("Could not open port");
     }
-
-    await _serialPort.setDTR(true);
-    await _serialPort.setRTS(true);
 
     _serialPort.setPortParameters(
         115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);

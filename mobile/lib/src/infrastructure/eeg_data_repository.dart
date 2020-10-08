@@ -52,6 +52,8 @@ class EEGDataRepository implements IEEGDataRepository {
     //   (packetLoss.toDouble() / totalPackets.toDouble()).toString());
     if (event.length != 20) {
       print("Invalid Event");
+      print(event.length);
+      print(event);
       return;
     }
     totalPackets++;
