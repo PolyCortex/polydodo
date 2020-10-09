@@ -1,6 +1,6 @@
 ## Json implicit schema and field description.
 
-```json
+```
 {
   "board": "CYTON", // "CYTON" or "GANGLION"
   "subject": {
