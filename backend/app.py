@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from waitress import serve
 from http import HTTPStatus
@@ -10,11 +10,6 @@ app = Flask(__name__)
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'txt', 'csv'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-@app.route("/")
-def hello():
-    return "Hello, World!"
 
 
 @app.route('/analyze_sleep', methods=['POST'])
@@ -32,7 +27,8 @@ def analyze_sleep():
     file_content = file.read()
     form_data = request.form.to_dict()
 
-    return ''
+    mock_response_file = open("assets/mock_response.json", "r")
+    return mock_response_file.read()
 
 
 CORS(app,
