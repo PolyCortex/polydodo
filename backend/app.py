@@ -11,6 +11,9 @@ def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'txt', 'csv'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route("/")
+def status():
+    return ""
 
 @app.route('/analyze_sleep', methods=['POST'])
 def analyze_sleep():
