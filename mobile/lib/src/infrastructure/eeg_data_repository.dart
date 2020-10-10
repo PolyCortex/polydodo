@@ -8,20 +8,21 @@ import 'package:polydodo/src/domain/unique_id.dart';
 import 'constants.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
-  bool initializeStream = false;
-  EEGData recordingData;
-  List lastSampleData = [0, 0, 0, 0, 0];
-  int packetLoss;
-  int totalPackets;
-  int nextPacketId;
-
+  bool _streamInitialized = false;
+  EEGData _recordingData;
+  List _lastSampleData = [0, 0, 0, 0, 0];
+  int _packetLoss;
+  int _totalPackets;
+  int _nextPacketId;
+  int _sampleCounter;
   void createRecordingFromStream(Stream<List<int>> stream) {
-    recordingData =
-        new EEGData(UniqueId.from(DateTime.now().toString()), new List<List>());
-    packetLoss = 0;
-    totalPackets = 0;
-    if (!initializeStream) {
-      initializeStream = true;
+    _recordingData =
+        EEGData(UniqueId.from(DateTime.now().toString()), List<List>());
+    _packetLoss = 0;
+    _totalPackets = 0;
+    _sampleCounter = 0;
+    if (!_streamInitialized) {
+      _streamInitialized = true;
       stream.listen((value) {
         addData(value);
       });
@@ -30,13 +31,14 @@ class EEGDataRepository implements IEEGDataRepository {
 
   Future<void> stopRecordingFromStream() async {
     // todo: move save future to another file
+
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =
-        directory.path + '/' + recordingData.fileName + ".txt";
+        directory.path + '/' + _recordingData.fileName + ".txt";
     File file = File(pathOfTheFileToWrite);
-    List<List> fileContent = new List<List>();
+    List<List> fileContent = List<List>();
     fileContent.addAll(OPEN_BCI_HEADER);
-    fileContent.addAll(recordingData.values);
+    fileContent.addAll(_recordingData.values);
     String csv = const ListToCsvConverter().convert(fileContent);
     await file.writeAsString(csv);
   }
@@ -46,42 +48,42 @@ class EEGDataRepository implements IEEGDataRepository {
   void exportData() {}
 
   Future<void> addData(List event) async {
-    //print("Lost packets: " + packetLoss.toString());
-    //print("Total packets: " + totalPackets.toString());
-    //print("Lost percentage: " +
-    //   (packetLoss.toDouble() / totalPackets.toDouble()).toString());
+    print("Lost packets: " + _packetLoss.toString());
+    print("Total packets: " + _totalPackets.toString());
+    print("Lost percentage: " +
+        (_packetLoss.toDouble() / _totalPackets.toDouble()).toString());
     if (event.length != 20) {
       print("Invalid Event");
       return;
     }
-    totalPackets++;
+    _totalPackets++;
     int packetID = event[0];
 
     // todo: handle packet id 0 (raw data) and possibly impedence for signal validation
     if (packetID == 0) {
-      nextPacketId = 101;
+      _nextPacketId = 101;
 
       List data = parseRaw(event);
       data = convertToMicrovolts(data, false);
 
-      recordingData.values.add(data.sublist(0, 15));
+      _recordingData.values.add(data.sublist(0, 15));
     } else if (packetID >= 101 && packetID <= 200) {
       // print(packetID);
-      // print(nextPacketId);
-      packetLoss += packetID - nextPacketId;
-      nextPacketId = packetID + 1;
+      // print(_nextPacketId);
+      _packetLoss += packetID - _nextPacketId;
+      _nextPacketId = packetID + 1;
       List data = parse19Bit(event);
       data = convertToMicrovolts(data, true);
 
-      recordingData.values.add(data.sublist(0, 15));
-      recordingData.values.add(data.sublist(15, 30));
+      _recordingData.values.add(data.sublist(0, 15));
+      _recordingData.values.add(data.sublist(15, 30));
     }
   }
 
   List parseRaw(event) {
     List data = getListForCSV();
 
-    data[0] = recordingData.sampleCounter++;
+    data[0] = _sampleCounter++;
     data[1] = (event[1] << 16) | (event[2] << 8) | event[3];
     data[2] = (event[4] << 16) | (event[5] << 8) | event[6];
     data[3] = (event[7] << 16) | (event[8] << 8) | event[9];
@@ -99,7 +101,7 @@ class EEGDataRepository implements IEEGDataRepository {
 
     List data = getListForCSV();
 
-    data[0] = recordingData.sampleCounter;
+    data[0] = _sampleCounter;
     data[1] = (event[1] << 11) | (event[2] << 3) | (event[3] >> 5);
     data[2] = ((event[3] & 31) << 14) | (event[4] << 6) | (event[5] >> 2);
     data[3] = ((event[5] & 3) << 17) |
@@ -107,7 +109,7 @@ class EEGDataRepository implements IEEGDataRepository {
         (event[7] << 1) |
         (event[8] >> 7);
     data[4] = ((event[8] & 127) << 12) | (event[9] << 4) | (event[10] >> 4);
-    data[15] = recordingData.sampleCounter++;
+    data[15] = _sampleCounter++;
     data[16] = ((event[10] & 15) << 15) | (event[11] << 7) | (event[12] >> 1);
     data[17] = ((event[12] & 1) << 18) |
         (event[13] << 10) |
@@ -120,7 +122,7 @@ class EEGDataRepository implements IEEGDataRepository {
   }
 
   List getListForCSV() {
-    List data = new List(30);
+    List data = List(30);
 
     for (int i = 5; i < 15; ++i) {
       data[i] = 0;
@@ -147,9 +149,9 @@ class EEGDataRepository implements IEEGDataRepository {
             data[i + offset].toDouble() * (1200000 / (8388607.0 * 1.5 * 51.0));
 
         // Convert delta
-        if (isDelta) data[i + offset] = lastSampleData[i] - data[i + offset];
+        if (isDelta) data[i + offset] = _lastSampleData[i] - data[i + offset];
 
-        lastSampleData[i] = data[i + offset];
+        _lastSampleData[i] = data[i + offset];
       }
     }
 
