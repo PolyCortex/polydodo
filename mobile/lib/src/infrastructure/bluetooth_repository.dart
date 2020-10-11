@@ -76,46 +76,42 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     flutterBlue.stopScan();
 
     try {
-      await _selectedDevice
-          .connect()
-          .then((value) => findRelevantCharacteristics())
-          .timeout(Duration(seconds: 6),
-              onTimeout: () =>
-                  {disconnect(), throw Exception("Connection Timed out")});
+      await _selectedDevice.connect().timeout(Duration(seconds: 6),
+          onTimeout: () =>
+              {disconnect(), throw Exception("Connection Timed out")});
+
+      await findRelevantCharacteristics();
     } catch (e) {
       if (e is PlatformException) {
         if (e.code != "already_connected") throw Exception(e.details);
       } else
         throw e;
     }
-
-    return;
   }
 
-  void disconnect() async {
+  Future<void> disconnect() async {
     if (_selectedDevice != null) {
       await _selectedDevice.disconnect();
       _selectedDevice = null;
     }
   }
 
-  void findRelevantCharacteristics() {
-    _selectedDevice.discoverServices().then((services) => {
-          for (BluetoothCharacteristic characteristic in (services.where(
-                  (service) => service.uuid.toString().contains(BLE_SERVICE)))
-              .first
-              .characteristics)
-            {
-              if (characteristic.uuid.toString().contains(BLE_RECEIVE))
-                {_receiveCharacteristic = characteristic}
-              else if (characteristic.uuid.toString().contains(BLE_SEND))
-                {_sendCharacteristic = characteristic}
-            },
-          if (_receiveCharacteristic == null)
-            throw Exception('Device is missing receive Characteristic'),
-          if (_sendCharacteristic == null)
-            throw Exception('Device is missing send Characteristic')
-        });
+  Future<void> findRelevantCharacteristics() async {
+    var characteristics = (await _selectedDevice.discoverServices())
+        .firstWhere((service) => service.uuid.toString().contains(BLE_SERVICE))
+        .characteristics;
+    for (BluetoothCharacteristic characteristic in characteristics) {
+      if (characteristic.uuid.toString().contains(BLE_RECEIVE)) {
+        _receiveCharacteristic = characteristic;
+      } else if (characteristic.uuid.toString().contains(BLE_SEND)) {
+        _sendCharacteristic = characteristic;
+      }
+    }
+
+    if (_receiveCharacteristic == null)
+      throw Exception('Device is missing receive Characteristic');
+    if (_sendCharacteristic == null)
+      throw Exception('Device is missing send Characteristic');
   }
 
   Future<Stream<List<int>>> startDataStream() async {
@@ -125,7 +121,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     return _receiveCharacteristic.value;
   }
 
-  void stopDataStream() async {
+  Future<void> stopDataStream() async {
     await _receiveCharacteristic.setNotifyValue(false);
     await _sendCharacteristic.write(stopStreamChar.codeUnits);
   }

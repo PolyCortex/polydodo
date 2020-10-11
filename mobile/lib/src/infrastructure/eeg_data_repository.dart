@@ -28,7 +28,7 @@ class EEGDataRepository implements IEEGDataRepository {
     }
   }
 
-  void stopRecordingFromStream() async {
+  Future<void> stopRecordingFromStream() async {
     // todo: move save future to another file
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =
@@ -45,7 +45,7 @@ class EEGDataRepository implements IEEGDataRepository {
   void importData() {}
   void exportData() {}
 
-  void addData(List event) async {
+  Future<void> addData(List event) async {
     //print("Lost packets: " + packetLoss.toString());
     //print("Total packets: " + totalPackets.toString());
     //print("Lost percentage: " +
