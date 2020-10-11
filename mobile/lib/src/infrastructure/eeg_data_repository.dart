@@ -32,7 +32,7 @@ class EEGDataRepository implements IEEGDataRepository {
     final pathOfTheFileToWrite =
         directory.path + '/' + _recordingData.fileName + ".txt";
     File file = File(pathOfTheFileToWrite);
-    List<List> fileContent = List<List>();
+    var fileContent = [];
     fileContent.addAll(OPEN_BCI_HEADER);
     fileContent.addAll(_recordingData.values);
     String csv = const ListToCsvConverter().convert(fileContent);

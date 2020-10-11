@@ -17,6 +17,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   QualifiedCharacteristic _receiveCharacteristic;
 
   FlutterReactiveBle flutterReactiveBle;
+  StreamSubscription<ConnectionStateUpdate> _connectedDeviceStream;
   StreamSubscription<DiscoveredDevice> _bluetoothScanSubscription;
   List<AcquisitionDevice> _acquisitionDevicePersistency = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
@@ -49,36 +50,35 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     streamController.add(_acquisitionDevicePersistency);
   }
 
-  Future<void> connect(
+  void connect(
       AcquisitionDevice device, Function(bool, Exception) callback) async {
-    StreamSubscription<ConnectionStateUpdate> stream;
-
     _selectedDevice = device;
     _acquisitionDevicePersistency.clear();
     _bluetoothScanSubscription.pause();
 
-    stream = flutterReactiveBle
-        .connectToDevice(id: _selectedDevice.id.toString())
-        .timeout(Duration(seconds: 10), onTimeout: (sink) {
-      sink.close();
-      callback(false, Exception("Connection Timed out"));
-    }).listen((event) {
+    _connectedDeviceStream = flutterReactiveBle
+        .connectToDevice(
+            id: _selectedDevice.id.toString(),
+            connectionTimeout: Duration(seconds: 10))
+        .listen((event) {
       if (event.connectionState == DeviceConnectionState.connected) {
         setupCharacteristics();
-        stream.cancel();
         callback(true, null);
-      } else if (event.connectionState == DeviceConnectionState.disconnected)
+      } else if (event.connectionState == DeviceConnectionState.disconnected) {
+        disconnect();
         callback(false, Exception("Failed to connect to device"));
+      }
     });
   }
 
-  Future<void> disconnect() async {
+  void disconnect() async {
     if (_selectedDevice != null) {
       _selectedDevice = null;
+      _connectedDeviceStream.cancel();
     }
   }
 
-  Future<void> setupCharacteristics() async {
+  void setupCharacteristics() async {
     _sendCharacteristic = QualifiedCharacteristic(
         characteristicId: Uuid.parse(BLE_SEND),
         serviceId: Uuid.parse(BLE_SERVICE),
