@@ -11,15 +11,11 @@ class EEGDataRepository implements IEEGDataRepository {
   bool _streamInitialized = false;
   EEGData _recordingData;
   List _lastSampleData = [0, 0, 0, 0, 0];
-  int _packetLoss;
-  int _totalPackets;
-  int _nextPacketId;
   int _sampleCounter;
+
   void createRecordingFromStream(Stream<List<int>> stream) {
     _recordingData =
         EEGData(UniqueId.from(DateTime.now().toString()), List<List>());
-    _packetLoss = 0;
-    _totalPackets = 0;
     _sampleCounter = 0;
     if (!_streamInitialized) {
       _streamInitialized = true;
@@ -48,30 +44,19 @@ class EEGDataRepository implements IEEGDataRepository {
   void exportData() {}
 
   Future<void> addData(List event) async {
-    print("Lost packets: " + _packetLoss.toString());
-    print("Total packets: " + _totalPackets.toString());
-    print("Lost percentage: " +
-        (_packetLoss.toDouble() / _totalPackets.toDouble()).toString());
     if (event.length != 20) {
       print("Invalid Event");
       return;
     }
-    _totalPackets++;
     int packetID = event[0];
 
     // todo: handle packet id 0 (raw data) and possibly impedence for signal validation
     if (packetID == 0) {
-      _nextPacketId = 101;
-
       List data = parseRaw(event);
       data = convertToMicrovolts(data, false);
 
       _recordingData.values.add(data.sublist(0, 15));
     } else if (packetID >= 101 && packetID <= 200) {
-      // print(packetID);
-      // print(_nextPacketId);
-      _packetLoss += packetID - _nextPacketId;
-      _nextPacketId = packetID + 1;
       List data = parse19Bit(event);
       data = convertToMicrovolts(data, true);
 
