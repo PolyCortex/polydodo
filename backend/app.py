@@ -1,40 +1,43 @@
-# Copyright 2015 gRPC authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""The Python implementation of the GRPC helloworld.Greeter server."""
-
-from concurrent import futures
-import logging
-
-import grpc
-
-from protos import helloworld_pb2
-from protos import helloworld_pb2_grpc
+from flask import Flask, request
+from flask_cors import CORS
+from waitress import serve
+from http import HTTPStatus
 
 
-class Greeter(helloworld_pb2_grpc.GreeterServicer):
-    def SayHello(self, request, context):
-        return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
+app = Flask(__name__)
 
 
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
-    server.add_insecure_port('[::]:9090')
-    server.start()
-    server.wait_for_termination()
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'txt', 'csv'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-if __name__ == '__main__':
-    logging.basicConfig()
-    serve()
+@app.route("/")
+def hello():
+    return "Hello, World!"
+
+
+@app.route('/analyze_sleep', methods=['POST'])
+def analyze_sleep():
+    if 'file' not in request.files:
+        return 'Missing file', HTTPStatus.BAD_REQUEST
+    file = request.files['file']
+
+    if file.filename == '':
+        return 'No selected file', HTTPStatus.BAD_REQUEST
+
+    if not allowed_file(file.filename):
+        return 'File format not allowed', HTTPStatus.BAD_REQUEST
+
+    file_content = file.read()
+    form_data = request.form.to_dict()
+
+    return ''
+
+
+CORS(app,
+     resources={r'/*': {"origins": '*'}},
+     allow_headers='Content-Type')
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+serve(app, host='0.0.0.0', port=8080)

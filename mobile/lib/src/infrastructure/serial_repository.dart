@@ -34,7 +34,8 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     streamController.add(_acquisitionDevicePersistency);
   }
 
-  Future<void> connect(AcquisitionDevice device) async {
+  Future<void> connect(
+      AcquisitionDevice device, Function(bool, Exception) callback) async {
     _selectedDevice =
         _serialDevices[_acquisitionDevicePersistency.indexOf(device)];
     _serialPort = await _selectedDevice.create();
