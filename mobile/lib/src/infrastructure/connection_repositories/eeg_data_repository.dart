@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/i_eeg_data_transformer.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
-import 'package:polydodo/src/infrastructure/baseTransformer.dart';
-import 'package:polydodo/src/infrastructure/ganglionTransformer.dart';
-import 'constants.dart';
+import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
+import 'package:polydodo/src/infrastructure/constants.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData _recordingData;
-  StreamTransformer streamTransformer;
+  IEEGDataTransformer<List<int>, List<dynamic>> streamTransformer;
 
   void createRecordingFromStream(Stream<List<int>> stream) {
     _recordingData =
@@ -20,13 +21,14 @@ class EEGDataRepository implements IEEGDataRepository {
 
     if (streamTransformer == null) {
       //todo: dynamically change transformer
-      streamTransformer = new GanglionTransformer<List<int>, List>();
+      // new GanglionTransformer<List<int>, List>.broadcast()
+      streamTransformer = new CytonTransformer<Uint8List, List>.broadcast();
       stream
           .asBroadcastStream()
           .transform(streamTransformer)
           .listen((data) => _recordingData.values.add(data));
     } else {
-      (streamTransformer as BaseTransformer).reset();
+      streamTransformer.reset();
     }
   }
 
@@ -38,7 +40,8 @@ class EEGDataRepository implements IEEGDataRepository {
         directory.path + '/' + _recordingData.fileName + ".txt";
     File file = File(pathOfTheFileToWrite);
     List<List> fileContent = [];
-    fileContent.addAll(OPEN_BCI_HEADER);
+    //todo: dynamically change header when we change transformer
+    fileContent.addAll(OPEN_BCI_CYTON_HEADER);
     fileContent.addAll(_recordingData.values);
     String csv = const ListToCsvConverter().convert(fileContent);
     await file.writeAsString(csv);

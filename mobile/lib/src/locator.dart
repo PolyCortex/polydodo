@@ -3,18 +3,17 @@ import 'package:get_it/get_it.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
-import 'package:polydodo/src/infrastructure/bluetooth_repository.dart';
-import 'package:polydodo/src/infrastructure/serial_repository.dart';
-
-import 'domain/eeg_data/i_eeg_data_repository.dart';
-import 'infrastructure/eeg_data_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
+import 'package:polydodo/src/infrastructure/connection_repositories/eeg_data_repository.dart';
+import 'package:polydodo/src/infrastructure/connection_repositories/serial_repository.dart';
 
 /// Private GetIt instance as we want all DI to be performed here in this file
 final _serviceLocator = GetIt.asNewInstance();
 
 void registerServices() {
+  // todo: dynamically change repository
   _serviceLocator
-      .registerSingleton<IAcquisitionDeviceRepository>(BluetoothRepository());
+      .registerSingleton<IAcquisitionDeviceRepository>(SerialRepository());
   _serviceLocator.registerSingleton<IEEGDataRepository>(EEGDataRepository());
 }
 

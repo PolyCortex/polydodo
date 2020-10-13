@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
+import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 
 class BluetoothRepository implements IAcquisitionDeviceRepository {
   static const String BLE_SERVICE = "0000fe84-0000-1000-8000-00805f9b34fb";
   static const String BLE_RECEIVE = "2d30c082-f39f-4ce6-923f-3484ea480596";
   static const String BLE_SEND = "2d30c083-f39f-4ce6-923f-3484ea480596";
-  static const startStreamChar = 'b';
-  static const stopStreamChar = 's';
 
   AcquisitionDevice _selectedDevice;
   QualifiedCharacteristic _sendCharacteristic;
@@ -96,7 +95,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         priority: ConnectionPriority.highPerformance);
 
     flutterReactiveBle.writeCharacteristicWithoutResponse(_sendCharacteristic,
-        value: startStreamChar.codeUnits);
+        value: START_STREAM_CHAR.codeUnits);
 
     return flutterReactiveBle.subscribeToCharacteristic(_receiveCharacteristic);
   }
@@ -106,7 +105,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         deviceId: _selectedDevice.id.toString(),
         priority: ConnectionPriority.balanced);
     flutterReactiveBle.writeCharacteristicWithoutResponse(_sendCharacteristic,
-        value: stopStreamChar.codeUnits);
+        value: STOP_STREAM_CHAR.codeUnits);
   }
 
   @override

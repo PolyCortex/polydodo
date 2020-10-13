@@ -38,20 +38,6 @@
     },
     "[dart]": {
       "editor.defaultFormatter": "Dart-Code.dart-code"
-<<<<<<< HEAD
-    },
-    "protoc": {
-      "compile_on_save": true,
-      "compile_all_path": "protos",
-      "options": [
-        "--dart_out=grpc:mobile/lib",
-        "--python_out=backend",
-        "--grpc_python_out=backend",
-        "--js_out=import_style=commonjs:web/src",
-        "--grpc-web_out=import_style=commonjs,mode=grpcwebtext:web/src"
-      ]
-=======
->>>>>>> master
     },
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
