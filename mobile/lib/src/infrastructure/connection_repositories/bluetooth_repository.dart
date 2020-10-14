@@ -71,10 +71,8 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   }
 
   void disconnect() async {
-    if (_selectedDevice != null) {
-      _selectedDevice = null;
-      _connectedDeviceStream.cancel();
-    }
+    _selectedDevice = null;
+    _connectedDeviceStream?.cancel();
   }
 
   void setupCharacteristics() async {

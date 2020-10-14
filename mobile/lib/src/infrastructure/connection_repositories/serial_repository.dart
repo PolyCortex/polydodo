@@ -37,9 +37,9 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _selectedDevice =
         _serialDevices[_acquisitionDevicePersistency.indexOf(device)];
     _serialPort = await _selectedDevice.create();
-    bool openResult = await _serialPort.open();
+    bool openSuccessful = await _serialPort.open();
 
-    if (!openResult) {
+    if (!openSuccessful) {
       callback(false, Exception("Could not open port"));
     }
 
@@ -50,11 +50,9 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   }
 
   void disconnect() async {
-    if (_selectedDevice != null && _serialPort != null) {
-      await _serialPort.close();
-      _selectedDevice = null;
-      _serialPort = null;
-    }
+    await _serialPort?.close();
+    _selectedDevice = null;
+    _serialPort = null;
   }
 
   Future<Stream<List<int>>> startDataStream() async {
@@ -63,8 +61,8 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     return _serialPort.inputStream;
   }
 
-  void stopDataStream() {
-    _serialPort.write(Uint8List.fromList(STOP_STREAM_CHAR.codeUnits));
+  Future<void> stopDataStream() async {
+    await _serialPort.write(Uint8List.fromList(STOP_STREAM_CHAR.codeUnits));
   }
 
   Stream<List<AcquisitionDevice>> watch() => streamController.stream;

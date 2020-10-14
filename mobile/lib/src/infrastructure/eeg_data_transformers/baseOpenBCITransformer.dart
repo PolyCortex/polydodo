@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_transformer.dart';
 
-class BaseTransformer<S, T> implements IEEGDataTransformer<S, T> {
+abstract class BaseOpenBCITransformer<S, T>
+    implements IEEGDataTransformer<S, T> {
   StreamController controller;
   StreamSubscription _subscription;
   bool cancelOnError;
   Stream<S> _stream;
 
-  BaseTransformer({bool synchronous: false, this.cancelOnError}) {
+  BaseOpenBCITransformer({bool synchronous: false, this.cancelOnError}) {
     controller = new StreamController<T>(
         onListen: _onListen,
         onCancel: _onCancel,
@@ -21,12 +22,11 @@ class BaseTransformer<S, T> implements IEEGDataTransformer<S, T> {
         sync: synchronous);
   }
 
-  BaseTransformer.broadcast({bool synchronous: false, this.cancelOnError}) {
+  BaseOpenBCITransformer.broadcast(
+      {bool synchronous: false, this.cancelOnError}) {
     controller = new StreamController<T>.broadcast(
         onListen: _onListen, onCancel: _onCancel, sync: synchronous);
   }
-
-  void reset() {}
 
   void _onListen() {
     reset();
@@ -40,10 +40,6 @@ class BaseTransformer<S, T> implements IEEGDataTransformer<S, T> {
   void _onCancel() {
     _subscription.cancel();
     _subscription = null;
-  }
-
-  void onData(S data) {
-    controller.add(data);
   }
 
   @override

@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:polydodo/src/infrastructure/constants.dart';
-import 'baseTransformer.dart';
+import 'baseOpenBCITransformer.dart';
 
-class CytonTransformer<S, T> extends BaseTransformer<S, T> {
+class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   List packet;
 
   CytonTransformer.broadcast({bool synchronous: false, cancelOnError})

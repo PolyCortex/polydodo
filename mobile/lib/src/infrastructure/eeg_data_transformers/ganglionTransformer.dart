@@ -1,7 +1,7 @@
 import 'package:polydodo/src/infrastructure/constants.dart';
-import 'baseTransformer.dart';
+import 'baseOpenBCITransformer.dart';
 
-class GanglionTransformer<S, T> extends BaseTransformer<S, T> {
+class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   List _lastSampleData;
   int _sampleCounter;
 
