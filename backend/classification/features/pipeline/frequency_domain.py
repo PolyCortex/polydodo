@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.preprocessing import (FunctionTransformer)
+from sklearn.preprocessing import FunctionTransformer
 
 from classification.features.pipeline.utils import (
     get_psds_from_epochs_transformer,

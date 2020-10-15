@@ -13,13 +13,26 @@ from classification.features.utils import (
 )
 
 
-def get_eeg_features(raw_data):
+def get_eeg_features(raw_data, in_bed_time, out_of_bed_time):
+    """Returns the continuous feature matrix
+    Input
+    -------
+    raw_signal: MNE.Raw object with signals with or without annotations
+    in_bed_time: timespan, in seconds, from which the subject started
+        the recording and went to bed
+    out_of_bed_time: timespan, in seconds, from which the subject
+        started the recording and got out of bed
+
+    Returns
+    -------
+    Array of size (nb_epochs, nb_continuous_features)
+    """
     features_file = []
 
     for channel in EEG_CHANNELS:
         chan_data = drop_other_channels(raw_data.copy(), channel)
         # TODO: input actual bed & out of bed times
-        chan_data = crop_raw_data(chan_data, 0, 100)
+        chan_data = crop_raw_data(chan_data, in_bed_time, out_of_bed_time)
         X_file_channel = convert_to_epochs(
             chan_data
         )
