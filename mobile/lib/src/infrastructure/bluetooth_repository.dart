@@ -1,55 +1,41 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 
 class BluetoothRepository implements IAcquisitionDeviceRepository {
-  static const String BLE_SERVICE = "fe84";
-  static const String BLE_RECEIVE = "2d30c082";
-  static const String BLE_SEND = "2d30c083";
+  static const String BLE_SERVICE = "0000fe84-0000-1000-8000-00805f9b34fb";
+  static const String BLE_RECEIVE = "2d30c082-f39f-4ce6-923f-3484ea480596";
+  static const String BLE_SEND = "2d30c083-f39f-4ce6-923f-3484ea480596";
   static const startStreamChar = 'b';
   static const stopStreamChar = 's';
 
-  BluetoothDevice _selectedDevice;
-  BluetoothCharacteristic _sendCharacteristic;
-  BluetoothCharacteristic _receiveCharacteristic;
+  AcquisitionDevice _selectedDevice;
+  QualifiedCharacteristic _sendCharacteristic;
+  QualifiedCharacteristic _receiveCharacteristic;
 
-  FlutterBlue flutterBlue;
-  StreamSubscription<List<ScanResult>> _bluetoothScanSubscription;
+  FlutterReactiveBle flutterReactiveBle;
+  StreamSubscription<ConnectionStateUpdate> _connectedDeviceStream;
+  StreamSubscription<DiscoveredDevice> _bluetoothScanSubscription;
   List<AcquisitionDevice> _acquisitionDevicePersistency = [];
-  List<BluetoothDevice> _bluetoothDevices = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
   BluetoothRepository();
 
   void initializeRepository() {
     if (_bluetoothScanSubscription == null) {
-      flutterBlue = FlutterBlue.instance;
+      flutterReactiveBle = FlutterReactiveBle();
 
-      flutterBlue.connectedDevices
-          .asStream()
-          .asBroadcastStream()
-          .listen((List<BluetoothDevice> devices) {
-        for (BluetoothDevice device in devices) {
-          addDevice(device);
-        }
-      });
-      _bluetoothScanSubscription =
-          flutterBlue.scanResults.listen((List<ScanResult> results) {
-        for (ScanResult result in results) {
-          addDevice(result.device);
-        }
-      });
+      _bluetoothScanSubscription = flutterReactiveBle.scanForDevices(
+          withServices: []).listen((device) => addDevice(device));
     } else {
       _bluetoothScanSubscription.resume();
     }
-    flutterBlue.startScan();
   }
 
-  void addDevice(BluetoothDevice bluetoothDevice) {
+  void addDevice(DiscoveredDevice bluetoothDevice) {
     AcquisitionDevice device = AcquisitionDevice(
         UniqueId.from(bluetoothDevice.id.toString()), bluetoothDevice.name);
 
@@ -57,77 +43,70 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
 
     if (idx == -1) {
       _acquisitionDevicePersistency.add(device);
-      _bluetoothDevices.add(bluetoothDevice);
     } else {
       _acquisitionDevicePersistency[idx] = device;
-      _bluetoothDevices[idx] = bluetoothDevice;
     }
 
     streamController.add(_acquisitionDevicePersistency);
   }
 
-  Future<void> connect(AcquisitionDevice device) async {
-    _selectedDevice =
-        _bluetoothDevices[_acquisitionDevicePersistency.indexOf(device)];
-
+  void connect(
+      AcquisitionDevice device, Function(bool, Exception) callback) async {
+    _selectedDevice = device;
     _acquisitionDevicePersistency.clear();
-    _bluetoothDevices.clear();
     _bluetoothScanSubscription.pause();
-    flutterBlue.stopScan();
 
-    try {
-      await _selectedDevice
-          .connect()
-          .then((value) => findRelevantCharacteristics())
-          .timeout(Duration(seconds: 6),
-              onTimeout: () =>
-                  {disconnect(), throw Exception("Connection Timed out")});
-    } catch (e) {
-      if (e is PlatformException) {
-        if (e.code != "already_connected") throw Exception(e.details);
-      } else
-        throw e;
-    }
-
-    return;
+    _connectedDeviceStream = flutterReactiveBle
+        .connectToDevice(
+            id: _selectedDevice.id.toString(),
+            connectionTimeout: Duration(seconds: 10))
+        .listen((event) {
+      if (event.connectionState == DeviceConnectionState.connected) {
+        setupCharacteristics();
+        callback(true, null);
+      } else if (event.connectionState == DeviceConnectionState.disconnected) {
+        disconnect();
+        callback(false, Exception("Failed to connect to device"));
+      }
+    });
   }
 
   void disconnect() async {
     if (_selectedDevice != null) {
-      await _selectedDevice.disconnect();
       _selectedDevice = null;
+      _connectedDeviceStream.cancel();
     }
   }
 
-  void findRelevantCharacteristics() {
-    _selectedDevice.discoverServices().then((services) => {
-          for (BluetoothCharacteristic characteristic in (services.where(
-                  (service) => service.uuid.toString().contains(BLE_SERVICE)))
-              .first
-              .characteristics)
-            {
-              if (characteristic.uuid.toString().contains(BLE_RECEIVE))
-                {_receiveCharacteristic = characteristic}
-              else if (characteristic.uuid.toString().contains(BLE_SEND))
-                {_sendCharacteristic = characteristic}
-            },
-          if (_receiveCharacteristic == null)
-            throw Exception('Device is missing receive Characteristic'),
-          if (_sendCharacteristic == null)
-            throw Exception('Device is missing send Characteristic')
-        });
+  void setupCharacteristics() async {
+    _sendCharacteristic = QualifiedCharacteristic(
+        characteristicId: Uuid.parse(BLE_SEND),
+        serviceId: Uuid.parse(BLE_SERVICE),
+        deviceId: _selectedDevice.id.toString());
+
+    _receiveCharacteristic = QualifiedCharacteristic(
+        characteristicId: Uuid.parse(BLE_RECEIVE),
+        serviceId: Uuid.parse(BLE_SERVICE),
+        deviceId: _selectedDevice.id.toString());
   }
 
   Future<Stream<List<int>>> startDataStream() async {
-    await _receiveCharacteristic.setNotifyValue(true);
+    await flutterReactiveBle.requestConnectionPriority(
+        deviceId: _selectedDevice.id.toString(),
+        priority: ConnectionPriority.highPerformance);
 
-    await _sendCharacteristic.write(startStreamChar.codeUnits);
-    return _receiveCharacteristic.value;
+    flutterReactiveBle.writeCharacteristicWithoutResponse(_sendCharacteristic,
+        value: startStreamChar.codeUnits);
+
+    return flutterReactiveBle.subscribeToCharacteristic(_receiveCharacteristic);
   }
 
-  void stopDataStream() async {
-    await _receiveCharacteristic.setNotifyValue(false);
-    await _sendCharacteristic.write(stopStreamChar.codeUnits);
+  Future<void> stopDataStream() async {
+    await flutterReactiveBle.requestConnectionPriority(
+        deviceId: _selectedDevice.id.toString(),
+        priority: ConnectionPriority.balanced);
+    flutterReactiveBle.writeCharacteristicWithoutResponse(_sendCharacteristic,
+        value: stopStreamChar.codeUnits);
   }
 
   @override

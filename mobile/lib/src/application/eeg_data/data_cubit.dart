@@ -12,11 +12,10 @@ class DataCubit extends Cubit<DataState> {
   DataCubit(this._deviceRepository, this._eegDataRepository)
       : super(DataStateInitial());
 
-  void startStreaming() {
+  Future<void> startStreaming() async {
     emit(DataStateRecording());
-    _deviceRepository
-        .startDataStream()
-        .then((stream) => _eegDataRepository.createRecordingFromStream(stream));
+    _eegDataRepository
+        .createRecordingFromStream(await _deviceRepository.startDataStream());
   }
 
   void stopStreaming() {
