@@ -6,14 +6,14 @@ import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
-import 'package:polydodo/src/domain/eeg_data/i_eeg_data_transformer.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
+import 'package:polydodo/src/infrastructure/eeg_data_transformers/baseOpenBCITransformer.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData _recordingData;
-  IEEGDataTransformer<List<int>, List<dynamic>> streamTransformer;
+  BaseOpenBCITransformer<List<int>, List<dynamic>> streamTransformer;
 
   void createRecordingFromStream(Stream<List<int>> stream) {
     _recordingData =
