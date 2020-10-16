@@ -10,30 +10,53 @@ import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/baseOpenBCITransformer.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
+import 'package:polydodo/src/infrastructure/eeg_data_transformers/ganglionTransformer.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData _recordingData;
-  BaseOpenBCITransformer<List<int>, List<dynamic>> streamTransformer;
+  BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
+
+  final GanglionTransformer<List<int>, List> _ganglionTransformer =
+      new GanglionTransformer<List<int>, List>.broadcast();
+
+  final CytonTransformer<List<int>, List<dynamic>> _cytonTransformer =
+      new CytonTransformer<Uint8List, List>.broadcast();
+
+  BaseOpenBCITransformer<List<int>, List<dynamic>> _currentTransformer;
+  StreamSubscription _currentTransformerStream;
+
+  StreamingSharedPreferences _preferences;
+
+  EEGDataRepository() {
+    initialize();
+  }
+
+  void initialize() async {
+    if (_preferences == null) {
+      _preferences = await StreamingSharedPreferences.instance;
+    }
+
+    _currentTransformer =
+        _preferences.getBool('using_bluetooth', defaultValue: false).getValue()
+            ? _ganglionTransformer
+            : _cytonTransformer;
+  }
 
   void createRecordingFromStream(Stream<List<int>> stream) {
     _recordingData =
         EEGData(UniqueId.from(DateTime.now().toString()), List<List>());
 
-    if (streamTransformer == null) {
-      //todo: dynamically change transformer
-      // new GanglionTransformer<List<int>, List>.broadcast()
-      streamTransformer = new CytonTransformer<Uint8List, List>.broadcast();
-      stream
-          .asBroadcastStream()
-          .transform(streamTransformer)
-          .listen((data) => _recordingData.values.add(data));
-    } else {
-      streamTransformer.reset();
-    }
+    _currentTransformer.reset();
+    _currentTransformerStream = stream
+        .asBroadcastStream()
+        .transform(_currentTransformer)
+        .listen((data) => _recordingData.values.add(data));
   }
 
   Future<void> stopRecordingFromStream() async {
     // todo: move save future to another file
+    _currentTransformerStream.cancel();
 
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =

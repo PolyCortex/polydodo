@@ -21,8 +21,6 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   List<AcquisitionDevice> _acquisitionDevicePersistency = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
-  BluetoothRepository();
-
   void initializeRepository() {
     if (_bluetoothScanSubscription == null) {
       flutterReactiveBle = FlutterReactiveBle();
@@ -31,6 +29,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
           withServices: []).listen((device) => addDevice(device));
     } else {
       _bluetoothScanSubscription.resume();
+      _acquisitionDevicePersistency.clear();
     }
   }
 
