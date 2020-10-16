@@ -3,6 +3,8 @@ import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGro
 import { useForm } from 'react-hook-form';
 import { analyzeSleep } from 'requests/analayze-sleep';
 
+import './style.css';
+
 const dateFieldSuffix = '-date';
 const timeFieldSuffix = '-time';
 
@@ -47,7 +49,6 @@ const UploadForm = () => {
             <h3>Please enter your EEG recorded data and the information related to it:</h3>
 
             <CustomInput
-              className='newClassName'
               innerRef={register}
               required
               accept=".csv, text/plain"
@@ -55,11 +56,12 @@ const UploadForm = () => {
               type="file"
               id="file"
               name="file"
+              className="test"
               label={
-                <span>
-                  {' '}
-                  <i className="ni ni-cloud-upload-96"></i> "Upload an OpenBCI CSV file"
-                </span>
+                <div>
+                  <i className="ni ni-cloud-upload-96 upload-form__file-input" />
+                  <span className="upload-form__file-input-label-text"> Upload an OpenBCI CSV file </span>
+                </div>
               }
             />
 

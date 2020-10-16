@@ -1,0 +1,33 @@
+.upload-form__file-input {
+  font-size: 5.5em;
+  margin-left: 2%;
+}
+
+.upload-form__file-input-label-text {
+  font-size: 1.5em;
+  margin: 0 10%;
+  width: 50%;
+  vertical-align: 100%;
+}
+
+.custom-file {
+  height: 6em;
+}
+
+.custom-file-input {
+  height: 100%;
+}
+
+.custom-file-label {
+  height: 100%;
+  border-radius: 0.5rem;
+  color: white;
+  background-color: #515175;
+}
+
+.custom-file-label::after {
+  height: 100%;
+  color: white;
+  background-color: #515175;
+  padding-top: 2.7em;
+}
