@@ -1,6 +1,5 @@
 import tip from 'd3-tip';
 import moment from 'moment';
-import './style.css'
 
 import { EPOCH_DURATION_MS } from '../constants';
 
@@ -12,7 +11,7 @@ export const initializeTooltips = (svg, data) => {
 };
 
 const initializeTooltip = (svg, getToolTipText) => {
-  const tooltip = tip().attr('class', 'evolving_chart__tooltip').offset([-10, 0]);
+  const tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]);
   svg.call(tooltip);
   tooltip.html(getToolTipText);
 
