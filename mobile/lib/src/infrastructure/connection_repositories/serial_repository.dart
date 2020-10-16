@@ -49,7 +49,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     callback(true, null);
   }
 
-  void disconnect() async {
+  Future<void> disconnect() async {
     await _serialPort?.close();
     _selectedDevice = null;
     _serialPort = null;
