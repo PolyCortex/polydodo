@@ -23,10 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   archive: ^2.0.13
+  auto_route: ^0.6.9
   battery: ^1.0.5
   binary: ^2.0.0
   bloc: ^6.0.3
@@ -46,10 +44,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  auto_route_generator: ^0.6.10
+  build_runner: ^1.10.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is
