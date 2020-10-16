@@ -47,6 +47,7 @@ const UploadForm = () => {
             <h3>Please enter your EEG recorded data and the information related to it:</h3>
 
             <CustomInput
+              className='newClassName'
               innerRef={register}
               required
               accept=".csv, text/plain"
@@ -54,7 +55,12 @@ const UploadForm = () => {
               type="file"
               id="file"
               name="file"
-              label="Upload an OpenBCI CSV file"
+              label={
+                <span>
+                  {' '}
+                  <i className="ni ni-cloud-upload-96"></i> "Upload an OpenBCI CSV file"
+                </span>
+              }
             />
 
             <FormGroup>
@@ -143,27 +149,6 @@ const UploadForm = () => {
               <Row form>
                 <Col md={6}>
                   <FormGroup>
-                    <Label>I think I fell asleep at</Label>
-                    <InputGroup>
-                      <Input
-                        innerRef={register}
-                        required
-                        type="date"
-                        name={`sleeping${dateFieldSuffix}`}
-                        id={`sleeping${dateFieldSuffix}`}
-                      />
-                      <Input
-                        innerRef={register}
-                        required
-                        type="time"
-                        name={`sleeping${timeFieldSuffix}`}
-                        id={`sleeping${timeFieldSuffix}`}
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                </Col>
-                <Col md={6}>
-                  <FormGroup>
                     <Label>And woke up at</Label>
                     <InputGroup>
                       <Input
@@ -186,9 +171,11 @@ const UploadForm = () => {
               </Row>
             </div>
 
-            <Button size="lg" color="primary">
-              Analyze my sleep
-            </Button>
+            <span style={{ 'margin-left': '90em', 'margin-right': '9em' }}>
+              <Button block size="lg" class="btn-lg" color="primary">
+                Analyze my sleep
+              </Button>
+            </span>
           </Form>
         </Col>
       </Row>

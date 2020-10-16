@@ -1,23 +1,13 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
-import {
-  MARGIN,
-  NB_POINTS_COLOR_INTERPOLATION,
-  TITLE_FONT_SIZE,
-  TITLE_POSITION_Y,
-} from './constants';
+import { MARGIN, NB_POINTS_COLOR_INTERPOLATION, TITLE_FONT_SIZE, TITLE_POSITION_Y } from './constants';
+
+import '../style.css';
 
 const createDrawingGroups = (g, spectrogramWidth) =>
   Object({
-    spectrogramDrawingGroup: g
-      .append('g')
-      .attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`),
-    legendDrawingGroup: g
-      .append('g')
-      .attr(
-        'transform',
-        `translate(${MARGIN.LEFT + spectrogramWidth}, ${MARGIN.TOP})`,
-      ),
+    spectrogramDrawingGroup: g.append('g').attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`),
+    legendDrawingGroup: g.append('g').attr('transform', `translate(${MARGIN.LEFT + spectrogramWidth}, ${MARGIN.TOP})`),
   });
 
 const drawTitle = (g, channelName, spectrogramWidth) =>
@@ -29,15 +19,9 @@ const drawTitle = (g, channelName, spectrogramWidth) =>
     .style('font-size', TITLE_FONT_SIZE)
     .text(`Spectrogram of channel ${channelName}`);
 
-const drawAxes = (
-  g,
-  xAxis,
-  yAxis,
-  singleSpectrogramHeight,
-  spectrogramWidth,
-) => {
+const drawAxes = (g, xAxis, yAxis, singleSpectrogramHeight, spectrogramWidth) => {
   g.append('text')
-    .attr('class', 'x axis')
+    .attr('class', 'x visualization__axis')
     .attr('y', singleSpectrogramHeight + MARGIN.BOTTOM)
     .attr('x', spectrogramWidth / 2)
     .attr('fill', 'currentColor')
@@ -45,7 +29,7 @@ const drawAxes = (
     .text('Time');
 
   g.append('text')
-    .attr('class', 'y axis')
+    .attr('class', 'y visualization__axis')
     .attr('transform', 'rotate(-90)')
     .attr('y', -MARGIN.LEFT)
     .attr('x', -singleSpectrogramHeight / 2)
@@ -55,12 +39,12 @@ const drawAxes = (
     .text('Frequency (Hz)');
 
   g.append('g')
-    .attr('class', 'x axis')
+    .attr('class', 'x visualization__axis')
     .attr('transform', `translate(0, ${singleSpectrogramHeight})`)
     .call(xAxis)
     .selectAll('text');
 
-  g.append('g').attr('class', 'y axis').call(yAxis).selectAll('text');
+  g.append('g').attr('class', 'y visualization__axis').call(yAxis).selectAll('text');
 };
 
 const drawLegend = (svg, color, y, spectrogramHeight) => {
@@ -97,14 +81,14 @@ const drawLegend = (svg, color, y, spectrogramHeight) => {
   const yAxis = d3.axisRight(y).ticks(5, 's');
   svg
     .append('g')
-    .attr('class', 'y axis')
+    .attr('class', 'y visualization__axis')
     .attr('transform', `translate(${MARGIN.RIGHT / 3.7},0)`)
     .call(yAxis)
     .selectAll('text');
 
   svg
     .append('text')
-    .attr('class', 'y axis')
+    .attr('class', 'y visualization__axis')
     .attr('transform', 'rotate(90)')
     .attr('y', -MARGIN.RIGHT)
     .attr('x', spectrogramHeight / 2)
@@ -118,40 +102,23 @@ const drawSpectrogramAxesAndLegend = (
   svg,
   scalesAndAxesBySpectrogram,
   data,
-  {
-    canvasWidth,
-    spectrogramWidth,
-    singleSpectrogramCanvasHeight,
-    singleSpectrogramHeight,
-  },
+  { canvasWidth, spectrogramWidth, singleSpectrogramCanvasHeight, singleSpectrogramHeight },
 ) =>
-  _.forEach(
-    _.zip(scalesAndAxesBySpectrogram, data),
-    ([{ xAxis, yAxis, color, yColor }, { channel }], index) => {
-      const currentSpectrogramDrawingGroup = svg
-        .append('g')
-        .attr(
-          'transform',
-          `translate(0, ${index * singleSpectrogramCanvasHeight[index]})`,
-        )
-        .attr('width', canvasWidth)
-        .attr('height', singleSpectrogramCanvasHeight[index]);
+  _.forEach(_.zip(scalesAndAxesBySpectrogram, data), ([{ xAxis, yAxis, color, yColor }, { channel }], index) => {
+    const currentSpectrogramDrawingGroup = svg
+      .append('g')
+      .attr('transform', `translate(0, ${index * singleSpectrogramCanvasHeight[index]})`)
+      .attr('width', canvasWidth)
+      .attr('height', singleSpectrogramCanvasHeight[index]);
 
-      const {
-        spectrogramDrawingGroup,
-        legendDrawingGroup,
-      } = createDrawingGroups(currentSpectrogramDrawingGroup, spectrogramWidth);
+    const { spectrogramDrawingGroup, legendDrawingGroup } = createDrawingGroups(
+      currentSpectrogramDrawingGroup,
+      spectrogramWidth,
+    );
 
-      drawTitle(spectrogramDrawingGroup, channel, spectrogramWidth);
-      drawAxes(
-        spectrogramDrawingGroup,
-        xAxis,
-        yAxis,
-        singleSpectrogramHeight,
-        spectrogramWidth,
-      );
-      drawLegend(legendDrawingGroup, color, yColor, singleSpectrogramHeight);
-    },
-  );
+    drawTitle(spectrogramDrawingGroup, channel, spectrogramWidth);
+    drawAxes(spectrogramDrawingGroup, xAxis, yAxis, singleSpectrogramHeight, spectrogramWidth);
+    drawLegend(legendDrawingGroup, color, yColor, singleSpectrogramHeight);
+  });
 
 export default drawSpectrogramAxesAndLegend;
