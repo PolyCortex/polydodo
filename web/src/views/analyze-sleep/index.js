@@ -5,12 +5,13 @@ import WaitingForServerToBeReady from './waiting-for-server-to-be-ready';
 import UploadForm from './upload-form';
 import text from './text.json';
 import { periodicPingServer } from 'requests/ping-server';
+import { PING_PERIOD } from './constants';
 
 const AnalyzeSleep = () => {
   const [serverReady, setServerReady] = useState(false);
 
   useEffect(() => {
-    const subscription = periodicPingServer(200).subscribe(
+    const subscription = periodicPingServer(PING_PERIOD).subscribe(
       (ready) => setServerReady(ready),
       () => null,
     );

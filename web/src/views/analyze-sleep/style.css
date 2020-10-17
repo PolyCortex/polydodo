@@ -39,7 +39,9 @@
   margin-bottom: 2em;
 }
 
-.upload-form__file-input-error-text {
+.upload-form__error-text {
   color: #f5365c;
+  font-size: 0.875em;
+  font-weight: lighter;
   margin-top: 0.5em;
 }
