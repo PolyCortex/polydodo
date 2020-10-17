@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
@@ -162,13 +162,18 @@ const UploadForm = () => {
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          min: {
-                            value: moment(getValues('bedtime_date')).subtract(1, 'days').format('YYYY-MM-DD'),
-                            message: 'Stream start must be at most one day before bedtime.',
-                          },
-                          max: {
-                            value: getValues('bedtime_date'),
-                            message: 'Stream start datetime must be smaller than the bedtime date.',
+                          validate: (streamStartDate) => {
+                            const streamStart = moment(
+                              streamStartDate + ' ' + getValues('stream_start_time'),
+                              'YYYY-MM-DD HH:mm',
+                            );
+                            const bedTime = moment(
+                              getValues('bedtime_date') + ' ' + getValues('bedtime_time'),
+                              'YYYY-MM-DD HH:mm',
+                            );
+                            if (streamStart.isAfter(bedTime)) {
+                              return 'Stream start must be prior to bedtime.';
+                            }
                           },
                         })}
                         type="date"
@@ -176,18 +181,7 @@ const UploadForm = () => {
                         id={`stream_start${dateFieldSuffix}`}
                       />
                       <Input
-                        innerRef={register({
-                          required: 'Time is required.',
-                          validate: (time) => {
-                            console.log(time);
-                            if (
-                              getValues('stream_start_date') === getValues('bedtime_date') &&
-                              moment(time, 'HH:mm').isAfter(moment(getValues('bedtime_time'), 'HH:mm'))
-                            ) {
-                              return 'Stream start datetime must be smaller than the bedtime time.';
-                            }
-                          },
-                        })}
+                        innerRef={register({ required: 'Time is required.' })}
                         type="time"
                         name={`stream_start${timeFieldSuffix}`}
                         id={`stream_start${timeFieldSuffix}`}
@@ -205,7 +199,19 @@ const UploadForm = () => {
                     <Label>I went to bed at :</Label>
                     <InputGroup>
                       <Input
-                        innerRef={register({ required: 'Date is required.' })}
+                        innerRef={register({
+                          required: 'Date is required.',
+                          validate: (bedtimeDate) => {
+                            const bedtime = moment(bedtimeDate + ' ' + getValues('bedtime_time'), 'YYYY-MM-DD HH:mm');
+                            const wakeup = moment(
+                              getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
+                              'YYYY-MM-DD HH:mm',
+                            );
+                            if (bedtime.isAfter(wakeup)) {
+                              return 'Bedtime must be prior to wake up.';
+                            }
+                          },
+                        })}
                         type="date"
                         name={`bedtime${dateFieldSuffix}`}
                         id={`bedtime${dateFieldSuffix}`}
@@ -229,7 +235,20 @@ const UploadForm = () => {
                     <Label>And woke up at :</Label>
                     <InputGroup>
                       <Input
-                        innerRef={register({ required: 'Date is required.' })}
+                        innerRef={register({
+                          required: 'Date is required.',
+                          validate: (wakeUpDate) => {
+                            const wakeup = moment(
+                              getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
+                              'YYYY-MM-DD HH:mm',
+                            );
+                            console.log('now', moment());
+                            console.log('wakeup', wakeup);
+                            if (wakeup.isAfter(moment())) {
+                              return 'Wake up must be prior to now.';
+                            }
+                          },
+                        })}
                         type="date"
                         name={`wakeup${dateFieldSuffix}`}
                         id={`wakeup${dateFieldSuffix}`}
