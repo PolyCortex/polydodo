@@ -10,7 +10,7 @@ from classification.features.constants import (
     NYQUIST_FREQ,
 )
 from classification.features.pipeline.utils import (
-    get_data_from_epochs_transformer,
+    get_data_from_epochs,
     get_transformer,
 )
 
@@ -51,7 +51,7 @@ def get_pipeline_per_subband(subband_name: str):
 
     return Pipeline([
         ('filter', FunctionTransformer(filter_epochs_in_specified_subband, validate=False)),
-        ('get-values', get_data_from_epochs_transformer),
+        ('get-values', FunctionTransformer(get_data_from_epochs, validate=False)),
         ('mean-energy', FunctionTransformer(
             get_transformer(get_signal_mean_energy), validate=True
         )),

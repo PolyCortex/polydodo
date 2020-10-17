@@ -3,6 +3,8 @@ from flask_cors import CORS
 from waitress import serve
 from http import HTTPStatus
 
+from classification.file_loading import get_raw_array
+from classification.predict import predict
 
 app = Flask(__name__)
 
@@ -17,7 +19,7 @@ def hello():
     return "Hello, World!"
 
 
-@app.route('/analyze_sleep', methods=['POST'])
+@app.route('/analyze-sleep', methods=['GET'])
 def analyze_sleep():
     if 'file' not in request.files:
         return 'Missing file', HTTPStatus.BAD_REQUEST
@@ -29,8 +31,8 @@ def analyze_sleep():
     if not allowed_file(file.filename):
         return 'File format not allowed', HTTPStatus.BAD_REQUEST
 
-    file_content = file.read()
-    form_data = request.form.to_dict()
+    raw_array = get_raw_array(file)
+    # predict(raw_array)
 
     return ''
 

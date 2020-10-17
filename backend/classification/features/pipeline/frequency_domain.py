@@ -3,7 +3,7 @@ from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
 from classification.features.pipeline.utils import (
-    get_psds_from_epochs_transformer,
+    get_psds_from_epochs,
 )
 from classification.features.constants import (
     FREQ_BANDS_RANGE,
@@ -90,6 +90,8 @@ def get_sefd_on_all_epochs(psds_with_freqs):
 
 
 def get_frequency_domain_pipeline():
+    get_psds_from_epochs_transformer = FunctionTransformer(
+        get_psds_from_epochs, validate=False)
     absolute_mean_psds_transformer = FunctionTransformer(
         get_mean_psds, validate=False)
     relative_mean_psds_transformer = FunctionTransformer(

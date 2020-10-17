@@ -7,7 +7,7 @@ from sklearn.preprocessing import (FunctionTransformer)
 from classification.features.pipeline.utils import (
     get_transformer,
     get_transformer_list,
-    get_data_from_epochs_transformer,
+    get_data_from_epochs,
 )
 
 
@@ -75,6 +75,8 @@ def hjorth(X):
 
 
 def get_time_domain_pipeline():
+    get_data_from_epochs_transformer = FunctionTransformer(
+        get_data_from_epochs, validate=False)
     mean_transformer = FunctionTransformer(
         get_transformer(np.mean), validate=True)
     std_transformer = FunctionTransformer(
