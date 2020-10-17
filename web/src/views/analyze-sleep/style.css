@@ -6,7 +6,6 @@
 .upload-form__file-input-label-text {
   font-size: 1.5em;
   margin: 0 10%;
-  width: 50%;
   vertical-align: 100%;
 }
 
@@ -30,4 +29,17 @@
   color: white;
   background-color: #515175;
   padding-top: 2.7em;
+}
+
+.upload-form__journal-title {
+  margin-top: 3em;
+}
+
+.upload-form__file-input-title {
+  margin-bottom: 2em;
+}
+
+.upload-form__file-input-error-text {
+  color: #f5365c;
+  margin-top: 0.5em;
 }
