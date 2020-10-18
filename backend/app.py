@@ -5,6 +5,7 @@ from http import HTTPStatus
 
 from classification.file_loading import get_raw_array
 from classification.predict import predict
+from classification.exceptions import ClassificationError
 
 app = Flask(__name__)
 
@@ -43,10 +44,12 @@ def analyze_sleep():
     if not allowed_file(file.filename):
         return 'File format not allowed', HTTPStatus.BAD_REQUEST
 
-    raw_array = get_raw_array(file)
-
-    form_data = request.form.to_dict()
-    predict(raw_array, **form_data)
+    try:
+        raw_array = get_raw_array(file)
+        form_data = request.form.to_dict()
+        predict(raw_array, **form_data)
+    except ClassificationError as e:
+        return e.message, HTTPStatus.BAD_REQUEST
 
     with open("assets/mock_response.json", "r") as mock_response_file:
         return mock_response_file.read()
