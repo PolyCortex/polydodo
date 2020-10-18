@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Card, CardBody } from 'reactstrap';
 
-import hypnogramCSVPath from 'assets/data/hypnogram-openbci-predicted.csv';
-
 import D3ComponentScrollyTelling from 'components/d3component_scrollytelling';
 import WaypointDirection from 'components/waypoint_direction';
 
@@ -12,11 +10,8 @@ import createEvolvingChart, {
   barChartCallbacks,
   stackedBarChartCallbacks,
 } from 'd3/evolving_chart/evolving_chart';
-import { useCSVData } from 'hooks/api_hooks';
 
 const StackedBarChartScrollyTelling = ({ epochs }) => {
-  console.log(epochs);
-  const csvData = useCSVData(hypnogramCSVPath);
   const [isInitialized, setIsInitialized] = useState(false);
 
   return (

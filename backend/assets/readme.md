@@ -42,16 +42,6 @@
       ... // Stage of each timestamp. This array has the same size that timestamps. Possible values are "W", "REM", "N1", "N2", "N3"
     ]
   },
-  "annotations": [
-    [1602210380, "W"], // Unix timestamp of the epoch that transitioned to the "W" state
-    [1602211400, "N1"],
-    [1602211910, "N2"],
-    [1602212900, "N3"],
-      ...
-    [1602239180, "W"],
-    [1602239210, "N1"],
-    [1602239240, "W"]
-  ],
   "spectrograms": {
     "frequencies": [...],
     "fpz_cz": [ // Contains an array for each timestamps in epochs.timestamps for the fpz-cz eeg channel

@@ -18,7 +18,6 @@ import useGlobalState from 'hooks/useGlobalState';
 
 const SleepAnalysisResults = () => {
   const [response] = useGlobalState('response');
-  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
   if (!response) {
     return (
       <Redirect
@@ -118,7 +117,7 @@ const SleepAnalysisResults = () => {
           </a>
           that decomposes sound frequency from your microphone.
         </p>
-        <SpectrogramScrollyTelling />
+        <SpectrogramScrollyTelling spectrograms={data.spectrograms} epochs={data.epochs} />
         <p className="mt-5">
           Generally, when talking about brain waves, we group certain frequencies together into bands. There are overall
           five frequency bands, where each has a general associated behaviour, or state of mind. We will cover those

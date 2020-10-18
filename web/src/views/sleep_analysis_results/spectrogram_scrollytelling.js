@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Card, CardBody } from 'reactstrap';
 
-import { HYPNOGRAM_KEY } from '../../d3/spectrogram/constants';
 import createSpectrogram, { spectrogramCallbacks } from '../../d3/spectrogram/spectrogram';
 import D3ComponentScrollyTelling from '../../components/d3component_scrollytelling';
 import WaypointDirection from '../../components/waypoint_direction';
 
-import { useCSVData } from '../../hooks/api_hooks';
-
-import hypnogramDataSleepEDFPath from 'assets/data/hypnogram-openbci-predicted.csv';
-import spectrogramData from 'assets/data/spectrograms-openbci-predicted.json';
-
-const SpectrogramScrollyTelling = () => {
-  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
-  const spectrogramWithHypnogramData = csvDataSleepEDF
-    ? { ...spectrogramData, [HYPNOGRAM_KEY]: csvDataSleepEDF }
-    : null;
+const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   return (
@@ -23,7 +13,7 @@ const SpectrogramScrollyTelling = () => {
       <div style={{ position: 'sticky', top: '10%' }}>
         <D3ComponentScrollyTelling
           callback={createSpectrogram}
-          data={spectrogramWithHypnogramData}
+          data={{ ...spectrograms, epochs }}
           isInitialized={isInitialized}
           setIsInitialized={setIsInitialized}
           useDiv
