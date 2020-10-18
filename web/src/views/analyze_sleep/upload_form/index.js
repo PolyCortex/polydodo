@@ -151,7 +151,7 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
               <Row form>
                 <Col md={12}>
                   <FormGroup>
-                    <Label>The recording started at : </Label>
+                    <Label>I started recording at : </Label>
                     <InputGroup>
                       <Input
                         innerRef={register({
