@@ -16,11 +16,15 @@ const postForm = async (formData, setResponse, setPostFormError, setSubmittedFor
   }
 };
 
-const AnalysisInProgress = ({ setPostFormError, submittedFormData, setSubmittedFormData }) => {
+const AnalysisInProgress = () => {
   const [response, setResponse] = useGlobalState('response');
+  const [, setPostFormError] = useGlobalState('postFormError');
+  const [submittedFormData, setSubmittedFormData] = useGlobalState('submittedFormData');
+
   useEffect(() => {
     postForm(submittedFormData, setResponse, setPostFormError, setSubmittedFormData);
   }, [setPostFormError, setResponse, setSubmittedFormData, submittedFormData]);
+
   if (!response) {
     return (
       <Container>

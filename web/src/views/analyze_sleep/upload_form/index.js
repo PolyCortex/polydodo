@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import moment from 'moment';
 import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
 import { useForm } from 'react-hook-form';
@@ -14,6 +13,7 @@ import {
 } from './constants';
 
 import './style.css';
+import useGlobalState from 'hooks/useGlobalState';
 
 const dateFieldSuffix = '_date';
 const timeFieldSuffix = '_time';
@@ -37,8 +37,10 @@ const mergeDateTimeFields = (data) =>
     ).getTime(),
   ]);
 
-const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) => {
+const UploadForm = () => {
   const { register, handleSubmit, getValues, errors } = useForm();
+  const [postFormError, setPostFormError] = useGlobalState('postFormError');
+  const [, setSubmittedFormData] = useGlobalState('submittedFormData');
 
   return (
     <Container style={{ padding: '2em 0' }}>
@@ -58,7 +60,7 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                   required: 'A valid .txt raw EEG file must be selected.',
                   validate: (files) => {
                     const file = files[0];
-                    if (file.type !== ACCEPTED_FILE_TYPE || _.last(file.name.split('.')) !== ACCEPTED_FILE_EXTENSION) {
+                    if (file.type !== ACCEPTED_FILE_TYPE || !file.name.endsWith(ACCEPTED_FILE_EXTENSION)) {
                       return 'A valid .txt raw OpenBCI EEG file must be selected.';
                     } else if (file.size >= MAX_FILE_UPLOAD_SIZE) {
                       return 'File is too large. Must be less than 1.6 Gb.';
@@ -70,7 +72,6 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                 type="file"
                 id="file"
                 name="file"
-                className="test"
                 label={
                   <div>
                     <i className="ni ni-cloud-upload-96 upload-form__file-input" />
@@ -182,7 +183,9 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
-                      {errors.stream_start_date?.message} {errors.stream_start_time?.message}
+                      {errors.stream_start_date?.message}
+                      <br />
+                      {errors.stream_start_time?.message}
                     </div>
                   </FormGroup>
                 </Col>
@@ -221,7 +224,9 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
-                      {errors.bedtime_date?.message} {errors.bedtime_time?.message}
+                      {errors.bedtime_date?.message}
+                      <br />
+                      {errors.bedtime_time?.message}
                     </div>
                   </FormGroup>
                 </Col>
@@ -254,7 +259,9 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
-                      {errors.wakeup_date?.message} {errors.wakeup_time?.message}
+                      {errors.wakeup_date?.message}
+                      <br />
+                      {errors.wakeup_time?.message}
                     </div>
                   </FormGroup>
                 </Col>

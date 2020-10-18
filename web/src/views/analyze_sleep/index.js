@@ -7,11 +7,11 @@ import text from './text.json';
 import { periodicPingServer } from 'requests/ping-server';
 import { PING_PERIOD } from './constants';
 import AnalysisInProgress from './analysis_in_progress.js';
+import useGlobalState from 'hooks/useGlobalState';
 
 const AnalyzeSleep = () => {
   const [serverReady, setServerReady] = useState(false);
-  const [submittedFormData, setSubmittedFormData] = useState(null);
-  const [postFormError, setPostFormError] = useState(null);
+  const [submittedFormData] = useGlobalState('submittedFormData');
 
   useEffect(() => {
     const subscription = periodicPingServer(PING_PERIOD).subscribe(
@@ -25,21 +25,9 @@ const AnalyzeSleep = () => {
   if (!serverReady) {
     child = <WaitingForServer />;
   } else if (!submittedFormData) {
-    child = (
-      <UploadForm
-        postFormError={postFormError}
-        setPostFormError={setPostFormError}
-        setSubmittedFormData={setSubmittedFormData}
-      />
-    );
+    child = <UploadForm />;
   } else {
-    child = (
-      <AnalysisInProgress
-        setPostFormError={setPostFormError}
-        submittedFormData={submittedFormData}
-        setSubmittedFormData={setSubmittedFormData}
-      />
-    );
+    child = <AnalysisInProgress />;
   }
   return (
     <div>
