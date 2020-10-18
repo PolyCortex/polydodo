@@ -44,13 +44,13 @@
   },
   "spectrograms": {
     "frequencies": [...],
-    "fpz_cz": [ // Contains an array for each timestamps in epochs.timestamps for the fpz-cz eeg channel
+    "fpz-cz": [ // Contains an array for each timestamps in epochs.timestamps for the fpz-cz eeg channel
       [...],  // Contains a value for each frequency
       [...],
        ...
       [...]
     ],
-    "pz_oz": [  // Same as fpz-cz but for the pz-oz eeg channel
+    "pz-oz": [  // Same as fpz-cz but for the pz-oz eeg channel
       [...],
       [...],
        ...
