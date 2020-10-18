@@ -13,6 +13,8 @@ import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
 import SpectrogramScrollyTelling from './spectrogram_scrollytelling';
 import useGlobalState from 'hooks/useGlobalState';
 
+import './style.css';
+
 const SleepAnalysisResults = () => {
   const [response] = useGlobalState('response');
   if (!response) {
@@ -131,9 +133,19 @@ const SleepAnalysisResults = () => {
           low voltage high frequency activity.
         </p>
         <p>Wanna know how accurate this data is?</p>
-        <Button color="default" to="/performance" tag={Link}>
-          Check out the performances
-        </Button>
+        <Row className="scrollytelling-container__buttons">
+          <Button className="mt-4" color="default" to="/performance" tag={Link}>
+            Check out the performances
+          </Button>
+          <Button
+            className="mt-4"
+            color="secondary"
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data.epochs))}`}
+            download="myresults.json"
+          >
+            Download my results
+          </Button>
+        </Row>
       </Container>
     </div>
   );
