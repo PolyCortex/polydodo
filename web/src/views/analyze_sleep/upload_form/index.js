@@ -81,7 +81,7 @@ const UploadForm = ({ setSubmittedFormData }) => {
               <div className="upload-form__error-text">{errors.file?.message}</div>
             </div>
 
-            {/* <h4 className="upload-form__journal-title">Journal</h4>
+            <h4 className="upload-form__journal-title">Journal</h4>
             <p>
               While recording your EEG data, you also gathered some informations about your device, yourself and your
               sleep:
@@ -259,7 +259,7 @@ const UploadForm = ({ setSubmittedFormData }) => {
                   </FormGroup>
                 </Col>
               </Row>
-            </div> */}
+            </div>
 
             <Row className="justify-content-center">
               <Button block size="lg" className="btn btn-lg mt-4 w-50" color="primary">
