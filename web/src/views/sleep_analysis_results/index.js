@@ -48,7 +48,7 @@ const SleepAnalysisResults = () => {
           about your sleep. It is however fascinating to see how your night was.
         </p>
         <p>Without further ado, this is what was your night of sleep:</p>
-        <StackedBarChartScrollyTelling />
+        <StackedBarChartScrollyTelling epochs={data.epochs} />
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe
           different stage proportions across age, gender and different sleep disorders. We’ve also defined other
