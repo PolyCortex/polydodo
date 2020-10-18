@@ -11,6 +11,7 @@ import AnalysisInProgress from './analysis_in_progress.js';
 const AnalyzeSleep = () => {
   const [serverReady, setServerReady] = useState(false);
   const [submittedFormData, setSubmittedFormData] = useState(null);
+  const [postFormError, setPostFormError] = useState(null);
 
   useEffect(() => {
     const subscription = periodicPingServer(PING_PERIOD).subscribe(
@@ -24,9 +25,21 @@ const AnalyzeSleep = () => {
   if (!serverReady) {
     child = <WaitingForServer />;
   } else if (!submittedFormData) {
-    child = <UploadForm setSubmittedFormData={setSubmittedFormData} />;
+    child = (
+      <UploadForm
+        postFormError={postFormError}
+        setPostFormError={setPostFormError}
+        setSubmittedFormData={setSubmittedFormData}
+      />
+    );
   } else {
-    child = <AnalysisInProgress submittedFormData={submittedFormData} />;
+    child = (
+      <AnalysisInProgress
+        setPostFormError={setPostFormError}
+        submittedFormData={submittedFormData}
+        setSubmittedFormData={setSubmittedFormData}
+      />
+    );
   }
   return (
     <div>

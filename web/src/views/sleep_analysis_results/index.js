@@ -11,9 +11,6 @@ import { createSingleHypnogram } from 'd3/hypnogram/hypnogram';
 import text from './text.json';
 import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
 import SpectrogramScrollyTelling from './spectrogram_scrollytelling';
-import { useCSVData } from 'hooks/api_hooks';
-
-import hypnogramDataSleepEDFPath from 'assets/data/hypnogram-openbci-predicted.csv';
 import useGlobalState from 'hooks/useGlobalState';
 
 const SleepAnalysisResults = () => {

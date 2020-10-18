@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row } from 'reactstrap';
+import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -37,7 +37,7 @@ const mergeDateTimeFields = (data) =>
     ).getTime(),
   ]);
 
-const UploadForm = ({ setSubmittedFormData }) => {
+const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) => {
   const { register, handleSubmit, getValues, errors } = useForm();
 
   return (
@@ -262,10 +262,29 @@ const UploadForm = ({ setSubmittedFormData }) => {
             </div>
 
             <Row className="justify-content-center">
-              <Button block size="lg" className="btn btn-lg mt-4 w-50" color="primary">
+              <Button
+                block
+                size="lg"
+                className="btn btn-lg mt-4 w-50"
+                color="primary"
+                type="submit"
+                onClick={() => setPostFormError(null)}
+              >
                 Analyze my sleep
               </Button>
             </Row>
+            {postFormError && (
+              <Row className="justify-content-center">
+                <Alert color="danger" size="lg" className="mt-4">
+                  <span>
+                    <strong>An occured while processing your file...</strong>
+                    <br />
+                    Make sure you uploaded the correct file. Perhaps the information you entered in your journal does
+                    not match the file provided.
+                  </span>
+                </Alert>
+              </Row>
+            )}
           </Form>
         </Col>
       </Row>

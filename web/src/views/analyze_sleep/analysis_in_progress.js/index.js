@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { Col, Container, Row, Spinner } from 'reactstrap';
 
 import { analyzeSleep } from 'requests/analyze-sleep';
 import useGlobalState from 'hooks/useGlobalState';
 
-const postForm = async (formData, setResponse) => {
+const postForm = async (formData, setResponse, setPostFormError, setSubmittedFormData) => {
   try {
     const response = await analyzeSleep(formData).toPromise();
     setResponse(response);
   } catch (error) {
     console.error(error);
-    // TODO: Tell user an error occured
+    setPostFormError(error);
+    setSubmittedFormData(null);
   }
 };
 
-const AnalysisInProgress = ({ submittedFormData }) => {
+const AnalysisInProgress = ({ setPostFormError, submittedFormData, setSubmittedFormData }) => {
   const [response, setResponse] = useGlobalState('response');
   useEffect(() => {
-    postForm(submittedFormData, setResponse);
-  }, [setResponse, submittedFormData]);
+    postForm(submittedFormData, setResponse, setPostFormError, setSubmittedFormData);
+  }, [setPostFormError, setResponse, setSubmittedFormData, submittedFormData]);
   if (!response) {
     return (
       <Container>
