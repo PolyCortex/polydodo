@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 import { Col, Container, Row, Spinner } from 'reactstrap';
 
 import { analyzeSleep } from 'requests/analyze-sleep';
+import useGlobalState from 'hooks/useGlobalState';
 
 const postForm = async (formData, setResponse) => {
   try {
@@ -15,7 +16,7 @@ const postForm = async (formData, setResponse) => {
 };
 
 const AnalysisInProgress = ({ submittedFormData }) => {
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useGlobalState('response');
   useEffect(() => {
     postForm(submittedFormData, setResponse);
   }, [setResponse, submittedFormData]);
@@ -32,12 +33,10 @@ const AnalysisInProgress = ({ submittedFormData }) => {
       </Container>
     );
   }
-  console.log('response: ', response);
   return (
     <Redirect
       to={{
         pathname: '/sleep-analysis-results',
-        state: response.data,
       }}
     />
   );

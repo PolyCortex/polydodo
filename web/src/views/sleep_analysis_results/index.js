@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import Header from 'components/header';
 import D3Component from 'components/d3component';
@@ -14,10 +14,21 @@ import SpectrogramScrollyTelling from './spectrogram_scrollytelling';
 import { useCSVData } from 'hooks/api_hooks';
 
 import hypnogramDataSleepEDFPath from 'assets/data/hypnogram-openbci-predicted.csv';
+import useGlobalState from 'hooks/useGlobalState';
 
-const SleepAnalysisResults = ({ location }) => {
-  console.log('data:', location);
+const SleepAnalysisResults = () => {
+  const [response] = useGlobalState('response');
   const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDFPath);
+  if (!response) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/analyze-my-sleep',
+        }}
+      />
+    );
+  }
+  const data = response.data;
 
   return (
     <div>
@@ -69,7 +80,7 @@ const SleepAnalysisResults = ({ location }) => {
           110 minutes. Another commonly looked at measurement is the time between sleep onset and the first REM epoch,
           namely REM latency, which corresponds to 20 minutes.
         </p>
-        <D3Component callback={createSingleHypnogram} data={csvDataSleepEDF ? [csvDataSleepEDF] : null} />
+        <D3Component callback={createSingleHypnogram} data={data.epochs ? [data.epochs] : null} />
         <p>
           Sleep cycles take place in a broader process, named the circadian rhythm. It is the one that regulates our
           wake and sleep cycles over a 24 hours period.

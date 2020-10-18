@@ -22,8 +22,10 @@ const initializeAxes = (x, y) =>
 const createDrawingGroup = (svg) => svg.append('g').attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
 const preprocessData = (data, hypnogramNames) => {
+  data = data.map((hypno) =>
+    _.zip(hypno.timestamps, hypno.stages).map((el) => Object({ timestamp: el[0], sleepStage: el[1] })),
+  );
   data = data.map((hypno) => convertTimestampsToDates(hypno));
-
   return _.zip(data, hypnogramNames).map((x) =>
     Object({
       name: x[1],
