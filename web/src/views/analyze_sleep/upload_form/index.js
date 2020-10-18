@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 
@@ -158,15 +157,11 @@ const UploadForm = () => {
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const streamStart = moment(
+                            const streamStart = new Date(
                               getValues('stream_start_date') + ' ' + getValues('stream_start_time'),
-                              'YYYY-MM-DD HH:mm',
                             );
-                            const bedTime = moment(
-                              getValues('bedtime_date') + ' ' + getValues('bedtime_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            if (streamStart.isAfter(bedTime)) {
+                            const bedTime = new Date(getValues('bedtime_date') + ' ' + getValues('bedtime_time'));
+                            if (streamStart > bedTime) {
                               return 'Stream start must be prior to bedtime.';
                             }
                           },
@@ -198,16 +193,10 @@ const UploadForm = () => {
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (_) => {
-                            const bedtime = moment(
-                              getValues('bedtime_date') + ' ' + getValues('bedtime_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            const wakeup = moment(
-                              getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            if (bedtime.isAfter(wakeup)) {
+                          validate: () => {
+                            const bedtime = new Date(getValues('bedtime_date') + ' ' + getValues('bedtime_time'));
+                            const wakeup = new Date(getValues('wakeup_date') + ' ' + getValues('wakeup_time'));
+                            if (bedtime > wakeup) {
                               return 'Bedtime must be prior to wake up.';
                             }
                           },
@@ -237,12 +226,9 @@ const UploadForm = () => {
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (_) => {
-                            const wakeup = moment(
-                              getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            if (wakeup.isAfter(moment())) {
+                          validate: () => {
+                            const wakeup = new Date(getValues('wakeup_date') + ' ' + getValues('wakeup_time'));
+                            if (wakeup > Date.now()) {
                               return 'Wake up must be prior to now.';
                             }
                           },

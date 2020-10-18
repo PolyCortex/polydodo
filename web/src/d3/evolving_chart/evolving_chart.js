@@ -4,7 +4,12 @@ import moment from 'moment';
 
 import { preprocessData } from './preproc';
 import { createLegend } from './legend';
-import { createTimelineChartCallbacks, createInstanceChartCallbacks, createBarChartCallbacks, createStackedBarChartCallbacks } from './chart_states';
+import {
+  createTimelineChartCallbacks,
+  createInstanceChartCallbacks,
+  createBarChartCallbacks,
+  createStackedBarChartCallbacks,
+} from './chart_states';
 import { MARGIN, CANVAS_DIMENSION, BAR_HEIGHT, DIMENSION } from './constants';
 import { STAGES_ORDERED, STAGE_TO_COLOR } from '../constants';
 import { initializeTooltips } from './mouse_over';
@@ -45,7 +50,8 @@ const initializeAxes = (xTime, xLinear, y) => {
 
 const createDrawingGroup = (svg) => svg.append('g').attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
-const bindAnnotationsToRects = (g, annotations) => g.selectAll('.rect').data(annotations).enter().append('rect').attr('class', 'rect-stacked');
+const bindAnnotationsToRects = (g, annotations) =>
+  g.selectAll('.rect').data(annotations).enter().append('rect').attr('class', 'rect-stacked');
 
 const createEvolvingChart = (containerNode, data) => {
   const svg = d3.select(containerNode).attr('viewBox', `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
