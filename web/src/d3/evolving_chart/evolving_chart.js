@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 import { preprocessData } from './preproc';
 import { createLegend } from './legend';
@@ -32,10 +32,10 @@ const initializeScales = () => {
 const setDomainOnScales = (xTime, xLinear, y, colors, epochs) => {
   const start = _.first(epochs).timestamp;
   const end = _.last(epochs).timestamp;
-  const nightDuration = moment.duration(moment(end).diff(start));
+  const nightDuration = DateTime.fromJSDate(end).diff(DateTime.fromJSDate(start), ['hours']);
 
   xTime.domain([start, end]);
-  xLinear.domain([0, nightDuration.asHours()]);
+  xLinear.domain([0, nightDuration.hours]);
   y.domain(STAGES_ORDERED);
   colors.domain(STAGES_ORDERED);
 };
