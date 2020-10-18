@@ -11,7 +11,7 @@ import useGlobalState from 'hooks/useGlobalState';
 
 const AnalyzeSleep = () => {
   const [serverReady, setServerReady] = useState(false);
-  const [submittedFormData] = useGlobalState('submittedFormData');
+  const [isFormSubmitted] = useGlobalState('isFormSubmitted');
 
   useEffect(() => {
     const subscription = periodicPingServer(PING_PERIOD).subscribe(
@@ -21,14 +21,6 @@ const AnalyzeSleep = () => {
     return () => subscription.unsubscribe();
   });
 
-  let child;
-  if (!serverReady) {
-    child = <WaitingForServer />;
-  } else if (!submittedFormData) {
-    child = <UploadForm />;
-  } else {
-    child = <AnalysisInProgress />;
-  }
   return (
     <div>
       <Header
@@ -38,7 +30,17 @@ const AnalyzeSleep = () => {
         subtitle={text['header_subtitle']}
         description={text['header_description']}
       />
-      <Container className="mt-5 text-justify">{child}</Container>
+      <Container className="mt-5 text-justify">
+        <span hidden={serverReady}>
+          <WaitingForServer />
+        </span>
+        <span hidden={!serverReady || isFormSubmitted}>
+          <UploadForm />
+        </span>
+        <span hidden={!serverReady || !isFormSubmitted}>
+          <AnalysisInProgress />
+        </span>
+      </Container>
     </div>
   );
 };

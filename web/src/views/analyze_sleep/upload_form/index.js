@@ -13,6 +13,7 @@ import {
 
 import './style.css';
 import useGlobalState from 'hooks/useGlobalState';
+import { analyzeSleep } from 'requests/analyze-sleep';
 
 const dateFieldSuffix = '_date';
 const timeFieldSuffix = '_time';
@@ -36,20 +37,33 @@ const mergeDateTimeFields = (data) =>
     ).getTime(),
   ]);
 
+const postForm = async (formData, setResponse, setPostFormError, setIsFormSubmitted) => {
+  try {
+    const response = await analyzeSleep(formData).toPromise();
+    setResponse(response);
+  } catch (error) {
+    console.error(error);
+    setPostFormError(error);
+    setIsFormSubmitted(false);
+  }
+};
+
 const UploadForm = () => {
   const { register, handleSubmit, getValues, errors } = useForm();
+  const [, setResponse] = useGlobalState('response');
   const [postFormError, setPostFormError] = useGlobalState('postFormError');
-  const [, setSubmittedFormData] = useGlobalState('submittedFormData');
+  const [, setIsFormSubmitted] = useGlobalState('isFormSubmitted');
 
   return (
     <Container style={{ padding: '2em 0' }}>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
           <Form
-            onSubmit={handleSubmit((data) => {
+            onSubmit={handleSubmit(async (data) => {
               let formData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
               formData = { ...formData, file: formData.file[0] };
-              setSubmittedFormData(formData);
+              setIsFormSubmitted(true);
+              await postForm(formData, setResponse, setPostFormError, setIsFormSubmitted);
             })}
           >
             <h3 className="upload-form__file-input-title">Select or drop your recorded EEG file</h3>

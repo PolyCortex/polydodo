@@ -1,29 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router';
 import { Col, Container, Row, Spinner } from 'reactstrap';
 
-import { analyzeSleep } from 'requests/analyze-sleep';
 import useGlobalState from 'hooks/useGlobalState';
 
-const postForm = async (formData, setResponse, setPostFormError, setSubmittedFormData) => {
-  try {
-    const response = await analyzeSleep(formData).toPromise();
-    setResponse(response);
-  } catch (error) {
-    console.error(error);
-    setPostFormError(error);
-    setSubmittedFormData(null);
-  }
-};
-
 const AnalysisInProgress = () => {
-  const [response, setResponse] = useGlobalState('response');
-  const [, setPostFormError] = useGlobalState('postFormError');
-  const [submittedFormData, setSubmittedFormData] = useGlobalState('submittedFormData');
-
-  useEffect(() => {
-    postForm(submittedFormData, setResponse, setPostFormError, setSubmittedFormData);
-  }, [setPostFormError, setResponse, setSubmittedFormData, submittedFormData]);
+  const [response] = useGlobalState('response');
 
   if (!response) {
     return (
@@ -38,6 +20,7 @@ const AnalysisInProgress = () => {
       </Container>
     );
   }
+
   return (
     <Redirect
       to={{
