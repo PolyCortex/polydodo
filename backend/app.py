@@ -15,8 +15,8 @@ def allowed_file(filename):
 
 
 @app.route("/")
-def hello():
-    return "Hello, World!"
+def status():
+    return ""
 
 
 @app.route('/analyze-sleep', methods=['GET'])
@@ -48,7 +48,8 @@ def analyze_sleep():
     form_data = request.form.to_dict()
     predict(raw_array, **form_data)
 
-    return ''
+    with open("assets/mock_response.json", "r") as mock_response_file:
+        return mock_response_file.read()
 
 
 CORS(app,
