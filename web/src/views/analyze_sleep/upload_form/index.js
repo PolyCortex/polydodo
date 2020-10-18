@@ -1,11 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
+import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row } from 'reactstrap';
 import { useForm } from 'react-hook-form';
-import { analyzeSleep } from 'requests/analyze-sleep';
 
-import './style.css';
 import {
   ACCEPTED_FILE_EXTENSION,
   ACCEPTED_FILE_TYPE,
@@ -14,6 +12,8 @@ import {
   MAX_FILE_UPLOAD_SIZE,
   MIN_AGE,
 } from './constants';
+
+import './style.css';
 
 const dateFieldSuffix = '_date';
 const timeFieldSuffix = '_time';
@@ -37,26 +37,20 @@ const mergeDateTimeFields = (data) =>
     ).getTime(),
   ]);
 
-const onSubmit = async (data) => {
-  let formData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
-  formData = { ...formData, file: formData.file[0] };
-  try {
-    console.log(formData);
-    const results = await analyzeSleep(formData).toPromise();
-    console.log(results);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const UploadForm = () => {
+const UploadForm = ({ setSubmittedFormData }) => {
   const { register, handleSubmit, getValues, errors } = useForm();
 
   return (
     <Container style={{ padding: '2em 0' }}>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form
+            onSubmit={handleSubmit((data) => {
+              let formData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
+              formData = { ...formData, file: formData.file[0] };
+              setSubmittedFormData(formData);
+            })}
+          >
             <h3 className="upload-form__file-input-title">Select or drop your recorded EEG file</h3>
             <div>
               <CustomInput
@@ -87,7 +81,7 @@ const UploadForm = () => {
               <div className="upload-form__error-text">{errors.file?.message}</div>
             </div>
 
-            <h4 className="upload-form__journal-title">Journal</h4>
+            {/* <h4 className="upload-form__journal-title">Journal</h4>
             <p>
               While recording your EEG data, you also gathered some informations about your device, yourself and your
               sleep:
@@ -162,9 +156,9 @@ const UploadForm = () => {
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (streamStartDate) => {
+                          validate: () => {
                             const streamStart = moment(
-                              streamStartDate + ' ' + getValues('stream_start_time'),
+                              getValues('stream_start_date') + ' ' + getValues('stream_start_time'),
                               'YYYY-MM-DD HH:mm',
                             );
                             const bedTime = moment(
@@ -201,8 +195,11 @@ const UploadForm = () => {
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (bedtimeDate) => {
-                            const bedtime = moment(bedtimeDate + ' ' + getValues('bedtime_time'), 'YYYY-MM-DD HH:mm');
+                          validate: (_) => {
+                            const bedtime = moment(
+                              getValues('bedtime_date') + ' ' + getValues('bedtime_time'),
+                              'YYYY-MM-DD HH:mm',
+                            );
                             const wakeup = moment(
                               getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
                               'YYYY-MM-DD HH:mm',
@@ -215,14 +212,12 @@ const UploadForm = () => {
                         type="date"
                         name={`bedtime${dateFieldSuffix}`}
                         id={`bedtime${dateFieldSuffix}`}
-                        onChange={(e) => console.log(`${e.target.value}`)}
                       />
                       <Input
                         innerRef={register({ required: 'Time is required.' })}
                         type="time"
                         name={`bedtime${timeFieldSuffix}`}
                         id={`bedtime${timeFieldSuffix}`}
-                        onChange={(e) => console.log(`${e.target.value}`)}
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
@@ -237,13 +232,11 @@ const UploadForm = () => {
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (wakeUpDate) => {
+                          validate: (_) => {
                             const wakeup = moment(
                               getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
                               'YYYY-MM-DD HH:mm',
                             );
-                            console.log('now', moment());
-                            console.log('wakeup', wakeup);
                             if (wakeup.isAfter(moment())) {
                               return 'Wake up must be prior to now.';
                             }
@@ -266,13 +259,13 @@ const UploadForm = () => {
                   </FormGroup>
                 </Col>
               </Row>
-            </div>
+            </div> */}
 
-            <span>
-              <Button block size="lg mt-4" className="btn-lg" color="primary">
+            <Row className="justify-content-center">
+              <Button block size="lg" className="btn btn-lg mt-4 w-50" color="primary">
                 Analyze my sleep
               </Button>
-            </span>
+            </Row>
           </Form>
         </Col>
       </Row>

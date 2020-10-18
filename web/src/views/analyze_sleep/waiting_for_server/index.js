@@ -1,9 +1,9 @@
 import React from 'react';
 
-const WaitingForServerToBeReady = () => (
+const WaitingForServer = () => (
   <div>
     <h1>Waiting for local server to be running...</h1>
   </div>
 );
 
-export default WaitingForServerToBeReady;
+export default WaitingForServer;

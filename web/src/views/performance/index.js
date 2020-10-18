@@ -64,27 +64,29 @@ const Performance = () => {
           <WIPWarning />
         </Row>
         <p>
-          Ever wonder what is the value of this application? This page aims to illustrate the relative performance of our sleep scoring compared to
-          clinical hypnogram scoring (which is usually considered the state-of-the-art technique).
+          Ever wonder what is the value of this application? This page aims to illustrate the relative performance of
+          our sleep scoring compared to clinical hypnogram scoring (which is usually considered the state-of-the-art
+          technique).
         </p>
         <p>
           <strong>Here is the plan:</strong>
         </p>
         <ul>
           <li>
-            First, we will check how our classifier’s scoring agrees with the scoring within the Physionet's Sleep-EDF dataset. Of course, we will
-            perform this agreement test on a subset of EEG data that was never trained on. This subset is composed of full nights of sleep coming from
-            five subject of a different age group.{' '}
+            First, we will check how our classifier’s scoring agrees with the scoring within the Physionet's Sleep-EDF
+            dataset. Of course, we will perform this agreement test on a subset of EEG data that was never trained on.
+            This subset is composed of full nights of sleep coming from five subject of a different age group.{' '}
           </li>
           <li>
-            Then, we will check how this classifier performs on a full night recorded on one of our members. In order to be able to make comparisons,
-            we ask for the help of a medical electrophysiologist to score our data. This manual scoring will serve as reference to get an idea of the
-            accuracy of our model on data acquired using an OpenBCI under non-clinical conditions. The AASM manual was used for scoring.
+            Then, we will check how this classifier performs on a full night recorded on one of our members. In order to
+            be able to make comparisons, we ask for the help of a medical electrophysiologist to score our data. This
+            manual scoring will serve as reference to get an idea of the accuracy of our model on data acquired using an
+            OpenBCI under non-clinical conditions. The AASM manual was used for scoring.
           </li>
           <li>
-            Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To do this, we will take a random
-            night in our dataset. This will allow us to qualify somewhat the previous results and maybe get an idea of the usual disagreement level
-            between professional scorers.
+            Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To
+            do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous
+            results and maybe get an idea of the usual disagreement level between professional scorers.
           </li>
         </ul>
         <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
@@ -105,7 +107,11 @@ const Performance = () => {
         <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Electrophysiologist'])}
-          data={csvDataPredictedOpenBCI && csvDataOpenBCIElectrophysiologist ? [csvDataPredictedOpenBCI, csvDataOpenBCIElectrophysiologist] : null}
+          data={
+            csvDataPredictedOpenBCI && csvDataOpenBCIElectrophysiologist
+              ? [csvDataPredictedOpenBCI, csvDataOpenBCIElectrophysiologist]
+              : null
+          }
         />
         <ClassificationReport
           rows={[
