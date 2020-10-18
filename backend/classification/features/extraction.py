@@ -5,6 +5,7 @@ from classification.config.constants import (
     EEG_CHANNELS,
     AGE_FEATURE_BINS,
     DATASET_SAMPLE_RATE,
+    SEX_FEATURE,
 )
 from classification.features.constants import (
     DATASET_HIGH_PASS_FREQ,
@@ -75,8 +76,9 @@ def get_categorical_features(age, sex, nb_epochs):
         for category_index, age_range in enumerate(AGE_FEATURE_BINS)
         if age >= age_range[0] and age <= age_range[1]
     )
+    sex_value = SEX_FEATURE[sex]
 
-    X_categorical = [sex, age_category]
+    X_categorical = [sex_value, age_category]
 
     return np.array(
         X_categorical * nb_epochs

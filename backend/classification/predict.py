@@ -26,4 +26,4 @@ def predict(raw_eeg, age, sex, stream_start, bedtime, wakeup):
         raw_eeg, age, sex, in_bed_seconds, out_of_bed_seconds
     )
 
-    # print(X_openbci, X_openbci.shape)
+    print(X_openbci[0], X_openbci.shape)
