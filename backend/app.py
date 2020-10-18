@@ -21,6 +21,18 @@ def hello():
 
 @app.route('/analyze-sleep', methods=['GET'])
 def analyze_sleep():
+    """
+    Request payload example
+    {
+        "file": File(...),
+        "device": "CYTON",
+        "sex": "F",
+        "age": "23",
+        "stream_start": 1602895800000,
+        "bedtime": 1602898320000,
+        "wakeup": 1602931800000
+    }
+    """
     if 'file' not in request.files:
         return 'Missing file', HTTPStatus.BAD_REQUEST
     file = request.files['file']
@@ -32,7 +44,9 @@ def analyze_sleep():
         return 'File format not allowed', HTTPStatus.BAD_REQUEST
 
     raw_array = get_raw_array(file)
-    # predict(raw_array)
+
+    form_data = request.form.to_dict()
+    predict(raw_array, **form_data)
 
     return ''
 

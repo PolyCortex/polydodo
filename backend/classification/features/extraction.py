@@ -4,6 +4,10 @@ import numpy as np
 from classification.config.constants import (
     EEG_CHANNELS,
     AGE_FEATURE_BINS,
+    DATASET_SAMPLE_RATE,
+)
+from classification.features.constants import (
+    DATASET_HIGH_PASS_FREQ,
 )
 from classification.features.pipeline import get_feature_union
 from classification.features.utils import (
@@ -31,13 +35,17 @@ def get_eeg_features(raw_data, in_bed_time, out_of_bed_time):
 
     for channel in EEG_CHANNELS:
         chan_data = drop_other_channels(raw_data.copy(), channel)
-        # TODO: input actual bed & out of bed times
         chan_data = crop_raw_data(chan_data, in_bed_time, out_of_bed_time)
+        chan_data = chan_data.resample(DATASET_SAMPLE_RATE)
+        chan_data = chan_data.filter(l_freq=DATASET_HIGH_PASS_FREQ, h_freq=None)
+
         X_file_channel = convert_to_epochs(
-            chan_data
+            chan_data, in_bed_time
         )
 
         feature_union = get_feature_union()
+        print('Started feature ext on epochs: ', X_file_channel)
+
         X_features = feature_union.transform(X_file_channel)
         features_file.append(X_features)
 

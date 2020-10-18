@@ -13,6 +13,7 @@ EEG_CHANNELS = [
 ]
 
 EPOCH_DURATION = 30  # in seconds
+MIN_FILE_SIZE = EPOCH_DURATION  # in seconds
 
 DATASET_SAMPLE_RATE = 100           # in Hz
 OPENBCI_CYTON_SAMPLE_RATE = 250     # in Hz
@@ -24,3 +25,10 @@ AGE_FEATURE_BINS = [
     [60, 84],
     [85, 110]
 ]
+ACCEPTED_AGE_RANGE = [AGE_FEATURE_BINS[0][0], AGE_FEATURE_BINS[-1][-1]]
+
+# based from subject description file (see header) https://physionet.org/content/sleep-edfx/1.0.0/SC-subjects.xls
+SEX_FEATURE = {
+    'F': 1,
+    'M': 2
+}
