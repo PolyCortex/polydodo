@@ -1,7 +1,6 @@
 from classification.config.constants import (
     FILE_MINIMUM_DURATION,
     ACCEPTED_AGE_RANGE,
-    Sex,
 )
 from classification.exceptions import (
     TimestampsError,
@@ -10,11 +9,10 @@ from classification.exceptions import (
 )
 
 
-def validate(raw_eeg, age, sex, in_bed_seconds, out_of_bed_seconds):
-    _validate_timestamps(in_bed_seconds, out_of_bed_seconds)
-    _validate_file_with_timestamps(raw_eeg, out_of_bed_seconds)
-    _validate_age(age)
-    _validate_sex(sex)
+def validate(raw_eeg, info):
+    _validate_timestamps(info['in_bed_seconds'], info['out_of_bed_seconds'])
+    _validate_file_with_timestamps(raw_eeg, info['out_of_bed_seconds'])
+    _validate_age(info['age'])
 
 
 def _validate_timestamps(in_bed_seconds, out_of_bed_seconds):
@@ -47,10 +45,3 @@ def _validate_age(age):
 
     if not(is_in_accepted_range):
         raise ClassificationError('invalid age')
-
-
-def _validate_sex(sex):
-    try:
-        Sex[sex]
-    except KeyError:
-        raise ClassificationError('invalid sex')

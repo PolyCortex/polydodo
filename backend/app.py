@@ -6,6 +6,7 @@ from http import HTTPStatus
 from classification.file_loading import get_raw_array
 from classification.predict import predict
 from classification.exceptions import ClassificationError
+from classification.config.constants import Sex
 
 app = Flask(__name__)
 
@@ -44,10 +45,25 @@ def analyze_sleep():
     if not allowed_file(file.filename):
         return 'File format not allowed', HTTPStatus.BAD_REQUEST
 
+    form_data = request.form.to_dict()
+
+    try:
+        age = int(form_data['age'])
+        sex = Sex[form_data['sex']]
+        stream_start = int(form_data['stream_start'])
+        bedtime = int(form_data['bedtime'])
+        wakeup = int(form_data['wakeup'])
+    except (KeyError, ValueError):
+        return 'Missing or invalid request parameters', HTTPStatus.BAD_REQUEST
+
     try:
         raw_array = get_raw_array(file)
-        form_data = request.form.to_dict()
-        predict(raw_array, **form_data)
+        predict(raw_array, info={
+            'sex': sex,
+            'age': age,
+            'in_bed_seconds': bedtime - stream_start,
+            'out_of_bed_seconds': wakeup - stream_start
+        })
     except ClassificationError as e:
         return e.message, HTTPStatus.BAD_REQUEST
 

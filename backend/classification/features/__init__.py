@@ -6,23 +6,24 @@ from classification.features.extraction import (
 )
 
 
-def get_features(signal, age, sex, in_bed_seconds, out_of_bed_seconds):
+def get_features(signal, info):
     """Returns the raw features
-    Input
-    -------
-    - raw_signal: MNE.Raw object with signals with or without annotations
-    - age: Age of the subject
-    - sex: Sex of the subject
-    - in_bed_seconds: timespan, in seconds, from which the subject started
-        the recording and went to bed
-    - out_of_bed_seconds: timespan, in seconds, from which the subject
-        started the recording and got out of bed
-
+    Input:
+    - raw_eeg: instance of mne.io.RawArray
+        Should contain 2 channels (1: FPZ-CZ, 2: PZ-OZ)
+    - info: dict
+        Should contain the following keys:
+        - sex: instance of Sex enum
+        - age: indicates the subject's age
+        - in_bed_seconds: timespan, in seconds, from which
+            the subject started the recording and went to bed
+        - out_of_bed_seconds: timespan, in seconds, from which
+            the subject started the recording and got out of bed
     Returns
     -------
     - features X in a vector of (nb_epochs, nb_features)
     """
-    X_eeg = get_eeg_features(signal, in_bed_seconds, out_of_bed_seconds)
-    X_categorical = get_categorical_features(age, sex, X_eeg.shape[0])
+    X_eeg = get_eeg_features(signal, info['in_bed_seconds'], info['out_of_bed_seconds'])
+    X_categorical = get_categorical_features(info['age'], info['sex'], X_eeg.shape[0])
 
     return np.append(X_categorical, X_eeg, axis=1)
