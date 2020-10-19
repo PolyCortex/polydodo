@@ -1,8 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router';
 import { Col, Container, Row, Spinner } from 'reactstrap';
-
-import useGlobalState from 'hooks/useGlobalState';
 
 const AnalysisInProgress = () => (
   <Container>
