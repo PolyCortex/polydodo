@@ -7,15 +7,12 @@ import D3Component from 'components/d3component';
 
 import text from './text.json';
 import { createComparativeHypnogram } from 'd3/hypnogram/hypnogram';
-import { useCSVData } from 'hooks/api_hooks';
 
-// mock data
-import hypnogramDataSleepEDF from 'assets/data/hypnogram-labelled.csv';
-import hypnogramDataPredicted from 'assets/data/hypnogram-predicted.csv';
-import hypnogramDataElectrophysiologist from 'assets/data/hypnogram-electrophysiologist.csv';
-// William's night data
-import hypnogramDataOpenBCIElectrophysiologist from 'assets/data/hypnogram-openbci-electrophysiologist.csv';
-import hypnogramDataPredictedOpenBCI from 'assets/data/hypnogram-openbci-predicted.csv';
+import physionetWoman78yoSleepEDF from 'assets/data/physionet_woman78yo_sleepedf';
+import predictedWoman78yoSleepEDF from 'assets/data/predicted_woman78yo_sleepedf';
+import electrophysiologistWoman78yoSleepEDF from 'assets/data/electrophysiologist_woman78yo_sleepedf';
+import electrophysiologistWilliamCyton from 'assets/data/electrophysiologist_william_cyton';
+import predictedWilliamCyton from 'assets/data/predicted_william_cyton';
 
 const ClassificationReport = ({ rows }) => (
   <Table size="sm" responsive>
@@ -44,12 +41,6 @@ const ClassificationReport = ({ rows }) => (
 );
 
 const Performance = () => {
-  const csvDataSleepEDF = useCSVData(hypnogramDataSleepEDF);
-  const csvDataPredicted = useCSVData(hypnogramDataPredicted);
-  const csvDataElectrophysiologist = useCSVData(hypnogramDataElectrophysiologist);
-  const csvDataOpenBCIElectrophysiologist = useCSVData(hypnogramDataOpenBCIElectrophysiologist);
-  const csvDataPredictedOpenBCI = useCSVData(hypnogramDataPredictedOpenBCI);
-
   return (
     <div>
       <Header
@@ -92,7 +83,7 @@ const Performance = () => {
         <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
-          data={csvDataPredicted && csvDataSleepEDF ? [csvDataPredicted, csvDataSleepEDF] : null}
+          data={[predictedWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
         />
         <ClassificationReport
           rows={[
@@ -107,11 +98,7 @@ const Performance = () => {
         <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Electrophysiologist'])}
-          data={
-            csvDataPredictedOpenBCI && csvDataOpenBCIElectrophysiologist
-              ? [csvDataPredictedOpenBCI, csvDataOpenBCIElectrophysiologist]
-              : null
-          }
+          data={[predictedWilliamCyton.epochs, electrophysiologistWilliamCyton.epochs]}
         />
         <ClassificationReport
           rows={[
@@ -126,7 +113,7 @@ const Performance = () => {
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Electrophysiologist', 'Sleep-EDF'])}
-          data={csvDataElectrophysiologist && csvDataSleepEDF ? [csvDataElectrophysiologist, csvDataSleepEDF] : null}
+          data={[electrophysiologistWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
         />
         <ClassificationReport
           rows={[
