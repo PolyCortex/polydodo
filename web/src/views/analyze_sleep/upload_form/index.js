@@ -124,7 +124,9 @@ const UploadForm = () => {
             <Row form>
               <Col md={6}>
                 <FormGroup inline>
-                  <Label for="sex">Sex*</Label>
+                  <Label for="sex">
+                    Sex<sup>1</sup>
+                  </Label>
                   <CustomInput
                     innerRef={register({ required: 'A selection must be made.' })}
                     type="radio"
@@ -146,7 +148,9 @@ const UploadForm = () => {
               </Col>
               <Col md={6}>
                 <FormGroup check>
-                  <Label for="age">Age*</Label>
+                  <Label for="age">
+                    Age<sup>1, 2</sup>
+                  </Label>
                   <Input
                     innerRef={register({
                       required: 'A number must be provided',
@@ -304,8 +308,16 @@ const UploadForm = () => {
       </Row>
       <hr />
       <small className="text-muted">
-        * Your age and sex are used to improve the quality of our prediction. Age and sex are features that have a
-        significant impact on sleep.
+        <div className="mt-2">
+          <span>
+            <sup>1</sup> Your age and sex are used to improve the quality of our prediction. Age and sex are features
+            that have a significant impact on sleep.
+          </span>
+        </div>
+        <div className="mt-2">
+          <sup>2</sup> Age must be between 12 and 125 y/o. This is because this classifier was trained on healthy adults
+          between 25 and 101 y/o. It is therefore a compromise between flexibility and validity.
+        </div>
       </small>
     </Container>
   );

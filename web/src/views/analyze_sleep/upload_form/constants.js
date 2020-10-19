@@ -5,5 +5,5 @@ export const DEVICES = {
   CYTON: 'CYTON',
   GANGLION: 'GANGLION',
 };
-export const MIN_AGE = 0;
+export const MIN_AGE = 12;
 export const MAX_AGE = 125;
