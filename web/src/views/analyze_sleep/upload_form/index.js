@@ -1,8 +1,7 @@
 import React from 'react';
-import _ from 'lodash';
-import moment from 'moment';
-import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
 import { useForm } from 'react-hook-form';
+import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
+import { DateTime } from 'luxon';
 
 import {
   ACCEPTED_FILE_EXTENSION,
@@ -14,6 +13,8 @@ import {
 } from './constants';
 
 import './style.css';
+import useGlobalState from 'hooks/useGlobalState';
+import { analyzeSleep } from 'requests/analyze-sleep';
 
 const dateFieldSuffix = '_date';
 const timeFieldSuffix = '_time';
@@ -37,28 +38,44 @@ const mergeDateTimeFields = (data) =>
     ).getTime(),
   ]);
 
-const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) => {
-  const { register, handleSubmit, getValues, errors } = useForm();
+const postForm = async (formData, setResponse, setPostFormError, setIsFormSubmitted) => {
+  try {
+    const response = await analyzeSleep(formData).toPromise();
+    setResponse(response);
+  } catch (error) {
+    console.error(error);
+    setPostFormError(error);
+    setIsFormSubmitted(false);
+  }
+};
+
+const UploadForm = () => {
+  const { register, handleSubmit, getValues, errors } = useForm({ mode: 'onChange' });
+  const [, setResponse] = useGlobalState('response');
+  const [postFormError, setPostFormError] = useGlobalState('postFormError');
+  const [, setIsFormSubmitted] = useGlobalState('isFormSubmitted');
 
   return (
     <Container style={{ padding: '2em 0' }}>
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
           <Form
-            onSubmit={handleSubmit((data) => {
+            noValidate
+            onSubmit={handleSubmit(async (data) => {
               let formData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
               formData = { ...formData, file: formData.file[0] };
-              setSubmittedFormData(formData);
+              setIsFormSubmitted(true);
+              await postForm(formData, setResponse, setPostFormError, setIsFormSubmitted);
             })}
           >
-            <h3 className="upload-form__file-input-title">Select or drop your recorded EEG file</h3>
+            <h3 className="upload-form__file-input-title">Let's analyze your sleep EEG recording</h3>
             <div>
               <CustomInput
                 innerRef={register({
                   required: 'A valid .txt raw EEG file must be selected.',
                   validate: (files) => {
                     const file = files[0];
-                    if (file.type !== ACCEPTED_FILE_TYPE || _.last(file.name.split('.')) !== ACCEPTED_FILE_EXTENSION) {
+                    if (file.type !== ACCEPTED_FILE_TYPE || !file.name.endsWith(ACCEPTED_FILE_EXTENSION)) {
                       return 'A valid .txt raw OpenBCI EEG file must be selected.';
                     } else if (file.size >= MAX_FILE_UPLOAD_SIZE) {
                       return 'File is too large. Must be less than 1.6 Gb.';
@@ -70,7 +87,6 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                 type="file"
                 id="file"
                 name="file"
-                className="test"
                 label={
                   <div>
                     <i className="ni ni-cloud-upload-96 upload-form__file-input" />
@@ -129,7 +145,7 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                 </FormGroup>
               </Col>
               <Col md={6}>
-                <FormGroup>
+                <FormGroup check>
                   <Label for="age">Age*</Label>
                   <Input
                     innerRef={register({
@@ -137,6 +153,8 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       min: { value: MIN_AGE, message: 'Please provide a positive integer' },
                       max: { value: MAX_AGE, message: 'Age cannot be more than 125 y/o' },
                     })}
+                    min={MIN_AGE}
+                    max={MAX_AGE}
                     type="number"
                     name="age"
                     id="age"
@@ -157,19 +175,16 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const streamStart = moment(
+                            const streamStart = new Date(
                               getValues('stream_start_date') + ' ' + getValues('stream_start_time'),
-                              'YYYY-MM-DD HH:mm',
                             );
-                            const bedTime = moment(
-                              getValues('bedtime_date') + ' ' + getValues('bedtime_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            if (streamStart.isAfter(bedTime)) {
+                            const bedTime = new Date(getValues('bedtime_date') + ' ' + getValues('bedtime_time'));
+                            if (streamStart > bedTime) {
                               return 'Stream start must be prior to bedtime.';
                             }
                           },
                         })}
+                        max={DateTime.local().toISODate()}
                         type="date"
                         name={`stream_start${dateFieldSuffix}`}
                         id={`stream_start${dateFieldSuffix}`}
@@ -182,7 +197,9 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
-                      {errors.stream_start_date?.message} {errors.stream_start_time?.message}
+                      {errors.stream_start_date?.message}
+                      {errors.stream_start_date && <br />}
+                      {errors.stream_start_time?.message}
                     </div>
                   </FormGroup>
                 </Col>
@@ -195,20 +212,15 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (_) => {
-                            const bedtime = moment(
-                              getValues('bedtime_date') + ' ' + getValues('bedtime_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            const wakeup = moment(
-                              getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            if (bedtime.isAfter(wakeup)) {
+                          validate: () => {
+                            const bedtime = new Date(getValues('bedtime_date') + ' ' + getValues('bedtime_time'));
+                            const wakeup = new Date(getValues('wakeup_date') + ' ' + getValues('wakeup_time'));
+                            if (bedtime > wakeup) {
                               return 'Bedtime must be prior to wake up.';
                             }
                           },
                         })}
+                        max={DateTime.local().toISODate()}
                         type="date"
                         name={`bedtime${dateFieldSuffix}`}
                         id={`bedtime${dateFieldSuffix}`}
@@ -221,7 +233,9 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
-                      {errors.bedtime_date?.message} {errors.bedtime_time?.message}
+                      {errors.bedtime_date?.message}
+                      {errors.bedtime_date && <br />}
+                      {errors.bedtime_time?.message}
                     </div>
                   </FormGroup>
                 </Col>
@@ -232,16 +246,14 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       <Input
                         innerRef={register({
                           required: 'Date is required.',
-                          validate: (_) => {
-                            const wakeup = moment(
-                              getValues('wakeup_date') + ' ' + getValues('wakeup_time'),
-                              'YYYY-MM-DD HH:mm',
-                            );
-                            if (wakeup.isAfter(moment())) {
+                          validate: () => {
+                            const wakeup = new Date(getValues('wakeup_date') + ' ' + getValues('wakeup_time'));
+                            if (wakeup > Date.now()) {
                               return 'Wake up must be prior to now.';
                             }
                           },
                         })}
+                        max={DateTime.local().toISODate()}
                         type="date"
                         name={`wakeup${dateFieldSuffix}`}
                         id={`wakeup${dateFieldSuffix}`}
@@ -254,7 +266,9 @@ const UploadForm = ({ postFormError, setPostFormError, setSubmittedFormData }) =
                       />
                     </InputGroup>
                     <div className="upload-form__error-text">
-                      {errors.wakeup_date?.message} {errors.wakeup_time?.message}
+                      {errors.wakeup_date?.message}
+                      {errors.wakeup_date && <br />}
+                      {errors.wakeup_time?.message}
                     </div>
                   </FormGroup>
                 </Col>

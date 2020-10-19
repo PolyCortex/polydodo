@@ -1,10 +1,11 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
-import moment from 'moment';
-import '../style.css';
+import { DateTime } from 'luxon';
 
 import { BAR_HEIGHT, DIMENSION } from './constants';
 import { EPOCH_DURATION_MS, TRANSITION_TIME_MS, STAGES_ORDERED } from '../constants';
+
+import '../style.css';
 
 export const createTimelineChartCallbacks = (g, xTime, xTimeAxis, color, tooltip) =>
   Object({
@@ -13,7 +14,10 @@ export const createTimelineChartCallbacks = (g, xTime, xTimeAxis, color, tooltip
 
       setAttrOnAnnotationRects(annotationRects, xTime, 0, color, tooltip);
 
-      g.append('g').attr('class', 'x visualization__axis').attr('transform', `translate(0, ${BAR_HEIGHT})`).call(xTimeAxis);
+      g.append('g')
+        .attr('class', 'x visualization__axis')
+        .attr('transform', `translate(0, ${BAR_HEIGHT})`)
+        .call(xTimeAxis);
     },
     fromInstance: () => {
       const annotationRects = g.selectAll('.rect-stacked').interrupt();
@@ -122,7 +126,9 @@ export const createStackedBarChartCallbacks = (g, data) =>
         .style('text-anchor', 'middle')
         .append('tspan')
         .text(({ stage }) =>
-          moment.utc(stageTimeProportions[stage] * epochs.length * EPOCH_DURATION_MS).format('HH:mm'),
+          DateTime.fromMillis(stageTimeProportions[stage] * epochs.length * EPOCH_DURATION_MS)
+            .toUTC()
+            .toFormat('hh:mm:ss'),
         )
         .attr('x', getHorizontalPositionSleepStage)
         .attr('y', 40)
@@ -176,7 +182,11 @@ const createVerticalAxis = (g, yAxis, color) =>
     .style('alignment-baseline', 'middle');
 
 const transitionHorizontalAxis = (g, yPosition) =>
-  g.select('.x.visualization__axis').transition().duration(TRANSITION_TIME_MS).attr('transform', `translate(0, ${yPosition})`);
+  g
+    .select('.x.visualization__axis')
+    .transition()
+    .duration(TRANSITION_TIME_MS)
+    .attr('transform', `translate(0, ${yPosition})`);
 
 const createProportionLabels = (g, data) =>
   g

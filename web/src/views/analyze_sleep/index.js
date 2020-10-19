@@ -7,11 +7,11 @@ import text from './text.json';
 import { periodicPingServer } from 'requests/ping-server';
 import { PING_PERIOD } from './constants';
 import AnalysisInProgress from './analysis_in_progress.js';
+import useGlobalState from 'hooks/useGlobalState';
 
 const AnalyzeSleep = () => {
   const [serverReady, setServerReady] = useState(false);
-  const [submittedFormData, setSubmittedFormData] = useState(null);
-  const [postFormError, setPostFormError] = useState(null);
+  const [isFormSubmitted] = useGlobalState('isFormSubmitted');
 
   useEffect(() => {
     const subscription = periodicPingServer(PING_PERIOD).subscribe(
@@ -21,26 +21,6 @@ const AnalyzeSleep = () => {
     return () => subscription.unsubscribe();
   });
 
-  let child;
-  if (!serverReady) {
-    child = <WaitingForServer />;
-  } else if (!submittedFormData) {
-    child = (
-      <UploadForm
-        postFormError={postFormError}
-        setPostFormError={setPostFormError}
-        setSubmittedFormData={setSubmittedFormData}
-      />
-    );
-  } else {
-    child = (
-      <AnalysisInProgress
-        setPostFormError={setPostFormError}
-        submittedFormData={submittedFormData}
-        setSubmittedFormData={setSubmittedFormData}
-      />
-    );
-  }
   return (
     <div>
       <Header
@@ -50,7 +30,17 @@ const AnalyzeSleep = () => {
         subtitle={text['header_subtitle']}
         description={text['header_description']}
       />
-      <Container className="mt-5 text-justify">{child}</Container>
+      <Container className="mt-5 text-justify">
+        <span hidden={serverReady}>
+          <WaitingForServer />
+        </span>
+        <span hidden={!serverReady || isFormSubmitted}>
+          <UploadForm />
+        </span>
+        <span hidden={!serverReady || !isFormSubmitted}>
+          <AnalysisInProgress />
+        </span>
+      </Container>
     </div>
   );
 };
