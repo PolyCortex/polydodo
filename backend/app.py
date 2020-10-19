@@ -20,7 +20,7 @@ def status():
     return ""
 
 
-@app.route('/analyze-sleep', methods=['GET'])
+@app.route('/analyze-sleep', methods=['POST'])
 def analyze_sleep():
     """
     Request payload example

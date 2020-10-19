@@ -5,7 +5,7 @@ from classification.config.constants import (
     EEG_CHANNELS,
     AGE_FEATURE_BINS,
     DATASET_SAMPLE_RATE,
-    SEX_FEATURE,
+    Sex,
 )
 from classification.features.constants import (
     DATASET_HIGH_PASS_FREQ,
@@ -40,9 +40,7 @@ def get_eeg_features(raw_data, in_bed_time, out_of_bed_time):
         chan_data = chan_data.resample(DATASET_SAMPLE_RATE)
         chan_data = chan_data.filter(l_freq=DATASET_HIGH_PASS_FREQ, h_freq=None)
 
-        X_file_channel = convert_to_epochs(
-            chan_data, in_bed_time
-        )
+        X_file_channel = convert_to_epochs(chan_data, in_bed_time)
 
         feature_union = get_feature_union()
         print('Started feature ext on epochs: ', X_file_channel)
@@ -76,10 +74,8 @@ def get_categorical_features(age, sex, nb_epochs):
         for category_index, age_range in enumerate(AGE_FEATURE_BINS)
         if age >= age_range[0] and age <= age_range[1]
     )
-    sex_value = SEX_FEATURE[sex]
+    sex_value = Sex[sex].value
 
     X_categorical = [sex_value, age_category]
 
-    return np.array(
-        X_categorical * nb_epochs
-    ).reshape(nb_epochs, len(X_categorical))
+    return np.array(X_categorical * nb_epochs).reshape(nb_epochs, -1)

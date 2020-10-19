@@ -1,7 +1,7 @@
 from classification.config.constants import (
-    MIN_FILE_SIZE,
+    FILE_MINIMUM_DURATION,
     ACCEPTED_AGE_RANGE,
-    SEX_FEATURE,
+    Sex,
 )
 from classification.exceptions import (
     TimestampsError,
@@ -20,7 +20,7 @@ def validate(raw_eeg, age, sex, in_bed_seconds, out_of_bed_seconds):
 def _validate_timestamps(in_bed_seconds, out_of_bed_seconds):
     has_positive_timespan = in_bed_seconds > 0 and out_of_bed_seconds > 0
     has_got_out_of_bed_after_in_bed = out_of_bed_seconds > in_bed_seconds
-    has_respected_minimum_bed_time = (out_of_bed_seconds - in_bed_seconds) > MIN_FILE_SIZE
+    has_respected_minimum_bed_time = (out_of_bed_seconds - in_bed_seconds) > FILE_MINIMUM_DURATION
 
     if not(
         has_positive_timespan
@@ -31,11 +31,12 @@ def _validate_timestamps(in_bed_seconds, out_of_bed_seconds):
 
 
 def _validate_file_with_timestamps(raw_eeg, out_of_bed_seconds):
-    has_raw_respected_minimum_file_size = raw_eeg.times[-1] > MIN_FILE_SIZE
-    is_raw_at_least_as_long_as_out_of_bed = raw_eeg.times[-1] >= out_of_bed_seconds
+    has_raw_respected_minimum_file_size = raw_eeg.times[-1] > FILE_MINIMUM_DURATION
 
     if not has_raw_respected_minimum_file_size:
         raise FileSizeError()
+
+    is_raw_at_least_as_long_as_out_of_bed = raw_eeg.times[-1] >= out_of_bed_seconds
 
     if not is_raw_at_least_as_long_as_out_of_bed:
         raise TimestampsError()
@@ -49,7 +50,7 @@ def _validate_age(age):
 
 
 def _validate_sex(sex):
-    is_in_accepted_sex_choices = sex in SEX_FEATURE.keys()
-
-    if not(is_in_accepted_sex_choices):
-        raise ClassificationError()
+    try:
+        Sex[sex]
+    except KeyError:
+        raise ClassificationError('invalid sex')
