@@ -32,7 +32,7 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
           continue;
         }
 
-        List data = parsePacket();
+        List data = parsePacket(packet);
 
         packet.clear();
 
@@ -43,18 +43,18 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
     }
   }
 
-  List parsePacket() {
+  List parsePacket(List fullPacket) {
     List data = getListForCSV();
 
-    data[0] = packet[1];
-    data[1] = (packet[2] << 16) | (packet[3] << 8) | packet[4];
-    data[2] = (packet[5] << 16) | (packet[6] << 8) | packet[7];
-    data[3] = (packet[8] << 16) | (packet[9] << 8) | packet[10];
-    data[4] = (packet[11] << 16) | (packet[12] << 8) | packet[13];
-    data[5] = (packet[14] << 16) | (packet[15] << 8) | packet[16];
-    data[6] = (packet[17] << 16) | (packet[18] << 8) | packet[19];
-    data[7] = (packet[20] << 16) | (packet[21] << 8) | packet[22];
-    data[8] = (packet[23] << 16) | (packet[24] << 8) | packet[25];
+    data[0] = fullPacket[1];
+    data[1] = (fullPacket[2] << 16) | (fullPacket[3] << 8) | fullPacket[4];
+    data[2] = (fullPacket[5] << 16) | (fullPacket[6] << 8) | fullPacket[7];
+    data[3] = (fullPacket[8] << 16) | (fullPacket[9] << 8) | fullPacket[10];
+    data[4] = (fullPacket[11] << 16) | (fullPacket[12] << 8) | fullPacket[13];
+    data[5] = (fullPacket[14] << 16) | (fullPacket[15] << 8) | fullPacket[16];
+    data[6] = (fullPacket[17] << 16) | (fullPacket[18] << 8) | fullPacket[19];
+    data[7] = (fullPacket[20] << 16) | (fullPacket[21] << 8) | fullPacket[22];
+    data[8] = (fullPacket[23] << 16) | (fullPacket[24] << 8) | fullPacket[25];
 
     return data;
   }
