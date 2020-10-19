@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
 import { useForm } from 'react-hook-form';
+import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
+import { DateTime } from 'luxon';
 
 import {
   ACCEPTED_FILE_EXTENSION,
@@ -49,7 +50,7 @@ const postForm = async (formData, setResponse, setPostFormError, setIsFormSubmit
 };
 
 const UploadForm = () => {
-  const { register, handleSubmit, getValues, errors } = useForm();
+  const { register, handleSubmit, getValues, errors } = useForm({ mode: 'onChange' });
   const [, setResponse] = useGlobalState('response');
   const [postFormError, setPostFormError] = useGlobalState('postFormError');
   const [, setIsFormSubmitted] = useGlobalState('isFormSubmitted');
@@ -59,6 +60,7 @@ const UploadForm = () => {
       <Row>
         <Col sm="12" md={{ size: 8, offset: 2 }}>
           <Form
+            noValidate
             onSubmit={handleSubmit(async (data) => {
               let formData = Object.fromEntries([...filterOutDateTimeFields(data), ...mergeDateTimeFields(data)]);
               formData = { ...formData, file: formData.file[0] };
@@ -66,7 +68,7 @@ const UploadForm = () => {
               await postForm(formData, setResponse, setPostFormError, setIsFormSubmitted);
             })}
           >
-            <h3 className="upload-form__file-input-title">Select or drop your recorded EEG file</h3>
+            <h3 className="upload-form__file-input-title">Let's analyze your sleep EEG recording</h3>
             <div>
               <CustomInput
                 innerRef={register({
@@ -143,7 +145,7 @@ const UploadForm = () => {
                 </FormGroup>
               </Col>
               <Col md={6}>
-                <FormGroup>
+                <FormGroup check>
                   <Label for="age">Age*</Label>
                   <Input
                     innerRef={register({
@@ -151,6 +153,8 @@ const UploadForm = () => {
                       min: { value: MIN_AGE, message: 'Please provide a positive integer' },
                       max: { value: MAX_AGE, message: 'Age cannot be more than 125 y/o' },
                     })}
+                    min={MIN_AGE}
+                    max={MAX_AGE}
                     type="number"
                     name="age"
                     id="age"
@@ -165,7 +169,7 @@ const UploadForm = () => {
               <Row form>
                 <Col md={12}>
                   <FormGroup>
-                    <Label>The recording started at : </Label>
+                    <Label>I started recording at : </Label>
                     <InputGroup>
                       <Input
                         innerRef={register({
@@ -180,6 +184,7 @@ const UploadForm = () => {
                             }
                           },
                         })}
+                        max={DateTime.local().toISODate()}
                         type="date"
                         name={`stream_start${dateFieldSuffix}`}
                         id={`stream_start${dateFieldSuffix}`}
@@ -193,7 +198,7 @@ const UploadForm = () => {
                     </InputGroup>
                     <div className="upload-form__error-text">
                       {errors.stream_start_date?.message}
-                      <br />
+                      {errors.stream_start_date && <br />}
                       {errors.stream_start_time?.message}
                     </div>
                   </FormGroup>
@@ -215,6 +220,7 @@ const UploadForm = () => {
                             }
                           },
                         })}
+                        max={DateTime.local().toISODate()}
                         type="date"
                         name={`bedtime${dateFieldSuffix}`}
                         id={`bedtime${dateFieldSuffix}`}
@@ -228,7 +234,7 @@ const UploadForm = () => {
                     </InputGroup>
                     <div className="upload-form__error-text">
                       {errors.bedtime_date?.message}
-                      <br />
+                      {errors.bedtime_date && <br />}
                       {errors.bedtime_time?.message}
                     </div>
                   </FormGroup>
@@ -247,6 +253,7 @@ const UploadForm = () => {
                             }
                           },
                         })}
+                        max={DateTime.local().toISODate()}
                         type="date"
                         name={`wakeup${dateFieldSuffix}`}
                         id={`wakeup${dateFieldSuffix}`}
@@ -260,7 +267,7 @@ const UploadForm = () => {
                     </InputGroup>
                     <div className="upload-form__error-text">
                       {errors.wakeup_date?.message}
-                      <br />
+                      {errors.wakeup_date && <br />}
                       {errors.wakeup_time?.message}
                     </div>
                   </FormGroup>
