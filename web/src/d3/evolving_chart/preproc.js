@@ -1,9 +1,10 @@
 import _ from 'lodash';
 
-import { convertTimestampsToDates, convertEpochsToAnnotations } from '../utils';
+import { convertAPIFormatToCSVFormat, convertTimestampsToDates, convertEpochsToAnnotations } from '../utils';
 import { STAGES_ORDERED } from '../constants';
 
 export const preprocessData = (data) => {
+  data = convertAPIFormatToCSVFormat(data);
   data = convertTimestampsToDates(data);
   const annotations = convertEpochsToAnnotations(data);
   const stageTimeProportions = getStageTimeProportions(data);

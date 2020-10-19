@@ -1,4 +1,9 @@
+import _ from 'lodash';
+
 import { EPOCH_DURATION_SEC } from './constants';
+
+export const convertAPIFormatToCSVFormat = (epochs) =>
+  _.zip(epochs.timestamps, epochs.stages).map((el) => Object({ timestamp: el[0], sleepStage: el[1] }));
 
 export const convertTimestampsToDates = (data) =>
   data.map((row) =>
@@ -22,8 +27,7 @@ export const convertEpochsToAnnotations = (data) => {
   let currentSleepStage = data[0].sleepStage;
   let currentAnnotationEpochCount = 0;
 
-  const isSleepStageTransition = (sleepStage, index) =>
-    sleepStage !== currentSleepStage || index === data.length - 1;
+  const isSleepStageTransition = (sleepStage, index) => sleepStage !== currentSleepStage || index === data.length - 1;
 
   const saveCurrentAnnotation = (timestamp) => {
     annotations.push({
