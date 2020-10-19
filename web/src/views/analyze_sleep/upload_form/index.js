@@ -179,10 +179,10 @@ const UploadForm = () => {
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const streamStart = new Date(
-                              getValues('stream_start_date') + ' ' + getValues('stream_start_time'),
-                            );
-                            const bedTime = new Date(getValues('bedtime_date') + ' ' + getValues('bedtime_time'));
+                            const streamStart = new Date(`
+                              ${getValues('stream_start_date')} ${getValues('stream_start_time')}
+                            `);
+                            const bedTime = new Date(`${getValues('bedtime_date')} ${getValues('bedtime_time')}`);
                             if (streamStart > bedTime) {
                               return 'Stream start must be prior to bedtime.';
                             }
@@ -217,8 +217,8 @@ const UploadForm = () => {
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const bedtime = new Date(getValues('bedtime_date') + ' ' + getValues('bedtime_time'));
-                            const wakeup = new Date(getValues('wakeup_date') + ' ' + getValues('wakeup_time'));
+                            const bedtime = new Date(`${getValues('bedtime_date')} ${getValues('bedtime_time')}`);
+                            const wakeup = new Date(`${getValues('wakeup_date')} ${getValues('wakeup_time')}`);
                             if (bedtime > wakeup) {
                               return 'Bedtime must be prior to wake up.';
                             }
@@ -251,7 +251,7 @@ const UploadForm = () => {
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const wakeup = new Date(getValues('wakeup_date') + ' ' + getValues('wakeup_time'));
+                            const wakeup = new Date(`${getValues('wakeup_date')} ${getValues('wakeup_time')}`);
                             if (wakeup > Date.now()) {
                               return 'Wake up must be prior to now.';
                             }

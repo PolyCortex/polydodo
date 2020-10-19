@@ -8,10 +8,10 @@ import WIPWarning from 'components/wip_warning';
 
 import { createSingleHypnogram } from 'd3/hypnogram/hypnogram';
 
+import useGlobalState from 'hooks/useGlobalState';
 import text from './text.json';
 import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
 import SpectrogramScrollyTelling from './spectrogram_scrollytelling';
-import useGlobalState from 'hooks/useGlobalState';
 
 import './style.css';
 
@@ -27,6 +27,7 @@ const SleepAnalysisResults = () => {
     );
   }
   const data = response.data;
+  const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   return (
     <div>
@@ -140,7 +141,7 @@ const SleepAnalysisResults = () => {
           <Button
             className="mt-4"
             color="secondary"
-            href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data.epochs))}`}
+            href={`data:text/json;charset=utf-8,${encodedJsonEpochs}`}
             download="myresults.json"
           >
             Download my results
