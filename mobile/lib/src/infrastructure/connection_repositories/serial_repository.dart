@@ -56,7 +56,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   }
 
   Future<Stream<List<int>>> startDataStream() async {
-    _serialPort.write(Uint8List.fromList(START_STREAM_CHAR.codeUnits));
+    await _serialPort.write(Uint8List.fromList(START_STREAM_CHAR.codeUnits));
 
     return _serialPort.inputStream;
   }
