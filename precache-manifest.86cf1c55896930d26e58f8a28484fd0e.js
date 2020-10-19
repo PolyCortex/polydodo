@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "17a442342c8997eca67200df2ffabbf4",
+    "revision": "925b7912123811d6d16726b0fe5273d2",
     "url": "/polydodo/index.html"
   },
   {
-    "revision": "a2b09e69133cba832588",
-    "url": "/polydodo/static/css/2.705b17b5.chunk.css"
+    "revision": "b2760d09cd739afcd984",
+    "url": "/polydodo/static/css/2.78796bb9.chunk.css"
   },
   {
-    "revision": "49b1d0f393a210791cad",
-    "url": "/polydodo/static/css/main.3c7ce497.chunk.css"
+    "revision": "087f557eddf69f89ca8c",
+    "url": "/polydodo/static/css/main.d0523088.chunk.css"
   },
   {
-    "revision": "a2b09e69133cba832588",
-    "url": "/polydodo/static/js/2.7ae9525b.chunk.js"
+    "revision": "b2760d09cd739afcd984",
+    "url": "/polydodo/static/js/2.818214a7.chunk.js"
   },
   {
     "revision": "b7a29e37f301dd4570b349735e522d9e",
-    "url": "/polydodo/static/js/2.7ae9525b.chunk.js.LICENSE.txt"
+    "url": "/polydodo/static/js/2.818214a7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "49b1d0f393a210791cad",
-    "url": "/polydodo/static/js/main.71951826.chunk.js"
+    "revision": "087f557eddf69f89ca8c",
+    "url": "/polydodo/static/js/main.f7add965.chunk.js"
   },
   {
     "revision": "9461170423a0fade06f4",
@@ -54,26 +54,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "fee66e712a8a08eef5805a46892932ad",
     "url": "/polydodo/static/media/fontawesome-webfont.fee66e71.woff"
-  },
-  {
-    "revision": "9ec7437f38e2b89dd4e4a16ad13b3f5a",
-    "url": "/polydodo/static/media/hypnogram-electrophysiologist.9ec7437f.csv"
-  },
-  {
-    "revision": "391fef8a9ba02302a9d3613ac080c490",
-    "url": "/polydodo/static/media/hypnogram-labelled.391fef8a.csv"
-  },
-  {
-    "revision": "d90b1368c8e058873e1db5dff1716685",
-    "url": "/polydodo/static/media/hypnogram-openbci-electrophysiologist.d90b1368.csv"
-  },
-  {
-    "revision": "abcbe357424a1e378bba39636210d106",
-    "url": "/polydodo/static/media/hypnogram-openbci-predicted.abcbe357.csv"
-  },
-  {
-    "revision": "426e51a07e4036fb20352af91725003f",
-    "url": "/polydodo/static/media/hypnogram-predicted.426e51a0.csv"
   },
   {
     "revision": "bcea7572194d7b7245345be1e616b877",
