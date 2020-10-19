@@ -30,12 +30,14 @@ const filterOutDateTimeFields = (data) =>
 const mergeDateTimeFields = (data) =>
   filterInDateTimeFields(data).map((fieldPrefix) => [
     fieldPrefix,
-    new Date(
-      Object.entries(data)
-        .filter(([fieldName, value]) => fieldName.startsWith(fieldPrefix))
-        .map(([fieldName, value]) => value)
-        .join(' '),
-    ).getTime(),
+    Math.floor(
+      new Date(
+        Object.entries(data)
+          .filter(([fieldName, value]) => fieldName.startsWith(fieldPrefix))
+          .map(([fieldName, value]) => value)
+          .join(' '),
+      ).getTime() / 1000,
+    ),
   ]);
 
 const postForm = async (formData, setResponse, setPostFormError, setIsFormSubmitted) => {
