@@ -4,7 +4,7 @@ import _ from 'lodash';
 import createHypnogramChart from './line_charts';
 import { DIMENSION, MARGIN, COMPARATIVE_COLORS, CANVAS_DIMENSION } from './constants';
 import { STAGES_ORDERED } from '../constants';
-import { convertTimestampsToDates } from '../utils';
+import { convertAPIFormatToCSVFormat, convertTimestampsToDates } from '../utils';
 
 const initializeScales = (comparativeColors) =>
   Object({
@@ -22,8 +22,8 @@ const initializeAxes = (x, y) =>
 const createDrawingGroup = (svg) => svg.append('g').attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
 const preprocessData = (data, hypnogramNames) => {
+  data = data.map(convertAPIFormatToCSVFormat);
   data = data.map((hypno) => convertTimestampsToDates(hypno));
-
   return _.zip(data, hypnogramNames).map((x) =>
     Object({
       name: x[1],

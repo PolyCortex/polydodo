@@ -4,15 +4,19 @@ import _ from 'lodash';
 import createMouseOver from './mouse_over';
 import { DIMENSION, MARGIN } from './constants';
 
+import '../style.css';
+
+import './style.css';
+
 const createHypnogramChart = (g, data, x, y, xAxis, yAxis, color, chartTitle, hypnogramNames, comparativeColors) => {
   const line = createLine(x, y);
-  const g_chart = g.append('g').attr('class', 'hypnogram-lines');
+  const g_chart = g.append('g');
   g_chart
     .selectAll()
     .data(data)
     .enter()
     .append('path')
-    .attr('class', 'line')
+    .attr('class', 'hypnogram__line')
     .attr('fill', 'none')
     .attr('d', (x) => line(x.values))
     .attr('stroke', (x) => color(x.name))
@@ -34,9 +38,9 @@ const createLine = (x, y) =>
 const createAxes = (g, xAxis, yAxis) => {
   const { HEIGHT, WIDTH } = DIMENSION;
 
-  g.append('g').attr('class', 'x axis').attr('transform', `translate(0,${HEIGHT})`).call(xAxis);
+  g.append('g').attr('class', 'x visualization__axis').attr('transform', `translate(0,${HEIGHT})`).call(xAxis);
 
-  g.append('g').attr('class', 'y axis').call(yAxis);
+  g.append('g').attr('class', 'y visualization__axis').call(yAxis);
 
   g.append('text')
     .text('Time')
