@@ -28,10 +28,6 @@ class EEGDataRepository implements IEEGDataRepository {
 
   StreamingSharedPreferences _preferences;
 
-  EEGDataRepository() {
-    initialize();
-  }
-
   void initialize() async {
     if (_preferences == null) {
       _preferences = await StreamingSharedPreferences.instance;

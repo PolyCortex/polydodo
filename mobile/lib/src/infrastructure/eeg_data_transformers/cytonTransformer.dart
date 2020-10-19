@@ -4,13 +4,13 @@ import 'package:polydodo/src/infrastructure/constants.dart';
 import 'baseOpenBCITransformer.dart';
 
 class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
-  List packet;
+  List packet = List();
 
   CytonTransformer.broadcast({bool synchronous: false, cancelOnError})
       : super.broadcast(synchronous: synchronous, cancelOnError: cancelOnError);
 
   void reset() {
-    packet = new List();
+    packet.clear();
   }
 
   void onData(S data) {
@@ -34,7 +34,9 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
 
         List data = parsePacket();
 
-        data = convertToMicrovolts(data);
+        packet.clear();
+
+        data = processData(data, true);
 
         controller.add(data);
       }
@@ -54,26 +56,30 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
     data[7] = (packet[20] << 16) | (packet[21] << 8) | packet[22];
     data[8] = (packet[23] << 16) | (packet[24] << 8) | packet[25];
 
-    packet.clear();
     return data;
   }
 
-  List getListForCSV() {
-    List data = List(CYTON_NUMBER_COLUMNS);
+  List getListForCSV() => List.generate(CYTON_NUMBER_COLUMNS, (index) => 0);
 
-    for (int i = 1; i < CYTON_EXTRA_COLUMNS + 1; ++i) {
-      data[CYTON_NUMBER_COLUMNS - i] = 0;
-    }
+  List processData(List data, bool hasNegativeCompression) {
+    List result = List.from(data);
 
-    return data;
-  }
-
-  List convertToMicrovolts(List data) {
     for (int i = 1; i < CYTON_NUMBER_CHANNELS + 1; ++i) {
-      // Convert to microvolts using the scale factor
-      data[i] = data[i].toDouble() * (4500000 / (24 * (pow(2, 23) - 1)));
+      if (hasNegativeCompression) result[i] = handleNegative(result[i]);
+
+      result[i] = convertToMicrovolts(result[i]);
     }
 
-    return data;
+    return result;
+  }
+
+  int handleNegative(int i) {
+    return ((i & 0x00800000) > 0)
+        ? (i | 0xFFFFFFFFFF000000)
+        : (i & 0x0000000000FFFFFF);
+  }
+
+  double convertToMicrovolts(int i) {
+    return i.toDouble() * (4500000 / (24 * (pow(2, 23) - 1)));
   }
 }

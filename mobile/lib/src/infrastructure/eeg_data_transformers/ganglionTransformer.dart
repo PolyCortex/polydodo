@@ -2,8 +2,8 @@ import 'package:polydodo/src/infrastructure/constants.dart';
 import 'baseOpenBCITransformer.dart';
 
 class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
-  List _lastSampleData;
-  int _sampleCounter;
+  List _lastSampleData = [0, 0, 0, 0, 0];
+  int _sampleCounter = 0;
 
   GanglionTransformer.broadcast({bool synchronous: false, cancelOnError})
       : super.broadcast(synchronous: synchronous, cancelOnError: cancelOnError);
@@ -22,12 +22,14 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
 
     if (packetID == 0) {
       List data = parseRaw(event);
-      data = convertToMicrovolts(data, false);
+      data = processData(data,
+          nbSamples: 1, hasNegativeCompression: false, isDelta: false);
 
       controller.add(data.sublist(0, 15));
     } else if (packetID >= 101 && packetID <= 200) {
       List data = parse19Bit(event);
-      data = convertToMicrovolts(data, true);
+      data = processData(data,
+          nbSamples: 2, hasNegativeCompression: true, isDelta: true);
 
       controller.add(data.sublist(0, 15));
       controller.add(data.sublist(15, 30));
@@ -47,12 +49,6 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   }
 
   List parse19Bit(event) {
-    // Test event, comment scale factor
-    // event = [ 101, 0, 0, 0, 0, 8, 0, 5, 0, 0, 72, 0, 9, 240, 1, 176, 0, 48, 0, 8]; // Positive Test
-    // Expected [[0, 2, 10, 4], [262148, 507910, 393222, 8]]
-    // event = [ 101, 255, 255, 191, 255, 239, 255, 252, 255, 255, 88, 0, 11, 62, 56, 224, 0, 63, 240, 1 ]; // Negative Test
-    // Expected [[-3, -5, -7, -11], [-262139, -198429, -262137, -4095]]
-
     List data = getListForCSV();
 
     data[0] = _sampleCounter;
@@ -75,40 +71,43 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
     return data;
   }
 
-  List getListForCSV() {
-    List data = List(GANGLION_NUMBER_COLUMNS * 2);
+  List getListForCSV() =>
+      List.generate(GANGLION_NUMBER_COLUMNS * 2, (index) => 0);
 
-    for (int i = 1; i < GANGLION_EXTRA_COLUMNS + 1; ++i) {
-      data[GANGLION_NUMBER_COLUMNS - i] = 0;
-      data[GANGLION_NUMBER_COLUMNS - i + 15] = 0;
-    }
-    return data;
-  }
+  List processData(List data,
+      {int nbSamples, bool hasNegativeCompression, bool isDelta}) {
+    List result = List.from(data);
 
-  List convertToMicrovolts(List data, bool isDelta) {
     for (int i = 1; i < GANGLION_NUMBER_CHANNELS + 1; ++i) {
-      for (int j = 0; j < 2; ++j) {
-        if (j == 1 && !isDelta) break;
-
+      for (int j = 0; j < nbSamples; ++j) {
         int offset = 15 * j;
-        String binary = data[i + offset].toRadixString(2);
 
-        // Handle negatives
-        if (isDelta && binary[binary.length - 1] == '1') {
-          data[i + offset] = (~data[i + offset] & 524287 | 1) * -1;
-        }
+        if (hasNegativeCompression)
+          result[i + offset] = handleNegative(result[i + offset]);
 
-        // Convert to microvolts using the scale factor
-        data[i + offset] =
-            data[i + offset].toDouble() * (1200000 / (8388607.0 * 1.5 * 51.0));
+        result[i + offset] = convertToMicrovolts(result[i + offset]);
 
-        // Convert delta
-        if (isDelta) data[i + offset] = _lastSampleData[i] - data[i + offset];
+        if (isDelta)
+          result[i + offset] = convertDeltaToData(i, result[i + offset]);
 
-        _lastSampleData[i] = data[i + offset];
+        _lastSampleData[i] = result[i + offset];
       }
     }
 
-    return data;
+    return result;
+  }
+
+  int handleNegative(int i) {
+    String binary = i.toRadixString(2);
+
+    return binary[binary.length - 1] == '1' ? (~i & 524287 | 1) * -1 : i;
+  }
+
+  double convertToMicrovolts(int i) {
+    return i.toDouble() * (1200000 / (8388607.0 * 1.5 * 51.0));
+  }
+
+  double convertDeltaToData(int lastSampleIndex, double i) {
+    return _lastSampleData[lastSampleIndex] - i;
   }
 }
