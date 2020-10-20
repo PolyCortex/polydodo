@@ -7,9 +7,9 @@ import useGlobalState from 'hooks/useGlobalState';
 import { periodicPingServer } from 'requests/ping-server';
 import WaitingForServer from './waiting_for_server';
 import UploadForm from './upload_form';
-import text from './text.json';
 import { PING_PERIOD } from './constants';
 import AnalysisInProgress from './analysis_in_progress.js';
+import text from './text.json';
 
 const AnalyzeSleep = () => {
   const [serverReady, setServerReady] = useState(false);

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Container, Card, CardBody } from 'reactstrap';
 
 import createSpectrogram, { spectrogramCallbacks } from '../../d3/spectrogram/spectrogram';
@@ -112,6 +113,11 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
       &nbsp;
     </Container>
   );
+};
+
+SpectrogramScrollyTelling.propTypes = {
+  spectrograms: PropTypes.object.isRequired,
+  epochs: PropTypes.object.isRequired,
 };
 
 export default SpectrogramScrollyTelling;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Container, Card, CardBody } from 'reactstrap';
 
 import D3ComponentScrollyTelling from 'components/d3component_scrollytelling';
@@ -137,6 +138,10 @@ const StackedBarChartScrollyTelling = ({ epochs }) => {
       &nbsp;
     </Container>
   );
+};
+
+StackedBarChartScrollyTelling.propTypes = {
+  epochs: PropTypes.object.isRequired,
 };
 
 export default StackedBarChartScrollyTelling;
