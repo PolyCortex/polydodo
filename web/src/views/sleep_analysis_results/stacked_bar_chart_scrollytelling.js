@@ -131,10 +131,6 @@ const StackedBarChartScrollyTelling = ({ epochs }) => {
         </CardBody>
       </Card>
       <div style={{ marginBottom: '125%' }} />
-      {/* <WaypointDirection onDown={} /> */}
-      <div style={{ marginBottom: '125%' }} />
-      {/* <WaypointDirection onDown={} /> */}
-      <div style={{ marginBottom: '125%' }} />
       &nbsp;
     </Container>
   );

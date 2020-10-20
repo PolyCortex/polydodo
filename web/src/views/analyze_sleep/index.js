@@ -4,11 +4,12 @@ import { Redirect } from 'react-router';
 
 import Header from 'components/header';
 import useGlobalState from 'hooks/useGlobalState';
-import { periodicPingServer } from 'requests/ping-server';
+import { periodicPingServer } from 'requests/ping_server';
 import WaitingForServer from './waiting_for_server';
 import UploadForm from './upload_form';
 import { PING_PERIOD } from './constants';
 import AnalysisInProgress from './analysis_in_progress.js';
+
 import text from './text.json';
 
 const AnalyzeSleep = () => {
