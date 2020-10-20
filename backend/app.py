@@ -6,14 +6,13 @@ from http import HTTPStatus
 from classification.file_loading import get_raw_array
 from classification.predict import predict
 from classification.exceptions import ClassificationError
-from classification.config.constants import Sex
+from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 
 app = Flask(__name__)
 
 
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'txt', 'csv'}
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.lower().endswith(tuple(ALLOWED_FILE_EXTENSIONS))
 
 
 @app.route("/")
