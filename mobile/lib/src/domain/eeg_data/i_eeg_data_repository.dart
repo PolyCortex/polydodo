@@ -1,4 +1,5 @@
 abstract class IEEGDataRepository {
+  void initialize();
   void createRecordingFromStream(Stream<List<int>> stream);
   void stopRecordingFromStream();
 
