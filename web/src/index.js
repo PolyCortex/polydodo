@@ -21,6 +21,7 @@ const underConstruction = () => {
     header_title: 'Under',
     header_subtitle: 'construction',
     header_description: 'Please come back later',
+    body: 'Under Construction...',
   };
 
   return (
@@ -33,8 +34,8 @@ const underConstruction = () => {
         description={text['header_description']}
       />
       <Container className="mt-5 text-justify">
-        <h1 className="">
-          Under Construction... <Emoji symbol="🏗️" />
+        <h1>
+          {text.body} <Emoji symbol="🏗️" />
         </h1>
       </Container>
     </div>

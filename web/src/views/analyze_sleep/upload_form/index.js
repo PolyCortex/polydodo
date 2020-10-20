@@ -14,7 +14,7 @@ import {
 
 import './style.css';
 import useGlobalState from 'hooks/useGlobalState';
-import { analyzeSleep } from 'requests/analyze-sleep';
+import { analyzeSleep } from 'requests/analyze_sleep';
 
 const dateFieldSuffix = '_date';
 const timeFieldSuffix = '_time';
