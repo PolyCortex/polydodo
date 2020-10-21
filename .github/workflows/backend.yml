@@ -33,10 +33,22 @@ jobs:
           path: backend/dist
 
   release:
-    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    needs: build
+
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: "server_${{ matrix.os }}"
+          path: backend/dist
       - uses: docker/build-push-action@v1
         with:
           dockerfile: backend/Dockerfile
