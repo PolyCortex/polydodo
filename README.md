@@ -30,6 +30,10 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 - Fetch Flutter dependencies through the `Flutter` extension
 - Start dev server by running `python backend/app.py`
 
+## Building the server as a single executable
+
+Run `python -m PyInstaller --onefile app.py`
+
 ## Running the server locally
 
 - [Login](https://docs.github.com/en/free-pro-team@latest/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages#authenticating-with-a-personal-access-token) to Github Docker registry
