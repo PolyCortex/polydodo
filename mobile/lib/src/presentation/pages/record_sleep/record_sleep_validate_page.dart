@@ -1,21 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
-import 'package:polydodo/src/application/eeg_data/data_states.dart';
+part of 'record_sleep_guide_page.dart';
 
-class RecordingRoute extends StatelessWidget {
-  static const name = 'recordingRoute';
-
-  RecordingRoute({Key key}) : super(key: key);
-
+class RecordSleepValidatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text("Recording"),
-      ),
+      appBar: AppBar(title: Text('Record Sleep')),
+      drawer: NavDrawerPage(),
       body: BlocConsumer<DataCubit, DataState>(
         listener: (context, state) {
           print(state.runtimeType);
