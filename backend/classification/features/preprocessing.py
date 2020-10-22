@@ -60,7 +60,7 @@ def _crop_raw_data(
     """
     raw_data.crop(
         tmin=bed_seconds,
-        tmax=min(out_of_bed_seconds, raw_data.times[-1]),
+        tmax=out_of_bed_seconds,
         include_tmax=False,
     )
 
