@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.lower().endswith(tuple(ALLOWED_FILE_EXTENSIONS))
+    return filename.lower().endswith(ALLOWED_FILE_EXTENSIONS)
 
 
 @app.route("/")

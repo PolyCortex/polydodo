@@ -8,7 +8,7 @@ class Sex(Enum):
     M = 2
 
 
-ALLOWED_FILE_EXTENSIONS = {'txt', 'csv'}
+ALLOWED_FILE_EXTENSIONS = ('.txt', '.csv')
 
 EEG_CHANNELS = [
     'EEG Fpz-Cz',
