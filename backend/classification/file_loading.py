@@ -39,10 +39,10 @@ def get_raw_array(file):
     Returns:
     - mne.RawArray of the two EEG channels of interest
     """
-    csv_file_content = StringIO(file.stream.read().decode("UTF8"))
+    file_content = StringIO(file.stream.read().decode("UTF8"))
 
     eeg_raw = []
-    for line in csv_file_content.readlines():
+    for line in file_content.readlines():
         line_splitted = line.split(',')
 
         if len(line_splitted) >= CYTON_TOTAL_NB_CHANNELS:
