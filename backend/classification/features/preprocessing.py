@@ -100,5 +100,5 @@ def _convert_to_epochs(raw_data):
         raw=raw_data,
         duration=EPOCH_DURATION,
         preload=True,
-        verbose=None,
+        verbose=False,
     )

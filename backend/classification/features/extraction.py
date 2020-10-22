@@ -40,7 +40,7 @@ def get_eeg_features(raw_data, in_bed_seconds, out_of_bed_seconds):
     return np.hstack(tuple(features_file))
 
 
-def get_categorical_features(age, sex, nb_epochs):
+def get_non_eeg_features(age, sex, nb_epochs):
     """Returns the categorical feature matrix
     Input
     -------
