@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/device/device_selector_state.dart';
-import 'package:polydodo/src/presentation/recording/recording_route.dart';
+import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 
-class BluetoothSelectorRoute extends StatelessWidget {
+import 'record_sleep/record_sleep_guide_page.dart';
+
+class BluetoothSelectorPage extends StatelessWidget {
   static const name = 'bluetoothRoute';
 
-  BluetoothSelectorRoute({Key key}) : super(key: key);
+  BluetoothSelectorPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Polydodo')),
+      drawer: NavDrawerPage(),
       body: BlocConsumer<DeviceSelectorCubit, DeviceState>(
         listener: (context, state) {
           print(state.runtimeType);
@@ -30,7 +33,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RecordingRoute(),
+                  builder: (context) => RecordSleepGuidePage(),
                 ));
           }
         },
