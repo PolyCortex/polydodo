@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container, Row, Table } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 import Header from 'components/header';
 import WIPWarning from 'components/wip_warning';
 import D3Component from 'components/d3component';
 
-import text from './text.json';
 import { createComparativeHypnogram } from 'd3/hypnogram/hypnogram';
 
 import physionetWoman78yoSleepEDF from 'assets/data/physionet_woman78yo_sleepedf';
@@ -13,6 +13,8 @@ import predictedWoman78yoSleepEDF from 'assets/data/predicted_woman78yo_sleepedf
 import electrophysiologistWoman78yoSleepEDF from 'assets/data/electrophysiologist_woman78yo_sleepedf';
 import electrophysiologistWilliamCyton from 'assets/data/electrophysiologist_william_cyton';
 import predictedWilliamCyton from 'assets/data/predicted_william_cyton';
+
+import text from './text.json';
 
 const ClassificationReport = ({ rows }) => (
   <Table size="sm" responsive>
@@ -39,6 +41,10 @@ const ClassificationReport = ({ rows }) => (
     </tbody>
   </Table>
 );
+
+ClassificationReport.propTypes = {
+  rows: PropTypes.array.isRequired,
+};
 
 const Performance = () => {
   return (

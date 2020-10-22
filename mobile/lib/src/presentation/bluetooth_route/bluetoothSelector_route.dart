@@ -52,6 +52,9 @@ class BluetoothSelectorRoute extends StatelessWidget {
             return Container();
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: BlocProvider.of<DeviceSelectorCubit>(context).swapBluetooth,
+      ),
     );
   }
 }
