@@ -8,7 +8,7 @@ from classification.config.constants import (
 )
 from classification.features.constants import DATASET_HIGH_PASS_FREQ
 from classification.features.pipeline import get_feature_union
-from classification.features.utils import (
+from classification.features.preprocessing import (
     drop_other_channels,
     crop_raw_data,
     convert_to_epochs,
