@@ -10,6 +10,6 @@ const objectToFormData = (obj) => {
 };
 
 export const analyzeSleep = (formData) =>
-  Axios.post(`${SERVER_URL}/analyze_sleep`, objectToFormData(formData), {
+  Axios.post(`${SERVER_URL}/analyze-sleep`, objectToFormData(formData), {
     headers: { 'Content-Type': 'multipart/form-data' },
   });

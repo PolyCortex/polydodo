@@ -30,12 +30,14 @@ const filterOutDateTimeFields = (data) =>
 const mergeDateTimeFields = (data) =>
   filterInDateTimeFields(data).map((fieldPrefix) => [
     fieldPrefix,
-    new Date(
-      Object.entries(data)
-        .filter(([fieldName, value]) => fieldName.startsWith(fieldPrefix))
-        .map(([fieldName, value]) => value)
-        .join(' '),
-    ).getTime(),
+    Math.floor(
+      new Date(
+        Object.entries(data)
+          .filter(([fieldName, value]) => fieldName.startsWith(fieldPrefix))
+          .map(([fieldName, value]) => value)
+          .join(' '),
+      ).getTime() / 1000,
+    ),
   ]);
 
 const postForm = async (formData, setResponse, setPostFormError, setIsFormSubmitted) => {
@@ -75,7 +77,10 @@ const UploadForm = () => {
                   required: 'A valid .txt raw EEG file must be selected.',
                   validate: (files) => {
                     const file = files[0];
-                    if (file.type !== ACCEPTED_FILE_TYPE || !file.name.endsWith(ACCEPTED_FILE_EXTENSION)) {
+                    if (
+                      file.type !== ACCEPTED_FILE_TYPE ||
+                      !file.name.toLowerCase().endsWith(ACCEPTED_FILE_EXTENSION)
+                    ) {
                       return 'A valid .txt raw OpenBCI EEG file must be selected.';
                     } else if (file.size >= MAX_FILE_UPLOAD_SIZE) {
                       return 'File is too large. Must be less than 1.6 Gb.';
