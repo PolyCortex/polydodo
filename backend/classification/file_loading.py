@@ -46,7 +46,7 @@ def get_raw_array(file):
         line_splitted = line.split(',')
 
         if len(line_splitted) >= CYTON_TOTAL_NB_CHANNELS:
-            eeg_raw.append(get_decimals_from_hexadecimal_strings(line_splitted))
+            eeg_raw.append(_get_decimals_from_hexadecimal_strings(line_splitted))
 
     eeg_raw = SCALE_uV_PER_COUNT * np.array(eeg_raw, dtype='object')
 
@@ -68,7 +68,7 @@ def get_raw_array(file):
     return raw_object
 
 
-def get_decimals_from_hexadecimal_strings(lines):
+def _get_decimals_from_hexadecimal_strings(lines):
     """Converts the array of hexadecimal strings to an array of decimal values of the EEG channels
     Input:
     - lines: splitted array of two complement hexadecimal
@@ -76,22 +76,22 @@ def get_decimals_from_hexadecimal_strings(lines):
     - array of decimal values for each EEG channel of interest
     """
     return np.array([
-        convert_hexadecimal_to_signed_decimal(hex_value)
+        _convert_hexadecimal_to_signed_decimal(hex_value)
         for hex_value in lines[FILE_COLUMN_OFFSET:FILE_COLUMN_OFFSET + len(EEG_CHANNELS)]
     ])
 
 
-def convert_hexadecimal_to_signed_decimal(hex_value):
+def _convert_hexadecimal_to_signed_decimal(hex_value):
     """Converts the hexadecimal value encoded on OpenBCI Cyton SD card to signed decimal
     Input:
     - hex_value: signed hexadecimal value
     Returns:
     - decimal value
     """
-    return get_twos_complement(hex_value) if len(hex_value) % 2 == 0 else 0
+    return _get_twos_complement(hex_value) if len(hex_value) % 2 == 0 else 0
 
 
-def get_twos_complement(hexstr):
+def _get_twos_complement(hexstr):
     """Converts a two complement hexadecimal value in a string to a signed float
     Input:
     - hex_value: signed hexadecimal value

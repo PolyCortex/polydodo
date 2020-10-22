@@ -10,7 +10,7 @@ from classification.features.constants import (
 )
 
 
-def get_mean_psds(psds_with_freqs, are_relative=False):
+def _get_mean_psds(psds_with_freqs, are_relative=False):
     """EEG power band feature extraction.
     Input
     -------
@@ -40,7 +40,7 @@ def get_mean_psds(psds_with_freqs, are_relative=False):
     return np.concatenate(X, axis=1)
 
 
-def get_sefd_on_all_epochs(psds_with_freqs):
+def _get_sefd_on_all_epochs(psds_with_freqs):
     """SEFd on all epochs
     """
     SUBBAND_FREQ_SEFD = [8., 16.]
@@ -93,15 +93,15 @@ def get_frequency_domain_pipeline():
     get_psds_from_epochs_transformer = FunctionTransformer(
         get_psds_from_epochs, validate=False)
     absolute_mean_psds_transformer = FunctionTransformer(
-        get_mean_psds, validate=False)
+        _get_mean_psds, validate=False)
     relative_mean_psds_transformer = FunctionTransformer(
-        lambda psds_with_freq: get_mean_psds(
+        lambda psds_with_freq: _get_mean_psds(
             psds_with_freq,
             are_relative=True
         ), validate=False)
 
     sefd_transformer = FunctionTransformer(
-        get_sefd_on_all_epochs, validate=False)
+        _get_sefd_on_all_epochs, validate=False)
 
     return Pipeline([
         ('get_psds_from_epochs', get_psds_from_epochs_transformer),

@@ -11,7 +11,7 @@ from classification.features.pipeline.utils import (
 )
 
 
-def get_zero_crossing_rate(signal):
+def _get_zero_crossing_rate(signal):
     """
     Multiplies signal by itself shifted by one.
     If the signal crosses the horizontal axis,
@@ -22,12 +22,12 @@ def get_zero_crossing_rate(signal):
     return ((signal[:-1] * signal[1:]) < 0).sum()
 
 
-def get_mean_crossing_rate(signal):
-    return get_zero_crossing_rate(signal - np.mean(signal))
+def _get_mean_crossing_rate(signal):
+    return _get_zero_crossing_rate(signal - np.mean(signal))
 
 
-def hjorth(X):
-    """ Compute Hjorth mobility and complexity of a time series from either two
+def _hjorth(X):
+    """ Compute _hjorth mobility and complexity of a time series from either two
     [source: https://github.com/forrestbao/pyeeg]
     cases below:
         1. X, the time series of type list (default)
@@ -66,7 +66,7 @@ def hjorth(X):
         M4 += (D[i] - D[i - 1]) ** 2
     M4 = M4 / n
 
-    # Hjorth Mobility and Complexity
+    # hjorth Mobility and Complexity
     mobility = np.sqrt(M2 / TP)
     complexity = np.sqrt(
         float(M4) * TP / M2 / M2
@@ -86,9 +86,9 @@ def get_time_domain_pipeline():
     kurtosis_transformer = FunctionTransformer(
         get_transformer(kurtosis), validate=True)
     mean_crossing_rate_transformer = FunctionTransformer(
-        get_transformer(get_mean_crossing_rate), validate=True)
+        get_transformer(_get_mean_crossing_rate), validate=True)
     hjorth_transformer = FunctionTransformer(
-        get_transformer_list(hjorth), validate=True)
+        get_transformer_list(_hjorth), validate=True)
 
     return Pipeline([
         ('epochs_to_data', get_data_from_epochs_transformer),
@@ -98,6 +98,6 @@ def get_time_domain_pipeline():
             ('skew', skew_transformer),
             ('kurtosis', kurtosis_transformer),
             ('mean-crossing-rate', mean_crossing_rate_transformer),
-            ('hjorth', hjorth_transformer)
+            ('_hjorth', hjorth_transformer)
         ], n_jobs=1))
     ])

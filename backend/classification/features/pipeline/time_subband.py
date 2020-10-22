@@ -15,14 +15,14 @@ from classification.features.pipeline.utils import (
 )
 
 
-def get_signal_mean_energy(signal):
+def _get_signal_mean_energy(signal):
     """
     signal: array of (nb_sample_per_epoch,)
     """
     return np.sum(signal**2) * 1e6
 
 
-def get_pipeline_per_subband(subband_name: str):
+def _get_pipeline_per_subband(subband_name: str):
     """
     Constructs a pipeline to extract the specified subband related features.
     Output:
@@ -53,7 +53,7 @@ def get_pipeline_per_subband(subband_name: str):
         ('filter', FunctionTransformer(filter_epochs_in_specified_subband, validate=False)),
         ('get-values', FunctionTransformer(get_data_from_epochs, validate=False)),
         ('mean-energy', FunctionTransformer(
-            get_transformer(get_signal_mean_energy), validate=True
+            get_transformer(_get_signal_mean_energy), validate=True
         )),
     ])
 
@@ -61,5 +61,5 @@ def get_pipeline_per_subband(subband_name: str):
 def get_subband_feature_union():
     return FeatureUnion([(
         f"{band_name}-filter",
-        get_pipeline_per_subband(band_name)
+        _get_pipeline_per_subband(band_name)
     ) for band_name in FREQ_BANDS_ORDERS.keys()], n_jobs=1)
