@@ -9,18 +9,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../record_sleep/record_sleep_page.dart';
-import '../../wallets/wallets_page.dart';
-import '../appdrawer_page.dart';
+import '../../pages/bluetooth_page/bluetoothSelector_page.dart';
+import '../../pages/dashboard/dashboard_page.dart';
+import '../../pages/record_sleep/record_sleep_guide_page.dart';
+import '../navdrawer_widget.dart';
 
 class Routes {
-  static const String appDrawerPage = '/app-drawer-page';
-  static const String walletsPage = '/';
-  static const String recordSleepPage = '/record-sleep-page';
+  static const String navDrawerPage = '/nav-drawer-page';
+  static const String dashBoardPage = '/';
+  static const String recordSleepGuidePage = '/record-sleep-guide-page';
+  static const String recordSleepValidatePage = '/record-sleep-validate-page';
+  static const String bluetoothSelectorPage = '/bluetooth-selector-page';
   static const all = <String>{
-    appDrawerPage,
-    walletsPage,
-    recordSleepPage,
+    navDrawerPage,
+    dashBoardPage,
+    recordSleepGuidePage,
+    recordSleepValidatePage,
+    bluetoothSelectorPage,
   };
 }
 
@@ -28,31 +33,45 @@ class Router extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.appDrawerPage, page: AppDrawerPage),
-    RouteDef(Routes.walletsPage, page: WalletsPage),
-    RouteDef(Routes.recordSleepPage, page: RecordSleepPage),
+    RouteDef(Routes.navDrawerPage, page: NavDrawerPage),
+    RouteDef(Routes.dashBoardPage, page: DashBoardPage),
+    RouteDef(Routes.recordSleepGuidePage, page: RecordSleepGuidePage),
+    RouteDef(Routes.recordSleepValidatePage, page: RecordSleepValidatePage),
+    RouteDef(Routes.bluetoothSelectorPage, page: BluetoothSelectorPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    AppDrawerPage: (data) {
+    NavDrawerPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AppDrawerPage(),
+        builder: (context) => NavDrawerPage(),
         settings: data,
       );
     },
-    WalletsPage: (data) {
-      final args = data.getArgs<WalletsPageArguments>(
-        orElse: () => WalletsPageArguments(),
-      );
+    DashBoardPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => WalletsPage(key: args.key),
+        builder: (context) => DashBoardPage(),
         settings: data,
       );
     },
-    RecordSleepPage: (data) {
+    RecordSleepGuidePage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => RecordSleepPage(),
+        builder: (context) => RecordSleepGuidePage(),
+        settings: data,
+      );
+    },
+    RecordSleepValidatePage: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => RecordSleepValidatePage(),
+        settings: data,
+      );
+    },
+    BluetoothSelectorPage: (data) {
+      final args = data.getArgs<BluetoothSelectorPageArguments>(
+        orElse: () => BluetoothSelectorPageArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => BluetoothSelectorPage(key: args.key),
         settings: data,
       );
     },
@@ -64,26 +83,31 @@ class Router extends RouterBase {
 /// *************************************************************************
 
 extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
-  Future<dynamic> pushAppDrawerPage() => push<dynamic>(Routes.appDrawerPage);
+  Future<dynamic> pushNavDrawerPage() => push<dynamic>(Routes.navDrawerPage);
 
-  Future<dynamic> pushWalletsPage({
+  Future<dynamic> pushDashBoardPage() => push<dynamic>(Routes.dashBoardPage);
+
+  Future<dynamic> pushRecordSleepGuidePage() =>
+      push<dynamic>(Routes.recordSleepGuidePage);
+
+  Future<dynamic> pushRecordSleepValidatePage() =>
+      push<dynamic>(Routes.recordSleepValidatePage);
+
+  Future<dynamic> pushBluetoothSelectorPage({
     Key key,
   }) =>
       push<dynamic>(
-        Routes.walletsPage,
-        arguments: WalletsPageArguments(key: key),
+        Routes.bluetoothSelectorPage,
+        arguments: BluetoothSelectorPageArguments(key: key),
       );
-
-  Future<dynamic> pushRecordSleepPage() =>
-      push<dynamic>(Routes.recordSleepPage);
 }
 
 /// ************************************************************************
 /// Arguments holder classes
 /// *************************************************************************
 
-/// WalletsPage arguments holder class
-class WalletsPageArguments {
+/// BluetoothSelectorPage arguments holder class
+class BluetoothSelectorPageArguments {
   final Key key;
-  WalletsPageArguments({this.key});
+  BluetoothSelectorPageArguments({this.key});
 }
