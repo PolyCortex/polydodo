@@ -1,10 +1,6 @@
 import mne
 from scipy.signal import cheby1
 
-from classification.config.constants import (
-    # TODO: adapt pipeline to adjust whether data is being sent from ganglion or cyton
-    OPENBCI_CYTON_SAMPLE_RATE,
-)
 from classification.features.constants import (
     EPOCH_DURATION,
     DATASET_SAMPLE_RATE,
@@ -73,11 +69,12 @@ def _apply_high_pass_filter(raw_data):
     -------
     raw_data: instance of mne.Raw
     """
+    sampling_rate = raw_data.info['sfreq']
     b, a = cheby1(
         HIGH_PASS_FILTER_ORDER,
         HIGH_PASS_MAX_RIPPLE_DB,
         DATASET_HIGH_PASS_FREQ,
-        fs=OPENBCI_CYTON_SAMPLE_RATE,
+        fs=sampling_rate,
         btype='highpass',
     )
     raw_data.filter(
