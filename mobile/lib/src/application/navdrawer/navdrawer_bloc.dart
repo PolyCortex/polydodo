@@ -7,16 +7,14 @@ part 'navdrawer_event.dart';
 part 'navdrawer_state.dart';
 
 class NavdrawerBloc extends Bloc<NavdrawerEvent, NavdrawerState> {
-  NavdrawerBloc() : super(NavdrawerState.homePage);
+  NavdrawerBloc() : super(NavdrawerState.DashBoard);
 
   @override
   Stream<NavdrawerState> mapEventToState(
     NavdrawerEvent event,
   ) async* {
-    if (event is HomePageEvent) {
-      yield NavdrawerState.homePage;
-    } else if (event is SamplePageEvent) {
-      yield NavdrawerState.testPage;
+    if (event is NavdrawerUpdated) {
+      yield event.page;
     }
   }
 }

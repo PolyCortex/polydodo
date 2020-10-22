@@ -1,3 +1,3 @@
 part of 'navdrawer_bloc.dart';
 
-enum NavdrawerState { homePage, testPage }
+enum NavdrawerState { DashBoard, RecordSleep, History, BluetoothSelector }

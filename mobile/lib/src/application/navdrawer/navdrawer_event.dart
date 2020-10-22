@@ -6,6 +6,14 @@ abstract class NavdrawerEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class HomePageEvent extends NavdrawerEvent {}
+class NavdrawerUpdated extends NavdrawerEvent {
+  final NavdrawerState page;
 
-class SamplePageEvent extends NavdrawerEvent {}
+  const NavdrawerUpdated(this.page);
+
+  @override
+  List<Object> get props => [page];
+
+  @override
+  String toString() => 'NavDrawerUpdated { tab: $page }';
+}
