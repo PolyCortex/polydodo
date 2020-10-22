@@ -4,7 +4,6 @@ from classification.config.constants import (
 )
 
 NYQUIST_FREQ = DATASET_SAMPLE_RATE / 2
-MAX_TIME = EPOCH_DURATION - 1. / DATASET_SAMPLE_RATE
 
 DELTA = "delta"
 THETA = "theta"
