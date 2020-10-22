@@ -4,15 +4,9 @@ import numpy as np
 from classification.config.constants import (
     EEG_CHANNELS,
     AGE_FEATURE_BINS,
-    DATASET_SAMPLE_RATE,
 )
-from classification.features.constants import DATASET_HIGH_PASS_FREQ
 from classification.features.pipeline import get_feature_union
-from classification.features.preprocessing import (
-    drop_other_channels,
-    crop_raw_data,
-    convert_to_epochs,
-)
+from classification.features.preprocessing import preprocess
 
 
 def get_eeg_features(raw_data, in_bed_seconds, out_of_bed_seconds):
@@ -30,19 +24,12 @@ def get_eeg_features(raw_data, in_bed_seconds, out_of_bed_seconds):
     Array of size (nb_epochs, nb_continuous_features)
     """
     features_file = []
+    feature_union = get_feature_union()
 
     for channel in EEG_CHANNELS:
-        chan_data = drop_other_channels(raw_data.copy(), channel)
-        chan_data = crop_raw_data(chan_data, in_bed_seconds, out_of_bed_seconds)
-        chan_data = chan_data.resample(DATASET_SAMPLE_RATE)
-        chan_data = chan_data.filter(l_freq=DATASET_HIGH_PASS_FREQ, h_freq=None)
+        chan_data = preprocess(raw_data, channel, in_bed_seconds, out_of_bed_seconds)
 
-        X_file_channel = convert_to_epochs(chan_data, in_bed_seconds)
-
-        feature_union = get_feature_union()
-        print('Started feature ext on epochs: ', X_file_channel)
-
-        X_features = feature_union.transform(X_file_channel)
+        X_features = feature_union.transform(chan_data)
         features_file.append(X_features)
 
         print(
