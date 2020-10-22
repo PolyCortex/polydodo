@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/polydodo/static/css/main.d0523088.chunk.css",
-    "main.js": "/polydodo/static/js/main.a1f83f3f.chunk.js",
-    "main.js.map": "/polydodo/static/js/main.a1f83f3f.chunk.js.map",
+    "main.js": "/polydodo/static/js/main.0e3c2200.chunk.js",
+    "main.js.map": "/polydodo/static/js/main.0e3c2200.chunk.js.map",
     "runtime-main.js": "/polydodo/static/js/runtime-main.ef5adf4f.js",
     "runtime-main.js.map": "/polydodo/static/js/runtime-main.ef5adf4f.js.map",
     "static/css/2.78796bb9.chunk.css": "/polydodo/static/css/2.78796bb9.chunk.css",
     "static/js/2.818214a7.chunk.js": "/polydodo/static/js/2.818214a7.chunk.js",
     "static/js/2.818214a7.chunk.js.map": "/polydodo/static/js/2.818214a7.chunk.js.map",
     "index.html": "/polydodo/index.html",
-    "precache-manifest.f53ad185802669eaa6e1cf1765496f6b.js": "/polydodo/precache-manifest.f53ad185802669eaa6e1cf1765496f6b.js",
+    "precache-manifest.112bd93200c7c226b090b51b1cdc7ca0.js": "/polydodo/precache-manifest.112bd93200c7c226b090b51b1cdc7ca0.js",
     "service-worker.js": "/polydodo/service-worker.js",
     "static/css/2.78796bb9.chunk.css.map": "/polydodo/static/css/2.78796bb9.chunk.css.map",
     "static/css/main.d0523088.chunk.css.map": "/polydodo/static/css/main.d0523088.chunk.css.map",
@@ -28,6 +28,6 @@
     "static/css/2.78796bb9.chunk.css",
     "static/js/2.818214a7.chunk.js",
     "static/css/main.d0523088.chunk.css",
-    "static/js/main.a1f83f3f.chunk.js"
+    "static/js/main.0e3c2200.chunk.js"
   ]
 }
