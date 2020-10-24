@@ -95,6 +95,10 @@ const ResponsiveCollapse = ({ children }) => {
   );
 };
 
+ResponsiveCollapse.propTypes = {
+  children: PropTypes.array.isRequired,
+};
+
 const Navbar = () => {
   const navbarstrapRef = useRef();
   useEffect(() => {
