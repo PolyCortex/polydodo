@@ -10,10 +10,10 @@ import {
   Nav,
   NavLink,
   UncontrolledTooltip,
-  UncontrolledCollapse,
   Row,
   Col,
   Button,
+  Collapse,
 } from 'reactstrap';
 
 import Logo from 'assets/img/logo.png';
@@ -48,17 +48,15 @@ OutsideLink.defaultProps = {
   tooltipText: '',
 };
 
-const ResponsiveCollapse = ({ children }) => {
+const ResponsiveCollapse = ({ children, isCollapseOpen, setIsCollapseOpen }) => {
   const [collapseClass, setCollapseClass] = useState('');
-  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
 
   return (
     <React.Fragment>
-      <button className="navbar-toggler" id="navbar_global" onClick={() => setIsCollapseOpen(!isCollapseOpen)}>
+      <button className="navbar-toggler" onClick={() => setIsCollapseOpen(!isCollapseOpen)}>
         <span className="navbar-toggler-icon" />
       </button>
-      <UncontrolledCollapse
-        toggler="#navbar_global"
+      <Collapse
         navbar
         isOpen={isCollapseOpen}
         className={collapseClass}
@@ -77,12 +75,7 @@ const ResponsiveCollapse = ({ children }) => {
               </Link>
             </Col>
             <Col className="collapse-close" xs="6">
-              <Button
-                color="link"
-                className="navbar-toggler"
-                id="navbar_global"
-                onClick={() => setIsCollapseOpen(false)}
-              >
+              <Button color="link" className="navbar-toggler" onClick={() => setIsCollapseOpen(false)}>
                 <span />
                 <span />
               </Button>
@@ -90,7 +83,7 @@ const ResponsiveCollapse = ({ children }) => {
           </Row>
         </div>
         {children}
-      </UncontrolledCollapse>
+      </Collapse>
     </React.Fragment>
   );
 };
@@ -100,6 +93,7 @@ ResponsiveCollapse.propTypes = {
 };
 
 const Navbar = () => {
+  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const navbarstrapRef = useRef();
   useEffect(() => {
     const headroom = new Headroom(navbarstrapRef.current);
@@ -115,24 +109,24 @@ const Navbar = () => {
             <img alt="Polydodo" src={Logo} />
           </NavbarBrand>
 
-          <ResponsiveCollapse>
+          <ResponsiveCollapse isCollapseOpen={isCollapseOpen} setIsCollapseOpen={setIsCollapseOpen}>
             <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-              <NavItem>
-                <NavLink to="/" tag={Link} id="navbar_global">
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
+                <NavLink to="/" tag={Link}>
                   {text['navbar_home']}
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/record-my-sleep" tag={Link}>
                   {text['navbar_record']}
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/analyze-my-sleep" tag={Link}>
                   {text['navbar_analyze']}
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/performance" tag={Link}>
                   {text['navbar_performance']}
                 </NavLink>
