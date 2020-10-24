@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/polydodo/precache-manifest.e7607ec2351dc6b85b33ab5b5c724d74.js"
+  "/polydodo/precache-manifest.7b33578ef39792b2458c76b4145a5a28.js"
 );
 
 self.addEventListener('message', (event) => {
