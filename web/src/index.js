@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect, HashRouter } from 'react-router-dom';
+import { Route, Switch, Redirect, HashRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import 'argon-design-system-react/src/assets/vendor/nucleo/css/nucleo.css';
@@ -43,7 +43,7 @@ const underConstruction = () => {
 };
 
 ReactDOM.render(
-  <HashRouter basename={process.env.PUBLIC_URL}>
+  <HashRouter>
     <ScrollToTop>
       <Navbar />
       <Switch>
