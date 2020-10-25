@@ -12,6 +12,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   UsbPort _serialPort;
   List<AcquisitionDevice> _acquisitionDevicePersistency = [];
   List<UsbDevice> _serialDevices = [];
+  StreamSubscription _inputStreamSubscription;
   final streamController = StreamController<List<AcquisitionDevice>>();
 
   void initializeRepository() {
@@ -46,11 +47,39 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _serialPort.setPortParameters(
         115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
-    callback(true, null);
+    checkCytonConnection(callback);
+  }
+
+  Future<void> checkCytonConnection(Function(bool, Exception) callback) async {
+    String status = "";
+
+    _inputStreamSubscription = _serialPort.inputStream.listen((event) {
+      status += String.fromCharCodes(event);
+
+      if (isFullMessage(status)) {
+        _inputStreamSubscription.cancel();
+
+        if (status == CYTON_SYSTEM_UP)
+          callback(true, null);
+        else {
+          disconnect();
+          callback(false, Exception(status));
+        }
+      }
+    });
+
+    await _serialPort.write(Uint8List.fromList(CYTON_GET_STATUS));
+  }
+
+  bool isFullMessage(String message) {
+    return message.length > CYTON_MESSAGE_FOOTER.length &&
+        message.substring(message.length - CYTON_MESSAGE_FOOTER.length) ==
+            CYTON_MESSAGE_FOOTER;
   }
 
   Future<void> disconnect() async {
     await _serialPort?.close();
+    _inputStreamSubscription = null;
     _selectedDevice = null;
     _serialPort = null;
   }

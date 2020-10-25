@@ -29,6 +29,9 @@ const OPEN_BCI_GANGLION_HEADER = [
   ]
 ];
 
+const CYTON_MESSAGE_FOOTER = "\$\$\$";
+const CYTON_GET_STATUS = [0xF0, 0x07];
+const CYTON_SYSTEM_UP = "Success: System is Up\$\$\$";
 const CYTON_NUMBER_CHANNELS = 8;
 const CYTON_PACKET_SIZE = 33;
 const CYTON_NUMBER_COLUMNS = 24;
