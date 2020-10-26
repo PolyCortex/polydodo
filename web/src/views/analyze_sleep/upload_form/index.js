@@ -159,8 +159,8 @@ const UploadForm = () => {
                   <Input
                     innerRef={register({
                       required: 'A number must be provided',
-                      min: { value: MIN_AGE, message: 'Please provide a positive integer' },
-                      max: { value: MAX_AGE, message: 'Age cannot be more than 125 y/o' },
+                      min: { value: MIN_AGE, message: `Age must be at least ${MIN_AGE} y/o` },
+                      max: { value: MAX_AGE, message: `Age cannot be more than ${MAX_AGE} y/o` },
                     })}
                     min={MIN_AGE}
                     max={MAX_AGE}

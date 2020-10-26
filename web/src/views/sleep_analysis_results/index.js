@@ -135,9 +135,11 @@ const SleepAnalysisResults = () => {
         </p>
         <p>Wanna know how accurate this data is?</p>
         <Row className="scrollytelling-container__buttons">
-          <Button className="mt-4" color="default" to="/performance" tag={Link}>
-            Check out the performances
-          </Button>
+          <Link to="/performance">
+            <Button className="mt-4" color="default">
+              Check out the performances
+            </Button>
+          </Link>
           <Button
             className="mt-4"
             color="secondary"
