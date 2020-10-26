@@ -52,7 +52,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
 
   Future<void> _checkCytonConnection(
       Function(bool, [Exception]) callback) async {
-    String status = "";
+    var status = "";
 
     _inputStreamSubscription = _serialPort.inputStream.listen((event) {
       status += String.fromCharCodes(event);
