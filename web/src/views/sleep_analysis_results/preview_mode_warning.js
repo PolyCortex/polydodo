@@ -3,7 +3,7 @@ import { Alert } from 'reactstrap';
 
 import Emoji from 'components/emoji';
 
-const BEDTIME_PREVIEW_MODE_TIMESTAMP = 1582423980 * 1000;
+const BEDTIME_PREVIEW_MODE_TIMESTAMP = 1582441980 * 1000;
 
 const PreviewModeWarning = () => {
   return (
