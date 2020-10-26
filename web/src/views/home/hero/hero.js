@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { Button, Container, Row, Col } from 'reactstrap';
 import HeaderSeparator from 'components/header_separator';
+import { Link } from 'react-router-dom';
 
 class Hero extends React.Component {
   render() {
@@ -31,38 +32,51 @@ class Hero extends React.Component {
                       width="560"
                       height="315"
                       src="https://www.youtube.com/embed/YJV732hR0gU"
-                      frameborder="0"
-                      allow="autoplay; clipboard-write; encrypted-media;"
-                      allowfullscreen
+                      allowFullScreen
                     />
-                    <div className="btn-wrapper mt-6">
+                    <Row className="align-items-center justify-content-center mt-5 mb-4">
                       <Button
                         className="btn-icon mb-3 mb-sm-0"
                         color="warning"
-                        href="https://www.creative-tim.com/product/argon-design-system-react?ref=adsr-landing-page"
+                        to="/record-my-sleep"
+                        tag={Link}
                         size="lg"
                       >
                         <span className="btn-inner--icon mr-1">
                           <i className="ni ni-sound-wave" />
                         </span>
                         <span className="btn-inner--text">Record My Own Sleep</span>
-                      </Button>{' '}
+                      </Button>
+                    </Row>
+                    <Row className="align-items-center justify-content-center">
                       <Button
                         className="btn-icon mb-3 mb-sm-0"
-                        color="github"
-                        href="https://github.com/PolyCortex/polydodo"
-                        size="lg"
-                        target="_blank"
+                        color="secondary"
+                        to={{ pathname: '/sleep-analysis-results', state: { isPreviewMode: true } }}
+                        tag={Link}
+                        size="md"
                       >
                         <span className="btn-inner--icon mr-1">
-                          <i className="fa fa-github" />
+                          <i className="ni ni-button-play" />
                         </span>
-                        <span className="btn-inner--text">
-                          <span className="text-warning mr-1">Star us</span>
-                          on Github
-                        </span>
+                        <span className="btn-inner--text">Preview</span>
                       </Button>
-                    </div>
+                    </Row>
+                    {/* <Button
+                      className="btn-icon mb-3 mb-sm-0"
+                      color="github"
+                      href="https://github.com/PolyCortex/polydodo"
+                      size="lg"
+                      target="_blank"
+                    >
+                      <span className="btn-inner--icon mr-1">
+                        <i className="fa fa-github" />
+                      </span>
+                      <span className="btn-inner--text">
+                        <span className="text-warning mr-1">Star us</span>
+                        on Github
+                      </span>
+                    </Button> */}
                     <div className="mt-5">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>
                       <a href="http://polycortex.polymtl.ca/" target="_blank" rel="noopener noreferrer">

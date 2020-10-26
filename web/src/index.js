@@ -51,7 +51,7 @@ ReactDOM.render(
         <Route exact path="/" render={() => <Home />} />
         <Route exact path="/record-my-sleep" render={underConstruction} />
         <Route exact path="/analyze-my-sleep" render={() => <AnalyzeSleep />} />
-        <Route exact path="/sleep-analysis-results" render={() => <SleepAnalysisResults />} />
+        <Route exact path="/sleep-analysis-results" render={(props) => <SleepAnalysisResults {...props} />} />
         <Route exact path="/performance" render={() => <Performance />} />
         <Redirect to="/" />
       </Switch>

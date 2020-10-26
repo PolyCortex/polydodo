@@ -156,6 +156,11 @@ const Navbar = () => {
                 tooltipID="tooltip112445449"
               />
             </Nav>
+            <Nav className="align-items-lg-center ml-lg-auto" navbar>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
+                <Button>PREVIEW</Button>
+              </NavItem>
+            </Nav>
           </ResponsiveCollapse>
         </Container>
       </NavbarStrap>
