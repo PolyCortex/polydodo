@@ -47,10 +47,11 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _serialPort.setPortParameters(
         115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
-    checkCytonConnection(callback);
+    _checkCytonConnection(callback);
   }
 
-  Future<void> checkCytonConnection(Function(bool, Exception) callback) async {
+  Future<void> _checkCytonConnection(
+      Function(bool, [Exception]) callback) async {
     String status = "";
 
     _inputStreamSubscription = _serialPort.inputStream.listen((event) {
@@ -60,7 +61,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
         _inputStreamSubscription.cancel();
 
         if (status == CYTON_SYSTEM_UP)
-          callback(true, null);
+          callback(true);
         else {
           disconnect();
           callback(false, Exception(status));
@@ -79,7 +80,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
 
   Future<void> disconnect() async {
     await _serialPort?.close();
-    _inputStreamSubscription = null;
+    _inputStreamSubscription?.cancel();
     _selectedDevice = null;
     _serialPort = null;
   }

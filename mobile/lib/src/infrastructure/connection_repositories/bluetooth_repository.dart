@@ -49,7 +49,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   }
 
   void connect(
-      AcquisitionDevice device, Function(bool, Exception) callback) async {
+      AcquisitionDevice device, Function(bool, [Exception]) callback) async {
     _selectedDevice = device;
     _acquisitionDevicePersistency.clear();
     _bluetoothScanSubscription.pause();
@@ -61,7 +61,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         .listen((event) {
       if (event.connectionState == DeviceConnectionState.connected) {
         setupCharacteristics();
-        callback(true, null);
+        callback(true);
       } else if (event.connectionState == DeviceConnectionState.disconnected) {
         disconnect();
         callback(false, Exception("Failed to connect to device"));
