@@ -8,7 +8,7 @@ SCRIPT_PATH = path.dirname(path.realpath(sys.argv[0]))
 MODEL_FILENAME = 'model.onnx'
 MODEL_PATH = f'{SCRIPT_PATH}/{MODEL_FILENAME}'
 MODEL_REPO = 'polycortex/polydodo-model'
-MODEL_URL = f'https://raw.githubusercontent.com/{MODEL_REPO}/master/{MODEL_FILENAME}'
+MODEL_URL = f'https://github.com/{MODEL_REPO}/blob/master/{MODEL_FILENAME}?raw=true'
 
 
 def _download_file(url, output):
@@ -45,5 +45,6 @@ def _get_file_githash(filepath):
 
 def load_model():
     if not path.exists(MODEL_PATH) or _get_file_githash(MODEL_PATH) != _get_latest_model_githash():
+        print("downloading model")
         _download_file(MODEL_URL, MODEL_PATH)
     return onnxruntime.InferenceSession(MODEL_PATH)
