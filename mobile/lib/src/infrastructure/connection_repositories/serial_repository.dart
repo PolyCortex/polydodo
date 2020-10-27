@@ -15,6 +15,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   StreamSubscription _inputStreamSubscription;
   final streamController = StreamController<List<AcquisitionDevice>>();
 
+  @override
   void initializeRepository() {
     _acquisitionDevicePersistency.clear();
     _serialDevices.clear();
@@ -33,6 +34,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     streamController.add(_acquisitionDevicePersistency);
   }
 
+  @override
   Future<void> connect(
       AcquisitionDevice device, Function(bool, Exception) callback) async {
     _selectedDevice =
@@ -78,6 +80,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
             CYTON_MESSAGE_FOOTER;
   }
 
+  @override
   Future<void> disconnect() async {
     await _serialPort?.close();
     _inputStreamSubscription?.cancel();
@@ -85,15 +88,18 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _serialPort = null;
   }
 
+  @override
   Future<Stream<List<int>>> startDataStream() async {
     await _serialPort.write(Uint8List.fromList(START_STREAM_CHAR.codeUnits));
 
     return _serialPort.inputStream;
   }
 
+  @override
   Future<void> stopDataStream() async {
     await _serialPort.write(Uint8List.fromList(STOP_STREAM_CHAR.codeUnits));
   }
 
+  @override
   Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }
