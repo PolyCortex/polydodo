@@ -4,22 +4,24 @@ import 'package:polydodo/src/infrastructure/constants.dart';
 import 'baseOpenBCITransformer.dart';
 
 class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
-  List packet = List();
+  List packet = [];
 
   CytonTransformer.broadcast({bool synchronous: false, cancelOnError})
       : super.broadcast(synchronous: synchronous, cancelOnError: cancelOnError);
 
+  @override
   void reset() {
     packet.clear();
   }
 
+  @override
   void onData(S data) {
-    List event = data as List;
+    var event = data as List;
 
     for (var i in event) {
-      if (packet.length == 0) {
+      if (packet.isEmpty) {
         if (i != CYTON_HEADER) {
-          print("Missing header byte");
+          print('Missing header byte');
           continue;
         }
       }
@@ -27,12 +29,12 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
 
       if (packet.length == CYTON_PACKET_SIZE) {
         if (packet[CYTON_PACKET_SIZE - 1] < CYTON_FOOTER_MINIMUM) {
-          print("Invalid packet");
+          print('Invalid packet');
           packet.clear();
           continue;
         }
 
-        List data = parsePacket(packet);
+        var data = parsePacket(packet);
 
         packet.clear();
 
@@ -44,7 +46,7 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   }
 
   List parsePacket(List fullPacket) {
-    List data = getListForCSV();
+    var data = getListForCSV();
 
     data[0] = fullPacket[1];
     data[1] = (fullPacket[2] << 16) | (fullPacket[3] << 8) | fullPacket[4];
@@ -62,9 +64,9 @@ class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   List getListForCSV() => List.generate(CYTON_NUMBER_COLUMNS, (index) => 0);
 
   List processData(List data, bool hasNegativeCompression) {
-    List result = List.from(data);
+    var result = List.from(data);
 
-    for (int i = 1; i < CYTON_NUMBER_CHANNELS + 1; ++i) {
+    for (var i = 1; i < CYTON_NUMBER_CHANNELS + 1; ++i) {
       if (hasNegativeCompression) result[i] = handleNegative(result[i]);
 
       result[i] = convertToMicrovolts(result[i]);

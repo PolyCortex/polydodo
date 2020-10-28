@@ -35,7 +35,7 @@ class BluetoothSelectorRoute extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is DeviceSearchInProgress)
+          if (state is DeviceSearchInProgress) {
             return ListView.builder(
                 itemCount: state.devices.length,
                 itemBuilder: (context, index) {
@@ -48,8 +48,9 @@ class BluetoothSelectorRoute extends StatelessWidget {
                         subtitle: Text(state.devices[index].id.toString())),
                   );
                 });
-          else
+          } else {
             return Container();
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(

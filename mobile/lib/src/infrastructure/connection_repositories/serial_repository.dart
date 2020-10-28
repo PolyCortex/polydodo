@@ -6,13 +6,14 @@ import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:usb_serial/usb_serial.dart';
+import 'package:pedantic/pedantic.dart';
 
 class SerialRepository implements IAcquisitionDeviceRepository {
   UsbDevice _selectedDevice;
   UsbPort _serialPort;
-  List<AcquisitionDevice> _acquisitionDevicePersistency = [];
-  List<UsbDevice> _serialDevices = [];
   StreamSubscription _inputStreamSubscription;
+  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
+  final List<UsbDevice> _serialDevices = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
   @override
@@ -23,8 +24,8 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   }
 
   void addDevices(List<UsbDevice> serialDevices) {
-    for (UsbDevice serialDevice in serialDevices) {
-      AcquisitionDevice device = AcquisitionDevice(
+    for (var serialDevice in serialDevices) {
+      var device = AcquisitionDevice(
           UniqueId.from(serialDevice.deviceId.toString()),
           serialDevice.productName);
 
@@ -40,21 +41,21 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _selectedDevice =
         _serialDevices[_acquisitionDevicePersistency.indexOf(device)];
     _serialPort = await _selectedDevice.create();
-    bool openSuccessful = await _serialPort.open();
+    var openSuccessful = await _serialPort.open();
 
     if (!openSuccessful) {
-      callback(false, Exception("Could not open port"));
+      callback(false, Exception('Could not open port'));
     }
 
-    _serialPort.setPortParameters(
+    await _serialPort.setPortParameters(
         115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
-    _checkCytonConnection(callback);
+    unawaited(_checkCytonConnection(callback));
   }
 
   Future<void> _checkCytonConnection(
       Function(bool, [Exception]) callback) async {
-    var status = "";
+    var status = '';
 
     _inputStreamSubscription = _serialPort.inputStream.listen((event) {
       status += String.fromCharCodes(event);
@@ -62,9 +63,9 @@ class SerialRepository implements IAcquisitionDeviceRepository {
       if (isFullMessage(status)) {
         _inputStreamSubscription.cancel();
 
-        if (status == CYTON_SYSTEM_UP)
+        if (status == CYTON_SYSTEM_UP) {
           callback(true);
-        else {
+        } else {
           disconnect();
           callback(false, Exception(status));
         }
@@ -83,7 +84,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   @override
   Future<void> disconnect() async {
     await _serialPort?.close();
-    _inputStreamSubscription?.cancel();
+    await _inputStreamSubscription?.cancel();
     _selectedDevice = null;
     _serialPort = null;
   }
