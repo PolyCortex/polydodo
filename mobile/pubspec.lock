@@ -276,7 +276,7 @@ packages:
     source: hosted
     version: "0.0.4+1"
   pedantic:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
@@ -316,7 +316,7 @@ packages:
       name: protobuf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   provider:
     dependency: transitive
     description:
@@ -330,7 +330,7 @@ packages:
       name: share
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.5+3"
+    version: "0.6.5+4"
   shared_preferences:
     dependency: transitive
     description:

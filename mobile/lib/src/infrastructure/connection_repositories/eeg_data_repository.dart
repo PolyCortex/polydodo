@@ -41,8 +41,7 @@ class EEGDataRepository implements IEEGDataRepository {
 
   @override
   void createRecordingFromStream(Stream<List<int>> stream) {
-    _recordingData =
-        EEGData(UniqueId.from(DateTime.now().toString()), List<List>());
+    _recordingData = EEGData(UniqueId.from(DateTime.now().toString()), [[]]);
 
     _currentTransformer.reset();
     _currentTransformerStream = stream
@@ -58,7 +57,7 @@ class EEGDataRepository implements IEEGDataRepository {
 
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =
-        directory.path + '/' + _recordingData.fileName + ".txt";
+        directory.path + '/' + _recordingData.fileName + '.txt';
     var file = File(pathOfTheFileToWrite);
     var fileContent = [[]];
     //todo: dynamically change header when we change transformer

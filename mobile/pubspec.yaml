@@ -39,6 +39,7 @@ dependencies:
   hive: ^1.4.4
   meta: ^1.1.8
   path_provider: ^1.6.16
+  pedantic: ^1.9.0
   share: ^0.6.5
   streaming_shared_preferences: ^1.0.1
   uuid: ^2.2.2
@@ -47,7 +48,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

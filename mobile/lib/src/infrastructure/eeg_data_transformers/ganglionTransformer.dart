@@ -5,7 +5,7 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   List _lastSampleData = [0, 0, 0, 0, 0];
   int _sampleCounter = 0;
 
-  GanglionTransformer.broadcast({bool synchronous: false, cancelOnError})
+  GanglionTransformer.broadcast({bool synchronous = false, cancelOnError})
       : super.broadcast(synchronous: synchronous, cancelOnError: cancelOnError);
 
   @override

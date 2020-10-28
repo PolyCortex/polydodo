@@ -6,7 +6,7 @@ import 'baseOpenBCITransformer.dart';
 class CytonTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   List packet = [];
 
-  CytonTransformer.broadcast({bool synchronous: false, cancelOnError})
+  CytonTransformer.broadcast({bool synchronous = false, cancelOnError})
       : super.broadcast(synchronous: synchronous, cancelOnError: cancelOnError);
 
   @override

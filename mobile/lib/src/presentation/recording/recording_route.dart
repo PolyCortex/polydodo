@@ -39,7 +39,7 @@ class RecordingRoute extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Stop"),
+                      child: Text('Stop'),
                       onPressed: () =>
                           BlocProvider.of<DataCubit>(context).stopStreaming(),
                     ),

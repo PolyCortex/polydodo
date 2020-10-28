@@ -50,7 +50,6 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     streamController.add(_acquisitionDevicePersistency);
   }
 
-  @override
   void connect(
       AcquisitionDevice device, Function(bool, [Exception]) callback) async {
     _selectedDevice = device;
