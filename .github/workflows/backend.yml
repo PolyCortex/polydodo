@@ -29,25 +29,18 @@ jobs:
       - run: python -m PyInstaller --onefile app.py
       - uses: actions/upload-artifact@v2
         with:
-          name: "server_${{ matrix.os }}"
+          name: "server_${{ runner.os }}"
           path: backend/dist
 
-  release:
+  docker-release:
     if: github.ref == 'refs/heads/master'
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
-
+    runs-on: ubuntu-latest
     needs: build
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: "server_${{ matrix.os }}"
+          name: server_Linux
           path: backend/dist
       - uses: docker/build-push-action@v1
         with:
@@ -57,3 +50,54 @@ jobs:
           registry: docker.pkg.github.com/polycortex/polydodo
           repository: backend
           tags: latest
+
+  release:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: release-drafter/release-drafter@v5
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: server_Linux
+          path: backend/dist/linux
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./backend/dist/linux/app
+          asset_name: server-linux
+          asset_content_type: application/octet-stream
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: server_Windows
+          path: backend/dist/windows
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./backend/dist/windows/app.exe
+          asset_name: server-windows.exe
+          asset_content_type: application/octet-stream
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: server_macOS
+          path: backend/dist/macos
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./backend/dist/macos/app
+          asset_name: server-macos
+          asset_content_type: application/octet-stream

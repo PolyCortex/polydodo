@@ -1,0 +1,18 @@
+# This file exists because of https://github.com/actions/upload-release-asset/pull/22
+
+on:
+  push:
+    branches:
+      - master
+
+name: Delete Draft Releases
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete drafts
+        uses: hugo19941994/delete-draft-releases@v0.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
