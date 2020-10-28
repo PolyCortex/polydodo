@@ -60,7 +60,7 @@ class EEGDataRepository implements IEEGDataRepository {
     final pathOfTheFileToWrite =
         directory.path + '/' + _recordingData.fileName + ".txt";
     var file = File(pathOfTheFileToWrite);
-    var fileContent = [];
+    var fileContent = [[]];
     //todo: dynamically change header when we change transformer
     fileContent.addAll(OPEN_BCI_CYTON_HEADER);
     fileContent.addAll(_recordingData.values);
