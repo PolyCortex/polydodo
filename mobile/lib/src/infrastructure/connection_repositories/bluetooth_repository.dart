@@ -21,6 +21,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   List<AcquisitionDevice> _acquisitionDevicePersistency = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
+  @override
   void initializeRepository() {
     if (_bluetoothScanSubscription == null) {
       flutterReactiveBle = FlutterReactiveBle();
@@ -48,8 +49,9 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     streamController.add(_acquisitionDevicePersistency);
   }
 
+  @override
   void connect(
-      AcquisitionDevice device, Function(bool, Exception) callback) async {
+      AcquisitionDevice device, Function(bool, [Exception]) callback) async {
     _selectedDevice = device;
     _acquisitionDevicePersistency.clear();
     _bluetoothScanSubscription.pause();
@@ -61,7 +63,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         .listen((event) {
       if (event.connectionState == DeviceConnectionState.connected) {
         setupCharacteristics();
-        callback(true, null);
+        callback(true);
       } else if (event.connectionState == DeviceConnectionState.disconnected) {
         disconnect();
         callback(false, Exception("Failed to connect to device"));
@@ -69,6 +71,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     });
   }
 
+  @override
   void disconnect() async {
     _selectedDevice = null;
     _connectedDeviceStream?.cancel();
@@ -86,6 +89,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         deviceId: _selectedDevice.id.toString());
   }
 
+  @override
   Future<Stream<List<int>>> startDataStream() async {
     await flutterReactiveBle.requestConnectionPriority(
         deviceId: _selectedDevice.id.toString(),
@@ -97,6 +101,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
     return flutterReactiveBle.subscribeToCharacteristic(_receiveCharacteristic);
   }
 
+  @override
   Future<void> stopDataStream() async {
     await flutterReactiveBle.requestConnectionPriority(
         deviceId: _selectedDevice.id.toString(),

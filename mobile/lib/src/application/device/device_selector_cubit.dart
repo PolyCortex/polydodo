@@ -36,7 +36,7 @@ class DeviceSelectorCubit extends Cubit<DeviceState> {
     _deviceRepository.connect(device, connectionCallback);
   }
 
-  void connectionCallback(bool connected, Exception e) {
+  void connectionCallback(bool connected, [Exception e]) {
     if (e != null) {
       emit(DeviceConnectionFailure(e));
       resetSearch();

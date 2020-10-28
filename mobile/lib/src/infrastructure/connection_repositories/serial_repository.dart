@@ -12,8 +12,10 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   UsbPort _serialPort;
   List<AcquisitionDevice> _acquisitionDevicePersistency = [];
   List<UsbDevice> _serialDevices = [];
+  StreamSubscription _inputStreamSubscription;
   final streamController = StreamController<List<AcquisitionDevice>>();
 
+  @override
   void initializeRepository() {
     _acquisitionDevicePersistency.clear();
     _serialDevices.clear();
@@ -32,6 +34,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     streamController.add(_acquisitionDevicePersistency);
   }
 
+  @override
   Future<void> connect(
       AcquisitionDevice device, Function(bool, Exception) callback) async {
     _selectedDevice =
@@ -46,24 +49,57 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _serialPort.setPortParameters(
         115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
-    callback(true, null);
+    _checkCytonConnection(callback);
   }
 
+  Future<void> _checkCytonConnection(
+      Function(bool, [Exception]) callback) async {
+    var status = "";
+
+    _inputStreamSubscription = _serialPort.inputStream.listen((event) {
+      status += String.fromCharCodes(event);
+
+      if (isFullMessage(status)) {
+        _inputStreamSubscription.cancel();
+
+        if (status == CYTON_SYSTEM_UP)
+          callback(true);
+        else {
+          disconnect();
+          callback(false, Exception(status));
+        }
+      }
+    });
+
+    await _serialPort.write(Uint8List.fromList(CYTON_GET_STATUS));
+  }
+
+  bool isFullMessage(String message) {
+    return message.length > CYTON_MESSAGE_FOOTER.length &&
+        message.substring(message.length - CYTON_MESSAGE_FOOTER.length) ==
+            CYTON_MESSAGE_FOOTER;
+  }
+
+  @override
   Future<void> disconnect() async {
     await _serialPort?.close();
+    _inputStreamSubscription?.cancel();
     _selectedDevice = null;
     _serialPort = null;
   }
 
+  @override
   Future<Stream<List<int>>> startDataStream() async {
     await _serialPort.write(Uint8List.fromList(START_STREAM_CHAR.codeUnits));
 
     return _serialPort.inputStream;
   }
 
+  @override
   Future<void> stopDataStream() async {
     await _serialPort.write(Uint8List.fromList(STOP_STREAM_CHAR.codeUnits));
   }
 
+  @override
   Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }
