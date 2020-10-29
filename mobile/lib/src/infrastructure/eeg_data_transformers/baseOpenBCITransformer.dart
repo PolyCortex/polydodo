@@ -6,8 +6,8 @@ abstract class BaseOpenBCITransformer<S, T> implements StreamTransformer<S, T> {
   bool cancelOnError;
   Stream<S> _stream;
 
-  BaseOpenBCITransformer({bool synchronous: false, this.cancelOnError}) {
-    controller = new StreamController<T>(
+  BaseOpenBCITransformer({bool synchronous = false, this.cancelOnError}) {
+    controller = StreamController<T>(
         onListen: _onListen,
         onCancel: _onCancel,
         onPause: () {
@@ -20,8 +20,8 @@ abstract class BaseOpenBCITransformer<S, T> implements StreamTransformer<S, T> {
   }
 
   BaseOpenBCITransformer.broadcast(
-      {bool synchronous: false, this.cancelOnError}) {
-    controller = new StreamController<T>.broadcast(
+      {bool synchronous = false, this.cancelOnError}) {
+    controller = StreamController<T>.broadcast(
         onListen: _onListen, onCancel: _onCancel, sync: synchronous);
   }
 
@@ -45,7 +45,7 @@ abstract class BaseOpenBCITransformer<S, T> implements StreamTransformer<S, T> {
 
   @override
   Stream<T> bind(Stream<S> stream) {
-    this._stream = stream;
+    _stream = stream;
     return controller.stream;
   }
 

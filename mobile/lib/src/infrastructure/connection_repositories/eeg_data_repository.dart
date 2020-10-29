@@ -12,26 +12,26 @@ import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransform
 import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/ganglionTransformer.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:pedantic/pedantic.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData _recordingData;
   BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
 
   final GanglionTransformer<List<int>, List> _ganglionTransformer =
-      new GanglionTransformer<List<int>, List>.broadcast();
+      GanglionTransformer<List<int>, List>.broadcast();
 
   final CytonTransformer<List<int>, List<dynamic>> _cytonTransformer =
-      new CytonTransformer<Uint8List, List>.broadcast();
+      CytonTransformer<Uint8List, List>.broadcast();
 
   BaseOpenBCITransformer<List<int>, List<dynamic>> _currentTransformer;
   StreamSubscription _currentTransformerStream;
 
   StreamingSharedPreferences _preferences;
 
+  @override
   void initialize() async {
-    if (_preferences == null) {
-      _preferences = await StreamingSharedPreferences.instance;
-    }
+    _preferences ??= await StreamingSharedPreferences.instance;
 
     _currentTransformer =
         _preferences.getBool('using_bluetooth', defaultValue: false).getValue()
@@ -39,9 +39,9 @@ class EEGDataRepository implements IEEGDataRepository {
             : _cytonTransformer;
   }
 
+  @override
   void createRecordingFromStream(Stream<List<int>> stream) {
-    _recordingData =
-        EEGData(UniqueId.from(DateTime.now().toString()), List<List>());
+    _recordingData = EEGData(UniqueId.from(DateTime.now().toString()), [[]]);
 
     _currentTransformer.reset();
     _currentTransformerStream = stream
@@ -50,23 +50,27 @@ class EEGDataRepository implements IEEGDataRepository {
         .listen((data) => _recordingData.values.add(data));
   }
 
+  @override
   Future<void> stopRecordingFromStream() async {
     // todo: move save future to another file
-    _currentTransformerStream.cancel();
+    unawaited(_currentTransformerStream.cancel());
 
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =
-        directory.path + '/' + _recordingData.fileName + ".txt";
-    File file = File(pathOfTheFileToWrite);
-    List<List> fileContent = [];
+        directory.path + '/' + _recordingData.fileName + '.txt';
+    var file = File(pathOfTheFileToWrite);
+    var fileContent = [[]];
     //todo: dynamically change header when we change transformer
     fileContent.addAll(OPEN_BCI_CYTON_HEADER);
     fileContent.addAll(_recordingData.values);
-    String csv = const ListToCsvConverter().convert(fileContent);
+    var csv = const ListToCsvConverter().convert(fileContent);
     await file.writeAsString(csv);
   }
 
   // todo: implement export and import
+  @override
   void importData() {}
+
+  @override
   void exportData() {}
 }

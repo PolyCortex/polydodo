@@ -16,5 +16,5 @@ class UniqueId extends Equatable {
   List<Object> get props => [_id];
 
   @override
-  toString() => _id;
+  String toString() => _id;
 }
