@@ -58,5 +58,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./mobile/out/app-release.apk
-          asset_name: app-android.apk
+          asset_name: polydodo_app_android.apk
           asset_content_type: application/octet-stream

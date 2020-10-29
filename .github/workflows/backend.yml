@@ -67,13 +67,30 @@ jobs:
         with:
           name: server_Linux
           path: backend/dist/linux
+      - run: chmod +x backend/dist/linux/app
+      - run: tar -pczvf linux.tar.gz -C backend/dist/linux app
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./backend/dist/linux/app
-          asset_name: server-linux
+          asset_path: ./linux.tar.gz
+          asset_name: polydodo_server_standalone_linux-x64.tar.gz
+          asset_content_type: application/octet-stream
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: server_macOS
+          path: backend/dist/macos
+      - run: chmod +x backend/dist/macos/app
+      - run: tar -pczvf macos.tar.gz -C backend/dist/macos app
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./macos.tar.gz
+          asset_name: polydodo_server_standalone_macos-x64.tar.gz
           asset_content_type: application/octet-stream
 
       - uses: actions/download-artifact@v2
@@ -86,18 +103,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./backend/dist/windows/app.exe
-          asset_name: server-windows.exe
-          asset_content_type: application/octet-stream
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: server_macOS
-          path: backend/dist/macos
-      - uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./backend/dist/macos/app
-          asset_name: server-macos
+          asset_name: polydodo_server_standalone_windows-x64.exe
           asset_content_type: application/octet-stream
