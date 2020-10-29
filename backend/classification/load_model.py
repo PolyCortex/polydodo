@@ -8,7 +8,7 @@ SCRIPT_PATH = path.dirname(path.realpath(sys.argv[0]))
 MODEL_FILENAME = 'model.onnx'
 MODEL_PATH = f'{SCRIPT_PATH}/{MODEL_FILENAME}'
 MODEL_REPO = 'polycortex/polydodo-model'
-MODEL_URL = f'https://github.com/{MODEL_REPO}/blob/master/{MODEL_FILENAME}?raw=true'
+MODEL_URL = f'https://raw.githubusercontent.com/{MODEL_REPO}/master/{MODEL_FILENAME}'
 
 
 def _download_file(url, output):
