@@ -40,6 +40,7 @@ dependencies:
   share: ^0.6.5
   uuid: ^2.2.2
   usb_serial: ^0.2.4
+  charts_flutter:
 
 dev_dependencies:
   flutter_test:
