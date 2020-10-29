@@ -44,6 +44,8 @@ def _get_file_githash(filepath):
 
 
 def load_model():
+    if path.exists(MODEL_PATH):
+        print(f"Model is already downloaded at {MODEL_PATH}, checking if it's the latest.")
     if not path.exists(MODEL_PATH) or _get_file_githash(MODEL_PATH) != _get_latest_model_githash():
         print("downloading model")
         _download_file(MODEL_URL, MODEL_PATH)
