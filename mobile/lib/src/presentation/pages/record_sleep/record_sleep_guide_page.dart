@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
+import 'package:polydodo/src/presentation/widgets/simple_line_chart.dart';
 
 part 'record_sleep_recording_page.dart';
 part 'record_sleep_validate_page.dart';
@@ -14,14 +15,18 @@ class RecordSleepGuidePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Record Sleep')),
       drawer: NavDrawerPage(),
-      body: Center(
-        child: Text('Record Sleep Guide'),
+      body: PageView(
+        children: [
+          Container(child: Center(child: Text('Record Sleep Guide'))),
+          Container(child: Center(child: Text('Record Sleep next'))),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ExtendedNavigator.of(context).replace(Routes.recordSleepValidatePage);
         },
-        child: Icon(Icons.add),
+        icon: Icon(Icons.radio_button_checked),
+        label: Text("Record"),
       ),
     );
   }
