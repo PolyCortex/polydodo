@@ -5,29 +5,31 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   List _lastSampleData = [0, 0, 0, 0, 0];
   int _sampleCounter = 0;
 
-  GanglionTransformer.broadcast({bool synchronous: false, cancelOnError})
+  GanglionTransformer.broadcast({bool synchronous = false, cancelOnError})
       : super.broadcast(synchronous: synchronous, cancelOnError: cancelOnError);
 
+  @override
   void reset() {
     _lastSampleData = [0, 0, 0, 0, 0];
     _sampleCounter = 0;
   }
 
+  @override
   void onData(S data) {
-    List event = data as List;
+    var event = data as List;
 
     if (event.length != GANGLION_PACKET_SIZE) return;
 
     int packetID = event[0];
 
     if (packetID == 0) {
-      List data = parseRaw(event);
+      var data = parseRaw(event);
       data = processData(data,
           nbSamples: 1, hasNegativeCompression: false, isDelta: false);
 
       controller.add(data.sublist(0, 15));
     } else if (packetID >= 101 && packetID <= 200) {
-      List data = parse19Bit(event);
+      var data = parse19Bit(event);
       data = processData(data,
           nbSamples: 2, hasNegativeCompression: true, isDelta: true);
 
@@ -37,7 +39,7 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   }
 
   List parseRaw(event) {
-    List data = getListForCSV();
+    var data = getListForCSV();
 
     data[0] = _sampleCounter++;
     data[1] = (event[1] << 16) | (event[2] << 8) | event[3];
@@ -49,7 +51,7 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   }
 
   List parse19Bit(event) {
-    List data = getListForCSV();
+    var data = getListForCSV();
 
     data[0] = _sampleCounter;
     data[1] = (event[1] << 11) | (event[2] << 3) | (event[3] >> 5);
@@ -76,19 +78,21 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
 
   List processData(List data,
       {int nbSamples, bool hasNegativeCompression, bool isDelta}) {
-    List result = List.from(data);
+    var result = List.from(data);
 
-    for (int i = 1; i < GANGLION_NUMBER_CHANNELS + 1; ++i) {
-      for (int j = 0; j < nbSamples; ++j) {
-        int offset = 15 * j;
+    for (var i = 1; i < GANGLION_NUMBER_CHANNELS + 1; ++i) {
+      for (var j = 0; j < nbSamples; ++j) {
+        var offset = 15 * j;
 
-        if (hasNegativeCompression)
+        if (hasNegativeCompression) {
           result[i + offset] = handleNegative(result[i + offset]);
+        }
 
         result[i + offset] = convertToMicrovolts(result[i + offset]);
 
-        if (isDelta)
+        if (isDelta) {
           result[i + offset] = convertDeltaToData(i, result[i + offset]);
+        }
 
         _lastSampleData[i] = result[i + offset];
       }
@@ -98,7 +102,7 @@ class GanglionTransformer<S, T> extends BaseOpenBCITransformer<S, T> {
   }
 
   int handleNegative(int i) {
-    String binary = i.toRadixString(2);
+    var binary = i.toRadixString(2);
 
     return binary[binary.length - 1] == '1' ? (~i & 524287 | 1) * -1 : i;
   }

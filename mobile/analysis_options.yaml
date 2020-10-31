@@ -1,0 +1,9 @@
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - lib/protos
+
+linter:
+  rules:
+    avoid_shadowing_type_parameters: false
