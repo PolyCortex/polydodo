@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import path
+from pathlib import Path
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -8,11 +9,14 @@ from pytz import utc
 from requests import get
 import onnxruntime
 
-SCRIPT_PATH = path.dirname(path.realpath(sys.argv[0]))
+
+SCRIPT_PATH = Path(path.realpath(sys.argv[0])).parent
+
+BUCKET_NAME = 'polydodo'
+BUCKET_URL = f'https://{BUCKET_NAME}.s3.amazonaws.com'
+
 MODEL_FILENAME = 'model.onnx'
-MODEL_PATH = f'{SCRIPT_PATH}/{MODEL_FILENAME}'
-MODEL_BUCKET = 'polydodo'
-BUCKET_URL = f'https://{MODEL_BUCKET}.s3.amazonaws.com'
+MODEL_PATH = SCRIPT_PATH / MODEL_FILENAME
 MODEL_URL = f'{BUCKET_URL}/{MODEL_FILENAME}'
 
 
@@ -50,4 +54,4 @@ def load_model():
         print("Downloading latest model...")
         _download_file(MODEL_URL, MODEL_PATH)
     print("Loading model...")
-    return onnxruntime.InferenceSession(MODEL_PATH)
+    return onnxruntime.InferenceSession(str(MODEL_PATH))
