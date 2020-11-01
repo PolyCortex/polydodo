@@ -33,11 +33,15 @@ HMM_FILENAMES = [
 
 
 def _download_file(url, output):
+    print(f'downloading from {url}')
+
     with open(output, 'wb') as f:
         f.write(get(url).content)
 
 
 def _get_latest_object_information(filename):
+    print(f'fetching bucket files info from {BUCKET_URL}')
+
     raw_result = get(BUCKET_URL).text
     # https://stackoverflow.com/a/15641319
     raw_result = re.sub(' xmlns="[^"]+"', '', raw_result)
