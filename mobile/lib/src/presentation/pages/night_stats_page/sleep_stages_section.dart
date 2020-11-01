@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:polydodo/src/domain/sleep_history/night_stats.dart';
+
 import 'dart:ui';
 
-Widget sleepStagesSection = Container(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      _buildPercentageBar('Awake', Colors.orange),
-      _buildPercentageBar('N1', Colors.blue[100]),
-      _buildPercentageBar('N2', Colors.blue[200]),
-      _buildPercentageBar('N3', Colors.blue[800]),
-      _buildPercentageBar('REM', Colors.purple[300])
-    ],
-  ),
-);
+Container buildSleepStagesSection(NightStats stats) {
+  return Container(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildPercentageBar('Awake', Colors.orange),
+        _buildPercentageBar('N1', Colors.blue[100]),
+        _buildPercentageBar('N2', Colors.blue[200]),
+        _buildPercentageBar('N3', Colors.blue[800]),
+        _buildPercentageBar('REM', Colors.purple[300])
+      ],
+    ),
+  );
+}
 
 Container _buildPercentageBar(String label, Color color) {
   return Container(

@@ -13,6 +13,7 @@ import '../../pages/bluetooth_page/bluetoothSelector_page.dart';
 import '../../pages/dashboard/dashboard_page.dart';
 import '../../pages/night_stats_page/night_stats_page.dart';
 import '../../pages/record_sleep/record_sleep_guide_page.dart';
+import '../../pages/sleep_history_page/sleep_history_page.dart';
 import '../navdrawer_widget.dart';
 
 class Routes {
@@ -21,6 +22,7 @@ class Routes {
   static const String recordSleepGuidePage = '/record-sleep-guide-page';
   static const String recordSleepValidatePage = '/record-sleep-validate-page';
   static const String bluetoothSelectorPage = '/bluetooth-selector-page';
+  static const String sleepHistoryPage = '/sleep-history-page';
   static const String nightStatsPage = '/night-stats-page';
   static const all = <String>{
     navDrawerPage,
@@ -28,6 +30,7 @@ class Routes {
     recordSleepGuidePage,
     recordSleepValidatePage,
     bluetoothSelectorPage,
+    sleepHistoryPage,
     nightStatsPage,
   };
 }
@@ -41,6 +44,7 @@ class Router extends RouterBase {
     RouteDef(Routes.recordSleepGuidePage, page: RecordSleepGuidePage),
     RouteDef(Routes.recordSleepValidatePage, page: RecordSleepValidatePage),
     RouteDef(Routes.bluetoothSelectorPage, page: BluetoothSelectorPage),
+    RouteDef(Routes.sleepHistoryPage, page: SleepHistoryPage),
     RouteDef(Routes.nightStatsPage, page: NightStatsPage),
   ];
   @override
@@ -79,6 +83,12 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    SleepHistoryPage: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SleepHistoryPage(),
+        settings: data,
+      );
+    },
     NightStatsPage: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => NightStatsPage(),
@@ -110,6 +120,9 @@ extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
         Routes.bluetoothSelectorPage,
         arguments: BluetoothSelectorPageArguments(key: key),
       );
+
+  Future<dynamic> pushSleepHistoryPage() =>
+      push<dynamic>(Routes.sleepHistoryPage);
 
   Future<dynamic> pushNightStatsPage() => push<dynamic>(Routes.nightStatsPage);
 }

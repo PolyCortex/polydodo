@@ -5,5 +5,6 @@ enum NavdrawerState {
   RecordSleep,
   History,
   BluetoothSelector,
+  SleepHistory,
   NightStats
 }
