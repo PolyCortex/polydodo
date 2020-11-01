@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +5,7 @@ import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
 class NavDrawerPage extends StatelessWidget {
-  static const name = "appDrawerRoute";
+  static const name = 'appDrawerRoute';
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +16,7 @@ class NavDrawerPage extends StatelessWidget {
           _createHeader(),
           _createDrawerItem(
             icon: Icons.bluetooth,
-            text: "Bluetooth selector",
+            text: 'Bluetooth selector',
             onTap: () {
               context
                   .bloc<NavdrawerBloc>()
@@ -29,7 +27,7 @@ class NavDrawerPage extends StatelessWidget {
           ),
           _createDrawerItem(
             icon: Icons.hotel,
-            text: "Record Sleep sequence",
+            text: 'Record Sleep sequence',
             onTap: () {
               context
                   .bloc<NavdrawerBloc>()
@@ -41,7 +39,7 @@ class NavDrawerPage extends StatelessWidget {
           // Todo: link stats page to end of recording and history
           _createDrawerItem(
             icon: Icons.warning,
-            text: "Night Stats",
+            text: 'Night Stats',
             onTap: () {
               context
                   .bloc<NavdrawerBloc>()
@@ -67,7 +65,7 @@ Widget _createHeader() {
         Positioned(
             bottom: 12.0,
             left: 16.0,
-            child: Text("Polydodo",
+            child: Text('Polydodo',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,

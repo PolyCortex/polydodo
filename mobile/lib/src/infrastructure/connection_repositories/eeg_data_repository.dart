@@ -13,6 +13,7 @@ import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/ganglionTransformer.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:intl/intl.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
   EEGData _recordingData;
@@ -41,7 +42,10 @@ class EEGDataRepository implements IEEGDataRepository {
 
   @override
   void createRecordingFromStream(Stream<List<int>> stream) {
-    _recordingData = EEGData(UniqueId.from(DateTime.now().toString()), [[]]);
+    _recordingData = EEGData(
+        UniqueId.from(
+            DateFormat.yMMMMd().add_jm().format(DateTime.now()).toString()),
+        [[]]);
 
     _currentTransformer.reset();
     _currentTransformerStream = stream

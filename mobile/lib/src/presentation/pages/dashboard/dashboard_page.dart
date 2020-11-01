@@ -8,7 +8,7 @@ class DashBoardPage extends StatelessWidget {
       appBar: AppBar(title: Text('Polydodo')),
       drawer: NavDrawerPage(),
       body: Center(
-        child: Text("Allo"),
+        child: Text('Allo'),
       ),
     );
   }
