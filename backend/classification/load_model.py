@@ -5,6 +5,7 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+import certifi
 import numpy as np
 from requests import get
 import onnxruntime
@@ -36,13 +37,13 @@ def _download_file(url, output):
     print(f'downloading from {url}')
 
     with open(output, 'wb') as f:
-        f.write(get(url).content)
+        f.write(get(url, verify=certifi.where()).content)
 
 
 def _get_latest_object_information(filename):
     print(f'fetching bucket files info from {BUCKET_URL}')
 
-    raw_result = get(BUCKET_URL).text
+    raw_result = get(BUCKET_URL, verify=certifi.where()).text
     # https://stackoverflow.com/a/15641319
     raw_result = re.sub(' xmlns="[^"]+"', '', raw_result)
     result_root_node = ET.fromstring(raw_result)
