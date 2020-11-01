@@ -3,3 +3,4 @@
 __pycache__/
 *.onnx
 .DS_Store
+hmm_model/

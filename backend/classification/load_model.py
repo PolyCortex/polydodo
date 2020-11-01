@@ -1,11 +1,11 @@
 from datetime import datetime
-from os import path
+from os import path, makedirs
 from pathlib import Path
 import re
 import sys
 import xml.etree.ElementTree as ET
 
-from pytz import utc
+import numpy as np
 from requests import get
 import onnxruntime
 
@@ -19,14 +19,21 @@ MODEL_FILENAME = 'model.onnx'
 MODEL_PATH = SCRIPT_PATH / MODEL_FILENAME
 MODEL_URL = f'{BUCKET_URL}/{MODEL_FILENAME}'
 
+HMM_FOLDER = 'hmm_model'
+HMM_FILENAMES = [
+    ('emission', 'hmm_emission_probabilites.npy'),
+    ('start', 'hmm_start_probabilities.npy'),
+    ('transition', 'hmm_transition_probabilites.npy')
+]
+
 
 def _download_file(url, output):
     with open(output, 'wb') as f:
         f.write(get(url).content)
 
 
-def _get_latest_object_information(bucket_url, filename):
-    raw_result = get(bucket_url).text
+def _get_latest_object_information(filename):
+    raw_result = get(BUCKET_URL).text
     # https://stackoverflow.com/a/15641319
     raw_result = re.sub(' xmlns="[^"]+"', '', raw_result)
     result_root_node = ET.fromstring(raw_result)
@@ -38,10 +45,10 @@ def _get_latest_object_information(bucket_url, filename):
     return {'size': object_size, 'latest_update': object_latest_update}
 
 
-def _has_latest_model():
-    latest_model_information = _get_latest_object_information(BUCKET_URL, MODEL_FILENAME)
-    current_model_size = path.getsize(MODEL_PATH)
-    current_model_update = utc.localize(datetime.fromtimestamp(path.getmtime(MODEL_PATH)))
+def _has_latest_object(filename, local_path):
+    latest_model_information = _get_latest_object_information(filename)
+    current_model_size = path.getsize(local_path)
+    current_model_update = datetime.fromtimestamp(path.getmtime(local_path)).astimezone()
 
     return (
         current_model_update >= latest_model_information['latest_update']
@@ -50,8 +57,26 @@ def _has_latest_model():
 
 
 def load_model():
-    if not path.exists(MODEL_PATH) or not _has_latest_model():
+    if not path.exists(MODEL_PATH) or not _has_latest_object(MODEL_FILENAME, MODEL_PATH):
         print("Downloading latest model...")
         _download_file(MODEL_URL, MODEL_PATH)
     print("Loading model...")
     return onnxruntime.InferenceSession(str(MODEL_PATH))
+
+
+def load_hmm():
+    hmm_matrices = dict()
+
+    if not path.exists(SCRIPT_PATH / HMM_FOLDER):
+        makedirs(SCRIPT_PATH / HMM_FOLDER)
+
+    for hmm_object_name, hmm_file in HMM_FILENAMES:
+        model_path = SCRIPT_PATH / HMM_FOLDER / hmm_file
+
+        if not path.exists(model_path) or not _has_latest_object(hmm_file, model_path):
+            print(f"Downloading latest {hmm_object_name} HMM matrix...")
+            _download_file(url=f"{BUCKET_URL}/{hmm_file}", output=model_path)
+
+        hmm_matrices[hmm_object_name] = np.load(str(model_path))
+
+    return hmm_matrices

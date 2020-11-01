@@ -7,10 +7,11 @@ from classification.file_loading import get_raw_array
 from classification.predict import predict
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
-from classification.load_model import load_model
+from classification.load_model import load_model, load_hmm
 
 app = Flask(__name__)
 model = load_model()
+hmm_model = load_hmm()
 
 
 def allowed_file(filename):
