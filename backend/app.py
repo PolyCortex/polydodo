@@ -10,8 +10,10 @@ from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.load_model import load_model, load_hmm
 
 app = Flask(__name__)
-model = load_model()
-hmm_model = load_hmm()
+model = {
+    'classifier': load_model(),
+    'postprocessing': load_hmm()
+}
 
 
 def allowed_file(filename):

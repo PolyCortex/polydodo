@@ -1,8 +1,10 @@
 import mne
 from scipy.signal import cheby1
 
-from classification.features.constants import (
+from classification.config.constants import (
     EPOCH_DURATION,
+)
+from classification.features.constants import (
     DATASET_SAMPLE_RATE,
     DATASET_HIGH_PASS_FREQ,
     HIGH_PASS_FILTER_ORDER,

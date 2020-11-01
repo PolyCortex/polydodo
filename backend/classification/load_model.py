@@ -9,6 +9,11 @@ import numpy as np
 from requests import get
 import onnxruntime
 
+from classification.config.constants import (
+    HMM_EMISSION_MATRIX,
+    HMM_START_PROBABILITIES,
+    HMM_TRANSITION_MATRIX,
+)
 
 SCRIPT_PATH = Path(path.realpath(sys.argv[0])).parent
 
@@ -21,9 +26,9 @@ MODEL_URL = f'{BUCKET_URL}/{MODEL_FILENAME}'
 
 HMM_FOLDER = 'hmm_model'
 HMM_FILENAMES = [
-    ('emission', 'hmm_emission_probabilites.npy'),
-    ('start', 'hmm_start_probabilities.npy'),
-    ('transition', 'hmm_transition_probabilites.npy')
+    (HMM_EMISSION_MATRIX, 'hmm_emission_probabilites.npy'),
+    (HMM_START_PROBABILITIES, 'hmm_start_probabilities.npy'),
+    (HMM_TRANSITION_MATRIX, 'hmm_transition_probabilites.npy')
 ]
 
 
