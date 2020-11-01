@@ -4,37 +4,41 @@ class RecordSleepValidatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Record Sleep')),
-      drawer: NavDrawerPage(),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text('Recording'),
+      ),
       body: BlocConsumer<DataCubit, DataState>(
         listener: (context, state) {
           print(state.runtimeType);
         },
         builder: (context, state) {
-          if (state is DataStateInitial)
+          if (state is DataStateInitial) {
             return Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Start"),
+                      child: Text('Start'),
                       onPressed: () =>
                           BlocProvider.of<DataCubit>(context).startStreaming(),
                     ),
                   ]),
             );
-          else
+          } else {
             return Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Stop"),
+                      child: Text('Stop'),
                       onPressed: () =>
                           BlocProvider.of<DataCubit>(context).stopStreaming(),
                     ),
                   ]),
             );
+          }
         },
       ),
     );
