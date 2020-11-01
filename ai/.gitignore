@@ -1,5 +1,3 @@
-investigation_data/*
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -112,3 +110,4 @@ data/*
 .vscode/
 
 *.joblib
+trained_model/*
