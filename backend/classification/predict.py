@@ -20,6 +20,7 @@ def predict(raw_eeg, model, info):
             the subject started the recording and went to bed
         - out_of_bed_seconds: timespan, in seconds, from which
             the subject started the recording and got out of bed
+    Returns: array of predicted sleep stages
     """
     classifier, postprocessing_state = model['classifier'], model['postprocessing']
 
@@ -32,3 +33,5 @@ def predict(raw_eeg, model, info):
 
     print(features[0], features.shape)
     print(predictions)
+
+    return predictions
