@@ -35,8 +35,10 @@ dependencies:
   flutter_reactive_ble : ^2.5.2
   get_it: ^4.0.4
   hive: ^1.4.4
+  intl: ^0.16.1
   meta: ^1.1.8
   path_provider: ^1.6.16
+  percent_indicator: "^2.1.8"
   share: ^0.6.5
   uuid: ^2.2.2
   usb_serial: ^0.2.4
