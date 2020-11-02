@@ -14,6 +14,7 @@ class SleepHistoryPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black),
         title: Text(
           'History',
           style: TextStyle(

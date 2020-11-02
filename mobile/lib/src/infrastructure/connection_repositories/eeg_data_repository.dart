@@ -43,8 +43,7 @@ class EEGDataRepository implements IEEGDataRepository {
   @override
   void createRecordingFromStream(Stream<List<int>> stream) {
     _recordingData = EEGData(
-        UniqueId.from(
-            DateFormat.yMMMMd().add_jm().format(DateTime.now()).toString()),
+        UniqueId.from(DateFormat.yMMMMd().add_jm().format(DateTime.now())),
         [[]]);
 
     _currentTransformer.reset();

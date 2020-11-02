@@ -7,7 +7,6 @@ import 'package:polydodo/src/application/night_stats/night_stats_state.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/pages/night_stats_page/metric_section.dart';
 import 'package:polydodo/src/presentation/pages/night_stats_page/sleep_stages_section.dart';
-import 'package:intl/intl.dart';
 
 // todo: Normalize information with website
 
@@ -21,6 +20,7 @@ class NightStatsPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.black),
           title: StreamBuilder<Object>(
               stream: appBloc.titleStream,
               initialData: 'Night Stat',
@@ -34,7 +34,6 @@ class NightStatsPage extends StatelessWidget {
                   ),
                 );
               }),
-          iconTheme: IconThemeData(color: Colors.black),
           actions: <Widget>[
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
@@ -54,9 +53,7 @@ class NightStatsPage extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is NightStatsLoaded) {
-              appBloc.updateTitle(DateFormat.yMMMMd()
-                  .add_jm()
-                  .format(state.stats.recordingStart));
+              appBloc.updateTitle(state.stats.id.toString());
 
               return SingleChildScrollView(
                 child: Column(

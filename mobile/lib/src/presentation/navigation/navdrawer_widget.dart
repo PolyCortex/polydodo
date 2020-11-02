@@ -46,17 +46,6 @@ class NavDrawerPage extends StatelessWidget {
               ExtendedNavigator.of(context).replace(Routes.sleepHistoryPage);
             },
           ),
-          // Todo: link stats page to end of recording and history
-          _createDrawerItem(
-            icon: Icons.warning,
-            text: 'Night Stats',
-            onTap: () {
-              context
-                  .bloc<NavdrawerBloc>()
-                  .add(NavdrawerUpdated(NavdrawerState.NightStats));
-              ExtendedNavigator.of(context).replace(Routes.nightStatsPage);
-            },
-          ),
         ],
       ),
     );

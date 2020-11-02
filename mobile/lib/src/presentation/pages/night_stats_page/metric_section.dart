@@ -11,9 +11,8 @@ Container buildMetricSection(NightStats stats) {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildMetric('Recording Start', stats.recordingStart),
-            _buildMetric('Recording Time',
-                stats.recordingEnd.difference(stats.recordingStart)),
+            _buildMetric('Recording Start', stats.recordingTime.start),
+            _buildMetric('Recording Time', stats.recordingTime.duration),
             _buildMetric('Sleep Efficiency', stats.sleepEfficiency),
             _buildMetric('WASO', stats.waso),
             _buildMetric('REM Latency', stats.remLatency)
@@ -22,7 +21,7 @@ Container buildMetricSection(NightStats stats) {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildMetric('Recording End', stats.recordingEnd),
+            _buildMetric('Recording End', stats.recordingTime.end),
             _buildMetric('Effective Sleep Time', stats.effectiveSleepTime),
             _buildMetric('Sleep Latency', stats.sleepLatency),
             _buildMetric('Awakenings', stats.awakenings),

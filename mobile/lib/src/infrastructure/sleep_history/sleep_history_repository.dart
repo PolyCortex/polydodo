@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:polydodo/src/domain/sleep_history/i_sleep_history_repository.dart';
 import 'package:polydodo/src/domain/sleep_history/night_stats.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
+import 'package:polydodo/src/infrastructure/sleep_history/mock_data.dart';
 
 class SleepHistoryRepository implements ISleepHistoryRepository {
   final List<NightStats> _sleepHistoryPersistency = [];
@@ -13,29 +14,9 @@ class SleepHistoryRepository implements ISleepHistoryRepository {
 
   @override
   void initializeRepository() {
-    _sleepHistoryPersistency.add(NightStats(
-        id: UniqueId.from('test'),
-        awakenings: 3,
-        effectiveSleepTime: DateTime.now(),
-        numberTransitions: 5,
-        recordingStart: DateTime.now(),
-        recordingEnd: DateTime.now(),
-        remLatency: 20,
-        sleepEfficiency: 20.0,
-        sleepLatency: 10,
-        waso: DateTime.now()));
+    _sleepHistoryPersistency.add(mock_data_1);
 
-    _sleepHistoryPersistency.add(NightStats(
-        id: UniqueId.from('test2'),
-        awakenings: 100,
-        effectiveSleepTime: DateTime.now(),
-        numberTransitions: 5,
-        recordingStart: DateTime.now(),
-        recordingEnd: DateTime.now(),
-        remLatency: 20,
-        sleepEfficiency: 20.0,
-        sleepLatency: 10,
-        waso: DateTime.now()));
+    _sleepHistoryPersistency.add(mock_data_2);
 
     streamController.add(_sleepHistoryPersistency);
   }

@@ -56,9 +56,6 @@ class BluetoothSelectorPage extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: BlocProvider.of<DeviceSelectorCubit>(context).swapBluetooth,
-      ),
     );
   }
 }

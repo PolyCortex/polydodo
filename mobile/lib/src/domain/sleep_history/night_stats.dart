@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:polydodo/src/domain/entity.dart';
 import 'package:flutter/foundation.dart';
 
 class NightStats extends Entity {
-  final DateTime recordingStart;
-  final DateTime recordingEnd;
+  final DateTimeRange recordingTime;
   final DateTime effectiveSleepTime;
   final double sleepEfficiency;
   final int sleepLatency;
@@ -14,8 +14,7 @@ class NightStats extends Entity {
 
   NightStats(
       {id,
-      @required this.recordingStart,
-      @required this.recordingEnd,
+      @required this.recordingTime,
       @required this.effectiveSleepTime,
       @required this.sleepEfficiency,
       @required this.sleepLatency,
