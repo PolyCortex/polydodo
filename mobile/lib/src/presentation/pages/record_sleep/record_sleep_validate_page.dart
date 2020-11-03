@@ -23,20 +23,17 @@ class RecordSleepValidatePage extends StatelessWidget {
                     ),
                   ]),
             );
-          } else {
-            return ListView(
-              children: [
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      RaisedButton(
-                        child: Text('Stop'),
-                        onPressed: () =>
-                            BlocProvider.of<DataCubit>(context).stopStreaming(),
-                      ),
-                    ]),
-                SimpleLineChart.withSampleData(),
-              ],
+          else
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text("Stop"),
+                      onPressed: () =>
+                          BlocProvider.of<DataCubit>(context).stopStreaming(),
+                    ),
+                  ]),
             );
           }
         },

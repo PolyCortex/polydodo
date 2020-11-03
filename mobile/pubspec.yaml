@@ -42,7 +42,6 @@ dependencies:
   streaming_shared_preferences: ^1.0.1
   uuid: ^2.2.2
   usb_serial: ^0.2.4
-  charts_flutter:
 
 dev_dependencies:
   auto_route_generator: ^0.6.10
