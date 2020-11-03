@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Headroom from 'headroom.js';
-import { Navbar as NavbarStrap, Container, NavbarBrand, NavItem, Nav, NavLink, UncontrolledTooltip } from 'reactstrap';
+import {
+  Navbar as NavbarStrap,
+  Container,
+  NavbarBrand,
+  NavItem,
+  Nav,
+  NavLink,
+  UncontrolledTooltip,
+  Row,
+  Col,
+  Button,
+  Collapse,
+} from 'reactstrap';
 
 import Logo from 'assets/img/logo.png';
+import PaleBackgroundLogo from 'assets/img/pale_background_logo.png';
 import text from './text.json';
 
 const OutsideLink = ({ href, iconClass, linkName, tooltipText, tooltipID }) => {
@@ -35,43 +48,85 @@ OutsideLink.defaultProps = {
   tooltipText: '',
 };
 
-class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.navbarstrapRef = React.createRef();
-  }
+const ResponsiveCollapse = ({ children, isCollapseOpen, setIsCollapseOpen }) => {
+  const [collapseClass, setCollapseClass] = useState('');
 
-  componentDidMount() {
-    const headroom = new Headroom(this.navbarstrapRef);
+  return (
+    <React.Fragment>
+      <button className="navbar-toggler" onClick={() => setIsCollapseOpen(!isCollapseOpen)}>
+        <span className="navbar-toggler-icon" />
+      </button>
+      <Collapse
+        navbar
+        isOpen={isCollapseOpen}
+        className={collapseClass}
+        onExiting={() => {
+          setCollapseClass('collapsing-out');
+        }}
+        onExited={() => {
+          setCollapseClass('');
+        }}
+      >
+        <div className="navbar-collapse-header">
+          <Row>
+            <Col className="collapse-brand" xs="6">
+              <Link to="/">
+                <img alt="Polydodo" src={PaleBackgroundLogo} />
+              </Link>
+            </Col>
+            <Col className="collapse-close" xs="6">
+              <Button color="link" className="navbar-toggler" onClick={() => setIsCollapseOpen(false)}>
+                <span />
+                <span />
+              </Button>
+            </Col>
+          </Row>
+        </div>
+        {children}
+      </Collapse>
+    </React.Fragment>
+  );
+};
+
+ResponsiveCollapse.propTypes = {
+  children: PropTypes.array.isRequired,
+};
+
+const Navbar = () => {
+  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
+  const navbarstrapRef = useRef();
+  useEffect(() => {
+    const headroom = new Headroom(navbarstrapRef.current);
     headroom.init();
-  }
+    return () => headroom.destroy();
+  });
 
-  render() {
-    return (
-      <div ref={(ref) => (this.navbarstrapRef = ref)} className="navbar-main navbar-transparent navbar-light headroom">
-        <NavbarStrap id="navbar-main" expand="lg">
-          <Container>
-            <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-              <img alt="Polydodo" src={Logo} />
-            </NavbarBrand>
+  return (
+    <div ref={(ref) => (navbarstrapRef.current = ref)} className="navbar-main navbar-transparent navbar-light headroom">
+      <NavbarStrap id="navbar-main" expand="lg">
+        <Container>
+          <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+            <img alt="Polydodo" src={Logo} />
+          </NavbarBrand>
 
+          <ResponsiveCollapse isCollapseOpen={isCollapseOpen} setIsCollapseOpen={setIsCollapseOpen}>
             <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/" tag={Link}>
                   {text['navbar_home']}
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/record-my-sleep" tag={Link}>
                   {text['navbar_record']}
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/analyze-my-sleep" tag={Link}>
                   {text['navbar_analyze']}
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem onClick={() => setIsCollapseOpen(false)}>
                 <NavLink to="/performance" tag={Link}>
                   {text['navbar_performance']}
                 </NavLink>
@@ -101,11 +156,11 @@ class Navbar extends React.Component {
                 tooltipID="tooltip112445449"
               />
             </Nav>
-          </Container>
-        </NavbarStrap>
-      </div>
-    );
-  }
-}
+          </ResponsiveCollapse>
+        </Container>
+      </NavbarStrap>
+    </div>
+  );
+};
 
 export default Navbar;
