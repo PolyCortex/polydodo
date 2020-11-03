@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
-import 'package:polydodo/src/presentation/widgets/simple_line_chart.dart';
 
 class DashBoardPage extends StatelessWidget {
   @override
@@ -32,10 +31,11 @@ class DashBoardPage extends StatelessWidget {
         },
         body: Center(
           child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50),
-              child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 200),
-                  child: SimpleLineChart.withSampleData())),
+            padding: EdgeInsets.symmetric(horizontal: 50),
+            child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 200),
+                child: Text('Dashboard')),
+          ),
         ),
       ),
     );

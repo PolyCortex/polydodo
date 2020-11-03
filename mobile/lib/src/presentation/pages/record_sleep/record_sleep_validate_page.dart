@@ -23,13 +23,13 @@ class RecordSleepValidatePage extends StatelessWidget {
                     ),
                   ]),
             );
-          else
+          } else {
             return Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Stop"),
+                      child: Text('Stop'),
                       onPressed: () =>
                           BlocProvider.of<DataCubit>(context).stopStreaming(),
                     ),

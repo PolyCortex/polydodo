@@ -5,7 +5,6 @@ import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
-import 'package:polydodo/src/presentation/widgets/simple_line_chart.dart';
 
 part 'record_sleep_recording_page.dart';
 part 'record_sleep_validate_page.dart';
