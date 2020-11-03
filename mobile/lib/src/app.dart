@@ -21,12 +21,6 @@ class App extends StatelessWidget {
         theme: theme,
         builder: ExtendedNavigator.builder<auto_router.Router>(
             router: auto_router.Router()),
-        /*home: WalletsRoute(),
-        initialRoute: WalletsRoute.name,
-        routes: {
-          BluetoothSelectorRoute.name: (context) => BluetoothSelectorRoute(),
-          WalletsRoute.name: (context) => WalletsRoute(), 
-        }, */
       ),
     );
   }

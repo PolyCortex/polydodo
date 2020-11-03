@@ -7,7 +7,6 @@ import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_guide_
 @MaterialAutoRouter(
     generateNavigationHelperExtension: true,
     routes: <AutoRoute>[
-      MaterialRoute(page: NavDrawerPage),
       MaterialRoute(page: DashBoardPage, initial: true),
       MaterialRoute(page: RecordSleepGuidePage),
       MaterialRoute(page: RecordSleepValidatePage),

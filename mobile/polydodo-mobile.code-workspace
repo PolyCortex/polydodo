@@ -1,0 +1,38 @@
+{
+	"folders": [
+			{
+					"path": "."
+			}
+	],
+	"settings": {
+		"todo-tree.tree.scanMode": "workspace",
+		"todo-tree.tree.showCountsInTree": true,
+		"dart.previewFlutterUiGuides": true,
+		"dart.previewFlutterUiGuidesCustomTracking": true,
+		"material-icon-theme.folders.associations": {
+			"global_state": "global",
+			"ui": "layout",
+			"bloc": "controller"
+		},
+		"editor.fontLigatures": true,
+		"editor.fontFamily": "Fira Code",
+		"todo-tree.tree.hideTreeWhenEmpty": false,
+		"git.ignoreLimitWarning": true
+	},
+	"launch": {
+			"version": "0.2.0",
+			"configurations": [
+
+					{
+							"name": "Flutter debug",
+							"request": "launch",
+							"type": "dart",
+							"flutterMode": "debug"
+					},
+					{
+							"name": "Flutter release",
+							"command": "flutter run --release"
+					}
+			]
+	}
+}

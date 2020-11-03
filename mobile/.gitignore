@@ -40,3 +40,7 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# Project related
+mobile/polydodo-mobile.code-workspace
+*.gr.dart
