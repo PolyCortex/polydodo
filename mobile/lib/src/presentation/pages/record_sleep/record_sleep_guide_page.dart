@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
+import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 import 'package:polydodo/src/presentation/widgets/simple_line_chart.dart';
@@ -14,7 +15,7 @@ class RecordSleepGuidePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Record Sleep')),
-      drawer: NavDrawerPage(),
+      drawer: NavDrawer(activeTab: NavdrawerState.RecordSleep),
       body: PageView(
         children: [
           Container(child: Center(child: Text('Record Sleep Guide'))),

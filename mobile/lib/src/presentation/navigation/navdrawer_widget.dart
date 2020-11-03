@@ -1,20 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
-class NavDrawerPage extends StatelessWidget {
+class NavDrawer extends StatelessWidget {
   static const name = 'appDrawerRoute';
-  NavdrawerState _drawerSelectedTab = NavdrawerState.DashBoard;
-  BuildContext _context;
+  final NavdrawerState activeTab;
+
+  const NavDrawer({
+    Key key,
+    @required this.activeTab,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
     return BlocBuilder<NavdrawerBloc, NavdrawerState>(
-      builder: (context, drawerSelectedTab) {
-        _drawerSelectedTab = drawerSelectedTab;
+      builder: (b_context, drawerSelectedTab) {
         return Drawer(
           child: ListView(
             padding: EdgeInsets.zero, //only(top: 8.0),
@@ -25,18 +28,21 @@ class NavDrawerPage extends StatelessWidget {
                 text: 'Dashboard',
                 state: NavdrawerState.DashBoard,
                 route: Routes.dashBoardPage,
+                context: b_context,
               ),
               _createDrawerItem(
                 icon: Icons.bluetooth,
                 text: 'Bluetooth selector',
                 state: NavdrawerState.BluetoothSelector,
                 route: Routes.bluetoothSelectorPage,
+                context: b_context,
               ),
               _createDrawerItem(
                 icon: Icons.hotel,
                 text: 'Record Sleep sequence',
                 state: NavdrawerState.RecordSleep,
                 route: Routes.recordSleepGuidePage,
+                context: b_context,
               ),
             ],
           ),
@@ -66,7 +72,11 @@ class NavDrawerPage extends StatelessWidget {
   }
 
   Widget _createDrawerItem(
-      {IconData icon, String text, NavdrawerState state, String route}) {
+      {IconData icon,
+      String text,
+      NavdrawerState state,
+      String route,
+      BuildContext context}) {
     return ListTile(
       title: Row(
         children: <Widget>[
@@ -78,10 +88,10 @@ class NavDrawerPage extends StatelessWidget {
         ],
       ),
       onTap: () {
-        _context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
-        ExtendedNavigator.of(_context).replace(route);
+        context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
+        ExtendedNavigator.of(context).replace(route);
       },
-      selected: _drawerSelectedTab == state,
+      selected: activeTab == state,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/widgets/simple_line_chart.dart';
 
@@ -7,7 +8,7 @@ class DashBoardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: Text('Polydodo')),
-      drawer: NavDrawerPage(),
+      drawer: NavDrawer(activeTab: NavdrawerState.DashBoard),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
