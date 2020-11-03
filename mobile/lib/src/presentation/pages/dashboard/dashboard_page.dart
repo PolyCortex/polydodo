@@ -17,13 +17,13 @@ class DashBoardPage extends StatelessWidget {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                   centerTitle: false,
-                  title: Text("Polydodo",
+                  title: Text('Polydodo',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
                       )),
                   background: Image.network(
-                    "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                    'https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350',
                     fit: BoxFit.cover,
                   )),
             ),

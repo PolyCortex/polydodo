@@ -5,7 +5,6 @@ import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/device/device_selector_state.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
-import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_guide_page.dart';
 
 class BluetoothSelectorPage extends StatelessWidget {
   static const name = 'bluetoothRoute';

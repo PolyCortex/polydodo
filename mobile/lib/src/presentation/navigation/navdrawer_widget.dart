@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,16 +5,16 @@ import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
 class NavDrawerPage extends StatelessWidget {
-  static const name = "appDrawerRoute";
-  NavdrawerState drawerSelectedTab = NavdrawerState.DashBoard;
-  BuildContext context;
+  static const name = 'appDrawerRoute';
+  NavdrawerState _drawerSelectedTab = NavdrawerState.DashBoard;
+  BuildContext _context;
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
+    _context = context;
     return BlocBuilder<NavdrawerBloc, NavdrawerState>(
       builder: (context, drawerSelectedTab) {
-        this.drawerSelectedTab = drawerSelectedTab;
+        _drawerSelectedTab = drawerSelectedTab;
         return Drawer(
           child: ListView(
             padding: EdgeInsets.zero, //only(top: 8.0),
@@ -24,19 +22,19 @@ class NavDrawerPage extends StatelessWidget {
               _createHeader(),
               _createDrawerItem(
                 icon: Icons.dashboard,
-                text: "Dashboard",
+                text: 'Dashboard',
                 state: NavdrawerState.DashBoard,
                 route: Routes.dashBoardPage,
               ),
               _createDrawerItem(
                 icon: Icons.bluetooth,
-                text: "Bluetooth selector",
+                text: 'Bluetooth selector',
                 state: NavdrawerState.BluetoothSelector,
                 route: Routes.bluetoothSelectorPage,
               ),
               _createDrawerItem(
                 icon: Icons.hotel,
-                text: "Record Sleep sequence",
+                text: 'Record Sleep sequence',
                 state: NavdrawerState.RecordSleep,
                 route: Routes.recordSleepGuidePage,
               ),
@@ -59,7 +57,7 @@ class NavDrawerPage extends StatelessWidget {
           Positioned(
               bottom: 12.0,
               left: 16.0,
-              child: Text("Polydodo",
+              child: Text('Polydodo',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -80,10 +78,10 @@ class NavDrawerPage extends StatelessWidget {
         ],
       ),
       onTap: () {
-        context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
-        ExtendedNavigator.of(this.context).replace(route);
+        _context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
+        ExtendedNavigator.of(_context).replace(route);
       },
-      selected: this.drawerSelectedTab == state,
+      selected: _drawerSelectedTab == state,
     );
   }
 }

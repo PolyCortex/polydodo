@@ -26,7 +26,7 @@ class RecordSleepGuidePage extends StatelessWidget {
           ExtendedNavigator.of(context).replace(Routes.recordSleepValidatePage);
         },
         icon: Icon(Icons.radio_button_checked),
-        label: Text("Record"),
+        label: Text('Record'),
       ),
     );
   }

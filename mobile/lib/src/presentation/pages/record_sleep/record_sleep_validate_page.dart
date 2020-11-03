@@ -11,26 +11,26 @@ class RecordSleepValidatePage extends StatelessWidget {
           print(state.runtimeType);
         },
         builder: (context, state) {
-          if (state is DataStateInitial)
+          if (state is DataStateInitial) {
             return Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Start"),
+                      child: Text('Start'),
                       onPressed: () =>
                           BlocProvider.of<DataCubit>(context).startStreaming(),
                     ),
                   ]),
             );
-          else
+          } else {
             return ListView(
               children: [
                 Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
-                        child: Text("Stop"),
+                        child: Text('Stop'),
                         onPressed: () =>
                             BlocProvider.of<DataCubit>(context).stopStreaming(),
                       ),
@@ -38,6 +38,7 @@ class RecordSleepValidatePage extends StatelessWidget {
                 SimpleLineChart.withSampleData(),
               ],
             );
+          }
         },
       ),
     );
