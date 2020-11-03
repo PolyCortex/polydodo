@@ -10,9 +10,7 @@ class NavdrawerBloc extends Bloc<NavdrawerEvent, NavdrawerState> {
   NavdrawerBloc() : super(NavdrawerState.DashBoard);
 
   @override
-  Stream<NavdrawerState> mapEventToState(
-    NavdrawerEvent event,
-  ) async* {
+  Stream<NavdrawerState> mapEventToState(NavdrawerEvent event) async* {
     if (event is NavdrawerUpdated) {
       yield event.page;
     }
