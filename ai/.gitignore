@@ -110,3 +110,4 @@ data/*
 .vscode/
 
 *.joblib
+trained_model/*

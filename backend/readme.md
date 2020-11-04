@@ -20,6 +20,13 @@ Install the required dependencies.
 pip install -r requirements.txt requirements-dev.txt
 ```
 
+If you are running on Linux or MacOS, you also have to install OpenMP with your package manager. It is a dependency of ONNX runtime, used to load our model and make predictions.
+
+```bash
+apt-get install libgomp1    # on linux
+brew install libomp         # on macos
+```
+
 ## Run it locally
 
 Activate your virtual environment.

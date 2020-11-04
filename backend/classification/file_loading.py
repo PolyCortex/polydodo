@@ -27,6 +27,7 @@ from classification.config.constants import (
 ADS1299_Vref = 4.5
 ADS1299_gain = 24.
 SCALE_uV_PER_COUNT = ADS1299_Vref / ((2**23) - 1) / ADS1299_gain * 1000000
+SCALE_V_PER_COUNT = SCALE_uV_PER_COUNT / 1e6
 
 FILE_COLUMN_OFFSET = 1
 CYTON_TOTAL_NB_CHANNELS = 8
@@ -48,7 +49,7 @@ def get_raw_array(file):
         if len(line_splitted) >= CYTON_TOTAL_NB_CHANNELS:
             eeg_raw.append(_get_decimals_from_hexadecimal_strings(line_splitted))
 
-    eeg_raw = SCALE_uV_PER_COUNT * np.array(eeg_raw, dtype='object')
+    eeg_raw = SCALE_V_PER_COUNT * np.array(eeg_raw, dtype='object')
 
     raw_object = RawArray(
         np.transpose(eeg_raw),
