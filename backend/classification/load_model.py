@@ -38,28 +38,23 @@ def _download_file(url, output):
         f.write(get(url, verify=certifi.where()).content)
 
 
-def _get_latest_object_information(filename):
+def _get_object_latest_update(filename):
     raw_result = get(BUCKET_URL, verify=certifi.where()).text
     # https://stackoverflow.com/a/15641319
     raw_result = re.sub(' xmlns="[^"]+"', '', raw_result)
     result_root_node = ET.fromstring(raw_result)
     objects_nodes = result_root_node.findall('Contents')
     object_node = [object_node for object_node in objects_nodes if object_node.find("Key").text == filename][0]
-    object_size = int(object_node.find("Size").text)
     object_latest_update = datetime.strptime(object_node.find("LastModified").text, "%Y-%m-%dT%H:%M:%S.%f%z")
 
-    return {'size': object_size, 'latest_update': object_latest_update}
+    return object_latest_update
 
 
 def _has_latest_object(filename, local_path):
-    latest_model_information = _get_latest_object_information(filename)
-    current_model_size = path.getsize(local_path)
+    latest_model_update = _get_object_latest_update(filename)
     current_model_update = datetime.fromtimestamp(path.getmtime(local_path)).astimezone()
 
-    return (
-        current_model_update >= latest_model_information['latest_update']
-        and current_model_size == latest_model_information['size']
-    )
+    return current_model_update >= latest_model_update
 
 
 def load_model():
