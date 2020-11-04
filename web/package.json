@@ -8,7 +8,7 @@
   "homepage": "https://polycortex.github.io/polydodo",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "yarn prettier --config ../.prettierrc.yaml --write \"./**/*.{js,jsx,css,scss,json}\""
