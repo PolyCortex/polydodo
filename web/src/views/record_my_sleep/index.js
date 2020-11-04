@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Table, Row, Col } from 'reactstrap';
 
-import Separator from 'components/separator';
 import Header from 'components/header';
 
 import text from './text.json';
@@ -29,7 +28,6 @@ const RecordMySleep = () => {
             members' night's sleep. You can take a look at the end result right here:
           </p>
         </Container>
-        <Separator />
       </section>
 
       <section className="section bg-secondary">
@@ -37,7 +35,6 @@ const RecordMySleep = () => {
           <h3 className="display-3">What you need</h3>
           <WIPWarning />
         </Container>
-        <Separator />
       </section>
 
       <section className="section section-lg">
@@ -108,7 +105,6 @@ const RecordMySleep = () => {
             </Row>
           </div>
         </Container>
-        <Separator />
       </section>
 
       <section className="section bg-secondary">
@@ -194,19 +190,18 @@ const RecordMySleep = () => {
             </Table>
           </div>
         </Container>
-        <Separator />
       </section>
 
       <section className="section section-lg">
         <Container className="text-justify pt-lg">
           <h3 className="display-3">How to use OpenBCI GUI</h3>
           <p>
-            First thing you need is the OpenBCI GUI in order to use the hardware. Therefrom, select {' '}
+            First thing you need is the OpenBCI GUI in order to use the hardware. Therefrom, select{' '}
             <b>Live (from &lt;boardname&gt;)</b> as your source. If you’re using a Cyton board we suggest you use a
             microSD card using FAT32 format. If you do so, do not forget to select at least <b>12 hour maximum</b> for
             the write to SD card parameter. Otherwise, you must keep your computer near and open for the whole night and
             log the data to a session file. If you do it this way, do not forget to select the OpenBCI file output and
-            to select <b>No Limit</b> as your max file duration. When everything is configured properly, you can press {' '}
+            to select <b>No Limit</b> as your max file duration. When everything is configured properly, you can press{' '}
             <b>Start Session</b>. Before pressing <b>Start Stream</b>, press <b>Hardware Settings</b> and configure
             everything as follow:
           </p>
@@ -284,7 +279,6 @@ const RecordMySleep = () => {
             configured amount of time.
           </p>
         </Container>
-        <Separator />
       </section>
 
       <section className="section bg-secondary">
@@ -296,7 +290,6 @@ const RecordMySleep = () => {
             some sort of Faraday cage, for example, a plastic container wrapped up in aluminium foil.
           </p>
         </Container>
-        <Separator />
       </section>
 
       <section className="section section-lg">
@@ -328,7 +321,6 @@ const RecordMySleep = () => {
           </div>
           <p>You will need to provide this information in order to score your EEG recording.</p>
         </Container>
-        <Separator />
       </section>
 
       <section className="section bg-gradient-warning">
@@ -360,7 +352,6 @@ const RecordMySleep = () => {
             </p>
           </div>
         </Container>
-        <Separator />
       </section>
     </>
   );
