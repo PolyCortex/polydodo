@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Table, Row } from 'reactstrap';
+import { Container, Table, Row, Col } from 'reactstrap';
 
+import Separator from 'components/separator';
 import Header from 'components/header';
 
 import text from './text.json';
@@ -8,7 +9,7 @@ import WIPWarning from 'components/wip_warning';
 
 const RecordMySleep = () => {
   return (
-    <div>
+    <>
       <Header
         sizeClass={'pb-150'}
         shapeQty={7}
@@ -16,9 +17,9 @@ const RecordMySleep = () => {
         subtitle={text['header_subtitle']}
         description={text['header_description']}
       />
-      <Container className="mt-5 mb-5 text-justify">
-        <Row>
-          <h3>Create your own sleep lab</h3>
+      <section className="section">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">Create your own sleep lab</h3>
           <p>
             Here are some explanations about how to get your own EEG data in order to score your sleep using this
             website. If you already own an OpenBCI board, you could have very little (see nothing) to buy.
@@ -27,15 +28,21 @@ const RecordMySleep = () => {
             If you don’t have the time or the resources to create your own sleep lab, we have pre-recorded one of our
             members' night's sleep. You can take a look at the end result right here:
           </p>
-        </Row>
+        </Container>
+        <Separator />
+      </section>
 
-        <Row>
-          <h3>What you need</h3>
+      <section className="section bg-secondary">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">What you need</h3>
           <WIPWarning />
-        </Row>
+        </Container>
+        <Separator />
+      </section>
 
-        <Row>
-          <h3>Where to place the electrodes</h3>
+      <section className="section section-lg">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">Where to place the electrodes</h3>
           <p>
             You may want to ask a friend for some help. It will be easier to locate the site where to place your
             electrodes and to place them with the help of someone else.
@@ -46,59 +53,70 @@ const RecordMySleep = () => {
           </p>
 
           <div>
-            <h4>Fpz</h4>
-            <p>
-              Fpz is used as one of our active electrodes. To identify the Fpz location, just measure the distance
-              starting from your nasion (the easily identifiable depressed area between your eyes) to your inion using
-              your flexible measuring tape.
-            </p>
-            <WIPWarning />
-            <p>Fpz is located at 10 % of the distance along the midline between your nasion and your inion.</p>
+            <Row className="row-grid mt-5">
+              <Col lg="4">
+                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
+                  <i className="ni ni-settings text-primary" />
+                </div>
+                <h5 className="mt-3">Fpz</h5>
+                <p className="mt-3">
+                  Fpz is located at 10 % of the distance along the midline between your nasion and your inion.
+                </p>
+              </Col>
+              <Col lg="4">
+                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
+                  <i className="ni ni-ruler-pencil text-primary" />
+                </div>
+                <h5 className="mt-3">Cz</h5>
+                <p className="mt-3">
+                  We’re measuring a potential difference between Fpz and that point. Cz is located at 50% of the
+                  distance along the midline starting from your nasion to your inion.
+                </p>
+              </Col>
+              <Col lg="4">
+                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
+                  <i className="ni ni-ruler-pencil text-primary" />
+                </div>
+                <h5 className="mt-3">A2</h5>
+                <p className="mt-3">
+                  This is the electrode that serves as driven ground between your and your OpenBCI board. Simply place
+                  it on your right earlobe.
+                </p>
+              </Col>
+            </Row>
+            <Row className="row-grid mt-5">
+              <Col lg={{ size: 4, offset: 2 }}>
+                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
+                  <i className="ni ni-atom text-primary" />
+                </div>
+                <h5 className="mt-3">Pz</h5>
+                <p className="mt-3">
+                  This is our other active electrode. It is located at 70% of the distance between your nasion and your
+                  inion.
+                </p>
+              </Col>
+              <Col lg="4">
+                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
+                  <i className="ni ni-settings text-primary" />
+                </div>
+                <h5 className="mt-3">Oz</h5>
+                <p className="mt-3">
+                  This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion
+                  and your inion.
+                </p>
+              </Col>
+            </Row>
           </div>
+        </Container>
+        <Separator />
+      </section>
+
+      <section className="section bg-secondary">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">How to place the electrodes</h3>
 
           <div>
-            <h4>Cz</h4>
-            <p>
-              We’re measuring a potential difference between Fpz and that point. Cz is located at 50% of the distance
-              along the midline starting from your nasion to your inion.
-            </p>
-          </div>
-
-          <div>
-            <h4>Pz</h4>
-            <p>
-              This is our other active electrode. It is located at 70% of the distance between your nasion and your
-              inion.
-            </p>
-          </div>
-
-          <div>
-            <h4>Oz</h4>
-            <p>
-              This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion and
-              your inion.
-            </p>
-          </div>
-
-          <div>
-            <h4>A2</h4>
-            <p>
-              This is the electrode that serves as driven ground between your and your OpenBCI board. Simply place it on
-              your right earlobe.
-            </p>
-          </div>
-        </Row>
-
-        <Row>
-          <h3>
-            How to place the electrodes
-            <span role="img" aria-label="Night time">
-              🌙
-            </span>
-          </h3>
-
-          <div>
-            <h4>Apply Abrasive paste</h4>
+            <h4 className="display-4">Apply Abrasive paste</h4>
             <p>
               Now that you marked all these locations, you can clean the areas with abrasive paste. Exfoliate the skin
               with a cotton swab until it begins to turn pink, and then wash the skin using some rubbing alcohol and a
@@ -107,7 +125,7 @@ const RecordMySleep = () => {
           </div>
 
           <div>
-            <h4>Place your electrodes</h4>
+            <h4 className="display-4">Place your electrodes</h4>
             <p>Make sure your electrodes are clean.</p>
             <p>
               <b>For Cz, Pz and Oz</b> (electrodes placed over your scalp): Squeeze some EC2 over a gauze pad, take an
@@ -126,7 +144,7 @@ const RecordMySleep = () => {
           </div>
 
           <div>
-            <h4>Ensure good skin contact</h4>
+            <h4 className="display-4">Ensure good skin contact</h4>
             <p>
               To ensure that skin contact is good, it is important to measure the impedance between the electrodes.
               Start by measuring the impedance between your active electrode and its reference (e.g.: Fpz and Cz). Also,
@@ -136,7 +154,7 @@ const RecordMySleep = () => {
           </div>
 
           <div>
-            <h4>Wire the electrodes to the OpenBCI device</h4>
+            <h4 className="display-4">Wire the electrodes to the OpenBCI device</h4>
             <p>Here’s is how you need to wire your electrodes to the OpenBCI board you are using:</p>
             <Table striped borderless responsive>
               <thead>
@@ -175,125 +193,149 @@ const RecordMySleep = () => {
               </tbody>
             </Table>
           </div>
-        </Row>
+        </Container>
+        <Separator />
+      </section>
 
-        <Row>
-          <h3>How to use OpenBCI GUI</h3>
+      <section className="section section-lg">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">How to use OpenBCI GUI</h3>
           <p>
-            First thing you need is the OpenBCI GUI in order to use the hardware. Therefrom, select
+            First thing you need is the OpenBCI GUI in order to use the hardware. Therefrom, select {' '}
             <b>Live (from &lt;boardname&gt;)</b> as your source. If you’re using a Cyton board we suggest you use a
             microSD card using FAT32 format. If you do so, do not forget to select at least <b>12 hour maximum</b> for
             the write to SD card parameter. Otherwise, you must keep your computer near and open for the whole night and
             log the data to a session file. If you do it this way, do not forget to select the OpenBCI file output and
-            to select <b>No Limit</b> as your max file duration. When everything is configured properly, you can press
+            to select <b>No Limit</b> as your max file duration. When everything is configured properly, you can press {' '}
             <b>Start Session</b>. Before pressing <b>Start Stream</b>, press <b>Hardware Settings</b> and configure
             everything as follow:
           </p>
 
-          <div>
-            <h4>Hardware configuration for the Cyton board</h4>
-            <Table striped borderless responsive>
-              <thead>
-                <tr>
-                  <th>Channel</th>
-                  <th>PGA Gain</th>
-                  <th>Input Type</th>
-                  <th>Bias</th>
-                  <th>SRB2</th>
-                  <th>SRB1</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>x24</td>
-                  <td>Normal</td>
-                  <td>Include</td>
-                  <td>Off</td>
-                  <td>No</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>x24</td>
-                  <td>Normal</td>
-                  <td>Include</td>
-                  <td>Off</td>
-                  <td>No</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
+          <Row>
+            <Col>
+              <h4 className="display-4">Cyton</h4>
+              <Table striped borderless responsive>
+                <thead>
+                  <tr>
+                    <th>Channel</th>
+                    <th>PGA Gain</th>
+                    <th>Input Type</th>
+                    <th>Bias</th>
+                    <th>SRB2</th>
+                    <th>SRB1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>x24</td>
+                    <td>Normal</td>
+                    <td>Include</td>
+                    <td>Off</td>
+                    <td>No</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>x24</td>
+                    <td>Normal</td>
+                    <td>Include</td>
+                    <td>Off</td>
+                    <td>No</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Col>
+            <Col>
+              <h4 className="display-4">Ganglion</h4>
+              <Table striped borderless responsive>
+                <thead>
+                  <tr>
+                    <th>Channel</th>
+                    <th>PGA Gain</th>
+                    <th>Input Type</th>
+                    <th>Driven Ground</th>
+                    <th>Common Ref</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>x24</td>
+                    <td>Normal</td>
+                    <td>Include</td>
+                    <td>Off</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>x24</td>
+                    <td>Normal</td>
+                    <td>Include</td>
+                    <td>Off</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
 
-          <div>
-            <h4>Hardware configuration for the Ganglion board</h4>
-            <Table striped borderless responsive>
-              <thead>
-                <tr>
-                  <th>Channel</th>
-                  <th>PGA Gain</th>
-                  <th>Input Type</th>
-                  <th>Driven Ground</th>
-                  <th>Common Ref</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>x24</td>
-                  <td>Normal</td>
-                  <td>Include</td>
-                  <td>Off</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>x24</td>
-                  <td>Normal</td>
-                  <td>Include</td>
-                  <td>Off</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
           <p>
             Do not forget to deactivate all unused channels by greying out the numbered colored pill on the left of the
             signal in the GUI. You can now press <b>Start data stream</b>. If you are using a microSD card and a Cyton
             board, you may want to pull off the dongle from its usb port. Data will be written to the SD card for the
             configured amount of time.
           </p>
-        </Row>
+        </Container>
+        <Separator />
+      </section>
 
-        <Row>
-          <h3>Limit noise</h3>
+      <section className="section bg-secondary">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">Limit noise</h3>
           <p>
             Tie the electrodes together with a hair tie, and if you have long hair, tie them all together in order to
             avoid static during the night. To limit electromagnetic interferences you may want to place your board in
             some sort of Faraday cage, for example, a plastic container wrapped up in aluminium foil.
           </p>
-        </Row>
+        </Container>
+        <Separator />
+      </section>
 
-        <Row>
-          <h3>Write a journal</h3>
+      <section className="section section-lg">
+        <Container className="text-justify pt-lg">
+          <h3 className="display-3">Write a journal</h3>
           <p>
             You must keep a journal (accurate to the minute) and write down a few information to help us track and
             analyze your sleep:
-            <ul>
-              <li>When you started the stream</li>
-              <li>Bedtime (when you go to sleep)</li>
-              <li>When you wake up</li>
-            </ul>
-            You will need to provide this information in order to score your EEG recording.
           </p>
-        </Row>
-
-        <Row>
-          <h3>
-            Wake up!
-            <span role="img" aria-label="Night time">
-              ☀️
-            </span>
-          </h3>
           <div>
-            <h4>Remove your electrodes</h4>
+            <div className="custom-control custom-checkbox mb-3">
+              <input className="custom-control-input" id="journal-check-1" type="checkbox" />
+              <label className="custom-control-label" htmlFor="journal-check-1">
+                <span>When you start the stream</span>
+              </label>
+            </div>
+            <div className="custom-control custom-checkbox mb-3">
+              <input className="custom-control-input" id="journal-check-2" type="checkbox" />
+              <label className="custom-control-label" htmlFor="journal-check-2">
+                <span>When you go to bed</span>
+              </label>
+            </div>
+            <div className="custom-control custom-checkbox mb-3">
+              <input className="custom-control-input" id="journal-check-3" type="checkbox" />
+              <label className="custom-control-label" htmlFor="journal-check-3">
+                <span>When you wake up</span>
+              </label>
+            </div>
+          </div>
+          <p>You will need to provide this information in order to score your EEG recording.</p>
+        </Container>
+        <Separator />
+      </section>
+
+      <section className="section bg-gradient-warning">
+        <Container className="mt-5 mb-5 text-justify  text-white">
+          <h3 className="display-3 text-white">Wake up!</h3>
+          <div>
+            <h4 className="display-4 text-white">Remove your electrodes</h4>
             <p>
               In order to take the electrodes off your scalp, you can use warm water for the EC2 to come off easily. The
               Hypafix, used for electrodes over the skin, should be taken off with warm water and/or rubbing alcohol.
@@ -302,7 +344,7 @@ const RecordMySleep = () => {
             </p>
           </div>
           <div>
-            <h4>If you used an microSD card:</h4>
+            <h4 className="display-4 text-white">If you used an microSD card:</h4>
             <p>
               Remove the microSD card from the board and insert it in your computer. Then, open OpenBCI GUI and select
               <b>PLAYBACK (from file)</b> as your data source. Use the <b>Convert SD for playback option</b> and select
@@ -311,16 +353,16 @@ const RecordMySleep = () => {
             </p>
           </div>
           <div>
-            <h4>If you used session file:</h4>
+            <h4 className="display-4 text-white">If you used session file:</h4>
             <p>
               After stopping the stream, go to the Recordings directory where your session file. Just upload this file
               in order to score your sleep and analyze your data.
             </p>
           </div>
-        </Row>
-      </Container>
-    </div>
+        </Container>
+        <Separator />
+      </section>
+    </>
   );
 };
-
 export default RecordMySleep;
