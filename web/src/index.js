@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import { Route, Switch, Redirect, HashRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
-import 'argon-design-system-react/src/assets/vendor/nucleo/css/nucleo.css';
-import 'argon-design-system-react/src/assets/vendor/font-awesome/css/font-awesome.min.css';
-import 'argon-design-system-react/src/assets/scss/argon-design-system-react.scss';
+import 'assets/css/argon-design-system-react.min.css';
 
 import Header from 'components/header';
 import Footer from 'components/footer';
