@@ -1,7 +1,8 @@
 import React from 'react';
-import { Container, Table, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 
 import Header from 'components/header';
+import Table from 'components/table';
 
 import text from './text.json';
 import WIPWarning from 'components/wip_warning';
@@ -152,42 +153,16 @@ const RecordMySleep = () => {
           <div>
             <h4 className="display-4">Wire the electrodes to the OpenBCI device</h4>
             <p>Here’s is how you need to wire your electrodes to the OpenBCI board you are using:</p>
-            <Table striped borderless responsive>
-              <thead>
-                <tr>
-                  <th>Location</th>
-                  <th>Pin on Cyton</th>
-                  <th>Pin on Ganglion</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Fpz</td>
-                  <td>P1</td>
-                  <td>+1</td>
-                </tr>
-                <tr>
-                  <td>Cz</td>
-                  <td>N1</td>
-                  <td>-1</td>
-                </tr>
-                <tr>
-                  <td>Pz</td>
-                  <td>P2</td>
-                  <td>+2</td>
-                </tr>
-                <tr>
-                  <td>Oz</td>
-                  <td>N2</td>
-                  <td>-2</td>
-                </tr>
-                <tr>
-                  <td>A2</td>
-                  <td>BIAS (Any pin)</td>
-                  <td>D_G (Any pin)</td>
-                </tr>
-              </tbody>
-            </Table>
+            <Table
+              headers={['Location', 'Pin on Cyton', 'Pin on Ganglion']}
+              elementsRows={[
+                ['Fpz', 'P1', '+1'],
+                ['Cz', 'N1', '-1'],
+                ['Pz', 'P2', '+2'],
+                ['Oz', 'N2', '-2'],
+                ['A2', 'BIAS (Any pin)', 'D_G (Any pin)'],
+              ]}
+            />
           </div>
         </Container>
       </section>
@@ -209,66 +184,23 @@ const RecordMySleep = () => {
           <Row>
             <Col>
               <h4 className="display-4">Cyton</h4>
-              <Table striped borderless responsive>
-                <thead>
-                  <tr>
-                    <th>Channel</th>
-                    <th>PGA Gain</th>
-                    <th>Input Type</th>
-                    <th>Bias</th>
-                    <th>SRB2</th>
-                    <th>SRB1</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>x24</td>
-                    <td>Normal</td>
-                    <td>Include</td>
-                    <td>Off</td>
-                    <td>No</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>x24</td>
-                    <td>Normal</td>
-                    <td>Include</td>
-                    <td>Off</td>
-                    <td>No</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <Table
+                headers={['Channel', 'PGA Gain', 'Input Type', 'Bias', 'SRB2', 'SRB1']}
+                elementsRows={[
+                  ['1', 'x24', 'Normal', 'Include', 'Off', 'No'],
+                  ['2', 'x24', 'Normal', 'Include', 'Off', 'No'],
+                ]}
+              />
             </Col>
             <Col>
               <h4 className="display-4">Ganglion</h4>
-              <Table striped borderless responsive>
-                <thead>
-                  <tr>
-                    <th>Channel</th>
-                    <th>PGA Gain</th>
-                    <th>Input Type</th>
-                    <th>Driven Ground</th>
-                    <th>Common Ref</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>x24</td>
-                    <td>Normal</td>
-                    <td>Include</td>
-                    <td>Off</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>x24</td>
-                    <td>Normal</td>
-                    <td>Include</td>
-                    <td>Off</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <Table
+                headers={['Channel', 'PGA Gain', 'Input Type', 'Driven Ground', 'Common Ref']}
+                elementsRows={[
+                  ['1', 'x24', 'Normal', 'Include', 'Off'],
+                  ['2', 'x24', 'Normal', 'Include', 'Off'],
+                ]}
+              />
             </Col>
           </Row>
 
