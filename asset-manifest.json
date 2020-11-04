@@ -1,34 +1,25 @@
 {
   "files": {
-    "main.css": "/polydodo/static/css/main.8e0469f6.chunk.css",
-    "main.js": "/polydodo/static/js/main.004a89b7.chunk.js",
-    "main.js.map": "/polydodo/static/js/main.004a89b7.chunk.js.map",
+    "main.css": "/polydodo/static/css/main.60b67dc3.chunk.css",
+    "main.js": "/polydodo/static/js/main.a7ae428e.chunk.js",
     "runtime-main.js": "/polydodo/static/js/runtime-main.ef5adf4f.js",
-    "runtime-main.js.map": "/polydodo/static/js/runtime-main.ef5adf4f.js.map",
-    "static/css/2.05654f0f.chunk.css": "/polydodo/static/css/2.05654f0f.chunk.css",
-    "static/js/2.31d3e41e.chunk.js": "/polydodo/static/js/2.31d3e41e.chunk.js",
-    "static/js/2.31d3e41e.chunk.js.map": "/polydodo/static/js/2.31d3e41e.chunk.js.map",
+    "static/js/2.20d8a8da.chunk.js": "/polydodo/static/js/2.20d8a8da.chunk.js",
     "index.html": "/polydodo/index.html",
-    "precache-manifest.5d18b5fb8e6cba2d5f156b3878e73615.js": "/polydodo/precache-manifest.5d18b5fb8e6cba2d5f156b3878e73615.js",
+    "precache-manifest.7b3bdd2c9c738276a700c86665c3df5e.js": "/polydodo/precache-manifest.7b3bdd2c9c738276a700c86665c3df5e.js",
     "service-worker.js": "/polydodo/service-worker.js",
-    "static/css/2.05654f0f.chunk.css.map": "/polydodo/static/css/2.05654f0f.chunk.css.map",
-    "static/css/main.8e0469f6.chunk.css.map": "/polydodo/static/css/main.8e0469f6.chunk.css.map",
-    "static/js/2.31d3e41e.chunk.js.LICENSE.txt": "/polydodo/static/js/2.31d3e41e.chunk.js.LICENSE.txt",
+    "static/js/2.20d8a8da.chunk.js.LICENSE.txt": "/polydodo/static/js/2.20d8a8da.chunk.js.LICENSE.txt",
     "static/media/aep.png": "/polydodo/static/media/aep.fda414f1.png",
     "static/media/diptrace.png": "/polydodo/static/media/diptrace.e3ba6abc.png",
-    "static/media/font-awesome.min.css": "/polydodo/static/media/fontawesome-webfont.fee66e71.woff",
     "static/media/logo.png": "/polydodo/static/media/logo.bcea7572.png",
     "static/media/ntx.png": "/polydodo/static/media/ntx.bdd09ab5.png",
-    "static/media/nucleo.css": "/polydodo/static/media/nucleo-icons.f82ec6ba.ttf",
     "static/media/pale_background_logo.png": "/polydodo/static/media/pale_background_logo.fa35130a.png",
     "static/media/polymtl.png": "/polydodo/static/media/polymtl.3034d991.png",
     "static/media/protocase.png": "/polydodo/static/media/protocase.53bfde7a.png"
   },
   "entrypoints": [
     "static/js/runtime-main.ef5adf4f.js",
-    "static/css/2.05654f0f.chunk.css",
-    "static/js/2.31d3e41e.chunk.js",
-    "static/css/main.8e0469f6.chunk.css",
-    "static/js/main.004a89b7.chunk.js"
+    "static/js/2.20d8a8da.chunk.js",
+    "static/css/main.60b67dc3.chunk.css",
+    "static/js/main.a7ae428e.chunk.js"
   ]
 }
