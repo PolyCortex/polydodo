@@ -10,11 +10,7 @@ import numpy as np
 from requests import get
 import onnxruntime
 
-from classification.config.constants import (
-    HMM_EMISSION_MATRIX,
-    HMM_START_PROBABILITIES,
-    HMM_TRANSITION_MATRIX,
-)
+from classification.config.constants import HiddenMarkovModelProbability
 
 SCRIPT_PATH = Path(path.realpath(sys.argv[0])).parent
 
@@ -26,11 +22,6 @@ MODEL_PATH = SCRIPT_PATH / MODEL_FILENAME
 MODEL_URL = f'{BUCKET_URL}/{MODEL_FILENAME}'
 
 HMM_FOLDER = 'hmm_model'
-HMM_FILENAMES = [
-    (HMM_EMISSION_MATRIX, 'hmm_emission_probabilites.npy'),
-    (HMM_START_PROBABILITIES, 'hmm_start_probabilities.npy'),
-    (HMM_TRANSITION_MATRIX, 'hmm_transition_probabilites.npy')
-]
 
 
 def _download_file(url, output):
@@ -71,13 +62,13 @@ def load_hmm():
     if not path.exists(SCRIPT_PATH / HMM_FOLDER):
         makedirs(SCRIPT_PATH / HMM_FOLDER)
 
-    for hmm_object_name, hmm_file in HMM_FILENAMES:
+    for hmm_probability in HiddenMarkovModelProbability:
+        hmm_file = hmm_probability.get_filename()
         model_path = SCRIPT_PATH / HMM_FOLDER / hmm_file
 
         if not path.exists(model_path) or not _has_latest_object(hmm_file, model_path):
-            print(f"Downloading latest {hmm_object_name} HMM matrix...")
             _download_file(url=f"{BUCKET_URL}/{hmm_file}", output=model_path)
 
-        hmm_matrices[hmm_object_name] = np.load(str(model_path))
+        hmm_matrices[hmm_probability.name] = np.load(str(model_path))
 
     return hmm_matrices
