@@ -7,6 +7,7 @@ from classification.file_loading import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
+from classification.request import ClassificationRequest
 
 app = Flask(__name__)
 model = SleepStagesClassifier()
@@ -48,22 +49,19 @@ def analyze_sleep():
     form_data = request.form.to_dict()
 
     try:
-        age = int(form_data['age'])
-        sex = Sex[form_data['sex']]
-        stream_start = int(form_data['stream_start'])
-        bedtime = int(form_data['bedtime'])
-        wakeup = int(form_data['wakeup'])
+        classification_request = ClassificationRequest(
+            age=int(form_data['age']),
+            sex=Sex[form_data['sex']],
+            stream_start=int(form_data['stream_start']),
+            bedtime=int(form_data['bedtime']),
+            wakeup=int(form_data['wakeup']),
+        )
     except (KeyError, ValueError):
         return 'Missing or invalid request parameters', HTTPStatus.BAD_REQUEST
 
     try:
         raw_array = get_raw_array(file)
-        model.predict(raw_array, info={
-            'sex': sex,
-            'age': age,
-            'in_bed_seconds': bedtime - stream_start,
-            'out_of_bed_seconds': wakeup - stream_start
-        })
+        model.predict(raw_array, classification_request)
     except ClassificationError as e:
         return e.message, HTTPStatus.BAD_REQUEST
 

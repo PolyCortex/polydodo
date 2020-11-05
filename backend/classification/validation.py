@@ -9,10 +9,10 @@ from classification.exceptions import (
 )
 
 
-def validate(raw_eeg, info):
-    _validate_timestamps(info['in_bed_seconds'], info['out_of_bed_seconds'])
-    _validate_file_with_timestamps(raw_eeg, info['out_of_bed_seconds'])
-    _validate_age(info['age'])
+def validate(raw_eeg, request):
+    _validate_timestamps(request.in_bed_seconds, request.out_of_bed_seconds)
+    _validate_file_with_timestamps(raw_eeg, request.out_of_bed_seconds)
+    _validate_age(request.age)
 
 
 def _validate_timestamps(in_bed_seconds, out_of_bed_seconds):
