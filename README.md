@@ -44,5 +44,5 @@ Run `python -m PyInstaller --onefile app.py`
 
 ### Mobile
 
-Prior to build execute build-runner to generate the app's routes.
+Prior to build execute build-runner to generate the app's routes.  
 `flutter packages pub run build_runner watch --delete-conflicting-outputs`
