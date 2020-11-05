@@ -4,6 +4,7 @@ from classification.features import get_features
 from classification.validation import validate
 from classification.postprocessor import get_hmm_model
 from classification.load_model import load_model, load_hmm
+from classification.metric.epochs import get_labelled_epochs
 
 
 class SleepStagesClassifier():
@@ -40,7 +41,11 @@ class SleepStagesClassifier():
 
         print(predictions)
 
-        return predictions
+        labelled_epochs = get_labelled_epochs(predictions, info['in_bed_seconds'])
+
+        print(labelled_epochs)
+
+        return labelled_epochs
 
     def _get_predictions(self, features):
         return self.model.run(None, {self.model_input_name: features})[0]

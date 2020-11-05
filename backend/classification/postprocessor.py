@@ -2,7 +2,7 @@ from hmmlearn.hmm import MultinomialHMM
 
 from classification.config.constants import (
     HiddenMarkovModelProbability,
-    N_STAGES,
+    SleepStage,
 )
 
 
@@ -15,7 +15,7 @@ def get_hmm_model(state):
         describes the according hidden markov model state
     Returns: an instance of a trained MultinomialHMM
     """
-    hmm_model = MultinomialHMM(n_components=N_STAGES)
+    hmm_model = MultinomialHMM(n_components=len(SleepStage))
 
     hmm_model.emissionprob_ = state[HiddenMarkovModelProbability.emission.name]
     hmm_model.startprob_ = state[HiddenMarkovModelProbability.start.name]
