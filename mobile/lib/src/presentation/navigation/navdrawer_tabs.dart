@@ -1,1 +1,7 @@
-enum NavdrawerTab { Dashboard, RecordSleep, BluetoothSelector, History }
+enum NavdrawerTab {
+  Dashboard,
+  RecordSleep,
+  BluetoothSelector,
+  History,
+  NightStats
+}

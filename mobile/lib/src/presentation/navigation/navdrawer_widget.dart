@@ -38,6 +38,12 @@ class NavDrawer extends StatelessWidget {
             route: Routes.recordSleepGuidePage,
             context: context,
           ),
+          _createDrawerItem(
+            icon: Icons.analytics,
+            text: 'History',
+            route: Routes.sleepHistoryPage,
+            context: context,
+          ),
         ],
       ),
     );

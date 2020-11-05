@@ -35,9 +35,11 @@ dependencies:
   flutter_reactive_ble: ^2.5.2
   get_it: ^4.0.4
   hive: ^1.4.4
+  intl: ^0.16.1
   meta: ^1.1.8
   path_provider: ^1.6.16
   pedantic: ^1.9.0
+  percent_indicator: '^2.1.8'
   share: ^0.6.5
   streaming_shared_preferences: ^1.0.1
   uuid: ^2.2.2
@@ -87,4 +89,4 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_icons:
   android: true
-  image_path: "common/assets/img/logo2.png"
+  image_path: 'common/assets/img/logo2.png'
