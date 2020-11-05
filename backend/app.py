@@ -7,10 +7,10 @@ from classification.file_loading import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
-from classification.request import ClassificationRequest
+from classification.request import ClassificationRequest, ClassificationResponse
 
 app = Flask(__name__)
-model = SleepStagesClassifier()
+sleep_stage_classifier = SleepStagesClassifier()
 
 
 def allowed_file(filename):
@@ -61,12 +61,12 @@ def analyze_sleep():
 
     try:
         raw_array = get_raw_array(file)
-        model.predict(raw_array, classification_request)
+        predictions = sleep_stage_classifier.predict(raw_array, classification_request)
+        classification_response = ClassificationResponse(classification_request, predictions)
     except ClassificationError as e:
         return e.message, HTTPStatus.BAD_REQUEST
 
-    with open("assets/mock_response.json", "r") as mock_response_file:
-        return mock_response_file.read()
+    return classification_response.get_response()
 
 
 CORS(app,

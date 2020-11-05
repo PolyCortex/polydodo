@@ -3,7 +3,6 @@
 from classification.features import get_features
 from classification.postprocessor import get_hmm_model
 from classification.load_model import load_model, load_hmm
-from classification.metric.epochs import get_labelled_epochs
 
 
 class SleepStagesClassifier():
@@ -22,8 +21,8 @@ class SleepStagesClassifier():
         - request: instance of ClassificationRequest
         Returns: array of predicted sleep stages
         """
+        self._validate_request(raw_eeg, request)
 
-        request.validate(raw_eeg)
         features = get_features(raw_eeg, request)
 
         print(features, features.shape)
@@ -31,13 +30,11 @@ class SleepStagesClassifier():
         predictions = self._get_predictions(features)
         predictions = self._get_postprocessed_predictions(predictions)
 
-        print(predictions)
+        return predictions
 
-        labelled_epochs = get_labelled_epochs(predictions, request.stream_start)
-
-        print(labelled_epochs)
-
-        return labelled_epochs
+    def _validate_request(self, raw_eeg, request):
+        request.validate(raw_eeg)
+        request.stream_end = raw_eeg.times[-1]
 
     def _get_predictions(self, features):
         return self.model.run(None, {self.model_input_name: features})[0]
