@@ -6,6 +6,7 @@ class SleepHistoryInitial extends SleepHistoryState {}
 
 class SleepHistoryLoaded extends SleepHistoryState {
   final List<NightStats> history;
+  final List<NightStats> selectedNights;
 
-  SleepHistoryLoaded(this.history);
+  SleepHistoryLoaded(this.history, this.selectedNights);
 }

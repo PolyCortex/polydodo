@@ -21,12 +21,21 @@ class SleepHistoryRepository implements ISleepHistoryRepository {
   }
 
   @override
-  void selectNight(NightStats stat) {
+  void viewNight(NightStats stat) {
     nightStreamController.add(stat);
   }
 
   @override
   Stream<NightStats> getSelectedNight() => nightStreamController.stream;
+
+  @override
+  void deleteNights(List<NightStats> nights) {
+    for (var night in nights) {
+      _sleepHistoryPersistency.remove(night);
+    }
+
+    streamController.add(_sleepHistoryPersistency);
+  }
 
   @override
   Stream<List<NightStats>> watch() {

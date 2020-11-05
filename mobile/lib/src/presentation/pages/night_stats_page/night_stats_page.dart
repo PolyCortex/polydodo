@@ -6,6 +6,7 @@ import 'package:polydodo/src/application/night_stats/night_stats_cubit.dart';
 import 'package:polydodo/src/application/night_stats/night_stats_state.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
+import 'package:polydodo/src/presentation/pages/night_stats_page/app_bar.dart';
 import 'package:polydodo/src/presentation/pages/night_stats_page/metric_section.dart';
 import 'package:polydodo/src/presentation/pages/night_stats_page/sleep_stages_section.dart';
 
@@ -17,36 +18,7 @@ class NightStatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.black),
-          title: StreamBuilder<Object>(
-              stream: appBloc.titleStream,
-              initialData: 'Night Stat',
-              builder: (context, snapshot) {
-                return Text(
-                  snapshot.data,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.indigo,
-                  ),
-                );
-              }),
-          actions: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {/* todo: Add export */},
-                  child: Icon(
-                    Icons.share,
-                    size: 26.0,
-                  ),
-                )),
-          ],
-        ),
+        appBar: buildAppBar(appBloc),
         drawer: NavDrawer(activeTab: NavdrawerTab.NightStats),
         body: BlocConsumer<NightStatsCubit, NightStatsState>(
           listener: (context, state) {
