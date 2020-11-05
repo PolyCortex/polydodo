@@ -4,11 +4,8 @@ class RecordSleepValidatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('Recording'),
-      ),
+      appBar: AppBar(title: Text('Record Sleep')),
+      drawer: NavDrawer(activeTab: NavdrawerTab.RecordSleep),
       body: BlocConsumer<DataCubit, DataState>(
         listener: (context, state) {
           print(state.runtimeType);

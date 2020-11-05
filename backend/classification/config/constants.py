@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class Sex(Enum):
@@ -6,6 +6,15 @@ class Sex(Enum):
     #  https://physionet.org/content/sleep-edfx/1.0.0/SC-subjects.xls
     F = 1
     M = 2
+
+
+class HiddenMarkovModelProbability(Enum):
+    emission = auto()
+    start = auto()
+    transition = auto()
+
+    def get_filename(self):
+        return f'hmm_{self.name}_probabilities.npy'
 
 
 ALLOWED_FILE_EXTENSIONS = ('.txt', '.csv')
@@ -29,3 +38,5 @@ AGE_FEATURE_BINS = [
     [85, 125]
 ]
 ACCEPTED_AGE_RANGE = [AGE_FEATURE_BINS[0][0], AGE_FEATURE_BINS[-1][-1]]
+
+N_STAGES = 5

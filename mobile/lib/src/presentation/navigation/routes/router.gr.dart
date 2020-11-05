@@ -14,19 +14,16 @@ import '../../pages/dashboard/dashboard_page.dart';
 import '../../pages/night_stats_page/night_stats_page.dart';
 import '../../pages/record_sleep/record_sleep_guide_page.dart';
 import '../../pages/sleep_history_page/sleep_history_page.dart';
-import '../navdrawer_widget.dart';
 
 class Routes {
-  static const String navDrawerPage = '/nav-drawer-page';
-  static const String dashBoardPage = '/';
+  static const String dashboardPage = '/';
   static const String recordSleepGuidePage = '/record-sleep-guide-page';
   static const String recordSleepValidatePage = '/record-sleep-validate-page';
   static const String bluetoothSelectorPage = '/bluetooth-selector-page';
   static const String sleepHistoryPage = '/sleep-history-page';
   static const String nightStatsPage = '/night-stats-page';
   static const all = <String>{
-    navDrawerPage,
-    dashBoardPage,
+    dashboardPage,
     recordSleepGuidePage,
     recordSleepValidatePage,
     bluetoothSelectorPage,
@@ -39,8 +36,7 @@ class Router extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.navDrawerPage, page: NavDrawerPage),
-    RouteDef(Routes.dashBoardPage, page: DashBoardPage),
+    RouteDef(Routes.dashboardPage, page: DashboardPage),
     RouteDef(Routes.recordSleepGuidePage, page: RecordSleepGuidePage),
     RouteDef(Routes.recordSleepValidatePage, page: RecordSleepValidatePage),
     RouteDef(Routes.bluetoothSelectorPage, page: BluetoothSelectorPage),
@@ -50,49 +46,55 @@ class Router extends RouterBase {
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    NavDrawerPage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => NavDrawerPage(),
+    DashboardPage: (data) {
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            DashboardPage(),
         settings: data,
-      );
-    },
-    DashBoardPage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => DashBoardPage(),
-        settings: data,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
     RecordSleepGuidePage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => RecordSleepGuidePage(),
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            RecordSleepGuidePage(),
         settings: data,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
     RecordSleepValidatePage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => RecordSleepValidatePage(),
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            RecordSleepValidatePage(),
         settings: data,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
     BluetoothSelectorPage: (data) {
       final args = data.getArgs<BluetoothSelectorPageArguments>(
         orElse: () => BluetoothSelectorPageArguments(),
       );
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => BluetoothSelectorPage(key: args.key),
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            BluetoothSelectorPage(key: args.key),
         settings: data,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
     SleepHistoryPage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => SleepHistoryPage(),
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            SleepHistoryPage(),
         settings: data,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
     NightStatsPage: (data) {
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => NightStatsPage(),
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            NightStatsPage(),
         settings: data,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
       );
     },
   };
@@ -103,9 +105,7 @@ class Router extends RouterBase {
 /// *************************************************************************
 
 extension RouterExtendedNavigatorStateX on ExtendedNavigatorState {
-  Future<dynamic> pushNavDrawerPage() => push<dynamic>(Routes.navDrawerPage);
-
-  Future<dynamic> pushDashBoardPage() => push<dynamic>(Routes.dashBoardPage);
+  Future<dynamic> pushDashboardPage() => push<dynamic>(Routes.dashboardPage);
 
   Future<dynamic> pushRecordSleepGuidePage() =>
       push<dynamic>(Routes.recordSleepGuidePage);

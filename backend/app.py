@@ -4,11 +4,12 @@ from waitress import serve
 from http import HTTPStatus
 
 from classification.file_loading import get_raw_array
-from classification.predict import predict
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
+from classification.model import SleepStagesClassifier
 
 app = Flask(__name__)
+model = SleepStagesClassifier()
 
 
 def allowed_file(filename):
@@ -57,7 +58,7 @@ def analyze_sleep():
 
     try:
         raw_array = get_raw_array(file)
-        predict(raw_array, info={
+        model.predict(raw_array, info={
             'sex': sex,
             'age': age,
             'in_bed_seconds': bedtime - stream_start,

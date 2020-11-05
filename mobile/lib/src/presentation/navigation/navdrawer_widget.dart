@@ -1,11 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
-class NavDrawerPage extends StatelessWidget {
+import 'navdrawer_tabs.dart';
+
+class NavDrawer extends StatelessWidget {
   static const name = 'appDrawerRoute';
+  final NavdrawerTab activeTab;
+
+  const NavDrawer({
+    Key key,
+    @required this.activeTab,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,75 +21,76 @@ class NavDrawerPage extends StatelessWidget {
         children: <Widget>[
           _createHeader(),
           _createDrawerItem(
+            icon: Icons.dashboard,
+            text: 'Dashboard',
+            route: Routes.dashboardPage,
+            context: context,
+          ),
+          _createDrawerItem(
             icon: Icons.bluetooth,
             text: 'Bluetooth selector',
-            onTap: () {
-              context
-                  .bloc<NavdrawerBloc>()
-                  .add(NavdrawerUpdated(NavdrawerState.BluetoothSelector));
-              ExtendedNavigator.of(context)
-                  .replace(Routes.bluetoothSelectorPage);
-            },
+            route: Routes.bluetoothSelectorPage,
+            context: context,
           ),
           _createDrawerItem(
             icon: Icons.hotel,
             text: 'Record Sleep sequence',
-            onTap: () {
-              context
-                  .bloc<NavdrawerBloc>()
-                  .add(NavdrawerUpdated(NavdrawerState.RecordSleep));
-              ExtendedNavigator.of(context)
-                  .replace(Routes.recordSleepGuidePage);
-            },
+            route: Routes.recordSleepGuidePage,
+            context: context,
           ),
           _createDrawerItem(
             icon: Icons.analytics,
             text: 'History',
-            onTap: () {
-              context
-                  .bloc<NavdrawerBloc>()
-                  .add(NavdrawerUpdated(NavdrawerState.NightStats));
-              ExtendedNavigator.of(context).replace(Routes.sleepHistoryPage);
-            },
+            route: Routes.sleepHistoryPage,
+            context: context,
           ),
         ],
       ),
     );
   }
-}
 
-Widget _createHeader() {
-  return DrawerHeader(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage('common/assets/img/Material-Wallpaper.jpg'))),
-      child: Stack(children: <Widget>[
-        Positioned(
-            bottom: 12.0,
-            left: 16.0,
-            child: Text('Polydodo',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500))),
-      ]));
-}
+  Widget _createHeader() {
+    return DrawerHeader(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage('common/assets/img/Material-Wallpaper.jpg'))),
+        child: Stack(children: <Widget>[
+          Positioned(
+              bottom: 12.0,
+              left: 16.0,
+              child: Text('Polydodo',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500))),
+        ]));
+  }
 
-Widget _createDrawerItem(
-    {IconData icon, String text, GestureTapCallback onTap}) {
-  return ListTile(
-    title: Row(
-      children: <Widget>[
-        Icon(icon),
-        Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(text),
-        )
-      ],
-    ),
-    onTap: onTap,
-  );
+  Widget _createDrawerItem(
+      {IconData icon,
+      String text,
+      NavdrawerTab tab,
+      String route,
+      BuildContext context}) {
+    return ListTile(
+      title: Row(
+        children: <Widget>[
+          Icon(icon),
+          Padding(
+            padding: EdgeInsets.only(left: 8.0),
+            child: Text(text),
+          )
+        ],
+      ),
+      onTap: () {
+        //context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
+        ExtendedNavigator.of(context).popAndPush(route);
+        // ExtendedNavigator.of(context).replace(route);
+      },
+      selected: activeTab == tab,
+    );
+  }
 }

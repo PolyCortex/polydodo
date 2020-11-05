@@ -26,4 +26,4 @@ def get_features(signal, info):
     X_eeg = get_eeg_features(signal, info['in_bed_seconds'], info['out_of_bed_seconds'])
     X_categorical = get_non_eeg_features(info['age'], info['sex'], X_eeg.shape[0])
 
-    return np.append(X_categorical, X_eeg, axis=1)
+    return np.append(X_categorical, X_eeg, axis=1).astype(np.float32)

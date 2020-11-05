@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/night_stats/night_stats_cubit.dart';
 import 'package:polydodo/src/application/night_stats/night_stats_state.dart';
+import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/pages/night_stats_page/metric_section.dart';
 import 'package:polydodo/src/presentation/pages/night_stats_page/sleep_stages_section.dart';
@@ -46,7 +47,7 @@ class NightStatsPage extends StatelessWidget {
                 )),
           ],
         ),
-        drawer: NavDrawerPage(),
+        drawer: NavDrawer(activeTab: NavdrawerTab.NightStats),
         body: BlocConsumer<NightStatsCubit, NightStatsState>(
           listener: (context, state) {
             print(state.runtimeType);
