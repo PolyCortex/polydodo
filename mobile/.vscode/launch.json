@@ -13,6 +13,18 @@
         "--dart-define",
         "HOST=10.0.2.2"
       ]
-    }
+    },
+    {
+      "name": "Flutter debug",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug"
+},
+{
+      "name": "Flutter release",
+      "flutterMode": "release",
+      "type": "dart",
+      "request": "launch"
+}
   ]
 }
