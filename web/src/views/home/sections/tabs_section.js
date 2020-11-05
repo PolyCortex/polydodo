@@ -59,7 +59,7 @@ const TabsSection = () => {
                   role="tab"
                 >
                   <i className="ni ni-single-copy-04 mr-2" />
-                  No false claim
+                  Disclaimer
                 </NavLink>
               </NavItem>
             </Nav>
@@ -89,14 +89,14 @@ const TabsSection = () => {
                 </TabPane>
                 <TabPane tabId={`activeTab${TABS.SECOND}`}>
                   <p className="description">
-                    Your data are in your hand. Nothing is sent over the internet. Everything is running locally on your
-                    browser and on a local server.
+                    Your data is in your hand. Nothing is sent over the internet. Everything is running locally on your
+                    browser and local server.
                   </p>
                 </TabPane>
                 <TabPane tabId={`activeTab${TABS.THIRD}`}>
                   <p className="description">
                     This application is not intended for medical purposes and the data it produces should not be used in
-                    such a context. Its only goal is to demonstrate what is possible and to help you study your own
+                    such context. Its only goal is to demonstrate what is possible and to help you study your own
                     sleep.
                   </p>
                 </TabPane>
