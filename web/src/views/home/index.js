@@ -18,11 +18,11 @@ const Home = () => {
             are using your EEG data which is an essential part of a reasonable sleep analysis. And the best part of it
             is that it's completly <strong>free!</strong>
           </p>
-          <FeaturesSection />
-          <TabsSection />
-          <TechnologySection />
         </div>
       </Container>
+      <FeaturesSection />
+      <TabsSection />
+      <TechnologySection />
       <TeamSection />
     </div>
   );

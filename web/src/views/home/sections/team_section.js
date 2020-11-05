@@ -3,10 +3,24 @@ import React from 'react';
 import { Button, Col, Container, Row, UncontrolledCarousel } from 'reactstrap';
 
 import TEAM_PHOTO from 'assets/img/team.jpg';
+import TEAM_2_PHOTO from 'assets/img/team_2.jpg';
+import TEAM_3_PHOTO from 'assets/img/team_3.jpg';
 
 const ITEMS = [
   {
     src: TEAM_PHOTO,
+    altText: '',
+    caption: '',
+    header: '',
+  },
+  {
+    src: TEAM_2_PHOTO,
+    altText: '',
+    caption: '',
+    header: '',
+  },
+  {
+    src: TEAM_3_PHOTO,
     altText: '',
     caption: '',
     header: '',
@@ -23,7 +37,7 @@ const TeamSection = () => (
       <span />
       <span />
     </div>
-    <Container className="py-5">
+    <Container className="py-3">
       <Row className="justify-content-between align-items-center">
         <Col className="mb-lg-auto" lg="6">
           <div className="rounded shadow-lg overflow-hidden transform-perspective-right">
