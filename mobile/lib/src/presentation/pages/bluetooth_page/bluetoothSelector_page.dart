@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/device/device_selector_state.dart';
-import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
+import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
@@ -16,7 +16,7 @@ class BluetoothSelectorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Polydodo')),
-      drawer: NavDrawer(activeTab: NavdrawerState.BluetoothSelector),
+      drawer: NavDrawer(activeTab: NavdrawerTab.BluetoothSelector),
       body: BlocConsumer<DeviceSelectorCubit, DeviceState>(
         listener: (context, state) {
           print(state.runtimeType);

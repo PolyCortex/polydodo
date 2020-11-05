@@ -1,13 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
+
+import 'navdrawer_tabs.dart';
 
 class NavDrawer extends StatelessWidget {
   static const name = 'appDrawerRoute';
-  final NavdrawerState activeTab;
+  final NavdrawerTab activeTab;
 
   const NavDrawer({
     Key key,
@@ -16,38 +15,31 @@ class NavDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavdrawerBloc, NavdrawerState>(
-      builder: (b_context, drawerSelectedTab) {
-        return Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero, //only(top: 8.0),
-            children: <Widget>[
-              _createHeader(),
-              _createDrawerItem(
-                icon: Icons.dashboard,
-                text: 'Dashboard',
-                state: NavdrawerState.DashBoard,
-                route: Routes.dashBoardPage,
-                context: b_context,
-              ),
-              _createDrawerItem(
-                icon: Icons.bluetooth,
-                text: 'Bluetooth selector',
-                state: NavdrawerState.BluetoothSelector,
-                route: Routes.bluetoothSelectorPage,
-                context: b_context,
-              ),
-              _createDrawerItem(
-                icon: Icons.hotel,
-                text: 'Record Sleep sequence',
-                state: NavdrawerState.RecordSleep,
-                route: Routes.recordSleepGuidePage,
-                context: b_context,
-              ),
-            ],
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero, //only(top: 8.0),
+        children: <Widget>[
+          _createHeader(),
+          _createDrawerItem(
+            icon: Icons.dashboard,
+            text: 'Dashboard',
+            route: Routes.dashboardPage,
+            context: context,
           ),
-        );
-      },
+          _createDrawerItem(
+            icon: Icons.bluetooth,
+            text: 'Bluetooth selector',
+            route: Routes.bluetoothSelectorPage,
+            context: context,
+          ),
+          _createDrawerItem(
+            icon: Icons.hotel,
+            text: 'Record Sleep sequence',
+            route: Routes.recordSleepGuidePage,
+            context: context,
+          ),
+        ],
+      ),
     );
   }
 
@@ -74,7 +66,7 @@ class NavDrawer extends StatelessWidget {
   Widget _createDrawerItem(
       {IconData icon,
       String text,
-      NavdrawerState state,
+      NavdrawerTab tab,
       String route,
       BuildContext context}) {
     return ListTile(
@@ -92,7 +84,7 @@ class NavDrawer extends StatelessWidget {
         ExtendedNavigator.of(context).popAndPush(route);
         // ExtendedNavigator.of(context).replace(route);
       },
-      selected: activeTab == state,
+      selected: activeTab == tab,
     );
   }
 }

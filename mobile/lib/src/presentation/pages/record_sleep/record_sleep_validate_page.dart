@@ -5,7 +5,7 @@ class RecordSleepValidatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Record Sleep')),
-      drawer: NavDrawer(activeTab: NavdrawerState.RecordSleep),
+      drawer: NavDrawer(activeTab: NavdrawerTab.RecordSleep),
       body: BlocConsumer<DataCubit, DataState>(
         listener: (context, state) {
           print(state.runtimeType);

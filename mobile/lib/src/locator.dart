@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
@@ -25,7 +24,6 @@ List<BlocProvider> createBlocProviders() => [
           _serviceLocator.get<IAcquisitionDeviceRepository>(),
         ),
       ),
-      BlocProvider<NavdrawerBloc>(create: (context) => NavdrawerBloc()),
       BlocProvider<DataCubit>(
         create: (context) => DataCubit(
           _serviceLocator.get<IAcquisitionDeviceRepository>(),

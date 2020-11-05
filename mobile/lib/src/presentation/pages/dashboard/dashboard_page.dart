@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:polydodo/src/application/navdrawer/navdrawer_bloc.dart';
+import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 
-class DashBoardPage extends StatelessWidget {
+class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: Text('Polydodo')),
-      drawer: NavDrawer(activeTab: NavdrawerState.DashBoard),
+      drawer: NavDrawer(activeTab: NavdrawerTab.Dashboard),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
