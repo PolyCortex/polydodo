@@ -7,7 +7,9 @@ from classification.file_loading import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
-from classification.request import ClassificationRequest, ClassificationResponse
+from classification.request import ClassificationRequest
+from classification.response import ClassificationResponse
+from classification.features.preprocessing import preprocess
 
 app = Flask(__name__)
 sleep_stage_classifier = SleepStagesClassifier()
@@ -62,7 +64,8 @@ def analyze_sleep():
     except (KeyError, ValueError, ClassificationError):
         return 'Missing or invalid request parameters', HTTPStatus.BAD_REQUEST
 
-    predictions = sleep_stage_classifier.predict(raw_array, classification_request)
+    preprocessed_epochs = preprocess(classification_request)
+    predictions = sleep_stage_classifier.predict(preprocessed_epochs, classification_request)
     classification_response = ClassificationResponse(classification_request, predictions)
 
     return classification_response.get_response()

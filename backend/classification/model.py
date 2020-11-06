@@ -13,16 +13,16 @@ class SleepStagesClassifier():
         self.postprocessor_state = load_hmm()
         self.postprocessor = get_hmm_model(self.postprocessor_state)
 
-    def predict(self, raw_eeg, request):
+    def predict(self, epochs, request):
         """
         Input:
-        - raw_eeg: instance of mne.io.RawArray
+        - raw_eeg: instance of mne.Epochs
             Should contain 2 channels (1: FPZ-CZ, 2: PZ-OZ)
         - request: instance of ClassificationRequest
         Returns: array of predicted sleep stages
         """
 
-        features = get_features(raw_eeg, request)
+        features = get_features(epochs, request)
 
         print(features, features.shape)
 

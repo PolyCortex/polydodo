@@ -12,32 +12,22 @@ from classification.features.constants import (
 )
 
 
-def preprocess(raw_data, channel, bed_seconds, out_of_bed_seconds):
+def preprocess(classification_request):
     """Returns preprocessed epochs of the specified channel
     Input
     -------
-    raw_data: instance of mne.Raw
-    channel: channel to preprocess
-    bed_seconds: number of seconds between start of recording & moment at
-        which the subjet went to bed (in seconds)
-    out_of_bed_seconds: number of seconds between start of recording & moment
-        at which the subjet got out of bed (in seconds)
+    classification_request: instance of ClassificationRequest
     """
-    raw_data = raw_data.copy()
+    raw_data = classification_request.raw_eeg.copy()
 
-    raw_data = _drop_other_channels(raw_data, channel)
-    raw_data = _crop_raw_data(raw_data, bed_seconds, out_of_bed_seconds)
+    raw_data = _crop_raw_data(
+        raw_data,
+        classification_request.in_bed_seconds,
+        classification_request.out_of_bed_seconds,
+    )
     raw_data = _apply_high_pass_filter(raw_data)
     raw_data = raw_data.resample(DATASET_SAMPLE_RATE)
     raw_data = _convert_to_epochs(raw_data)
-
-    return raw_data
-
-
-def _drop_other_channels(raw_data, channel_to_keep):
-    """returns mne.Raw with only the channel to keep"""
-    raw_data.drop_channels(
-        [ch for ch in raw_data.info['ch_names'] if ch != channel_to_keep])
 
     return raw_data
 
