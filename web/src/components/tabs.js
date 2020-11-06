@@ -13,7 +13,7 @@ const Tabs = ({ elements, onSelectTab, onHoverTab }) => {
     <>
       <div className="nav-wrapper">
         <Nav className="nav-fill flex-column flex-md-row" id="tabs-icons-text" pills role="tablist">
-          {elements.map(({ title }, i) => (
+          {elements.map(({ id, title }, i) => (
             <NavItem key={i}>
               <NavLink
                 aria-selected={selectedTab === i}
@@ -21,10 +21,10 @@ const Tabs = ({ elements, onSelectTab, onHoverTab }) => {
                   active: selectedTab === i,
                 })}
                 onClick={(e) => {
-                  onSelectTab(title);
+                  onSelectTab(id);
                   setSelectedTab(e, i);
                 }}
-                onMouseOver={() => onHoverTab(title)}
+                onMouseOver={() => onHoverTab(id)}
                 onMouseLeave={() => onHoverTab(null)}
                 href="#pablo"
                 role="tab"
