@@ -9,6 +9,7 @@ import text from './text.json';
 import material_needed from './material_needed.json';
 
 import WIPWarning from 'components/wip_warning';
+import Tabs from 'components/tabs';
 import CardGroups from 'components/card_groups';
 
 const RecordMySleep = () => {
@@ -54,61 +55,42 @@ const RecordMySleep = () => {
             driven ground electrode placed at A2 (on your right ear lobe).
           </p>
 
-          <div>
-            <Row className="row-grid mt-5">
-              <Col lg="4">
-                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                  <i className="ni ni-settings text-primary" />
-                </div>
-                <h5 className="mt-3">Fpz</h5>
-                <p className="mt-3">
-                  Fpz is located at 10 % of the distance along the midline between your nasion and your inion.
-                </p>
-              </Col>
-              <Col lg="4">
-                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                  <i className="ni ni-ruler-pencil text-primary" />
-                </div>
-                <h5 className="mt-3">Cz</h5>
-                <p className="mt-3">
+          <Tabs
+            elements={[
+              {
+                title: 'Fpz',
+                content: `
+                  Fpz is used as one of our active electrodes. To identify the Fpz location, just measure the distance
+                  starting from your nasion (the easily identifiable depressed area between your eyes) to your inion
+                  using your flexible measuring tape. Fpz is located at 10 % of the distance along the midline between
+                  your nasion and your inion.`,
+              },
+              {
+                title: 'Cz',
+                content: `
                   We’re measuring a potential difference between Fpz and that point. Cz is located at 50% of the
-                  distance along the midline starting from your nasion to your inion.
-                </p>
-              </Col>
-              <Col lg="4">
-                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                  <i className="ni ni-ruler-pencil text-primary" />
-                </div>
-                <h5 className="mt-3">A2</h5>
-                <p className="mt-3">
-                  This is the electrode that serves as driven ground between your and your OpenBCI board. Simply place
-                  it on your right earlobe.
-                </p>
-              </Col>
-            </Row>
-            <Row className="row-grid mt-5">
-              <Col lg={{ size: 4, offset: 2 }}>
-                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                  <i className="ni ni-atom text-primary" />
-                </div>
-                <h5 className="mt-3">Pz</h5>
-                <p className="mt-3">
-                  This is our other active electrode. It is located at 70% of the distance between your nasion and your
-                  inion.
-                </p>
-              </Col>
-              <Col lg="4">
-                <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                  <i className="ni ni-settings text-primary" />
-                </div>
-                <h5 className="mt-3">Oz</h5>
-                <p className="mt-3">
-                  This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion
-                  and your inion.
-                </p>
-              </Col>
-            </Row>
-          </div>
+                  distance along the midline starting from your nasion to your inion.`,
+              },
+              {
+                title: 'Pz',
+                content: `
+                This is our other active electrode. It is located at 70% of the distance between your nasion and your
+                inion.`,
+              },
+              {
+                title: 'Oz',
+                content: `
+                This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion
+                and your inion.`,
+              },
+              {
+                title: 'A2',
+                content: `
+              This is the electrode that serves as driven ground between your and your OpenBCI board. Simply place it on
+              your right earlobe.`,
+              },
+            ]}
+          />
         </Container>
       </section>
 
@@ -151,6 +133,14 @@ const RecordMySleep = () => {
               Start by measuring the impedance between your active electrode and its reference (e.g.: Fpz and Cz). Also,
               check the impedance between the reference electrodes of each channel (Cz and Oz) and the ground electrode
               (A2). As a rule of thumb, low impedance (10 KOhms) is good and high ones are bad (let’s say 150 KOhms).
+            </p>
+          </div>
+          <div>
+            <h4 className="display-4">Limit noise</h4>
+            <p>
+              Tie the electrodes together with a hair tie, and if you have long hair, tie them all together in order to
+              avoid static during the night. To limit electromagnetic interferences you may want to place your board in
+              some sort of Faraday cage, for example, a plastic container wrapped up in aluminium foil.
             </p>
           </div>
 
@@ -218,17 +208,6 @@ const RecordMySleep = () => {
       </section>
 
       <section className="section bg-secondary">
-        <Container className="text-justify pt-lg">
-          <h3 className="display-3">Limit noise</h3>
-          <p>
-            Tie the electrodes together with a hair tie, and if you have long hair, tie them all together in order to
-            avoid static during the night. To limit electromagnetic interferences you may want to place your board in
-            some sort of Faraday cage, for example, a plastic container wrapped up in aluminium foil.
-          </p>
-        </Container>
-      </section>
-
-      <section className="section section-lg">
         <Container className="text-justify pt-lg">
           <h3 className="display-3">Write a journal</h3>
           <p>
