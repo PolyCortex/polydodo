@@ -14,13 +14,13 @@ const AlternatingTextImage = ({ elements }) =>
 
     return i % 2 === 0 ? (
       <Row key={i}>
-        <Col lg="8">{textElement}</Col>
-        <Col lg="4">{imageElement}</Col>
+        <Col xs="8">{textElement}</Col>
+        <Col xs="4">{imageElement}</Col>
       </Row>
     ) : (
       <Row key={i}>
-        <Col lg="4">{imageElement}</Col>
-        <Col lg="8">{textElement}</Col>
+        <Col xs="4">{imageElement}</Col>
+        <Col xs="8">{textElement}</Col>
       </Row>
     );
   });
