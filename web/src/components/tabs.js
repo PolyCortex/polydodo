@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Card, CardBody, NavItem, NavLink, Nav, TabContent, TabPane } from 'reactstrap';
 
-const Tabs = ({ elements }) => {
+const Tabs = ({ elements, onSelectTab, onHoverTab }) => {
   const [selectedTab, _setSelectedTab] = useState(0);
   const setSelectedTab = (event, tab) => {
     event.preventDefault();
@@ -13,7 +13,7 @@ const Tabs = ({ elements }) => {
     <>
       <div className="nav-wrapper">
         <Nav className="nav-fill flex-column flex-md-row" id="tabs-icons-text" pills role="tablist">
-          {elements.map(({ title, onSelected, onMouseEnter, onMouseLeave }, i) => (
+          {elements.map(({ title }, i) => (
             <NavItem key={i}>
               <NavLink
                 aria-selected={selectedTab === i}
@@ -21,11 +21,11 @@ const Tabs = ({ elements }) => {
                   active: selectedTab === i,
                 })}
                 onClick={(e) => {
-                  onSelected && onSelected();
+                  onSelectTab(title);
                   setSelectedTab(e, i);
                 }}
-                onMouseOver={onMouseEnter}
-                onMouseLeave={onMouseLeave}
+                onMouseOver={() => onHoverTab(title)}
+                onMouseLeave={() => onHoverTab(null)}
                 href="#pablo"
                 role="tab"
               >

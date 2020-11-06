@@ -6,11 +6,13 @@ import Header from 'components/header';
 import Table from 'components/table';
 
 import text from './text.json';
-import material_needed from './material_needed.json';
 
 import WIPWarning from 'components/wip_warning';
-import Tabs from 'components/tabs';
+
+import material_needed from './material_needed.json';
 import AlternatingTextImage from 'components/alternating_text_image';
+
+import ElectrodesDisplay from './electrodes_display';
 
 const RecordMySleep = () => {
   return (
@@ -54,43 +56,7 @@ const RecordMySleep = () => {
             First, you need to know where to place the electrodes. Our channels are Fpz-Cz and Pz-Oz to which we add a
             driven ground electrode placed at A2 (on your right ear lobe).
           </p>
-
-          <Tabs
-            elements={[
-              {
-                title: 'Fpz',
-                content: `
-                  Fpz is used as one of our active electrodes. To identify the Fpz location, just measure the distance
-                  starting from your nasion (the easily identifiable depressed area between your eyes) to your inion
-                  using your flexible measuring tape. Fpz is located at 10 % of the distance along the midline between
-                  your nasion and your inion.`,
-              },
-              {
-                title: 'Cz',
-                content: `
-                  We’re measuring a potential difference between Fpz and that point. Cz is located at 50% of the
-                  distance along the midline starting from your nasion to your inion.`,
-              },
-              {
-                title: 'Pz',
-                content: `
-                This is our other active electrode. It is located at 70% of the distance between your nasion and your
-                inion.`,
-              },
-              {
-                title: 'Oz',
-                content: `
-                This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion
-                and your inion.`,
-              },
-              {
-                title: 'A2',
-                content: `
-              This is the electrode that serves as driven ground between your and your OpenBCI board. Simply place it on
-              your right earlobe.`,
-              },
-            ]}
-          />
+          <ElectrodesDisplay />
         </Container>
       </section>
 

@@ -13,12 +13,12 @@ const AlternatingTextImage = ({ elements }) =>
     const imageElement = <img src={`${process.env.PUBLIC_URL}/${image}`} alt={title} />;
 
     return i % 2 === 0 ? (
-      <Row>
+      <Row key={i}>
         <Col lg="8">{textElement}</Col>
         <Col lg="4">{imageElement}</Col>
       </Row>
     ) : (
-      <Row>
+      <Row key={i}>
         <Col lg="4">{imageElement}</Col>
         <Col lg="8">{textElement}</Col>
       </Row>
