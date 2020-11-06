@@ -36,7 +36,7 @@ class Hero extends React.Component {
                     </div>
                     <Row className="align-items-center justify-content-center mt-5 mb-4">
                       <Button
-                        className="btn-icon mb-3 mb-sm-0"
+                        className="ml-3 btn-icon mb-3 mb-sm-0 hero__action_button"
                         color="warning"
                         to="/record-my-sleep"
                         tag={Link}
@@ -47,14 +47,13 @@ class Hero extends React.Component {
                         </span>
                         <span className="btn-inner--text">Record My Own Sleep</span>
                       </Button>
-                    </Row>
-                    <Row className="align-items-center justify-content-center">
+                      <span className="mr-4" />
                       <Button
-                        className="btn-icon mb-3 mb-sm-0"
+                        className="mr-3 btn-icon mb-3 mb-sm-0 hero__action_button"
                         color="secondary"
                         to={{ pathname: '/sleep-analysis-results', state: { isPreviewMode: true } }}
                         tag={Link}
-                        size="md"
+                        size="lg"
                       >
                         <span className="btn-inner--icon mr-1">
                           <i className="ni ni-button-play" />
@@ -62,21 +61,6 @@ class Hero extends React.Component {
                         <span className="btn-inner--text">Preview</span>
                       </Button>
                     </Row>
-                    {/* <Button
-                      className="btn-icon mb-3 mb-sm-0"
-                      color="github"
-                      href="https://github.com/PolyCortex/polydodo"
-                      size="lg"
-                      target="_blank"
-                    >
-                      <span className="btn-inner--icon mr-1">
-                        <i className="fa fa-github" />
-                      </span>
-                      <span className="btn-inner--text">
-                        <span className="text-warning mr-1">Star us</span>
-                        on Github
-                      </span>
-                    </Button> */}
                     <div className="mt-4">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>
                       <a href="http://polycortex.polymtl.ca/" target="_blank" rel="noopener noreferrer">
