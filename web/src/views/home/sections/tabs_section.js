@@ -65,7 +65,7 @@ const TabsSection = () => {
                 </NavItem>
               </Nav>
             </div>
-            <Card className="shadow">
+            <Card className="shadow mb-5">
               <CardBody>
                 <TabContent activeTab={'activeTab' + activeTab}>
                   <TabPane tabId={`activeTab${TABS.FIRST}`}>

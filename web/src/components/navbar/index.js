@@ -16,8 +16,8 @@ import {
   Collapse,
 } from 'reactstrap';
 
-import Logo from 'assets/img/logo.png';
-import PaleBackgroundLogo from 'assets/img/pale_background_logo.png';
+import Logo from 'assets/img/dodo.png';
+import PaleBackgroundLogo from 'assets/img/dodo.png';
 import text from './text.json';
 
 const OutsideLink = ({ href, iconClass, linkName, tooltipText, tooltipID }) => {

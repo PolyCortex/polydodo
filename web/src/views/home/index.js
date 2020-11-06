@@ -6,6 +6,7 @@ import TabsSection from './sections/tabs_section';
 import FeaturesSection from './sections/features_section';
 import TechnologySection from './sections/technology_section';
 import TeamSection from './sections/team_section';
+import SleepStageSection from './sections/sleep_stage_section';
 
 const Home = () => {
   return (
@@ -20,6 +21,7 @@ const Home = () => {
           </p>
         </div>
       </Container>
+      <SleepStageSection />
       <FeaturesSection />
       <TabsSection />
       <TechnologySection />

@@ -5,6 +5,10 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import HeaderSeparator from 'components/header_separator';
 import { Link } from 'react-router-dom';
 
+import Logo from 'assets/img/dodo.png';
+
+import './style.css';
+
 class Hero extends React.Component {
   render() {
     return (
@@ -20,20 +24,16 @@ class Hero extends React.Component {
               <div className="col px-0">
                 <Row className="align-items-center justify-content-center">
                   <Col className="text-center" lg="12">
-                    <img
-                      alt="..."
-                      className="img-fluid"
-                      src={require('assets/img/logo.png')}
-                      style={{ width: '350px' }}
-                    />
+                    <img alt="..." className="img-fluid" src={Logo} style={{ width: '125px' }} />
                     <p className="lead text-white mb-5">Record, upload and visualize your sleep.</p>
-                    <iframe
-                      title="Open Challenge 2020"
-                      width="560"
-                      height="315"
-                      src="https://www.youtube.com/embed/YJV732hR0gU"
-                      allowFullScreen
-                    />
+                    <div className="hero__video-container center">
+                      <iframe
+                        title="Open Challenge 2020"
+                        className="hero__video-iframe"
+                        src="https://www.youtube.com/embed/YJV732hR0gU"
+                        allowFullScreen
+                      />
+                    </div>
                     <Row className="align-items-center justify-content-center mt-5 mb-4">
                       <Button
                         className="btn-icon mb-3 mb-sm-0"
@@ -77,7 +77,7 @@ class Hero extends React.Component {
                         on Github
                       </span>
                     </Button> */}
-                    <div className="mt-5">
+                    <div className="mt-4">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>
                       <a href="http://polycortex.polymtl.ca/" target="_blank" rel="noopener noreferrer">
                         <img
