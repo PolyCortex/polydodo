@@ -243,7 +243,7 @@ const RecordMySleep = () => {
           <div>
             <h4 className="display-4 text-white">If you used an microSD card:</h4>
             <p className="lead">
-              Remove the microSD card from the board and insert it in your computer. Then, open OpenBCI GUI and select
+              Remove the microSD card from the board and insert it in your computer. Then, open OpenBCI GUI and select{' '}
               <b>PLAYBACK (from file)</b> as your data source. Use the <b>Convert SD for playback option</b> and select
               your sd file. Wait a little bit and you will get the converted csv file. Upload this one to this website
               in order to score your sleep
