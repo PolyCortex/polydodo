@@ -1,5 +1,19 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardImg,
+  FormGroup,
+  Input,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroup,
+  Container,
+  Row,
+  Col,
+} from 'reactstrap';
 import { Alarm, Hotel, Timeline } from '@material-ui/icons';
 
 import Header from 'components/header';
@@ -92,23 +106,41 @@ const RecordMySleep = () => {
             <WIPWarning />
           </div>
 
-          <div>
-            <h4 className="display-4">Ensure good skin contact</h4>
-            <p className="lead">
-              To ensure that skin contact is good, it is important to measure the impedance between the electrodes.
-              Start by measuring the impedance between your active electrode and its reference (e.g.: Fpz and Cz). Also,
-              check the impedance between the reference electrodes of each channel (Cz and Oz) and the ground electrode
-              (A2). As a rule of thumb, low impedance (10 KOhms) is good and high ones are bad (let’s say 150 KOhms).
-            </p>
-          </div>
-          <div>
-            <h4 className="display-4">Limit noise</h4>
-            <p className="lead">
-              Tie the electrodes together with a hair tie, and if you have long hair, tie them all together in order to
-              avoid static during the night. To limit electromagnetic interferences you may want to place your board in
-              some sort of Faraday cage, for example, a plastic container wrapped up in aluminium foil.
-            </p>
-          </div>
+          <Container className="text-justify pt-lg-5 pb-lg-5">
+            <Row className="justify-content-center">
+              <Col lg="12">
+                <Row className="row-grid">
+                  <Col lg="6">
+                    <Card className="card-lift--hover shadow border-0">
+                      <CardBody className="py-5">
+                        <h6 className="text-warning text-uppercase">Ensure good skin contact</h6>
+                        <p className="mt-3">
+                          To ensure that skin contact is good, it is important to measure the impedance between the
+                          electrodes. Start by measuring the impedance between your active electrode and its reference
+                          (e.g.: Fpz and Cz). Also, check the impedance between the reference electrodes of each channel
+                          (Cz and Oz) and the ground electrode (A2). As a rule of thumb, low impedance (10 KOhms) is
+                          good and high ones are bad (let’s say 150 KOhms).
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg="6">
+                    <Card className="card-lift--hover shadow border-0">
+                      <CardBody className="py-5">
+                        <h6 className="text-primary text-uppercase">Limit noise</h6>
+                        <p className="mt-3">
+                          Tie the electrodes together with a hair tie, and if you have long hair, tie them all together
+                          in order to avoid static during the night. To limit electromagnetic interferences you may want
+                          to place your board in some sort of Faraday cage, for example, a plastic container wrapped up
+                          in aluminium foil.
+                        </p>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Container>
 
           <div>
             <h4 className="display-4">Wire the electrodes to the OpenBCI device</h4>
