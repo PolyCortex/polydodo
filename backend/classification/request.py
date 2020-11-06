@@ -5,14 +5,15 @@ from classification.validation import validate
 
 
 class ClassificationRequest():
-    def __init__(self, sex, age, stream_start, bedtime, wakeup):
+    def __init__(self, sex, age, stream_start, bedtime, wakeup, raw_eeg):
         self.sex = sex
         self.age = age
         self.stream_start = stream_start
         self.bedtime = bedtime
         self.wakeup = wakeup
 
-        self.stream_end = None
+        self.stream_duration = raw_eeg.times[-1]
+        self.raw_eeg = raw_eeg
         self.is_valid = None
 
     @property
@@ -29,8 +30,8 @@ class ClassificationRequest():
     def n_epochs(self):
         return (self.wakeup - self.bedtime) / EPOCH_DURATION
 
-    def validate(self, raw_eeg):
-        validate(raw_eeg, self)
+    def validate(self):
+        validate(self.raw_eeg, self)
 
 
 class ClassificationResponse():
@@ -38,7 +39,7 @@ class ClassificationResponse():
         self.sex = request.sex
         self.age = request.age
         self.stream_start = request.stream_start
-        self.stream_end = request.stream_end
+        self.stream_duration = request.stream_duration
         self.bedtime = request.bedtime
         self.wakeup = request.wakeup
         self.n_epochs = request.n_epochs
@@ -59,8 +60,8 @@ class ClassificationResponse():
     def metadata(self):
         return {
             "sessionStartTime": self.stream_start,
-            "sessionEndTime": self.stream_end,
-            "totalSessionTime": self.stream_end - self.stream_start,
+            "sessionEndTime": self.stream_duration + self.stream_start,
+            "totalSessionTime": self.stream_duration,
             "bedTime": self.bedtime,
             "wakeUpTime": None,
             "totalBedTime": None,

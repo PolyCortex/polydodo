@@ -21,7 +21,6 @@ class SleepStagesClassifier():
         - request: instance of ClassificationRequest
         Returns: array of predicted sleep stages
         """
-        self._validate_request(raw_eeg, request)
 
         features = get_features(raw_eeg, request)
 
@@ -31,10 +30,6 @@ class SleepStagesClassifier():
         predictions = self._get_postprocessed_predictions(predictions)
 
         return predictions
-
-    def _validate_request(self, raw_eeg, request):
-        request.validate(raw_eeg)
-        request.stream_end = raw_eeg.times[-1]
 
     def _get_predictions(self, features):
         return self.model.run(None, {self.model_input_name: features})[0]

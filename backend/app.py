@@ -47,6 +47,7 @@ def analyze_sleep():
         return 'File format not allowed', HTTPStatus.BAD_REQUEST
 
     form_data = request.form.to_dict()
+    raw_array = get_raw_array(file)
 
     try:
         classification_request = ClassificationRequest(
@@ -55,16 +56,14 @@ def analyze_sleep():
             stream_start=int(form_data['stream_start']),
             bedtime=int(form_data['bedtime']),
             wakeup=int(form_data['wakeup']),
+            raw_eeg=raw_array,
         )
-    except (KeyError, ValueError):
+        classification_request.validate()
+    except (KeyError, ValueError, ClassificationError):
         return 'Missing or invalid request parameters', HTTPStatus.BAD_REQUEST
 
-    try:
-        raw_array = get_raw_array(file)
-        predictions = sleep_stage_classifier.predict(raw_array, classification_request)
-        classification_response = ClassificationResponse(classification_request, predictions)
-    except ClassificationError as e:
-        return e.message, HTTPStatus.BAD_REQUEST
+    predictions = sleep_stage_classifier.predict(raw_array, classification_request)
+    classification_response = ClassificationResponse(classification_request, predictions)
 
     return classification_response.get_response()
 
