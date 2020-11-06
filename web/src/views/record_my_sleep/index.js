@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import { Alarm, Hotel, Timeline } from '@material-ui/icons';
 
 import Header from 'components/header';
 import Table from 'components/table';
@@ -234,26 +235,18 @@ const RecordMySleep = () => {
             You must keep a journal (accurate to the minute) and write down a few information to help us track and
             analyze your sleep:
           </p>
-          <div>
-            <div className="custom-control custom-checkbox mb-3">
-              <input className="custom-control-input" id="journal-check-1" type="checkbox" />
-              <label className="custom-control-label" htmlFor="journal-check-1">
-                <span>When you start the stream</span>
-              </label>
-            </div>
-            <div className="custom-control custom-checkbox mb-3">
-              <input className="custom-control-input" id="journal-check-2" type="checkbox" />
-              <label className="custom-control-label" htmlFor="journal-check-2">
-                <span>When you go to bed</span>
-              </label>
-            </div>
-            <div className="custom-control custom-checkbox mb-3">
-              <input className="custom-control-input" id="journal-check-3" type="checkbox" />
-              <label className="custom-control-label" htmlFor="journal-check-3">
-                <span>When you wake up</span>
-              </label>
-            </div>
-          </div>
+          <p>
+            <Timeline />
+            When you start the stream
+          </p>
+          <p>
+            <Hotel />
+            When you go to bed
+          </p>
+          <p>
+            <Alarm />
+            When you wake up
+          </p>
           <p>You will need to provide this information in order to score your EEG recording.</p>
         </Container>
       </section>
