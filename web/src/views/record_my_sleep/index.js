@@ -5,7 +5,10 @@ import Header from 'components/header';
 import Table from 'components/table';
 
 import text from './text.json';
+import material_needed from './material_needed.json';
+
 import WIPWarning from 'components/wip_warning';
+import CardGroups from 'components/card_groups';
 
 const RecordMySleep = () => {
   return (
@@ -34,7 +37,7 @@ const RecordMySleep = () => {
       <section className="section bg-secondary">
         <Container className="text-justify pt-lg">
           <h3 className="display-3">What you need</h3>
-          <WIPWarning />
+          <CardGroups groupSize={4} elements={material_needed.elements} />
         </Container>
       </section>
 
