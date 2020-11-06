@@ -89,4 +89,4 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_icons:
   android: true
-  image_path: 'common/assets/img/logo2.png'
+  image_path: 'common/assets/img/Dodo4.png'
