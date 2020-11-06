@@ -10,7 +10,7 @@ import material_needed from './material_needed.json';
 
 import WIPWarning from 'components/wip_warning';
 import Tabs from 'components/tabs';
-import CardGroups from 'components/card_groups';
+import AlternatingTextImage from 'components/alternating_text_image';
 
 const RecordMySleep = () => {
   return (
@@ -39,7 +39,7 @@ const RecordMySleep = () => {
       <section className="section bg-secondary">
         <Container className="text-justify pt-lg">
           <h3 className="display-3">What you need</h3>
-          <CardGroups groupSize={4} elements={material_needed.elements} />
+          <AlternatingTextImage elements={material_needed.elements} />
         </Container>
       </section>
 
