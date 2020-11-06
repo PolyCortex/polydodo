@@ -40,7 +40,7 @@ const Tabs = ({ elements, onSelectTab, onHoverTab }) => {
           <TabContent activeTab={'selectedTab' + selectedTab}>
             {elements.map(({ content }, i) => (
               <TabPane key={i} tabId={'selectedTab' + i}>
-                <p className="lead">{content}</p>
+                <p>{content}</p>
               </TabPane>
             ))}
           </TabContent>
