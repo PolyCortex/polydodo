@@ -1,19 +1,5 @@
 import React from 'react';
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardImg,
-  FormGroup,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Container,
-  Row,
-  Col,
-} from 'reactstrap';
+import { Card, CardBody, Container, Row, Col } from 'reactstrap';
 import { Alarm, Hotel, Timeline } from '@material-ui/icons';
 
 import Header from 'components/header';
