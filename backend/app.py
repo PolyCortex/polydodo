@@ -10,6 +10,7 @@ from classification.model import SleepStagesClassifier
 from classification.request import ClassificationRequest
 from classification.response import ClassificationResponse
 from classification.features.preprocessing import preprocess
+from classification.spectrogram_generator import SpectrogramGenerator
 
 app = Flask(__name__)
 sleep_stage_classifier = SleepStagesClassifier()
@@ -66,7 +67,10 @@ def analyze_sleep():
 
     preprocessed_epochs = preprocess(classification_request)
     predictions = sleep_stage_classifier.predict(preprocessed_epochs, classification_request)
-    classification_response = ClassificationResponse(classification_request, predictions)
+    spectrogram_generator = SpectrogramGenerator(preprocessed_epochs)
+    classification_response = ClassificationResponse(
+        classification_request, predictions, spectrogram_generator.generate()
+    )
 
     return classification_response.get_response()
 

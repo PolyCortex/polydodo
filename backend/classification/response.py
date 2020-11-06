@@ -4,7 +4,7 @@ from classification.config.constants import EPOCH_DURATION, SleepStage
 
 
 class ClassificationResponse():
-    def __init__(self, request, predictions):
+    def __init__(self, request, predictions, spectrogram):
         self.sex = request.sex
         self.age = request.age
         self.stream_start = request.stream_start
@@ -13,6 +13,7 @@ class ClassificationResponse():
         self.wakeup = request.wakeup
         self.n_epochs = request.n_epochs
 
+        self.spectrogram = spectrogram
         self.predictions = predictions
 
     @property
@@ -50,5 +51,5 @@ class ClassificationResponse():
             'metadata': self.metadata,
             'subject': self.subject,
             'board': None,
-            'spectrograms': None,
+            'spectrograms': self.spectrogram,
         }

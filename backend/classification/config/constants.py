@@ -28,8 +28,8 @@ class HiddenMarkovModelProbability(Enum):
 ALLOWED_FILE_EXTENSIONS = ('.txt', '.csv')
 
 EEG_CHANNELS = [
-    'EEG Fpz-Cz',
-    'EEG Pz-Oz'
+    'Fpz-Cz',
+    'Pz-Oz'
 ]
 
 EPOCH_DURATION = 30
