@@ -40,7 +40,7 @@ const Tabs = ({ elements }) => {
           <TabContent activeTab={'selectedTab' + selectedTab}>
             {elements.map(({ content }, i) => (
               <TabPane key={i} tabId={'selectedTab' + i}>
-                <p className="description">{content}</p>
+                <p className="lead">{content}</p>
               </TabPane>
             ))}
           </TabContent>

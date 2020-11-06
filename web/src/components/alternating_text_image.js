@@ -5,23 +5,23 @@ const AlternatingTextImage = ({ elements }) =>
   elements.map(({ title, text, image }, i) => {
     const textElement = (
       <>
-        <h4>{title}</h4>
-        <p>{text}</p>
+        <h4 className="display-4">{title}</h4>
+        <p className="lead">{text}</p>
       </>
     );
 
     const imageElement = <img src={`${process.env.PUBLIC_URL}/${image}`} alt={title} />;
 
     return i % 2 === 0 ? (
-        <Row>
-          <Col lg="8">{textElement}</Col>
-          <Col lg="4">{imageElement}</Col>
-        </Row>
+      <Row>
+        <Col lg="8">{textElement}</Col>
+        <Col lg="4">{imageElement}</Col>
+      </Row>
     ) : (
-        <Row>
-          <Col lg="4">{imageElement}</Col>
-          <Col lg="8">{textElement}</Col>
-        </Row>
+      <Row>
+        <Col lg="4">{imageElement}</Col>
+        <Col lg="8">{textElement}</Col>
+      </Row>
     );
   });
 export default AlternatingTextImage;
