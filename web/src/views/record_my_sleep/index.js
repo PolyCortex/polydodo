@@ -25,8 +25,7 @@ const RecordMySleep = () => {
         description={text['header_description']}
       />
       <section className="section">
-        <Container className="text-justify pt-lg">
-          <h3 className="display-3">Create your own sleep lab</h3>
+        <Container className="text-justify">
           <p className="lead">
             Here are some explanations about how to get your own EEG data in order to score your sleep using this
             website. If you already own an OpenBCI board, you could have very little (see nothing) to buy.
