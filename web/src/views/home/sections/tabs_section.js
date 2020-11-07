@@ -18,7 +18,7 @@ const TabsSection = () => {
   };
 
   return (
-    <section className="section section-sm bg-secondary">
+    <section className="section section-xl bg-secondary">
       <Container>
         <h3 className="h4 text-primary font-weight-bold mb-4">
           <Emoji symbol="💤" label="zzz" /> You can sleep soundly
@@ -111,7 +111,7 @@ const TabsSection = () => {
           </Col>
           <Col size="4">
             <div className="position-relative pl-md-5">
-              <img alt="..." className="img-center img-fluid" src={Dodo} />
+              <img alt="..." className="img-center img-fluid floating" src={Dodo} />
             </div>
           </Col>
         </Row>
