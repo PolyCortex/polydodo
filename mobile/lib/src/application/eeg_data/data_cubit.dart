@@ -1,10 +1,10 @@
-import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
-import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part './data_states.dart';
+import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
+import 'package:polydodo/src/application/eeg_data/data_states.dart';
 
 class DataCubit extends Cubit<DataState> {
   final IAcquisitionDeviceRepository _deviceRepository;
@@ -24,5 +24,25 @@ class DataCubit extends Cubit<DataState> {
     emit(DataStateInitial());
     _deviceRepository.stopDataStream();
     _eegDataRepository.stopRecordingFromStream();
+  }
+
+  Future<void> testSignal() async {
+    _eegDataRepository.initialize();
+    _eegDataRepository.testSignal(
+        await _deviceRepository.startDataStream(), signalCallback);
+
+    emit(DataStateTestSignalInProgress());
+  }
+
+  void signalCallback(
+      SignalResult channelOneResult, SignalResult channelOneTwot,
+      [Exception e]) {
+    _eegDataRepository.stopRecordingFromStream();
+
+    if (e != null) {
+      emit(DataStateTestSignalFailure(e));
+    } else {
+      emit(DataStateTestSignalSuccess(channelOneResult, channelOneTwot));
+    }
   }
 }

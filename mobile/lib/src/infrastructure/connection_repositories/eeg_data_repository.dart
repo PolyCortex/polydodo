@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/baseOpenBCITransformer.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
@@ -16,19 +18,19 @@ import 'package:pedantic/pedantic.dart';
 import 'package:intl/intl.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
-  EEGData _recordingData;
-  BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
-
   final GanglionTransformer<List<int>, List> _ganglionTransformer =
       GanglionTransformer<List<int>, List>.broadcast();
-
   final CytonTransformer<List<int>, List<dynamic>> _cytonTransformer =
       CytonTransformer<Uint8List, List>.broadcast();
 
+  BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
   BaseOpenBCITransformer<List<int>, List<dynamic>> _currentTransformer;
   StreamSubscription _currentTransformerStream;
-
   StreamingSharedPreferences _preferences;
+  EEGData _recordingData;
+  double _channelOneMaxValue = 0;
+  double _channelTwoMaxValue = 0;
+  int _dataCount = 0;
 
   @override
   void initialize() async {
@@ -57,17 +59,59 @@ class EEGDataRepository implements IEEGDataRepository {
   Future<void> stopRecordingFromStream() async {
     // todo: move save future to another file
     unawaited(_currentTransformerStream.cancel());
+    if (_recordingData != null) {
+      final directory = await getExternalStorageDirectory();
+      final pathOfTheFileToWrite =
+          directory.path + '/' + _recordingData.fileName + '.txt';
+      var file = File(pathOfTheFileToWrite);
+      var fileContent = [[]];
+      //todo: dynamically change header when we change transformer
+      fileContent.addAll(OPEN_BCI_CYTON_HEADER);
+      fileContent.addAll(_recordingData.values);
+      var csv = const ListToCsvConverter().convert(fileContent);
+      await file.writeAsString(csv);
+    }
+  }
 
-    final directory = await getExternalStorageDirectory();
-    final pathOfTheFileToWrite =
-        directory.path + '/' + _recordingData.fileName + '.txt';
-    var file = File(pathOfTheFileToWrite);
-    var fileContent = [[]];
-    //todo: dynamically change header when we change transformer
-    fileContent.addAll(OPEN_BCI_CYTON_HEADER);
-    fileContent.addAll(_recordingData.values);
-    var csv = const ListToCsvConverter().convert(fileContent);
-    await file.writeAsString(csv);
+  @override
+  void testSignal(Stream<List<int>> stream,
+      Function(SignalResult, SignalResult, [Exception]) callback) {
+    _dataCount = 0;
+    _currentTransformer.reset();
+    _currentTransformerStream = stream
+        .asBroadcastStream()
+        .transform(_currentTransformer)
+        .listen((data) => checkSignalData(data, callback));
+  }
+
+  void checkSignalData(
+      List data, Function(SignalResult, SignalResult, [Exception]) callback) {
+    _dataCount++;
+
+    _channelOneMaxValue = max(_channelOneMaxValue, data[1].abs());
+    _channelTwoMaxValue = max(_channelTwoMaxValue, data[2].abs());
+
+    if (_dataCount == 1000) {
+      print(_channelOneMaxValue);
+      print(_channelTwoMaxValue);
+      var signalOneResult = getResult(_channelOneMaxValue);
+      var signalTwoResult = getResult(_channelTwoMaxValue);
+
+      callback(signalOneResult, signalTwoResult);
+    }
+  }
+
+  SignalResult getResult(double maxValue) {
+    var result = SignalResult.valid;
+    print(maxValue);
+    print(MAX_SIGNAL_VALUE * THRESHOLD_RAILED_WARN);
+    if (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED_WARN) {
+      result = (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED)
+          ? SignalResult.railed
+          : SignalResult.near_railed;
+    }
+
+    return result;
   }
 
   // todo: implement export and import
