@@ -81,10 +81,10 @@ class EEGDataRepository implements IEEGDataRepository {
     _currentTransformerStream = stream
         .asBroadcastStream()
         .transform(_currentTransformer)
-        .listen((data) => checkSignalData(data, callback));
+        .listen((data) => _checkSignalData(data, callback));
   }
 
-  void checkSignalData(
+  void _checkSignalData(
       List data, Function(SignalResult, SignalResult, [Exception]) callback) {
     _dataCount++;
 
@@ -92,19 +92,16 @@ class EEGDataRepository implements IEEGDataRepository {
     _channelTwoMaxValue = max(_channelTwoMaxValue, data[2].abs());
 
     if (_dataCount == 1000) {
-      print(_channelOneMaxValue);
-      print(_channelTwoMaxValue);
-      var signalOneResult = getResult(_channelOneMaxValue);
-      var signalTwoResult = getResult(_channelTwoMaxValue);
+      var signalOneResult = _getResult(_channelOneMaxValue);
+      var signalTwoResult = _getResult(_channelTwoMaxValue);
 
       callback(signalOneResult, signalTwoResult);
     }
   }
 
-  SignalResult getResult(double maxValue) {
+  SignalResult _getResult(double maxValue) {
     var result = SignalResult.valid;
-    print(maxValue);
-    print(MAX_SIGNAL_VALUE * THRESHOLD_RAILED_WARN);
+
     if (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED_WARN) {
       result = (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED)
           ? SignalResult.railed
