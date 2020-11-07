@@ -7,14 +7,12 @@ import './electrode_display.css';
 
 const ElectrodesDisplay = () => {
   const [selectedElectrode, setSelectedElectrode] = useState('fpz');
-  const [hoveredElectrode, setHoveredElectrode] = useState(null);
 
   return (
     <Row>
       <Col xs="8">
         <Tabs
           onSelectTab={setSelectedElectrode}
-          onHoverTab={setHoveredElectrode}
           elements={[
             {
               id: 'fpz',
@@ -60,12 +58,10 @@ const ElectrodesDisplay = () => {
         <div className="imgs-container">
           <div className="img-container">
             <img src={`${process.env.PUBLIC_URL}/illustrations/top.png`} alt="top" />
-            <span className={`top dot dot-hover dot-${hoveredElectrode}`}></span>
             <span className={`top dot dot-select dot-${selectedElectrode}`}></span>
           </div>
           <div className="img-container">
             <img src={`${process.env.PUBLIC_URL}/illustrations/side.png`} alt="side" />
-            <span className={`side dot dot-hover dot-${hoveredElectrode}`}></span>
             <span className={`side dot dot-select dot-${selectedElectrode}`}></span>
           </div>
         </div>
