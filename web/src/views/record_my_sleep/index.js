@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, Container, Row, Col, CardDeck } from 'reactstrap';
+import { Card, CardBody, Container, Row, Col, CardDeck, Badge } from 'reactstrap';
 import { Alarm, Hotel, Timeline } from '@material-ui/icons';
 
 import Header from 'components/header';
@@ -199,15 +199,21 @@ const RecordMySleep = () => {
             analyze your sleep:
           </p>
           <p className="lead">
-            <Timeline />
+            <Badge className="badge-circle mr-3" color="success">
+              <Timeline />
+            </Badge>
             When you start the stream
           </p>
           <p className="lead">
-            <Hotel />
+            <Badge className="badge-circle mr-3" color="success">
+              <Hotel />
+            </Badge>
             When you go to bed
           </p>
           <p className="lead">
-            <Alarm />
+            <Badge className="badge-circle mr-3" color="success">
+              <Alarm />
+            </Badge>
             When you wake up
           </p>
           <p className="lead">You will need to provide this information in order to score your EEG recording.</p>
