@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, Container, Row, Col } from 'reactstrap';
+import { Card, CardBody, Container, Row, Col, CardDeck } from 'reactstrap';
 import { Alarm, Hotel, Timeline } from '@material-ui/icons';
 
 import Header from 'components/header';
@@ -92,43 +92,45 @@ const RecordMySleep = () => {
             <p className="lead">
               Please note: A good amount of Ten20 paste means filling the cup until it slightly overflows with paste.
             </p>
-            <WIPWarning />
+            <Row xs="3" className="text-center">
+              <Col>
+                <img src={`${process.env.PUBLIC_URL}/illustrations/electrodes_ten20.png`} alt="Electrodes in Ten20" />
+              </Col>
+              <Col>
+                <img src={`${process.env.PUBLIC_URL}/illustrations/gauze_ec2.png`} alt="EC2 on gauze" />
+              </Col>
+              <Col>
+                <img src={`${process.env.PUBLIC_URL}/illustrations/gauze_electrodes.png`} alt="Electrodes on gauze" />
+              </Col>
+            </Row>
           </div>
 
           <Container className="text-justify pt-lg-5 pb-lg-5">
-            <Row className="justify-content-center">
-              <Col lg="12">
-                <Row className="row-grid">
-                  <Col lg="6">
-                    <Card className="card-lift--hover shadow border-0">
-                      <CardBody className="py-5">
-                        <h6 className="text-warning text-uppercase">Ensure good skin contact</h6>
-                        <p className="mt-3">
-                          To ensure that skin contact is good, it is important to measure the impedance between the
-                          electrodes. Start by measuring the impedance between your active electrode and its reference
-                          (e.g.: Fpz and Cz). Also, check the impedance between the reference electrodes of each channel
-                          (Cz and Oz) and the ground electrode (A2). As a rule of thumb, low impedance (10 KOhms) is
-                          good and high ones are bad (let’s say 150 KOhms).
-                        </p>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg="6">
-                    <Card className="card-lift--hover shadow border-0">
-                      <CardBody className="py-5">
-                        <h6 className="text-primary text-uppercase">Limit noise</h6>
-                        <p className="mt-3">
-                          Tie the electrodes together with a hair tie, and if you have long hair, tie them all together
-                          in order to avoid static during the night. To limit electromagnetic interferences you may want
-                          to place your board in some sort of Faraday cage, for example, a plastic container wrapped up
-                          in aluminium foil.
-                        </p>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <CardDeck>
+              <Card className="card-lift--hover shadow border-0">
+                <CardBody className="py-5">
+                  <h6 className="text-warning text-uppercase">Ensure good skin contact</h6>
+                  <p className="mt-3">
+                    To ensure that skin contact is good, it is important to measure the impedance between the
+                    electrodes. Start by measuring the impedance between your active electrode and its reference (e.g.:
+                    Fpz and Cz). Also, check the impedance between the reference electrodes of each channel (Cz and Oz)
+                    and the ground electrode (A2). As a rule of thumb, low impedance (10 KOhms) is good and high ones
+                    are bad (let’s say 150 KOhms).
+                  </p>
+                </CardBody>
+              </Card>
+              <Card className="card-lift--hover shadow border-0">
+                <CardBody className="py-5">
+                  <h6 className="text-primary text-uppercase">Limit noise</h6>
+                  <p className="mt-3">
+                    Tie the electrodes together with a hair tie, and if you have long hair, tie them all together in
+                    order to avoid static during the night. To limit electromagnetic interferences you may want to place
+                    your board in some sort of Faraday cage, for example, a plastic container wrapped up in aluminium
+                    foil.
+                  </p>
+                </CardBody>
+              </Card>
+            </CardDeck>
           </Container>
 
           <div>
