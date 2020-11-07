@@ -38,7 +38,7 @@ const RecordMySleep = () => {
       <section className="section bg-secondary">
         <Container className="text-justify pt-lg">
           <h3 className="display-3 mb-3">What you need</h3>
-          <p>
+          <p className="lead">
             If you already own an OpenBCI board, you could have very little to buy. Either ways, you are going to need
             the following:
           </p>
