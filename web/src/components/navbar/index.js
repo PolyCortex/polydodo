@@ -16,9 +16,11 @@ import {
   Collapse,
 } from 'reactstrap';
 
-import Logo from 'assets/img/dodo.png';
-import PaleBackgroundLogo from 'assets/img/dodo.png';
+import Logo from 'assets/img/logo.png';
+import PaleBackgroundLogo from 'assets/img/pale_background_logo.png';
 import text from './text.json';
+
+import './style.css';
 
 const OutsideLink = ({ href, iconClass, linkName, tooltipText, tooltipID }) => {
   return (
@@ -71,7 +73,7 @@ const ResponsiveCollapse = ({ children, isCollapseOpen, setIsCollapseOpen }) => 
           <Row>
             <Col className="collapse-brand" xs="6">
               <Link to="/">
-                <img alt="Polydodo" src={PaleBackgroundLogo} />
+                <img alt="Polydodo" src={PaleBackgroundLogo} className="navbar__logo" />
               </Link>
             </Col>
             <Col className="collapse-close" xs="6">
@@ -106,7 +108,7 @@ const Navbar = () => {
       <NavbarStrap id="navbar-main" expand="lg">
         <Container>
           <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-            <img alt="Polydodo" src={Logo} />
+            <img alt="Polydodo" src={Logo} className="navbar__logo" />
           </NavbarBrand>
 
           <ResponsiveCollapse isCollapseOpen={isCollapseOpen} setIsCollapseOpen={setIsCollapseOpen}>

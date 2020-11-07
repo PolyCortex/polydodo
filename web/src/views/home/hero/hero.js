@@ -5,7 +5,7 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import HeaderSeparator from 'components/header_separator';
 import { Link } from 'react-router-dom';
 
-import Logo from 'assets/img/dodo.png';
+import Logo from 'assets/img/logo.png';
 
 import './style.css';
 
@@ -24,7 +24,7 @@ class Hero extends React.Component {
               <div className="col px-0">
                 <Row className="align-items-center justify-content-center">
                   <Col className="text-center" lg="12">
-                    <img alt="..." className="img-fluid" src={Logo} style={{ width: '125px' }} />
+                    <img alt="Polydodo" className="img-fluid hero__logo" src={Logo} />
                     <p className="lead text-white mb-5">Record, upload and visualize your sleep.</p>
                     <div className="hero__video-container center">
                       <iframe
