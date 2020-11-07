@@ -21,11 +21,11 @@ const Tabs = ({ elements, onSelectTab, onHoverTab }) => {
                   active: selectedTab === i,
                 })}
                 onClick={(e) => {
-                  onSelectTab(id);
+                  onSelectTab && onSelectTab(id);
                   setSelectedTab(e, i);
                 }}
-                onMouseOver={() => onHoverTab(id)}
-                onMouseLeave={() => onHoverTab(null)}
+                onMouseOver={() => onHoverTab && onHoverTab(id)}
+                onMouseLeave={() => onHoverTab && onHoverTab(null)}
                 href="#pablo"
                 role="tab"
               >
