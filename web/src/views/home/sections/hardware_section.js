@@ -30,9 +30,9 @@ const HardwareSection = () => (
         <Col className="order-md-2" md="8">
           <div className="pr-md-5">
             <h2>Acquisition System</h2>
-            <p className="lead">
-              Polydodo is compatible with OpenBCI biosignals acquisition hardware, both Cyton and Ganglion boards. They
-              rock!
+            <p className="lead text-justify">
+              Polydodo is compatible with OpenBCI biosignals acquisition hardware. It supports both Cyton and Ganglion
+              boards. They rock!
             </p>
             <a target="_blank" rel="noopener noreferrer" href="https://shop.openbci.com/collections/frontpage">
               Buy an OpenBCI board

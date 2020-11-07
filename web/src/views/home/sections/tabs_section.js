@@ -20,9 +20,9 @@ const TabsSection = () => {
   return (
     <section className="section section-xl bg-secondary">
       <Container>
-        <h3 className="h4 text-primary font-weight-bold mb-4">
+        <h2 className="h4 text-primary font-weight-bold mb-4">
           <Emoji symbol="💤" label="zzz" /> You can sleep soundly
-        </h3>
+        </h2>
         <Row className="justify-content-center">
           <Col lg="8">
             <div className="nav-wrapper">
@@ -37,7 +37,7 @@ const TabsSection = () => {
                     href="#pablo"
                     role="tab"
                   >
-                    <i className="ni ni-atom mr-2" />
+                    <i className="fa fa-unlock fa-lg mr-2" />
                     Open Source
                   </NavLink>
                 </NavItem>
@@ -51,7 +51,7 @@ const TabsSection = () => {
                     href="#pablo"
                     role="tab"
                   >
-                    <i className="ni ni-key-25 mr-2" />
+                    <i className="fa fa-user-secret fa-lg mr-2" />
                     Anonymous
                   </NavLink>
                 </NavItem>
@@ -65,7 +65,7 @@ const TabsSection = () => {
                     href="#pablo"
                     role="tab"
                   >
-                    <i className="ni ni-single-copy-04 mr-2" />
+                    <i className="fa fa-book fa-lg mr-2" />
                     Disclaimer
                   </NavLink>
                 </NavItem>
@@ -75,7 +75,9 @@ const TabsSection = () => {
               <CardBody>
                 <TabContent className="tabs_section__body" activeTab={'activeTab' + activeTab}>
                   <TabPane tabId={`activeTab${TABS.FIRST}`}>
-                    <p>This project is entirely free and open source. Feel free to help us by contributing!</p>
+                    <p className="text-justify">
+                      This project is entirely free and open source. Feel free to help us by contributing to it!
+                    </p>
                     <Button
                       className="btn-icon mb-3 mb-sm-0"
                       color="github"
@@ -93,16 +95,17 @@ const TabsSection = () => {
                     </Button>
                   </TabPane>
                   <TabPane className="tabs_section__body" tabId={`activeTab${TABS.SECOND}`}>
-                    <p>
-                      Your data is in your hand. Nothing is sent over the internet. Everything is running locally on
-                      your browser and local server.
+                    <p className="text-justify">
+                      Your data is in your hand. Nothing is sent over the internet. Biosignals are sensitive data and we
+                      take their privacy very seriously. That is why everything is running locally, on your browser and
+                      a local server.
                     </p>
                   </TabPane>
                   <TabPane className="tabs_section__body" tabId={`activeTab${TABS.THIRD}`}>
-                    <p>
-                      This application is not intended for medical purposes and the data it produces should not be used
-                      in such context. Its only goal is to demonstrate what is possible and to help you study your own
-                      sleep.
+                    <p className="text-justify">
+                      <strong>This application is not intended for medical purposes</strong> and the data it produces
+                      should not be used in such context. Its only goal is to help you study your sleep by yourself.
+                      Always seek the advice of a physician with any questions regarding a medical condition.
                     </p>
                   </TabPane>
                 </TabContent>

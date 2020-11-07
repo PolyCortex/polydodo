@@ -36,7 +36,7 @@ Feature.propTypes = {
 const ProcessSection = () => (
   <section className="section section-sm">
     <Container>
-      <h2 className="pb-3">How it works</h2>
+      <h2 className="pb-3">How It Works?</h2>
       <p className="lead">
         We accompany you through every steps of the process; from gathering the things you'll need, to exporting your
         very own sleep results.
