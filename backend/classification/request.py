@@ -21,7 +21,8 @@ class ClassificationRequest():
 
         self.stream_duration = raw_eeg.times[-1]
         self.raw_eeg = raw_eeg
-        self.is_valid = None
+
+        self._validate()
 
     @property
     def in_bed_seconds(self):
@@ -37,7 +38,7 @@ class ClassificationRequest():
     def n_epochs(self):
         return (self.wakeup - self.bedtime) / EPOCH_DURATION
 
-    def validate(self):
+    def _validate(self):
         self._validate_timestamps()
         self._validate_file_with_timestamps()
         self._validate_age()

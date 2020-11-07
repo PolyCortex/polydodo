@@ -44,7 +44,8 @@ class ClassificationResponse():
             'sex': self.sex.name,
         }
 
-    def get_response(self):
+    @property
+    def response(self):
         return {
             'epochs': self.epochs,
             'report': None,

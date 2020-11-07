@@ -61,7 +61,6 @@ def analyze_sleep():
             wakeup=int(form_data['wakeup']),
             raw_eeg=raw_array,
         )
-        classification_request.validate()
     except (KeyError, ValueError, ClassificationError):
         return 'Missing or invalid request parameters', HTTPStatus.BAD_REQUEST
 
@@ -72,7 +71,7 @@ def analyze_sleep():
         classification_request, predictions, spectrogram_generator.generate()
     )
 
-    return classification_response.get_response()
+    return classification_response.response
 
 
 CORS(app,
