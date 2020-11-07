@@ -103,7 +103,7 @@ const RecordMySleep = () => {
             </Row>
           </div>
 
-          <div>
+          <div className="mt-5">
             <h4 className="display-4">Wire the electrodes to the OpenBCI device</h4>
             <p className="lead">Here’s is how you need to wire your electrodes to the OpenBCI board you are using:</p>
             <Table
