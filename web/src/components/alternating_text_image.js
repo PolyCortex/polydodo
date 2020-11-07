@@ -12,16 +12,20 @@ const AlternatingTextImage = ({ elements }) =>
 
     const imageElement = <img src={`${process.env.PUBLIC_URL}/${image}`} alt={title} />;
 
-    return i % 2 === 0 ? (
-      <Row key={i}>
-        <Col xs="8">{textElement}</Col>
-        <Col xs="4">{imageElement}</Col>
-      </Row>
-    ) : (
-      <Row key={i}>
-        <Col xs="4">{imageElement}</Col>
-        <Col xs="8">{textElement}</Col>
-      </Row>
+    return (
+      <div className="pt-lg-5" key={i}>
+        {i % 2 === 0 ? (
+          <Row>
+            <Col xs="8">{textElement}</Col>
+            <Col xs="4">{imageElement}</Col>
+          </Row>
+        ) : (
+          <Row>
+            <Col xs="4">{imageElement}</Col>
+            <Col xs="8">{textElement}</Col>
+          </Row>
+        )}
+      </div>
     );
   });
 export default AlternatingTextImage;
