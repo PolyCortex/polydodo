@@ -63,7 +63,7 @@ const RecordMySleep = () => {
 
       <section className="section bg-secondary">
         <Container className="text-justify pt-lg">
-          <h3 className="display-3">How to place the electrodes</h3>
+          <h3 className="display-3 mb-4">How to place the electrodes</h3>
 
           <div>
             <h4 className="display-4">Apply Abrasive paste</h4>
