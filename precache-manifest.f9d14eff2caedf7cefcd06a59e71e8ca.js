@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5aedfb301844c5cf59878ad6c7d25ca7",
+    "revision": "f51b3ff5c883a56aeef0f9ae1e42c228",
     "url": "/polydodo/index.html"
   },
   {
-    "revision": "ff50c44f3cb2ddf7b3a6",
-    "url": "/polydodo/static/css/main.60b67dc3.chunk.css"
+    "revision": "f88dc0886582e2d414aa",
+    "url": "/polydodo/static/css/main.e8db95a1.chunk.css"
   },
   {
-    "revision": "d5a0d34a5623e3f00bb4",
-    "url": "/polydodo/static/js/2.20d8a8da.chunk.js"
+    "revision": "d1382165d939bedd15ba",
+    "url": "/polydodo/static/js/2.863792a7.chunk.js"
   },
   {
-    "revision": "c4501eb380541fa22eda15da50d31ca5",
-    "url": "/polydodo/static/js/2.20d8a8da.chunk.js.LICENSE.txt"
+    "revision": "80a7bbd8c5215e664769d5ed5a682078",
+    "url": "/polydodo/static/js/2.863792a7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ff50c44f3cb2ddf7b3a6",
-    "url": "/polydodo/static/js/main.a7ae428e.chunk.js"
+    "revision": "f88dc0886582e2d414aa",
+    "url": "/polydodo/static/js/main.5b63bc97.chunk.js"
   },
   {
     "revision": "9461170423a0fade06f4",
