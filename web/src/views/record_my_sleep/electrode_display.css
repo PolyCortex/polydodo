@@ -1,0 +1,78 @@
+.imgs-container {
+  position: relative;
+  text-align: center;
+}
+
+.img-container {
+  position: relative;
+  text-align: center;
+  min-width: 50px;
+  min-height: 50px;
+  display: inline-block;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+}
+
+.dot-select {
+  background-color: #fc7c5f;
+}
+
+.dot-null {
+  display: none;
+}
+
+.top.dot-fpz {
+  top: 3%;
+  left: 47%;
+}
+
+.top.dot-cz {
+  top: 46%;
+  left: 47%;
+}
+
+.top.dot-pz {
+  top: 76%;
+  left: 46%;
+}
+
+.top.dot-oz {
+  top: 89%;
+  left: 46%;
+}
+
+.top.dot-a2 {
+  top: 48%;
+  left: 90%;
+}
+
+.side.dot-fpz {
+  top: 38%;
+  left: 70%;
+}
+
+.side.dot-cz {
+  top: 17%;
+  left: 43%;
+}
+
+.side.dot-pz {
+  top: 28%;
+  left: 27%;
+}
+
+.side.dot-oz {
+  top: 51%;
+  left: 23%;
+}
+
+.side.dot-a2 {
+  top: 58%;
+  left: 49%;
+}
