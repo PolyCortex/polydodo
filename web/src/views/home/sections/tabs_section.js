@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { Card, CardBody, NavItem, NavLink, Nav, TabContent, TabPane, Row, Col, Button, Container } from 'reactstrap';
 import classnames from 'classnames';
 
-import { Card, CardBody, NavItem, NavLink, Nav, TabContent, TabPane, Row, Col, Button, Container } from 'reactstrap';
+import Emoji from 'components/emoji';
+
+import Dodo from 'assets/img/dodo.png';
+import './style.css';
 
 const TABS = { FIRST: 0, SECOND: 1, THIRD: 2 };
 
@@ -16,7 +20,9 @@ const TabsSection = () => {
   return (
     <section className="section section-sm bg-secondary">
       <Container>
-        <h3 className="h4 text-success font-weight-bold mb-4">Section</h3>
+        <h3 className="h4 text-primary font-weight-bold mb-4">
+          <Emoji symbol="💤" label="zzz" /> You can sleep soundly
+        </h3>
         <Row className="justify-content-center">
           <Col lg="8">
             <div className="nav-wrapper">
@@ -67,11 +73,9 @@ const TabsSection = () => {
             </div>
             <Card className="shadow mb-5">
               <CardBody>
-                <TabContent activeTab={'activeTab' + activeTab}>
+                <TabContent className="tabs_section__body" activeTab={'activeTab' + activeTab}>
                   <TabPane tabId={`activeTab${TABS.FIRST}`}>
-                    <p className="description">
-                      This project is entirely free and open source. Feel free to help us by contributing!
-                    </p>
+                    <p>This project is entirely free and open source. Feel free to help us by contributing!</p>
                     <Button
                       className="btn-icon mb-3 mb-sm-0"
                       color="github"
@@ -88,14 +92,14 @@ const TabsSection = () => {
                       </span>
                     </Button>
                   </TabPane>
-                  <TabPane tabId={`activeTab${TABS.SECOND}`}>
-                    <p className="description">
+                  <TabPane className="tabs_section__body" tabId={`activeTab${TABS.SECOND}`}>
+                    <p>
                       Your data is in your hand. Nothing is sent over the internet. Everything is running locally on
                       your browser and local server.
                     </p>
                   </TabPane>
-                  <TabPane tabId={`activeTab${TABS.THIRD}`}>
-                    <p className="description">
+                  <TabPane className="tabs_section__body" tabId={`activeTab${TABS.THIRD}`}>
+                    <p>
                       This application is not intended for medical purposes and the data it produces should not be used
                       in such context. Its only goal is to demonstrate what is possible and to help you study your own
                       sleep.
@@ -107,9 +111,7 @@ const TabsSection = () => {
           </Col>
           <Col size="4">
             <div className="position-relative pl-md-5">
-              <a href="https://www.freepik.com/vectors/background">
-                <img alt="..." className="img-center img-fluid" src={require('assets/img/woman_sleeping.webp')} />
-              </a>
+              <img alt="..." className="img-center img-fluid" src={Dodo} />
             </div>
           </Col>
         </Row>
