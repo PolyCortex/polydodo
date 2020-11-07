@@ -33,10 +33,14 @@ Feature.propTypes = {
   link: PropTypes.element,
 };
 
-const FeaturesSection = () => (
-  <section className="section section-xl">
+const ProcessSection = () => (
+  <section className="section section-sm">
     <Container>
-      <h2 className="py-3">How it works</h2>
+      <h2 className="pb-3">How it works</h2>
+      <p className="lead">
+        We accompany you through every steps of the process; from gathering the things you'll need, to exporting your
+        very own sleep results.
+      </p>
       <Row>
         <Feature
           iconClassColor="icon-shape-success"
@@ -73,4 +77,4 @@ const FeaturesSection = () => (
   </section>
 );
 
-export default FeaturesSection;
+export default ProcessSection;
