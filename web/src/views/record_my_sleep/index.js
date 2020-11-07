@@ -120,8 +120,7 @@ const RecordMySleep = () => {
         </Container>
       </section>
 
-      <section className="section section-lg bg-gradient-default"></section>
-      <section className="section section-lg pt-lg-0 pb-lg-0 mt--200">
+      <section className="section section-lg pt-lg-0 pb-lg-0 mt--100">
         <Container className="text-justify pt-lg-5">
           <CardDeck>
             <Card className="card-lift--hover shadow border-0">
