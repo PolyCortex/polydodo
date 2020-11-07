@@ -40,7 +40,7 @@ const RecordMySleep = () => {
 
       <section className="section bg-secondary">
         <Container className="text-justify pt-lg">
-          <h3 className="display-3">What you need</h3>
+          <h3 className="display-3 mb-3">What you need</h3>
           <AlternatingTextImage elements={material_needed.elements} />
         </Container>
       </section>
