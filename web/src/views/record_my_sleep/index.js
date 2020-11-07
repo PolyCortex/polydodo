@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardBody, Container, Row, Col, CardDeck, Badge } from 'reactstrap';
+import { Card, CardBody, Container, Row, Col, CardDeck, Badge, Button } from 'reactstrap';
 import { Alarm, Hotel, Timeline } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
 import Header from 'components/header';
 import Table from 'components/table';
@@ -9,6 +10,9 @@ import text from './text.json';
 
 import material_needed from './material_needed.json';
 import AlternatingTextImage from 'components/alternating_text_image';
+
+import carousel_images from './carousel_images.json';
+import Carousel from 'components/carousel';
 
 import ElectrodesDisplay from './electrodes_display';
 
@@ -248,6 +252,29 @@ const RecordMySleep = () => {
               in order to score your sleep and analyze your data.
             </p>
           </div>
+        </Container>
+      </section>
+
+      <section className="section section-lg">
+        <Container className="text-justify">
+          <h3 className="display-3">How we did it</h3>
+          <Row>
+            <Col xs="8">
+              <p className="lead">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+              </p>
+              <Button className="btn-icon mb-3 mb-sm-0" color="success" to="/analyze-my-sleep" tag={Link} size="lg">
+                <span className="btn-inner--text">Analyze my sleep</span>
+              </Button>
+            </Col>
+            <Col xs="4">
+              <Carousel items={carousel_images.items} />
+            </Col>
+          </Row>
         </Container>
       </section>
     </>
