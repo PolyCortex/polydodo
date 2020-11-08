@@ -7,14 +7,13 @@ const MotivationSection = () => (
       <h2 className="mt-3">Why Would I Analyze My Sleep?</h2>
       <p className="lead text-justify">
         Although we spend a major part of our day sleeping, we cannot truly understand what happens during this time, as
-        sleep is inherently an altered state of consciousness. With Polydodo, we to offer an accessible way to answer,
-        for each moment of the night, how was my sleep.
+        sleep is inherently an altered state of consciousness. With Polydodo we to offer an accessible way to answer the question "How was my sleep?".
       </p>
       <p className="text-justify">
         We do so by offering you a picture of your sleep based on the five standard sleep stages defined by the American
-        Academy of Sleep Medicine (AASM) Manual for the Scoring of Sleep and Associated Events. These sleep stages are
+        Academy of Sleep Medicine's (AASM) Manual for the Scoring of Sleep and Associated Events. These sleep stages are
         Wake, Rapid-Eye Movement (REM), and the three non-REM stages, which goes from the lightest, N1, to the deepest,
-        N3. Polydodo scores every 30 seconds epochs of your night into these five stages.
+        N3. Polydodo scores every 30 seconds of your night into these five stages.
       </p>
       <p className="text-justify">
         By studying your own sleep, you may discover how your daily habits affect your sleep architecture. For each
@@ -22,24 +21,24 @@ const MotivationSection = () => (
       </p>
       <ul>
         <li>
-          <h6>time spent in each sleep stage;</h6>
+          <h6>Time spent in each sleep stage</h6>
         </li>
         <li>
-          <h6>time spent awake after sleep onset (WASO);</h6>
+          <h6>Time spent awake after sleep onset (WASO)</h6>
         </li>
         <li>
-          <h6>sleep latency (time it took to fall asleep);</h6>
+          <h6>Sleep latency (time it took to fall asleep)</h6>
         </li>
         <li>
-          <h6>sleep efficiency;</h6>
+          <h6>Sleep efficiency</h6>
         </li>
         <li>
-          <h6>and much more!</h6>
+          <h6>And much more!</h6>
         </li>
       </ul>
       <p className="text-justify">
-        If you think you may suffer of a sleep disorder or you have hard times falling asleep, you may consider to seek
-        to advice of a physician. Polydodo <strong>is not</strong> an autodiagnostic tool.
+        If you think you suffer from a sleep disorder or you have a hard time falling asleep, you may consider seeking
+        the advice of a professional. Polydodo <strong>is not</strong> an autodiagnostic tool.
       </p>
     </Container>
   </section>

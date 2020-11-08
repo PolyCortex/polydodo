@@ -39,7 +39,7 @@ const HardwareSection = () => (
             </a>
             <ul className="list-unstyled mt-4">
               <PerkItem iconClass="fas fa-check">Reliable</PerkItem>
-              <PerkItem iconClass="fas fa-dollar-sign">Cheap and Accessible</PerkItem>
+              <PerkItem iconClass="fas fa-dollar-sign">Cheap and accessible</PerkItem>
               <PerkItem iconClass="fas fa-unlock">Open source hardware</PerkItem>
             </ul>
           </div>
