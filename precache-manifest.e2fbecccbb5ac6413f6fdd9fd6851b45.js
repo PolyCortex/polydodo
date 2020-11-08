@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f51b3ff5c883a56aeef0f9ae1e42c228",
+    "revision": "47e22be856fac0dbd3519be50e7c6e98",
     "url": "/polydodo/index.html"
   },
   {
-    "revision": "f88dc0886582e2d414aa",
+    "revision": "4f6a67e3d49653de6959",
     "url": "/polydodo/static/css/main.e8db95a1.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/polydodo/static/js/2.863792a7.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f88dc0886582e2d414aa",
-    "url": "/polydodo/static/js/main.5b63bc97.chunk.js"
+    "revision": "4f6a67e3d49653de6959",
+    "url": "/polydodo/static/js/main.9404ce29.chunk.js"
   },
   {
     "revision": "9461170423a0fade06f4",

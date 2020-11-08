@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/polydodo/static/css/main.e8db95a1.chunk.css",
-    "main.js": "/polydodo/static/js/main.5b63bc97.chunk.js",
+    "main.js": "/polydodo/static/js/main.9404ce29.chunk.js",
     "runtime-main.js": "/polydodo/static/js/runtime-main.ef5adf4f.js",
     "static/js/2.863792a7.chunk.js": "/polydodo/static/js/2.863792a7.chunk.js",
     "index.html": "/polydodo/index.html",
-    "precache-manifest.f9d14eff2caedf7cefcd06a59e71e8ca.js": "/polydodo/precache-manifest.f9d14eff2caedf7cefcd06a59e71e8ca.js",
+    "precache-manifest.e2fbecccbb5ac6413f6fdd9fd6851b45.js": "/polydodo/precache-manifest.e2fbecccbb5ac6413f6fdd9fd6851b45.js",
     "service-worker.js": "/polydodo/service-worker.js",
     "static/js/2.863792a7.chunk.js.LICENSE.txt": "/polydodo/static/js/2.863792a7.chunk.js.LICENSE.txt",
     "static/media/aep.png": "/polydodo/static/media/aep.fda414f1.png",
@@ -20,6 +20,6 @@
     "static/js/runtime-main.ef5adf4f.js",
     "static/js/2.863792a7.chunk.js",
     "static/css/main.e8db95a1.chunk.css",
-    "static/js/main.5b63bc97.chunk.js"
+    "static/js/main.9404ce29.chunk.js"
   ]
 }
