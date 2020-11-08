@@ -184,9 +184,8 @@ const UploadForm = () => {
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const streamStart = new Date(`
-                              ${getValues('stream_start_date')} ${getValues('stream_start_time')}
-                            `);
+                            // prettier-ignore
+                            const streamStart = new Date(`${getValues('stream_start_date')} ${getValues('stream_start_time')}`);
                             const bedTime = new Date(`${getValues('bedtime_date')} ${getValues('bedtime_time')}`);
                             if (streamStart > bedTime) {
                               return 'Stream start must be prior to bedtime.';
