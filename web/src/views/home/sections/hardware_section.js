@@ -8,7 +8,7 @@ const PerkItem = ({ iconClass, children }) => (
     <div className="d-flex align-items-center">
       <div>
         <Badge className="badge-circle mr-3" color="success">
-          <i className={`fa ${iconClass}`} />
+          <i className={`${iconClass}`} />
         </Badge>
       </div>
       <div>
@@ -38,9 +38,9 @@ const HardwareSection = () => (
               Buy an OpenBCI board
             </a>
             <ul className="list-unstyled mt-4">
-              <PerkItem iconClass="fa-check">Reliable</PerkItem>
-              <PerkItem iconClass="fa-usd">Cheap and Accessible</PerkItem>
-              <PerkItem iconClass="fa-unlock">Open source hardware</PerkItem>
+              <PerkItem iconClass="fas fa-check">Reliable</PerkItem>
+              <PerkItem iconClass="fas fa-dollar-sign">Cheap and Accessible</PerkItem>
+              <PerkItem iconClass="fas fa-unlock">Open source hardware</PerkItem>
             </ul>
           </div>
         </Col>

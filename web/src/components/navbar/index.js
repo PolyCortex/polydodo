@@ -26,7 +26,7 @@ const OutsideLink = ({ href, iconClass, linkName, tooltipText, tooltipID }) => {
   return (
     <NavItem>
       <NavLink className="nav-link-icon" href={href} id={tooltipID} target="_blank">
-        <i className={`fa ${iconClass}`} />
+        <i className={`fab ${iconClass}`} />
         <span className="nav-link-inner--text d-lg-none ml-2">{linkName}</span>
       </NavLink>
       <UncontrolledTooltip delay={0} target={tooltipID}>

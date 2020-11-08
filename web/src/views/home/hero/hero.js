@@ -35,7 +35,7 @@ class Hero extends React.Component {
                       />
                     </div>
                     <Row className="align-items-center justify-content-center mt-5 mb-4">
-                      <RecordMyOwnSleepButton className="ml-3 mb-3 mb-sm-0 hero__action_button" color="warning" />
+                      <RecordMyOwnSleepButton className="ml-3 mb-3 mb-md-0 hero__action_button" color="warning" />
                       <span className="mr-4" />
                       <PreviewButton className="btn-white hero__action_button mr-3 mb-3 mb-sm-0" />
                     </Row>

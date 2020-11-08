@@ -13,7 +13,7 @@ const Feature = ({ iconClassColor, iconClass, titlePrefix, title, description, l
     </Row>
     <Row className="align-items-center justify-content-center">
       <div className={`icon feature__icon_badge icon-shape ${iconClassColor} shadow rounded-circle mb-5`}>
-        <i className={`fa ${iconClass} feature__icon`} />
+        <i className={`${iconClass} feature__icon`} />
       </div>
     </Row>
     <Row className="align-items-center justify-content-center">
@@ -44,7 +44,7 @@ const ProcessSection = () => (
       <Row>
         <Feature
           iconClassColor="icon-shape-success"
-          iconClass="fa-flask"
+          iconClass="fas fa-flask"
           titlePrefix="01|"
           title="Record"
           description="Create your own sleep lab and record your EEG while sleeping using an OpenBCI."
@@ -52,14 +52,14 @@ const ProcessSection = () => (
         />
         <Feature
           iconClassColor="icon-shape-danger"
-          iconClass="fa-cloud-upload"
+          iconClass="fas fa-cloud-upload-alt"
           titlePrefix="02|"
           title="Upload"
           description="Upload your recording to the local server and let it score your sleep for you."
         />
         <Feature
           iconClassColor="icon-shape-warning"
-          iconClass="fa-bar-chart"
+          iconClass="fas fa-chart-bar"
           titlePrefix="03|"
           title="Visualize"
           description="Check out your results and see how you slept through our personalized infographics."
@@ -67,7 +67,7 @@ const ProcessSection = () => (
         />
         <Feature
           iconClassColor="icon-shape-primary"
-          iconClass="fa-save"
+          iconClass="far fa-save"
           titlePrefix="04|"
           title="Export"
           description="Save your results to your local file system as a json."

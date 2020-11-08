@@ -62,7 +62,7 @@ const TeamSection = () => (
             target="_blank"
           >
             <span className="btn-inner--icon mr-1 text-primary">
-              <i className="ni ni-world-2" />
+              <i className="fas fa-globe" />
             </span>
             <span className="btn-inner--text text-primary">Go To Website</span>
           </Button>

@@ -37,7 +37,7 @@ const TabsSection = () => {
                     href="#pablo"
                     role="tab"
                   >
-                    <i className="fa fa-unlock fa-lg mr-2" />
+                    <i className="fas fa-unlock fa-lg mr-2" />
                     Open Source
                   </NavLink>
                 </NavItem>
@@ -51,7 +51,7 @@ const TabsSection = () => {
                     href="#pablo"
                     role="tab"
                   >
-                    <i className="fa fa-user-secret fa-lg mr-2" />
+                    <i className="fas fa-user-secret fa-lg mr-2" />
                     Anonymous
                   </NavLink>
                 </NavItem>
@@ -65,7 +65,7 @@ const TabsSection = () => {
                     href="#pablo"
                     role="tab"
                   >
-                    <i className="fa fa-book fa-lg mr-2" />
+                    <i className="fas fa-book fa-lg mr-2" />
                     Disclaimer
                   </NavLink>
                 </NavItem>
@@ -86,7 +86,7 @@ const TabsSection = () => {
                       target="_blank"
                     >
                       <span className="btn-inner--icon mr-1">
-                        <i className="fa fa-github" />
+                        <i className="fab fa-github" />
                       </span>
                       <span className="btn-inner--text">
                         <span className="text-warning mr-1">Star it</span>
