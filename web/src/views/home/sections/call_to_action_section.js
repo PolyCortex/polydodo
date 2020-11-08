@@ -10,9 +10,9 @@ const CallToActionSection = () => (
           <Row className="align-items-center">
             <Col lg="8">
               <h3 className="text-white">Nothing is better than an example</h3>
-              <p className="lead text-white mt-3">
-                I will be the leader of a company that ends up being worth billions of dollars, because I got the
-                answers. I understand culture.
+              <p className="lead text-white text-justify mt-3">
+                You can use the preview mode. This gives an example of what you might see if you upload a sleep sequence
+                that you have acquired.
               </p>
             </Col>
             <Col className="ml-lg-auto" lg="3">

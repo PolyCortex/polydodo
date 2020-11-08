@@ -18,9 +18,9 @@ const Home = () => {
       <ProcessSection />
       <HardwareSection />
       <TabsSection />
-      <TechnologySection />
-      <TeamSection />
       <MotivationSection />
+      <TeamSection />
+      <TechnologySection />
       <CallToActionSection />
     </div>
   );
