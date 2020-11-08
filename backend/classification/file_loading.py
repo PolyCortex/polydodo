@@ -16,6 +16,7 @@ from mne.io import RawArray
 import numpy as np
 import pandas as pd
 
+from classification.exceptions import ClassificationError
 from classification.config.constants import (
     EEG_CHANNELS,
     OPENBCI_CYTON_SAMPLE_RATE,
@@ -40,10 +41,14 @@ def get_raw_array(file):
     """
 
     retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
-    eeg_raw = pd.read_csv(file,
-                          skiprows=SKIP_ROWS,
-                          usecols=retained_columns
-                          ).to_numpy()
+
+    try:
+        eeg_raw = pd.read_csv(file,
+                              skiprows=SKIP_ROWS,
+                              usecols=retained_columns
+                              ).to_numpy()
+    except Exception:
+        raise ClassificationError()
 
     hexstr_to_int = np.vectorize(_hexstr_to_int)
     eeg_raw = hexstr_to_int(eeg_raw)
