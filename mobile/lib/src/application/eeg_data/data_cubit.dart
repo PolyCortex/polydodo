@@ -26,23 +26,29 @@ class DataCubit extends Cubit<DataState> {
     _eegDataRepository.stopRecordingFromStream();
   }
 
-  Future<void> testSignal() async {
+  Future<void> startSignalValidation() async {
     _eegDataRepository.initialize();
     _eegDataRepository.testSignal(
         await _deviceRepository.startDataStream(), signalCallback);
 
-    emit(DataStateTestSignalInProgress());
+    emit(DataStateTestSignalSuccess(SignalResult.valid, SignalResult.valid));
   }
 
   void signalCallback(
-      SignalResult channelOneResult, SignalResult channelOneTwot,
+      SignalResult channelOneResult, SignalResult channelTwoResult,
       [Exception e]) {
-    _eegDataRepository.stopRecordingFromStream();
-
     if (e != null) {
       emit(DataStateTestSignalFailure(e));
     } else {
-      emit(DataStateTestSignalSuccess(channelOneResult, channelOneTwot));
+      (channelOneResult == SignalResult.valid &&
+              channelTwoResult == SignalResult.valid)
+          ? {
+              _eegDataRepository.stopRecordingFromStream(),
+              emit(DataStateTestSignalSuccess(
+                  channelOneResult, channelTwoResult))
+            }
+          : emit(DataStateTestSignalInProgress(
+              channelOneResult, channelTwoResult));
     }
   }
 }

@@ -25,11 +25,6 @@ class RecordSleepRecordingPage extends StatelessWidget {
                       child: Text('Start'),
                       onPressed: () =>
                           BlocProvider.of<DataCubit>(context).startStreaming(),
-                    ),
-                    RaisedButton(
-                      child: Text('Test Signal'),
-                      onPressed: () =>
-                          BlocProvider.of<DataCubit>(context).testSignal(),
                     )
                   ]),
             );

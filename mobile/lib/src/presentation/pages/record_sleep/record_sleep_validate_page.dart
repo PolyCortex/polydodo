@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_states.dart';
-import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
@@ -27,11 +26,9 @@ class RecordSleepValidatePage extends StatelessWidget {
         builder: (context, state) {
           return Center(
             child: Column(children: <Widget>[
-              _buildValidationButton(context),
+              _buildValidationCircle(context, state),
               buildSignalSection(state),
-              if (state is DataStateTestSignalSuccess &&
-                  state.channelOneResult == SignalResult.valid &&
-                  state.channelTwoResult == SignalResult.valid)
+              if (state is DataStateTestSignalSuccess)
                 _buildNextButton(context),
             ]),
           );
@@ -41,18 +38,37 @@ class RecordSleepValidatePage extends StatelessWidget {
   }
 }
 
-Widget _buildValidationButton(var context) {
-  return ButtonTheme(
-      minWidth: 200.0,
-      height: 200.0,
-      child: RaisedButton(
-        onPressed: () => BlocProvider.of<DataCubit>(context).testSignal(),
-        elevation: 2.0,
-        color: Colors.white,
-        child: Text('Validate Signal',
-            style: TextStyle(color: Colors.blue, fontSize: 20.0)),
-        shape: CircleBorder(),
-      ));
+Widget _buildValidationCircle(var context, var state) {
+  return Center(
+      child: Stack(alignment: Alignment.center, children: [
+    SizedBox(width: 200, height: 200, child: _buildProgressIndicator(state)),
+    _buildProgressIndicatorContent(state),
+  ]));
+}
+
+Widget _buildProgressIndicator(var state) {
+  return (state is DataStateTestSignalSuccess)
+      ? CircularProgressIndicator(
+          strokeWidth: 10,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+          value: 100,
+        )
+      : CircularProgressIndicator(
+          strokeWidth: 10,
+        );
+}
+
+Widget _buildProgressIndicatorContent(var state) {
+  return (state is DataStateTestSignalSuccess)
+      ? Icon(
+          Icons.check,
+          color: Colors.green,
+          size: 50,
+        )
+      : Text(
+          'Validating ...',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        );
 }
 
 Widget _buildNextButton(var context) {

@@ -6,7 +6,12 @@ class DataStateInitial extends DataState {}
 
 class DataStateRecording extends DataState {}
 
-class DataStateTestSignalInProgress extends DataState {}
+class DataStateTestSignalInProgress extends DataState {
+  final SignalResult channelOneResult;
+  final SignalResult channelTwoResult;
+
+  DataStateTestSignalInProgress(this.channelOneResult, this.channelTwoResult);
+}
 
 class DataStateTestSignalSuccess extends DataState {
   final SignalResult channelOneResult;

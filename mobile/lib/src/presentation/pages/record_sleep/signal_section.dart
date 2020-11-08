@@ -3,10 +3,11 @@ import 'package:polydodo/src/application/eeg_data/data_states.dart';
 import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 
 Container buildSignalSection(var state) {
-  var channelOneResult = SignalResult.untested;
-  var channelTwoResult = SignalResult.untested;
+  var channelOneResult;
+  var channelTwoResult;
 
-  if (state is DataStateTestSignalSuccess) {
+  if (state is DataStateTestSignalInProgress ||
+      state is DataStateTestSignalSuccess) {
     channelOneResult = state.channelOneResult;
     channelTwoResult = state.channelTwoResult;
   }
@@ -37,16 +38,16 @@ Container _buildSignalInformation(var signalName, var signalResult) {
   );
 }
 
-Icon _getIcon(var signalResult) {
+Widget _getIcon(var signalResult) {
   switch (signalResult) {
     case SignalResult.near_railed:
       return Icon(Icons.warning, color: Colors.yellow[800]);
     case SignalResult.railed:
       return Icon(Icons.error, color: Colors.red);
-    case SignalResult.valid:
-      return Icon(Icons.check, color: Colors.green);
-    default:
+    case SignalResult.untested:
       return Icon(Icons.hourglass_empty, color: Colors.blue);
+    default:
+      return Container();
   }
 }
 

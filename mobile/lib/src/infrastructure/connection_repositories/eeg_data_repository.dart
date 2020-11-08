@@ -59,6 +59,7 @@ class EEGDataRepository implements IEEGDataRepository {
   Future<void> stopRecordingFromStream() async {
     // todo: move save future to another file
     unawaited(_currentTransformerStream.cancel());
+
     if (_recordingData != null) {
       final directory = await getExternalStorageDirectory();
       final pathOfTheFileToWrite =
@@ -96,6 +97,10 @@ class EEGDataRepository implements IEEGDataRepository {
       var signalTwoResult = _getResult(_channelTwoMaxValue);
 
       callback(signalOneResult, signalTwoResult);
+
+      _dataCount = 0;
+      _channelOneMaxValue = 0;
+      _channelTwoMaxValue = 0;
     }
   }
 
