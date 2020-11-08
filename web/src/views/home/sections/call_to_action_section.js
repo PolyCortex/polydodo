@@ -6,7 +6,7 @@ import { RecordMyOwnSleepButton, PreviewButton } from 'components/buttons';
 import './style.css';
 
 const CallToActionCard = ({ cardClassName, headerText, bodyText, button }) => (
-  <Card className={`${cardClassName} shadow-lg border-0 h-100`}>
+  <Card className={`${cardClassName} shadow-lg border-0 h-100 card-lift--hover`}>
     <div className="p-5 h-100">
       <Row className="align-items-center h-100">
         <Col className="h-100 d-flex flex-column">
