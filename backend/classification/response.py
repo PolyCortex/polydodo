@@ -46,10 +46,42 @@ class ClassificationResponse():
         }
 
     @property
+    def report(self):
+        return {
+            "sleepOnset": 1602211380,  # Time at which the subject fell asleep(time of the first non - wake epoch)
+            # Time at which the subject woke up(time of the epoch after the last non - wake epoch)
+            "sleepOffset": 1602242425,
+            "remOnset": 1602214232,  # First REM epoch
+
+            "sleepLatency": 1000,  # Time to fall asleep[seconds](sleepOnset - bedTime)
+            "remLatency": 3852,  # [seconds](remOnset - bedTime)
+
+            "sleepEfficiency": 0.8733,  # Overall sense of how well the patient slept(totalSleepTime / bedTime)
+            "awakenings": 7,  # number of times the subject woke up between sleep onset & offset
+            # number of times the subject transitionned from one stage to another between sleep onset & offset
+            "stageShifts": 89,
+
+
+            "wakeAfterSleepOffset": 500,  # [seconds](wakeUpTime - sleepOffset)
+            "efficientSleepTime": 27113,  # Total amount of seconds passed in non - wake stages
+            # Total amount of time passed in nocturnal awakenings. It is the total
+            # time passed in non - wake stage from sleep Onset to sleep
+            # offset(totalSleepTime - efficientSleepTime)
+            "WASO": 3932,
+            "WTime": 3932,  # [seconds] time passed in this stage between bedTime to wakeUpTime
+            # Total amount of time sleeping including nocturnal awakenings(sleepOffset - sleepOnset)
+            "SleepTime": 31045,
+            "REMTime": 2370,
+            "N1Time": 3402,
+            "N2Time": 16032,
+            "N3Time": 5309
+        }
+
+    @property
     def response(self):
         return {
             'epochs': self.epochs,
-            'report': None,
+            'report': self.report,
             'metadata': self.metadata,
             'subject': self.subject,
             'board': self.board.name,
