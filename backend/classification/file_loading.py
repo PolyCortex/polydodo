@@ -44,7 +44,7 @@ def get_raw_array(file):
 
     retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
     eeg_raw = pd.read_csv(file,
-                          converters={idx: _convert_hexadecimal_to_signed_decimal for idx in retained_columns},
+                          converters={idx: _get_twos_complement for idx in retained_columns},
                           skiprows=SKIP_ROWS,
                           usecols=retained_columns
                           ).to_numpy()
@@ -66,16 +66,6 @@ def get_raw_array(file):
     """)
 
     return raw_object
-
-
-def _convert_hexadecimal_to_signed_decimal(hex_value):
-    """Converts the hexadecimal value encoded on OpenBCI Cyton SD card to signed decimal
-    Input:
-    - hex_value: signed hexadecimal value
-    Returns:
-    - decimal value
-    """
-    return _get_twos_complement(hex_value) if len(hex_value) % 2 == 0 else 0
 
 
 def _get_twos_complement(hexstr):
