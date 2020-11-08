@@ -44,10 +44,12 @@ def get_raw_array(file):
 
     retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
     eeg_raw = pd.read_csv(file,
-                          converters={idx: _get_twos_complement for idx in retained_columns},
                           skiprows=SKIP_ROWS,
                           usecols=retained_columns
                           ).to_numpy()
+
+    hexstr_to_int = np.vectorize(_hexstr_to_int)
+    eeg_raw = hexstr_to_int(eeg_raw)
 
     raw_object = RawArray(
         SCALE_V_PER_COUNT * np.transpose(eeg_raw),
@@ -68,15 +70,11 @@ def get_raw_array(file):
     return raw_object
 
 
-def _get_twos_complement(hexstr):
+def _hexstr_to_int(hexstr):
     """Converts a two complement hexadecimal value in a string to a signed float
     Input:
     - hex_value: signed hexadecimal value
     Returns:
     - decimal value
     """
-    bits = len(hexstr) * 4
-    value = int(hexstr, 16)
-    if value & (1 << (bits - 1)):
-        value -= 1 << bits
-    return value
+    return int.from_bytes(bytes.fromhex(hexstr), byteorder='big', signed=True)
