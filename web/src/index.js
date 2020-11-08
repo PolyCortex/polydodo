@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Switch, Redirect, HashRouter } from 'react-router-dom';
 
+import '@fortawesome/fontawesome-free/css/all.css';
 import 'assets/css/argon-design-system-react.min.css';
 
 import Footer from 'components/footer';
