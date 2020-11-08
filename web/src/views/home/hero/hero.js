@@ -1,14 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
 
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import HeaderSeparator from 'components/header_separator';
-import { Link } from 'react-router-dom';
+import { RecordMyOwnSleepButton, PreviewButton } from 'components/buttons';
 
 import Logo from 'assets/img/logo.png';
 
 import './style.css';
-import PreviewButton from 'components/preview_button';
 
 class Hero extends React.Component {
   render() {
@@ -36,20 +35,9 @@ class Hero extends React.Component {
                       />
                     </div>
                     <Row className="align-items-center justify-content-center mt-5 mb-4">
-                      <Button
-                        className="ml-3 btn-icon mb-3 mb-sm-0 hero__action_button"
-                        color="warning"
-                        to="/record-my-sleep"
-                        tag={Link}
-                        size="lg"
-                      >
-                        <span className="btn-inner--icon mr-1">
-                          <i className="ni ni-sound-wave" />
-                        </span>
-                        <span className="btn-inner--text">Record My Own Sleep</span>
-                      </Button>
+                      <RecordMyOwnSleepButton className="ml-3 mb-3 mb-sm-0 hero__action_button" color="warning" />
                       <span className="mr-4" />
-                      <PreviewButton className="hero__action_button mr-3 mb-3 mb-sm-0" />
+                      <PreviewButton className="btn-white hero__action_button mr-3 mb-3 mb-sm-0" />
                     </Row>
                     <div className="mt-4">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>
