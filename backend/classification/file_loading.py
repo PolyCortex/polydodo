@@ -2,9 +2,6 @@
 Function utilities to convert data acquired on an OpenBCI
 Cyton board using the SD card logging strategy.
 
-TODO: We should look into optimizing this conversion. We currently
-convert one line at a time, while a vectorized approach would be much more efficient,
-as the conversion of a line does not depend on the other lines.
 TODO: Consider cropping file (from bed to wake up time) here, before the for loop. Have to consider
 not all lines hold sample values (i.e. first line with comment and second line with a single timestamp).
 
