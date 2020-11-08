@@ -8,6 +8,11 @@ class Sex(Enum):
     M = 2
 
 
+class AcquisitionBoard(Enum):
+    OPENBCI_CYTON = 1
+    OPENBCI_GANGLION = 2
+
+
 class SleepStage(Enum):
     W = 0
     N1 = 1

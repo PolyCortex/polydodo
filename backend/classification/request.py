@@ -12,12 +12,13 @@ from classification.exceptions import (
 
 
 class ClassificationRequest():
-    def __init__(self, sex, age, stream_start, bedtime, wakeup, raw_eeg):
+    def __init__(self, sex, age, stream_start, bedtime, wakeup, board, raw_eeg):
         self.sex = sex
         self.age = age
         self.stream_start = stream_start
         self.bedtime = bedtime
         self.wakeup = wakeup
+        self.board = board
 
         self.stream_duration = raw_eeg.times[-1]
         self.raw_eeg = raw_eeg

@@ -11,6 +11,7 @@ class ClassificationResponse():
         self.stream_duration = request.stream_duration
         self.bedtime = request.bedtime
         self.wakeup = request.wakeup
+        self.board = request.board
         self.n_epochs = request.n_epochs
 
         self.spectrogram = spectrogram
@@ -33,8 +34,8 @@ class ClassificationResponse():
             "sessionEndTime": self.stream_duration + self.stream_start,
             "totalSessionTime": self.stream_duration,
             "bedTime": self.bedtime,
-            "wakeUpTime": None,
-            "totalBedTime": None,
+            "wakeUpTime": self.wakeup,
+            "totalBedTime": self.wakeup - self.bedtime,
         }
 
     @property
@@ -51,6 +52,6 @@ class ClassificationResponse():
             'report': None,
             'metadata': self.metadata,
             'subject': self.subject,
-            'board': None,
+            'board': self.board.name,
             'spectrograms': self.spectrogram,
         }
