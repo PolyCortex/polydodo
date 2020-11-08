@@ -1,49 +1,74 @@
-from os import path
-import hashlib
+from datetime import datetime
+from os import path, makedirs
+from pathlib import Path
+import re
 import sys
+import xml.etree.ElementTree as ET
+
+import certifi
+import numpy as np
 from requests import get
 import onnxruntime
 
-SCRIPT_PATH = path.dirname(path.realpath(sys.argv[0]))
+from classification.config.constants import HiddenMarkovModelProbability
+
+SCRIPT_PATH = Path(path.realpath(sys.argv[0])).parent
+
+BUCKET_NAME = 'polydodo'
+BUCKET_URL = f'https://{BUCKET_NAME}.s3.amazonaws.com'
+
 MODEL_FILENAME = 'model.onnx'
-MODEL_PATH = f'{SCRIPT_PATH}/{MODEL_FILENAME}'
-MODEL_REPO = 'polycortex/polydodo-model'
-MODEL_URL = f'https://raw.githubusercontent.com/{MODEL_REPO}/master/{MODEL_FILENAME}'
+MODEL_PATH = SCRIPT_PATH / MODEL_FILENAME
+MODEL_URL = f'{BUCKET_URL}/{MODEL_FILENAME}'
+
+HMM_FOLDER = 'hmm_model'
 
 
 def _download_file(url, output):
     with open(output, 'wb') as f:
-        f.write(get(url).content)
+        f.write(get(url, verify=certifi.where()).content)
 
 
-def _get_latest_model_githash():
-    request = f'https://api.github.com/repos/{MODEL_REPO}/commits/master'
-    repo = get(request).json()
-    model_info = [file_info for file_info in repo['files'] if file_info['filename'] == MODEL_FILENAME][0]
-    return model_info["sha"]
+def _get_object_latest_update(filename):
+    raw_result = get(BUCKET_URL, verify=certifi.where()).text
+    # https://stackoverflow.com/a/15641319
+    raw_result = re.sub(' xmlns="[^"]+"', '', raw_result)
+    result_root_node = ET.fromstring(raw_result)
+    objects_nodes = result_root_node.findall('Contents')
+    object_node = [object_node for object_node in objects_nodes if object_node.find("Key").text == filename][0]
+    object_latest_update = datetime.strptime(object_node.find("LastModified").text, "%Y-%m-%dT%H:%M:%S.%f%z")
+
+    return object_latest_update
 
 
-def _get_file_githash(filepath):
-    BUF_SIZE = 65536
+def _has_latest_object(filename, local_path):
+    latest_model_update = _get_object_latest_update(filename)
+    current_model_update = datetime.fromtimestamp(path.getmtime(local_path)).astimezone()
 
-    sha1 = hashlib.sha1()
-
-    # https://stackoverflow.com/a/1869911
-    filesize = path.getsize(filepath)
-    git_hash_header = f'blob {filesize}\0'.encode('utf-8')
-    sha1.update(git_hash_header)
-
-    # https://stackoverflow.com/a/22058673
-    with open(filepath, 'rb') as f:
-        while True:
-            data = f.read(BUF_SIZE)
-            if not data:
-                break
-            sha1.update(data)
-    return sha1.hexdigest()
+    return current_model_update >= latest_model_update
 
 
 def load_model():
-    if not path.exists(MODEL_PATH) or _get_file_githash(MODEL_PATH) != _get_latest_model_githash():
+    if not path.exists(MODEL_PATH) or not _has_latest_object(MODEL_FILENAME, MODEL_PATH):
+        print("Downloading latest model...")
         _download_file(MODEL_URL, MODEL_PATH)
-    return onnxruntime.InferenceSession(MODEL_PATH)
+    print("Loading model...")
+    return onnxruntime.InferenceSession(str(MODEL_PATH))
+
+
+def load_hmm():
+    hmm_matrices = dict()
+
+    if not path.exists(SCRIPT_PATH / HMM_FOLDER):
+        makedirs(SCRIPT_PATH / HMM_FOLDER)
+
+    for hmm_probability in HiddenMarkovModelProbability:
+        hmm_file = hmm_probability.get_filename()
+        model_path = SCRIPT_PATH / HMM_FOLDER / hmm_file
+
+        if not path.exists(model_path) or not _has_latest_object(hmm_file, model_path):
+            _download_file(url=f"{BUCKET_URL}/{hmm_file}", output=model_path)
+
+        hmm_matrices[hmm_probability.name] = np.load(str(model_path))
+
+    return hmm_matrices

@@ -14,11 +14,11 @@ the raw hexadecimal data to signed decimal values in the OpenBCI GUI:
 The Cyton board logging format is also described here:
 [https://docs.openbci.com/docs/02Cyton/CytonSDCard#data-logging-format]
 """
-from io import StringIO
 from mne import create_info
 from mne.io import RawArray
 import numpy as np
 
+from classification.exceptions import ClassificationError
 from classification.config.constants import (
     EEG_CHANNELS,
     OPENBCI_CYTON_SAMPLE_RATE,
@@ -27,9 +27,11 @@ from classification.config.constants import (
 ADS1299_Vref = 4.5
 ADS1299_gain = 24.
 SCALE_uV_PER_COUNT = ADS1299_Vref / ((2**23) - 1) / ADS1299_gain * 1000000
+SCALE_V_PER_COUNT = SCALE_uV_PER_COUNT / 1e6
 
 FILE_COLUMN_OFFSET = 1
 CYTON_TOTAL_NB_CHANNELS = 8
+SKIP_ROWS = 2
 
 
 def get_raw_array(file):
@@ -39,31 +41,32 @@ def get_raw_array(file):
     Returns:
     - mne.RawArray of the two EEG channels of interest
     """
-    file_content = StringIO(file.stream.read().decode("UTF8"))
+    lines = file.readlines()
+    eeg_raw = np.zeros((len(lines) - SKIP_ROWS, len(EEG_CHANNELS)))
 
-    eeg_raw = []
-    for line in file_content.readlines():
-        line_splitted = line.split(',')
+    for index, line in enumerate(lines[SKIP_ROWS:]):
+        line_splitted = line.decode('utf-8').split(',')
 
-        if len(line_splitted) >= CYTON_TOTAL_NB_CHANNELS:
-            eeg_raw.append(_get_decimals_from_hexadecimal_strings(line_splitted))
+        if len(line_splitted) < CYTON_TOTAL_NB_CHANNELS:
+            raise ClassificationError()
 
-    eeg_raw = SCALE_uV_PER_COUNT * np.array(eeg_raw, dtype='object')
+        eeg_raw[index] = _get_decimals_from_hexadecimal_strings(line_splitted)
 
     raw_object = RawArray(
-        np.transpose(eeg_raw),
+        SCALE_V_PER_COUNT * np.transpose(eeg_raw),
         info=create_info(
             ch_names=EEG_CHANNELS,
             sfreq=OPENBCI_CYTON_SAMPLE_RATE,
             ch_types='eeg'),
         verbose=False,
     )
-
-    print('First sample values: ', raw_object[:, 0])
-    print('Second sample values: ', raw_object[:, 1])
-    print('Number of samples: ', raw_object.n_times)
-    print('Duration of signal (h): ', raw_object.n_times / (3600 * OPENBCI_CYTON_SAMPLE_RATE))
-    print('Channel names: ', raw_object.ch_names)
+    print(f"""
+        First sample values: {raw_object[:, 0]}
+        Second sample values: {raw_object[:, 1]}
+        Number of samples: {raw_object.n_times}
+        Duration of signal (h): {raw_object.n_times / (3600 * OPENBCI_CYTON_SAMPLE_RATE)}
+        Channel names: {raw_object.ch_names}
+    """)
 
     return raw_object
 

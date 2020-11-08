@@ -1,7 +1,4 @@
-from classification.config.constants import (
-    DATASET_SAMPLE_RATE,
-    EPOCH_DURATION,
-)
+from classification.config.constants import DATASET_SAMPLE_RATE
 
 NYQUIST_FREQ = DATASET_SAMPLE_RATE / 2
 

@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "src": "instructions/res_1.jpg",
+      "altText": "Slide 1",
+      "caption": "1"
+    },
+    {
+      "src": "instructions/res_2.jpg",
+      "altText": "Slide 2",
+      "caption": "2"
+    },
+    {
+      "src": "instructions/res_3.jpg",
+      "altText": "Slide 3",
+      "caption": "3"
+    },
+    {
+      "src": "instructions/res_4.jpg",
+      "altText": "Slide 4",
+      "caption": "4"
+    },
+    {
+      "src": "instructions/res_5.jpg",
+      "altText": "Slide 5",
+      "caption": "5"
+    },
+    {
+      "src": "instructions/res_6.jpg",
+      "altText": "Slide 6",
+      "caption": "6"
+    }
+  ]
+}

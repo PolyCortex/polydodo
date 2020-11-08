@@ -7,8 +7,8 @@ import 'package:polydodo/src/infrastructure/connection_repositories/serial_repos
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class AcquisitionDeviceRepository implements IAcquisitionDeviceRepository {
-  final BluetoothRepository _bluetoothRepository = new BluetoothRepository();
-  final SerialRepository _serialRepository = new SerialRepository();
+  final BluetoothRepository _bluetoothRepository = BluetoothRepository();
+  final SerialRepository _serialRepository = SerialRepository();
   IAcquisitionDeviceRepository _currentRepository;
 
   StreamSubscription _bluetoothStream;
@@ -20,9 +20,10 @@ class AcquisitionDeviceRepository implements IAcquisitionDeviceRepository {
 
   AcquisitionDeviceRepository() {
     _currentRepository = _serialRepository;
-    _acquisitionDeviceController = new StreamController();
+    _acquisitionDeviceController = StreamController();
   }
 
+  @override
   Future<void> initializeRepository() async {
     if (_preferences == null) {
       _preferences = await StreamingSharedPreferences.instance;
@@ -50,22 +51,27 @@ class AcquisitionDeviceRepository implements IAcquisitionDeviceRepository {
     }
   }
 
+  @override
   void connect(AcquisitionDevice device, Function(bool, Exception) callback) {
     _currentRepository.connect(device, callback);
   }
 
+  @override
   void disconnect() {
     _currentRepository.disconnect();
   }
 
+  @override
   Future<Stream<List<int>>> startDataStream() {
     return _currentRepository.startDataStream();
   }
 
+  @override
   void stopDataStream() {
     _currentRepository.stopDataStream();
   }
 
+  @override
   Stream<List<AcquisitionDevice>> watch() {
     return _acquisitionDeviceController.stream;
   }

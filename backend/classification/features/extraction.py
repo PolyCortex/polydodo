@@ -6,14 +6,13 @@ from classification.config.constants import (
     AGE_FEATURE_BINS,
 )
 from classification.features.pipeline import get_feature_union
-from classification.features.preprocessing import preprocess
 
 
-def get_eeg_features(raw_data, in_bed_seconds, out_of_bed_seconds):
+def get_eeg_features(epochs, in_bed_seconds, out_of_bed_seconds):
     """Returns the continuous feature matrix
     Input
     -------
-    raw_signal: MNE.Raw object with signals with or without annotations
+    epochs: mne.Epochs object with signals with or without annotations
     in_bed_seconds: timespan, in seconds, from which the subject started
         the recording and went to bed
     out_of_bed_seconds: timespan, in seconds, from which the subject
@@ -23,21 +22,21 @@ def get_eeg_features(raw_data, in_bed_seconds, out_of_bed_seconds):
     -------
     Array of size (nb_epochs, nb_continuous_features)
     """
-    features_file = []
+    features = []
     feature_union = get_feature_union()
 
     for channel in EEG_CHANNELS:
-        chan_data = preprocess(raw_data, channel, in_bed_seconds, out_of_bed_seconds)
+        channel_epochs = epochs.copy().pick_channels({channel})
+        channel_features = feature_union.transform(channel_epochs)
 
-        X_features = feature_union.transform(chan_data)
-        features_file.append(X_features)
+        features.append(channel_features)
 
         print(
-            f"Done extracting {X_features.shape[1]} features "
-            f"on {X_features.shape[0]} epochs for {channel}\n"
+            f"Done extracting {channel_features.shape[1]} features "
+            f"on {channel_features.shape[0]} epochs for {channel}\n"
         )
 
-    return np.hstack(tuple(features_file))
+    return np.hstack(tuple(features))
 
 
 def get_non_eeg_features(age, sex, nb_epochs):

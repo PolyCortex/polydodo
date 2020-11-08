@@ -23,17 +23,42 @@ jobs:
       - uses: subosito/flutter-action@v1
 
       - run: flutter pub get
+      
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - run: flutter analyze
 
       - run: flutter test
 
       - run: flutter build apk
       - uses: actions/upload-artifact@v2
         with:
-          name: Android app
-          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          name: Android
+          path: mobile/build/app/outputs/flutter-apk
 
-      - run: flutter build ios --release --no-codesign
-      - uses: actions/upload-artifact@v2
+      - run: flutter build ios --no-codesign
+
+  release:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: release-drafter/release-drafter@v5
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v2
         with:
-          name: iOS app
-          path: mobile/build/ios/iphoneos/Runner.app
+          name: Android
+          path: mobile/out
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./mobile/out/app-release.apk
+          asset_name: polydodo_app_android.apk
+          asset_content_type: application/octet-stream

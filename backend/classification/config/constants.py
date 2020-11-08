@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class Sex(Enum):
@@ -8,11 +8,28 @@ class Sex(Enum):
     M = 2
 
 
+class SleepStage(Enum):
+    W = 0
+    N1 = 1
+    N2 = 2
+    N3 = 3
+    REM = 4
+
+
+class HiddenMarkovModelProbability(Enum):
+    emission = auto()
+    start = auto()
+    transition = auto()
+
+    def get_filename(self):
+        return f'hmm_{self.name}_probabilities.npy'
+
+
 ALLOWED_FILE_EXTENSIONS = ('.txt', '.csv')
 
 EEG_CHANNELS = [
-    'EEG Fpz-Cz',
-    'EEG Pz-Oz'
+    'Fpz-Cz',
+    'Pz-Oz'
 ]
 
 EPOCH_DURATION = 30
