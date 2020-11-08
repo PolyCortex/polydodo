@@ -1,31 +1,27 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/sleep_history/sleep_history_cubit.dart';
-import 'package:polydodo/src/application/sleep_history/sleep_history_state.dart';
+import 'package:polydodo/src/application/sleep_sequence_history/sleep_sequence_history_cubit.dart';
+import 'package:polydodo/src/application/sleep_sequence_history/sleep_sequence_history_state.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/pages/sleep_history_page/app_bar.dart';
 import 'package:polydodo/src/presentation/pages/sleep_history_page/sleep_history_list.dart';
 
 class SleepHistoryPage extends StatelessWidget {
-  final appBloc = AppPropertiesBloc();
-
   @override
   Widget build(BuildContext context) {
-    final historyCubit = BlocProvider.of<SleepHistoryCubit>(context);
+    final historyCubit = BlocProvider.of<SleepSequenceHistoryCubit>(context);
 
     return Scaffold(
-        appBar: buildAppBar(historyCubit, appBloc),
+        appBar: buildAppBar(historyCubit),
         drawer: NavDrawer(activeTab: NavdrawerTab.History),
-        body: BlocConsumer<SleepHistoryCubit, SleepHistoryState>(
-            listener: (context, state) {
+        body:
+            BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
+                listener: (context, state) {
           print(state.runtimeType);
         }, builder: (context, state) {
-          if (state is SleepHistoryLoaded) {
-            appBloc.updateSelectText(state.selectedNights != null);
-
+          if (state is SleepSequenceHistoryLoaded ||
+              state is SleepSequenceHistoryEditInProgress) {
             return buildHistoryList(context, state, historyCubit);
           } else {
             return Container();
@@ -35,27 +31,13 @@ class SleepHistoryPage extends StatelessWidget {
   }
 }
 
-class AppPropertiesBloc {
-  final StreamController<String> _select = StreamController<String>();
-
-  Stream<String> get selectStream => _select.stream;
-
-  void updateSelectText(bool selectMode) {
-    _select.sink.add(selectMode ? 'Done' : 'Select');
-  }
-
-  void dispose() {
-    _select.close();
-  }
-}
-
 Widget _buildFloatingActionButton(var historyCubit) {
-  return BlocConsumer<SleepHistoryCubit, SleepHistoryState>(
+  return BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
       listener: (context, state) => {},
       builder: (context, state) {
-        if (state is SleepHistoryLoaded) {
+        if (state is SleepSequenceHistoryEditInProgress) {
           return Visibility(
-              visible: (state.selectedNights?.isNotEmpty ?? false),
+              visible: (state.selectedSequences?.isNotEmpty ?? false),
               child: FloatingActionButton(
                 onPressed: () => historyCubit.deleteSelected(),
                 child: Icon(Icons.delete),

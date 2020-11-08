@@ -1,0 +1,67 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
+import 'sleep_sequence_history_state.dart';
+
+class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
+  final ISleepSequenceRepository _sleepHistoryRepository;
+  final StreamController<String> _selectText =
+      StreamController<String>.broadcast();
+
+  List<SleepSequenceStats> _selectedSequences;
+  bool _selectMode = false;
+
+  SleepSequenceHistoryCubit(this._sleepHistoryRepository)
+      : super(SleepSequenceHistoryInitial()) {
+    loadHistory();
+  }
+
+  void loadHistory() {
+    emit(SleepSequenceHistoryLoaded(
+        _sleepHistoryRepository.getSleepSequences()));
+  }
+
+  void selectSleepSequenceForViewing(SleepSequenceStats sequence) {
+    _sleepHistoryRepository.selectSleepSequence(sequence);
+  }
+
+  void toggleSelectMode() {
+    _selectMode = !_selectMode;
+
+    _selectMode
+        ? {
+            _selectedSequences = [],
+            _selectText.add('Done'),
+            emit(SleepSequenceHistoryEditInProgress(
+                _sleepHistoryRepository.getSleepSequences(),
+                _selectedSequences))
+          }
+        : {
+            _selectedSequences = null,
+            _selectText.add('Select'),
+            emit(SleepSequenceHistoryLoaded(
+                _sleepHistoryRepository.getSleepSequences()))
+          };
+  }
+
+  void selectSleepSequenceForDeletion(SleepSequenceStats sequence) {
+    var idx = _selectedSequences.indexOf(sequence);
+
+    idx == -1
+        ? _selectedSequences.add(sequence)
+        : _selectedSequences.remove(sequence);
+
+    emit(SleepSequenceHistoryEditInProgress(
+        _sleepHistoryRepository.getSleepSequences(), _selectedSequences));
+  }
+
+  void deleteSelected() {
+    _sleepHistoryRepository.deleteSleepSequences(_selectedSequences);
+    toggleSelectMode();
+  }
+
+  Stream<String> get selectStream => _selectText.stream;
+}

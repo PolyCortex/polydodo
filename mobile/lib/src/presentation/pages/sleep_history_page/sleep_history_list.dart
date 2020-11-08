@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:polydodo/src/application/sleep_sequence_history/sleep_sequence_history_state.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
 Widget buildHistoryList(var context, var state, var historyCubit) {
@@ -12,29 +13,27 @@ Widget buildHistoryList(var context, var state, var historyCubit) {
 }
 
 Widget _buildItemCard(var context, var state, var historyCubit, var index) {
-  var selectMode = state.selectedNights != null;
-
   return Card(
       child: ListTile(
     onTap: () => {
-      if (selectMode)
+      if (state is SleepSequenceHistoryEditInProgress)
         {
-          historyCubit.selectNight(state.history[index]),
+          historyCubit.selectSleepSequenceForDeletion(state.history[index]),
         }
       else
         {
-          historyCubit.viewNight(state.history[index]),
-          ExtendedNavigator.of(context).replace(Routes.nightStatsPage)
+          historyCubit.selectSleepSequenceForViewing(state.history[index]),
+          ExtendedNavigator.of(context).replace(Routes.sleepSequenceStatsPage)
         }
     },
     title: Text(state.history[index].id.toString()),
-    trailing: _buildTrailing(state, selectMode, state.history[index]),
+    trailing: _buildTrailing(state, state.history[index]),
   ));
 }
 
-Widget _buildTrailing(var state, var selectMode, var night) {
-  if (selectMode) {
-    return state.selectedNights.contains(night)
+Widget _buildTrailing(var state, var sequence) {
+  if (state is SleepSequenceHistoryEditInProgress) {
+    return state.selectedSequences.contains(sequence)
         ? Icon(
             Icons.check_circle_outline,
             color: Colors.blue,

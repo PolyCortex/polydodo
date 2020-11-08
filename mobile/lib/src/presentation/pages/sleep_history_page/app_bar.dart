@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget buildAppBar(var historyCubit, var appBloc) {
+Widget buildAppBar(var historyCubit) {
   return AppBar(
     backgroundColor: Colors.transparent,
     shadowColor: Colors.transparent,
@@ -19,15 +19,15 @@ Widget buildAppBar(var historyCubit, var appBloc) {
           padding: EdgeInsets.only(top: 20.0, right: 20.0),
           child: GestureDetector(
             onTap: () => historyCubit.toggleSelectMode(),
-            child: _buildSelectButton(appBloc),
+            child: _buildSelectButton(historyCubit),
           )),
     ],
   );
 }
 
-Widget _buildSelectButton(var appBloc) {
+Widget _buildSelectButton(var historyCubit) {
   return StreamBuilder<Object>(
-      stream: appBloc.selectStream,
+      stream: historyCubit.selectStream,
       initialData: 'Select',
       builder: (context, snapshot) {
         return Text(

@@ -1,11 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:polydodo/src/domain/sleep_history/night_stats.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 
-import 'dart:ui';
-
-Container buildSleepStagesSection(NightStats stats) {
+Container buildSleepStagesSection(SleepSequenceStats stats) {
   return Container(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

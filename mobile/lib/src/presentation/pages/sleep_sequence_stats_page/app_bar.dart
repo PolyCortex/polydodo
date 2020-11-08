@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Widget buildAppBar(var appBloc) {
+Widget buildAppBar(var statsCubit) {
   return AppBar(
     backgroundColor: Colors.transparent,
     shadowColor: Colors.transparent,
     centerTitle: true,
     iconTheme: IconThemeData(color: Colors.black),
     title: StreamBuilder<Object>(
-        stream: appBloc.titleStream,
-        initialData: 'Night Stat',
+        stream: statsCubit.titleStream,
+        initialData: 'Sleep Sequence Stat',
         builder: (context, snapshot) {
           return Text(
             snapshot.data,
