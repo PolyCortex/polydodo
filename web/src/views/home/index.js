@@ -7,6 +7,8 @@ import TechnologySection from './sections/technology_section';
 import TeamSection from './sections/team_section';
 import HardwareSection from './sections/hardware_section';
 import SummarySection from './sections/summary_section';
+import MotivationSection from './sections/motivation_section';
+import CallToActionSection from './sections/call_to_action_section';
 
 const Home = () => {
   return (
@@ -18,6 +20,8 @@ const Home = () => {
       <TabsSection />
       <TechnologySection />
       <TeamSection />
+      <MotivationSection />
+      <CallToActionSection />
     </div>
   );
 };

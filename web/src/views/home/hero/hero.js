@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Logo from 'assets/img/logo.png';
 
 import './style.css';
+import PreviewButton from 'components/preview_button';
 
 class Hero extends React.Component {
   render() {
@@ -48,18 +49,7 @@ class Hero extends React.Component {
                         <span className="btn-inner--text">Record My Own Sleep</span>
                       </Button>
                       <span className="mr-4" />
-                      <Button
-                        className="mr-3 btn-icon mb-3 mb-sm-0 hero__action_button"
-                        color="secondary"
-                        to={{ pathname: '/sleep-analysis-results', state: { isPreviewMode: true } }}
-                        tag={Link}
-                        size="lg"
-                      >
-                        <span className="btn-inner--icon mr-1">
-                          <i className="ni ni-button-play" />
-                        </span>
-                        <span className="btn-inner--text">Preview</span>
-                      </Button>
+                      <PreviewButton className="hero__action_button mr-3 mb-3 mb-sm-0" />
                     </Row>
                     <div className="mt-4">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>
