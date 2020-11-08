@@ -7,7 +7,7 @@ import HeaderSeparator from './header_separator';
 const Header = ({ sizeClass, shapeQty, title, subtitle, description }) => {
   return (
     <section className={`section section-lg section-shaped ${sizeClass}`}>
-      <div className="shape shape-style-1 shape-dark ">
+      <div className="shape shape-style-1 shape-dark">
         {_.times(shapeQty, (i) => (
           <span key={i} />
         ))}

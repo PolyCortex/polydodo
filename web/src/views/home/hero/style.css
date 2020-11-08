@@ -26,5 +26,5 @@
 }
 
 .hero__logo {
-  height: 6em;
+  max-height: 6em;
 }
