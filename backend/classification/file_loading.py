@@ -17,8 +17,8 @@ The Cyton board logging format is also described here:
 from mne import create_info
 from mne.io import RawArray
 import numpy as np
+import pandas as pd
 
-from classification.exceptions import ClassificationError
 from classification.config.constants import (
     EEG_CHANNELS,
     OPENBCI_CYTON_SAMPLE_RATE,
@@ -41,16 +41,13 @@ def get_raw_array(file):
     Returns:
     - mne.RawArray of the two EEG channels of interest
     """
-    lines = file.readlines()
-    eeg_raw = np.zeros((len(lines) - SKIP_ROWS, len(EEG_CHANNELS)))
 
-    for index, line in enumerate(lines[SKIP_ROWS:]):
-        line_splitted = line.decode('utf-8').split(',')
-
-        if len(line_splitted) < CYTON_TOTAL_NB_CHANNELS:
-            raise ClassificationError()
-
-        eeg_raw[index] = _get_decimals_from_hexadecimal_strings(line_splitted)
+    retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
+    eeg_raw = pd.read_csv(file,
+                          converters={idx: _convert_hexadecimal_to_signed_decimal for idx in retained_columns},
+                          skiprows=SKIP_ROWS,
+                          usecols=retained_columns
+                          ).to_numpy()
 
     raw_object = RawArray(
         SCALE_V_PER_COUNT * np.transpose(eeg_raw),
@@ -69,19 +66,6 @@ def get_raw_array(file):
     """)
 
     return raw_object
-
-
-def _get_decimals_from_hexadecimal_strings(lines):
-    """Converts the array of hexadecimal strings to an array of decimal values of the EEG channels
-    Input:
-    - lines: splitted array of two complement hexadecimal
-    Returns:
-    - array of decimal values for each EEG channel of interest
-    """
-    return np.array([
-        _convert_hexadecimal_to_signed_decimal(hex_value)
-        for hex_value in lines[FILE_COLUMN_OFFSET:FILE_COLUMN_OFFSET + len(EEG_CHANNELS)]
-    ])
 
 
 def _convert_hexadecimal_to_signed_decimal(hex_value):
