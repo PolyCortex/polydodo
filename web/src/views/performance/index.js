@@ -1,9 +1,8 @@
 import React from 'react';
-import { Container, Row, Table } from 'reactstrap';
+import { Container, Table } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import Header from 'components/header';
-import WIPWarning from 'components/wip_warning';
 import D3Component from 'components/d3component';
 
 import { createComparativeHypnogram } from 'd3/hypnogram/hypnogram';
@@ -57,9 +56,6 @@ const Performance = () => {
         description={text['header_description']}
       />
       <Container className="mt-5 text-justify">
-        <Row className="mb-5 justify-content-center">
-          <WIPWarning />
-        </Row>
         <p>
           Ever wonder what is the value of this application? This page aims to illustrate the relative performance of
           our sleep scoring compared to clinical hypnogram scoring (which is usually considered the state-of-the-art

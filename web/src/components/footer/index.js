@@ -10,7 +10,7 @@ const PlatformButton = ({ href, color, iconClass, tooltipText, tooltipID }) => {
     <>
       <Button className="btn-icon-only rounded-circle ml-1" color={color} href={href} id={tooltipID} target="_blank">
         <span className="btn-inner--icon">
-          <i className={`fa ${iconClass}`} />
+          <i className={`fab ${iconClass}`} />
         </span>
       </Button>
       <UncontrolledTooltip delay={0} target={tooltipID}>
@@ -98,8 +98,17 @@ class Footer extends React.Component {
 
             <Col className="text-lg-right" lg="4">
               <h4 className="mb-3 font-weight-light">{text['support_donate_text']}</h4>
-              <Button color="success" href="https://soutien.polymtl.ca/vie-etudiante" target="_blank">
-                {text['support_donate_button']}
+              <Button
+                className="btn-icon"
+                color="success"
+                href="https://soutien.polymtl.ca/vie-etudiante"
+                target="_blank"
+              >
+                <span className="btn-inner--icon">
+                  <i className="fas fa-hand-holding-usd fa-lg" />
+                </span>
+
+                <span className="btn-inner--text">{text['support_donate_button']}</span>
               </Button>
             </Col>
           </Row>

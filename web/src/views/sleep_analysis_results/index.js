@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Row, Button } from 'reactstrap';
+import { Container, Row, Button, UncontrolledTooltip } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 
 import Header from 'components/header';
 import D3Component from 'components/d3component';
-import WIPWarning from 'components/wip_warning';
+import PreviewModeWarning from './preview_mode_warning';
 
 import { createSingleHypnogram } from 'd3/hypnogram/hypnogram';
 
@@ -13,11 +13,14 @@ import text from './text.json';
 import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
 import SpectrogramScrollyTelling from './spectrogram_scrollytelling';
 
+import previewSequence from 'assets/data/predicted_william_cyton';
+
 import './style.css';
 
-const SleepAnalysisResults = () => {
+const SleepAnalysisResults = ({ location }) => {
   const [response] = useGlobalState('response');
-  if (!response) {
+  const isPreviewMode = location.state?.isPreviewMode;
+  if (!isPreviewMode && !response) {
     return (
       <Redirect
         to={{
@@ -26,7 +29,7 @@ const SleepAnalysisResults = () => {
       />
     );
   }
-  const data = response.data;
+  const data = isPreviewMode ? previewSequence : response.data;
   const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   return (
@@ -40,7 +43,7 @@ const SleepAnalysisResults = () => {
       />
       <Container className="mt-5 mb-5 text-justify">
         <Row className="mb-5 justify-content-center">
-          <WIPWarning />
+          <PreviewModeWarning />
         </Row>
         <p>
           Of course, we are analyzing only one night of sleep so it is therefore tricky to draw general conclusions
@@ -140,14 +143,21 @@ const SleepAnalysisResults = () => {
               Check out the performances
             </Button>
           </Link>
-          <Button
-            className="mt-4"
-            color="secondary"
-            href={`data:text/json;charset=utf-8,${encodedJsonEpochs}`}
-            download="myresults.json"
-          >
-            Download my results
-          </Button>
+          <div className="mt-4" id="sleep_analysis_results__download_button">
+            <Button
+              color="secondary"
+              href={`data:text/json;charset=utf-8,${encodedJsonEpochs}`}
+              download="myresults.json"
+              disabled={isPreviewMode}
+            >
+              Download my results
+            </Button>
+          </div>
+          {isPreviewMode && (
+            <UncontrolledTooltip delay={0} placement="top" target="sleep_analysis_results__download_button">
+              You need to upload your own sleep sequence in order to download your data
+            </UncontrolledTooltip>
+          )}
         </Row>
       </Container>
     </div>
