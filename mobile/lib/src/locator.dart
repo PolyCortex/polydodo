@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/night_stats/night_stats_cubit.dart';
+import 'package:polydodo/src/application/settings/settings_cubit.dart';
 import 'package:polydodo/src/application/sleep_history/sleep_history_cubit.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
@@ -34,6 +35,9 @@ List<BlocProvider> createBlocProviders() => [
           _serviceLocator.get<IAcquisitionDeviceRepository>(),
           _serviceLocator.get<IEEGDataRepository>(),
         ),
+      ),
+      BlocProvider<SettingsCubit>(
+        create: (context) => SettingsCubit(),
       ),
       BlocProvider<SleepHistoryCubit>(
           create: (context) => SleepHistoryCubit(

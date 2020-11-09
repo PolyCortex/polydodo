@@ -25,7 +25,7 @@ class SleepHistoryPage extends StatelessWidget {
           ),
         ),
       ),
-      drawer: NavDrawer(activeTab: NavdrawerTab.History),
+      drawer: NavDrawer(activeTab: NavdrawerTab.SleepHistory),
       body: BlocConsumer<SleepHistoryCubit, SleepHistoryState>(
         listener: (context, state) {
           print(state.runtimeType);

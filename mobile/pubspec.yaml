@@ -41,6 +41,7 @@ dependencies:
   pedantic: ^1.9.0
   percent_indicator: '^2.1.8'
   share: ^0.6.5
+  settings_ui: ^0.4.0
   streaming_shared_preferences: ^1.0.1
   uuid: ^2.2.2
   usb_serial: ^0.2.4
@@ -51,6 +52,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
   flutter_test:
     sdk: flutter
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

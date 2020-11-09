@@ -1,7 +1,8 @@
 enum NavdrawerTab {
-  Dashboard,
-  RecordSleep,
   BluetoothSelector,
-  History,
-  NightStats
+  Dashboard,
+  NightStats,
+  RecordSleep,
+  Settings,
+  SleepHistory,
 }
