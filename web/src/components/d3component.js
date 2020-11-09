@@ -3,19 +3,22 @@ import PropTypes from 'prop-types';
 import { Spinner, Row, Col } from 'reactstrap';
 
 const D3Component = React.memo(({ callback, data, useDiv = false }) => {
-  if (data === null)
-    return (
-      <Row>
-        <Col className="text-center">
-          <Spinner style={{ width: '3rem', height: '3rem' }} />
-        </Col>
-      </Row>
-    );
   const ref = useRef();
   useEffect(() => {
-    callback(ref.current, data);
+    data && callback(ref.current, data);
   });
-  return useDiv ? <div ref={ref} /> : <svg ref={ref} />;
+
+  return data === null ? (
+    <Row>
+      <Col className="text-center">
+        <Spinner style={{ width: '3rem', height: '3rem' }} />
+      </Col>
+    </Row>
+  ) : useDiv ? (
+    <div ref={ref} />
+  ) : (
+    <svg ref={ref} />
+  );
 });
 
 D3Component.propTypes = {

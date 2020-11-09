@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, CardBody, Container, Row, Col, CardDeck, Badge, Button } from 'reactstrap';
-import { Alarm, Hotel, Timeline } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 import Header from 'components/header';
@@ -204,19 +203,19 @@ const RecordMySleep = () => {
           </p>
           <p className="lead">
             <Badge className="badge-circle mr-3" color="success">
-              <Timeline />
+              <i className="far fa-clock" />
             </Badge>
             When you start the stream
           </p>
           <p className="lead">
             <Badge className="badge-circle mr-3" color="success">
-              <Hotel />
+              <i className="fas fa-bed" />
             </Badge>
             When you go to bed
           </p>
           <p className="lead">
             <Badge className="badge-circle mr-3" color="success">
-              <Alarm />
+              <i className="fas fa-sun" />
             </Badge>
             When you wake up
           </p>
@@ -268,6 +267,9 @@ const RecordMySleep = () => {
                 deserunt mollit anim id est laborum.
               </p>
               <Button className="btn-icon mb-3 mb-sm-0" color="success" to="/analyze-my-sleep" tag={Link} size="lg">
+                <span className="btn-inner--icon mr-1">
+                  <i className="fas fa-file-medical-alt fa-lg" />
+                </span>
                 <span className="btn-inner--text">Analyze my sleep</span>
               </Button>
             </Col>

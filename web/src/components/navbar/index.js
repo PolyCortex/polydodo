@@ -20,11 +20,13 @@ import Logo from 'assets/img/logo.png';
 import PaleBackgroundLogo from 'assets/img/pale_background_logo.png';
 import text from './text.json';
 
+import './style.css';
+
 const OutsideLink = ({ href, iconClass, linkName, tooltipText, tooltipID }) => {
   return (
     <NavItem>
       <NavLink className="nav-link-icon" href={href} id={tooltipID} target="_blank">
-        <i className={`fa ${iconClass}`} />
+        <i className={`fab ${iconClass}`} />
         <span className="nav-link-inner--text d-lg-none ml-2">{linkName}</span>
       </NavLink>
       <UncontrolledTooltip delay={0} target={tooltipID}>
@@ -71,7 +73,7 @@ const ResponsiveCollapse = ({ children, isCollapseOpen, setIsCollapseOpen }) => 
           <Row>
             <Col className="collapse-brand" xs="6">
               <Link to="/">
-                <img alt="Polydodo" src={PaleBackgroundLogo} />
+                <img alt="Polydodo" src={PaleBackgroundLogo} className="navbar__logo" />
               </Link>
             </Col>
             <Col className="collapse-close" xs="6">
@@ -106,7 +108,7 @@ const Navbar = () => {
       <NavbarStrap id="navbar-main" expand="lg">
         <Container>
           <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-            <img alt="Polydodo" src={Logo} />
+            <img alt="Polydodo" src={Logo} className="navbar__logo" />
           </NavbarBrand>
 
           <ResponsiveCollapse isCollapseOpen={isCollapseOpen} setIsCollapseOpen={setIsCollapseOpen}>

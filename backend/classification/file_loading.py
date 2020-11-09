@@ -2,9 +2,6 @@
 Function utilities to convert data acquired on an OpenBCI
 Cyton board using the SD card logging strategy.
 
-TODO: We should look into optimizing this conversion. We currently
-convert one line at a time, while a vectorized approach would be much more efficient,
-as the conversion of a line does not depend on the other lines.
 TODO: Consider cropping file (from bed to wake up time) here, before the for loop. Have to consider
 not all lines hold sample values (i.e. first line with comment and second line with a single timestamp).
 
@@ -17,6 +14,7 @@ The Cyton board logging format is also described here:
 from mne import create_info
 from mne.io import RawArray
 import numpy as np
+import pandas as pd
 
 from classification.exceptions import ClassificationError
 from classification.config.constants import (
@@ -41,16 +39,19 @@ def get_raw_array(file):
     Returns:
     - mne.RawArray of the two EEG channels of interest
     """
-    lines = file.readlines()
-    eeg_raw = np.zeros((len(lines) - SKIP_ROWS, len(EEG_CHANNELS)))
 
-    for index, line in enumerate(lines[SKIP_ROWS:]):
-        line_splitted = line.decode('utf-8').split(',')
+    retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
 
-        if len(line_splitted) < CYTON_TOTAL_NB_CHANNELS:
-            raise ClassificationError()
+    try:
+        eeg_raw = pd.read_csv(file,
+                              skiprows=SKIP_ROWS,
+                              usecols=retained_columns
+                              ).to_numpy()
+    except Exception:
+        raise ClassificationError()
 
-        eeg_raw[index] = _get_decimals_from_hexadecimal_strings(line_splitted)
+    hexstr_to_int = np.vectorize(_hexstr_to_int)
+    eeg_raw = hexstr_to_int(eeg_raw)
 
     raw_object = RawArray(
         SCALE_V_PER_COUNT * np.transpose(eeg_raw),
@@ -71,38 +72,11 @@ def get_raw_array(file):
     return raw_object
 
 
-def _get_decimals_from_hexadecimal_strings(lines):
-    """Converts the array of hexadecimal strings to an array of decimal values of the EEG channels
-    Input:
-    - lines: splitted array of two complement hexadecimal
-    Returns:
-    - array of decimal values for each EEG channel of interest
-    """
-    return np.array([
-        _convert_hexadecimal_to_signed_decimal(hex_value)
-        for hex_value in lines[FILE_COLUMN_OFFSET:FILE_COLUMN_OFFSET + len(EEG_CHANNELS)]
-    ])
-
-
-def _convert_hexadecimal_to_signed_decimal(hex_value):
-    """Converts the hexadecimal value encoded on OpenBCI Cyton SD card to signed decimal
-    Input:
-    - hex_value: signed hexadecimal value
-    Returns:
-    - decimal value
-    """
-    return _get_twos_complement(hex_value) if len(hex_value) % 2 == 0 else 0
-
-
-def _get_twos_complement(hexstr):
+def _hexstr_to_int(hexstr):
     """Converts a two complement hexadecimal value in a string to a signed float
     Input:
     - hex_value: signed hexadecimal value
     Returns:
     - decimal value
     """
-    bits = len(hexstr) * 4
-    value = int(hexstr, 16)
-    if value & (1 << (bits - 1)):
-        value -= 1 << bits
-    return value
+    return int.from_bytes(bytes.fromhex(hexstr), byteorder='big', signed=True)

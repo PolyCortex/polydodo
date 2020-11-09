@@ -93,10 +93,14 @@ const UploadForm = () => {
                 id="file"
                 name="file"
                 label={
-                  <div>
-                    <i className="ni ni-cloud-upload-96 upload-form__file-input" />
-                    <span className="upload-form__file-input-label-text"> Upload your OpenBCI file </span>
-                  </div>
+                  <Row className="h-100">
+                    <Col sm="3" className="d-none d-md-block">
+                      <i className="fas fa-cloud-upload-alt fa-5x ml-3 fa-sm-1x" />
+                    </Col>
+                    <Col className="py-auto d-flex flex-column">
+                      <div className="upload-form__file-input-label-text my-auto"> Upload your OpenBCI file </div>
+                    </Col>
+                  </Row>
                 }
               />
               <div className="upload-form__error-text">{errors.file?.message}</div>
@@ -184,9 +188,8 @@ const UploadForm = () => {
                         innerRef={register({
                           required: 'Date is required.',
                           validate: () => {
-                            const streamStart = new Date(`
-                              ${getValues('stream_start_date')} ${getValues('stream_start_time')}
-                            `);
+                            // prettier-ignore
+                            const streamStart = new Date(`${getValues('stream_start_date')} ${getValues('stream_start_time')}`);
                             const bedTime = new Date(`${getValues('bedtime_date')} ${getValues('bedtime_time')}`);
                             if (streamStart > bedTime) {
                               return 'Stream start must be prior to bedtime.';

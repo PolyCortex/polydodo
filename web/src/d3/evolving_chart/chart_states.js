@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import _ from 'lodash';
-import { DateTime } from 'luxon';
+import { Duration } from 'luxon';
 
 import { BAR_HEIGHT, DIMENSION } from './constants';
 import { EPOCH_DURATION_MS, TRANSITION_TIME_MS, STAGES_ORDERED } from '../constants';
@@ -126,9 +126,7 @@ export const createStackedBarChartCallbacks = (g, data) =>
         .style('text-anchor', 'middle')
         .append('tspan')
         .text(({ stage }) =>
-          DateTime.fromMillis(stageTimeProportions[stage] * epochs.length * EPOCH_DURATION_MS)
-            .toUTC()
-            .toFormat('hh:mm:ss'),
+          Duration.fromMillis(stageTimeProportions[stage] * epochs.length * EPOCH_DURATION_MS).toFormat('hh:mm:ss'),
         )
         .attr('x', getHorizontalPositionSleepStage)
         .attr('y', 40)
