@@ -1,1 +1,1 @@
-enum SignalResult { railed, near_railed, valid, untested }
+enum SignalResult { railed, near_railed, good, untested, invalid }

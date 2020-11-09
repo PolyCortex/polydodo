@@ -14,10 +14,10 @@ class DataStateTestSignalInProgress extends DataState {
 }
 
 class DataStateTestSignalSuccess extends DataState {
-  final SignalResult channelOneResult;
-  final SignalResult channelTwoResult;
+  final SignalResult fpzCzChannelResult;
+  final SignalResult pzOzChannelResult;
 
-  DataStateTestSignalSuccess(this.channelOneResult, this.channelTwoResult);
+  DataStateTestSignalSuccess(this.fpzCzChannelResult, this.pzOzChannelResult);
 }
 
 class DataStateTestSignalFailure extends DataState {

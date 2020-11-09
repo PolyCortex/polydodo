@@ -3,21 +3,21 @@ import 'package:polydodo/src/application/eeg_data/data_states.dart';
 import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 
 Container buildSignalSection(var state) {
-  var channelOneResult;
-  var channelTwoResult;
+  var fpzCzChannelResult = SignalResult.invalid;
+  var pzOzChannelResult = SignalResult.invalid;
 
   if (state is DataStateTestSignalInProgress ||
       state is DataStateTestSignalSuccess) {
-    channelOneResult = state.channelOneResult;
-    channelTwoResult = state.channelTwoResult;
+    fpzCzChannelResult = state.fpzCzChannelResult;
+    pzOzChannelResult = state.pzOzChannelResult;
   }
 
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildSignalInformation('Fpz-Cz', channelOneResult),
-        _buildSignalInformation('Pz-Oz', channelTwoResult)
+        _buildSignalInformation('Fpz-Cz', fpzCzChannelResult),
+        _buildSignalInformation('Pz-Oz', pzOzChannelResult)
       ],
     ),
   );
@@ -57,7 +57,7 @@ Text _getErrorText(var signalResult) {
       return Text('Electrode is nearly railed');
     case SignalResult.railed:
       return Text('Electrode is railed');
-    case SignalResult.valid:
+    case SignalResult.good:
       return Text('Valid Signal');
     default:
       return Text('');

@@ -28,8 +28,8 @@ class EEGDataRepository implements IEEGDataRepository {
   StreamSubscription _currentTransformerStream;
   StreamingSharedPreferences _preferences;
   EEGData _recordingData;
-  double _channelOneMaxValue = 0;
-  double _channelTwoMaxValue = 0;
+  double _fpzCzChannelMax = 0;
+  double _pzOzChannelMax = 0;
   int _dataCount = 0;
 
   @override
@@ -60,18 +60,18 @@ class EEGDataRepository implements IEEGDataRepository {
     // todo: move save future to another file
     unawaited(_currentTransformerStream.cancel());
 
-    if (_recordingData != null) {
-      final directory = await getExternalStorageDirectory();
-      final pathOfTheFileToWrite =
-          directory.path + '/' + _recordingData.fileName + '.txt';
-      var file = File(pathOfTheFileToWrite);
-      var fileContent = [[]];
-      //todo: dynamically change header when we change transformer
-      fileContent.addAll(OPEN_BCI_CYTON_HEADER);
-      fileContent.addAll(_recordingData.values);
-      var csv = const ListToCsvConverter().convert(fileContent);
-      await file.writeAsString(csv);
-    }
+    if (_recordingData == null) return;
+
+    final directory = await getExternalStorageDirectory();
+    final pathOfTheFileToWrite =
+        directory.path + '/' + _recordingData.fileName + '.txt';
+    var file = File(pathOfTheFileToWrite);
+    var fileContent = [[]];
+    //todo: dynamically change header when we change transformer
+    fileContent.addAll(OPEN_BCI_CYTON_HEADER);
+    fileContent.addAll(_recordingData.values);
+    var csv = const ListToCsvConverter().convert(fileContent);
+    await file.writeAsString(csv);
   }
 
   @override
@@ -89,23 +89,23 @@ class EEGDataRepository implements IEEGDataRepository {
       List data, Function(SignalResult, SignalResult, [Exception]) callback) {
     _dataCount++;
 
-    _channelOneMaxValue = max(_channelOneMaxValue, data[1].abs());
-    _channelTwoMaxValue = max(_channelTwoMaxValue, data[2].abs());
+    _fpzCzChannelMax = max(_fpzCzChannelMax, data[1].abs());
+    _pzOzChannelMax = max(_pzOzChannelMax, data[2].abs());
 
     if (_dataCount == 1000) {
-      var signalOneResult = _getResult(_channelOneMaxValue);
-      var signalTwoResult = _getResult(_channelTwoMaxValue);
+      var signalOneResult = _getResult(_fpzCzChannelMax);
+      var signalTwoResult = _getResult(_pzOzChannelMax);
 
       callback(signalOneResult, signalTwoResult);
 
       _dataCount = 0;
-      _channelOneMaxValue = 0;
-      _channelTwoMaxValue = 0;
+      _fpzCzChannelMax = 0;
+      _pzOzChannelMax = 0;
     }
   }
 
   SignalResult _getResult(double maxValue) {
-    var result = SignalResult.valid;
+    var result = SignalResult.good;
 
     if (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED_WARN) {
       result = (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED)
