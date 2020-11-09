@@ -32,14 +32,11 @@ Widget _buildItemCard(var context, var state, var historyCubit, var index) {
 }
 
 Widget _buildTrailing(var state, var sequence) {
-  if (state is SleepSequenceHistoryEditInProgress) {
-    return state.selectedSequences.contains(sequence)
-        ? Icon(
-            Icons.check_circle_outline,
-            color: Colors.blue,
-          )
-        : Icon(Icons.check_circle_outline);
-  } else {
+  if (!(state is SleepSequenceHistoryEditInProgress)) {
     return Icon(Icons.navigate_next);
   }
+
+  return state.selectedSequences.contains(sequence)
+      ? Icon(Icons.check_circle_outline, color: Colors.blue)
+      : Icon(Icons.check_circle_outline);
 }

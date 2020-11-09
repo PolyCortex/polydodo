@@ -31,20 +31,25 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   void toggleSelectMode() {
     _selectMode = !_selectMode;
 
-    _selectMode
-        ? {
-            _selectedSequences = [],
-            _selectText.add('Done'),
-            emit(SleepSequenceHistoryEditInProgress(
-                _sleepHistoryRepository.getSleepSequences(),
-                _selectedSequences))
-          }
-        : {
-            _selectedSequences = null,
-            _selectText.add('Select'),
-            emit(SleepSequenceHistoryLoaded(
-                _sleepHistoryRepository.getSleepSequences()))
-          };
+    if (_selectMode) {
+      _enableSelection();
+    } else {
+      _disableSelection();
+    }
+  }
+
+  void _enableSelection() {
+    _selectedSequences = [];
+    _selectText.add('Done');
+    emit(SleepSequenceHistoryEditInProgress(
+        _sleepHistoryRepository.getSleepSequences(), _selectedSequences));
+  }
+
+  void _disableSelection() {
+    _selectedSequences = null;
+    _selectText.add('Select');
+    emit(SleepSequenceHistoryLoaded(
+        _sleepHistoryRepository.getSleepSequences()));
   }
 
   void selectSleepSequenceForDeletion(SleepSequenceStats sequence) {
@@ -60,7 +65,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
 
   void deleteSelected() {
     _sleepHistoryRepository.deleteSleepSequences(_selectedSequences);
-    toggleSelectMode();
+    _disableSelection();
   }
 
   Stream<String> get selectStream => _selectText.stream;

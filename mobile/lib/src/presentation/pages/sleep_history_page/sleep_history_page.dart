@@ -20,12 +20,10 @@ class SleepHistoryPage extends StatelessWidget {
                 listener: (context, state) {
           print(state.runtimeType);
         }, builder: (context, state) {
-          if (state is SleepSequenceHistoryLoaded ||
-              state is SleepSequenceHistoryEditInProgress) {
-            return buildHistoryList(context, state, historyCubit);
-          } else {
-            return Container();
-          }
+          return (state is SleepSequenceHistoryLoaded ||
+                  state is SleepSequenceHistoryEditInProgress)
+              ? buildHistoryList(context, state, historyCubit)
+              : Container();
         }),
         floatingActionButton: _buildFloatingActionButton(historyCubit));
   }
@@ -35,16 +33,14 @@ Widget _buildFloatingActionButton(var historyCubit) {
   return BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
       listener: (context, state) => {},
       builder: (context, state) {
-        if (state is SleepSequenceHistoryEditInProgress) {
-          return Visibility(
-              visible: (state.selectedSequences?.isNotEmpty ?? false),
-              child: FloatingActionButton(
-                onPressed: () => historyCubit.deleteSelected(),
-                child: Icon(Icons.delete),
-                backgroundColor: Colors.red,
-              ));
-        } else {
-          return Container();
-        }
+        return (state is SleepSequenceHistoryEditInProgress)
+            ? Visibility(
+                visible: (state.selectedSequences?.isNotEmpty ?? false),
+                child: FloatingActionButton(
+                  onPressed: () => historyCubit.deleteSelected(),
+                  child: Icon(Icons.delete),
+                  backgroundColor: Colors.red,
+                ))
+            : Container();
       });
 }

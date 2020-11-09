@@ -22,21 +22,25 @@ class SleepSequenceStatsPage extends StatelessWidget {
             print(state.runtimeType);
           },
           builder: (context, state) {
-            if (state is SleepSequenceStatsLoaded) {
-              statsCubit.updateTitle(state.stats.stringId);
-
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    buildMetricSection(state.stats),
-                    buildSleepStagesSection(state.stats)
-                  ],
-                ),
-              );
-            } else {
-              return Container();
-            }
+            return _buildStatsBody(context, state, statsCubit);
           },
         ));
   }
+}
+
+Widget _buildStatsBody(var context, var state, var statsCubit) {
+  if (!(state is SleepSequenceStatsLoaded)) {
+    return Container();
+  }
+
+  statsCubit.updateTitle(state.stats.stringId);
+
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        buildMetricSection(state.stats),
+        buildSleepStagesSection(state.stats)
+      ],
+    ),
+  );
 }
