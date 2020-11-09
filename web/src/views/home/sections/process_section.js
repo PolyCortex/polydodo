@@ -38,8 +38,8 @@ const ProcessSection = () => (
     <Container>
       <h2 className="pb-3">How It Works?</h2>
       <p className="lead">
-        We accompany you through every steps of the process; from gathering the things you'll need, to exporting your
-        very own sleep results.
+        We accompany you through every step of the process from gathering the things you need to exporting your
+        sleep results.
       </p>
       <Row>
         <Feature

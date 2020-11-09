@@ -48,7 +48,7 @@ const TeamSection = () => (
           <h1 className="text-white font-weight-light">Who are we?</h1>
           <p className="lead text-white mt-4">
             We are PolyCortex, a student club from Polytechnique Montréal that brings together neuroengineering
-            enthousiasts. We are part of the international NeuroTechX community.
+            enthusiasts. We are part of the international NeuroTechX community.
           </p>
           <p className="text-white">
             This website represents our submission to the Open Challenge of the NTX 2020 Student Clubs Competition

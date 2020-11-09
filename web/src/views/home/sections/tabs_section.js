@@ -97,15 +97,14 @@ const TabsSection = () => {
                   <TabPane className="tabs_section__body" tabId={`activeTab${TABS.SECOND}`}>
                     <p className="text-justify">
                       Your data is in your hand. Nothing is sent over the internet. Biosignals are sensitive data and we
-                      take their privacy very seriously. That is why everything is running locally, on your browser and
-                      a local server.
+                      take your privacy very seriously. That is why everything is running locally.
                     </p>
                   </TabPane>
                   <TabPane className="tabs_section__body" tabId={`activeTab${TABS.THIRD}`}>
                     <p className="text-justify">
                       <strong>This application is not intended for medical purposes</strong> and the data it produces
                       should not be used in such context. Its only goal is to help you study your sleep by yourself.
-                      Always seek the advice of a physician with any questions regarding a medical condition.
+                      Always seek the advice of a physician on any questions regarding a medical condition.
                     </p>
                   </TabPane>
                 </TabContent>
