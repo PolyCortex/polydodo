@@ -8,6 +8,14 @@ class Sex(Enum):
     M = 2
 
 
+class SleepStage(Enum):
+    W = 0
+    N1 = 1
+    N2 = 2
+    N3 = 3
+    REM = 4
+
+
 class HiddenMarkovModelProbability(Enum):
     emission = auto()
     start = auto()
@@ -20,8 +28,8 @@ class HiddenMarkovModelProbability(Enum):
 ALLOWED_FILE_EXTENSIONS = ('.txt', '.csv')
 
 EEG_CHANNELS = [
-    'EEG Fpz-Cz',
-    'EEG Pz-Oz'
+    'Fpz-Cz',
+    'Pz-Oz'
 ]
 
 EPOCH_DURATION = 30
@@ -38,5 +46,3 @@ AGE_FEATURE_BINS = [
     [85, 125]
 ]
 ACCEPTED_AGE_RANGE = [AGE_FEATURE_BINS[0][0], AGE_FEATURE_BINS[-1][-1]]
-
-N_STAGES = 5

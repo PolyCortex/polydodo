@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Col, Container } from 'reactstrap';
+import HeaderSeparator from './header_separator';
 
 const Header = ({ sizeClass, shapeQty, title, subtitle, description }) => {
   return (
@@ -22,12 +23,7 @@ const Header = ({ sizeClass, shapeQty, title, subtitle, description }) => {
           </Col>
         </div>
       </Container>
-
-      <div className="separator separator-bottom separator-skew">
-        <svg preserveAspectRatio="none" viewBox="0 0 2560 100" x="0" y="0">
-          <polygon className="fill-white" points="2560 0 2560 110 0 100" />
-        </svg>
-      </div>
+      <HeaderSeparator />
     </section>
   );
 };

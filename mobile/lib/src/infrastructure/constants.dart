@@ -1,3 +1,8 @@
+const THRESHOLD_RAILED = 0.9;
+const THRESHOLD_RAILED_WARN = 0.75;
+
+const MAX_SIGNAL_VALUE = 185000;
+
 const START_STREAM_CHAR = 'b';
 const STOP_STREAM_CHAR = 's';
 

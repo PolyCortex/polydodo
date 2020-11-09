@@ -1,12 +1,5 @@
-.upload-form__file-input {
-  font-size: 5.5em;
-  margin-left: 2%;
-}
-
 .upload-form__file-input-label-text {
   font-size: 1.5em;
-  margin: 0 10%;
-  vertical-align: 100%;
 }
 
 .custom-file {

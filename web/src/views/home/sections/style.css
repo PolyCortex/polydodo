@@ -1,0 +1,12 @@
+.tabs_section__body {
+  height: 7em;
+}
+
+.feature__icon_badge {
+  width: 7rem;
+  height: 7rem;
+}
+
+.feature__icon {
+  font-size: 3.5rem !important;
+}

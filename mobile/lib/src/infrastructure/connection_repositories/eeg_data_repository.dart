@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/baseOpenBCITransformer.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
@@ -16,19 +18,19 @@ import 'package:pedantic/pedantic.dart';
 import 'package:intl/intl.dart';
 
 class EEGDataRepository implements IEEGDataRepository {
-  EEGData _recordingData;
-  BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
-
   final GanglionTransformer<List<int>, List> _ganglionTransformer =
       GanglionTransformer<List<int>, List>.broadcast();
-
   final CytonTransformer<List<int>, List<dynamic>> _cytonTransformer =
       CytonTransformer<Uint8List, List>.broadcast();
 
+  BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
   BaseOpenBCITransformer<List<int>, List<dynamic>> _currentTransformer;
   StreamSubscription _currentTransformerStream;
-
   StreamingSharedPreferences _preferences;
+  EEGData _recordingData;
+  double _fpzCzChannelMax = 0;
+  double _pzOzChannelMax = 0;
+  int _dataCount = 0;
 
   @override
   void initialize() async {
@@ -58,6 +60,8 @@ class EEGDataRepository implements IEEGDataRepository {
     // todo: move save future to another file
     unawaited(_currentTransformerStream.cancel());
 
+    if (_recordingData == null) return;
+
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =
         directory.path + '/' + _recordingData.fileName + '.txt';
@@ -68,6 +72,48 @@ class EEGDataRepository implements IEEGDataRepository {
     fileContent.addAll(_recordingData.values);
     var csv = const ListToCsvConverter().convert(fileContent);
     await file.writeAsString(csv);
+  }
+
+  @override
+  void testSignal(Stream<List<int>> stream,
+      Function(SignalResult, SignalResult, [Exception]) callback) {
+    _dataCount = 0;
+    _currentTransformer.reset();
+    _currentTransformerStream = stream
+        .asBroadcastStream()
+        .transform(_currentTransformer)
+        .listen((data) => _checkSignalData(data, callback));
+  }
+
+  void _checkSignalData(
+      List data, Function(SignalResult, SignalResult, [Exception]) callback) {
+    _dataCount++;
+
+    _fpzCzChannelMax = max(_fpzCzChannelMax, data[1].abs());
+    _pzOzChannelMax = max(_pzOzChannelMax, data[2].abs());
+
+    if (_dataCount == 1000) {
+      var signalOneResult = _getResult(_fpzCzChannelMax);
+      var signalTwoResult = _getResult(_pzOzChannelMax);
+
+      callback(signalOneResult, signalTwoResult);
+
+      _dataCount = 0;
+      _fpzCzChannelMax = 0;
+      _pzOzChannelMax = 0;
+    }
+  }
+
+  SignalResult _getResult(double maxValue) {
+    var result = SignalResult.good;
+
+    if (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED_WARN) {
+      result = (maxValue > MAX_SIGNAL_VALUE * THRESHOLD_RAILED)
+          ? SignalResult.railed
+          : SignalResult.near_railed;
+    }
+
+    return result;
   }
 
   // todo: implement export and import
