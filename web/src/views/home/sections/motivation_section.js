@@ -7,8 +7,8 @@ const MotivationSection = () => (
       <h2 className="mt-3">Why Would I Analyze My Sleep?</h2>
       <p className="lead text-justify">
         Although we spend a major part of our day sleeping, we cannot truly understand what happens during this time, as
-        sleep is inherently an altered state of consciousness. With Polydodo, we to offer an accessible way to answer,
-        for each moment of the night, how was my sleep.
+        sleep is inherently an altered state of consciousness. With Polydodo, we offer an accessible way to answer, for
+        each moment of the night, how was my sleep.
       </p>
       <p className="text-justify">
         We do so by offering you a picture of your sleep based on the five standard sleep stages defined by the American
@@ -17,8 +17,8 @@ const MotivationSection = () => (
         N3. Polydodo scores every 30 seconds epochs of your night into these five stages.
       </p>
       <p className="text-justify">
-        By studying your own sleep, you may discover how your daily habits affect your sleep architecture. For each
-        night that you will use Polydodo, it will generate a sleep report that includes metrics such as:
+        By studying your own sleep, you may discover how your daily habits affect your sleep architecture. At the end of
+        each night, Polydodo will generate a sleep report that includes metrics such as:
       </p>
       <ul>
         <li>
