@@ -1,25 +1,34 @@
 {
   "files": {
-    "main.css": "/polydodo/static/css/main.e8db95a1.chunk.css",
-    "main.js": "/polydodo/static/js/main.9404ce29.chunk.js",
+    "main.css": "/polydodo/static/css/main.8c599f7e.chunk.css",
+    "main.js": "/polydodo/static/js/main.8295dcf6.chunk.js",
     "runtime-main.js": "/polydodo/static/js/runtime-main.ef5adf4f.js",
-    "static/js/2.863792a7.chunk.js": "/polydodo/static/js/2.863792a7.chunk.js",
+    "static/css/2.dd6b8e35.chunk.css": "/polydodo/static/css/2.dd6b8e35.chunk.css",
+    "static/js/2.3a80f934.chunk.js": "/polydodo/static/js/2.3a80f934.chunk.js",
     "index.html": "/polydodo/index.html",
-    "precache-manifest.e2fbecccbb5ac6413f6fdd9fd6851b45.js": "/polydodo/precache-manifest.e2fbecccbb5ac6413f6fdd9fd6851b45.js",
+    "precache-manifest.9a6b37b711aea039109f2c851c718b4b.js": "/polydodo/precache-manifest.9a6b37b711aea039109f2c851c718b4b.js",
     "service-worker.js": "/polydodo/service-worker.js",
-    "static/js/2.863792a7.chunk.js.LICENSE.txt": "/polydodo/static/js/2.863792a7.chunk.js.LICENSE.txt",
+    "static/js/2.3a80f934.chunk.js.LICENSE.txt": "/polydodo/static/js/2.3a80f934.chunk.js.LICENSE.txt",
     "static/media/aep.png": "/polydodo/static/media/aep.fda414f1.png",
+    "static/media/boards.png": "/polydodo/static/media/boards.e0dd7793.png",
     "static/media/diptrace.png": "/polydodo/static/media/diptrace.e3ba6abc.png",
-    "static/media/logo.png": "/polydodo/static/media/logo.bcea7572.png",
+    "static/media/dodo.png": "/polydodo/static/media/dodo.4bd8469c.png",
+    "static/media/all.css": "/polydodo/static/media/fa-solid-900.8e1ed89b.woff2",
+    "static/media/logo.png": "/polydodo/static/media/logo.89e592fc.png",
     "static/media/ntx.png": "/polydodo/static/media/ntx.bdd09ab5.png",
-    "static/media/pale_background_logo.png": "/polydodo/static/media/pale_background_logo.fa35130a.png",
+    "static/media/pale_background_logo.png": "/polydodo/static/media/pale_background_logo.baec2835.png",
+    "static/media/polycortex_full.png": "/polydodo/static/media/polycortex_full.0dd4a757.png",
     "static/media/polymtl.png": "/polydodo/static/media/polymtl.3034d991.png",
-    "static/media/protocase.png": "/polydodo/static/media/protocase.53bfde7a.png"
+    "static/media/protocase.png": "/polydodo/static/media/protocase.53bfde7a.png",
+    "static/media/team.jpg": "/polydodo/static/media/team.08d6471d.jpg",
+    "static/media/team_2.jpg": "/polydodo/static/media/team_2.7a75f4c8.jpg",
+    "static/media/team_3.jpg": "/polydodo/static/media/team_3.de19776c.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.ef5adf4f.js",
-    "static/js/2.863792a7.chunk.js",
-    "static/css/main.e8db95a1.chunk.css",
-    "static/js/main.9404ce29.chunk.js"
+    "static/css/2.dd6b8e35.chunk.css",
+    "static/js/2.3a80f934.chunk.js",
+    "static/css/main.8c599f7e.chunk.css",
+    "static/js/main.8295dcf6.chunk.js"
   ]
 }
