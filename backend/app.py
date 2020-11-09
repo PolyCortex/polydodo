@@ -3,7 +3,7 @@ from flask_cors import CORS
 from waitress import serve
 from http import HTTPStatus
 
-from classification.file_loading import get_raw_array
+from classification.parser import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
