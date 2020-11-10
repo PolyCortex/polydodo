@@ -1,9 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/settings/settings_cubit.dart';
 import 'package:polydodo/src/application/settings/settings_state.dart';
+import 'package:polydodo/src/domain/settings/acquisition_board.dart';
 import 'package:polydodo/src/domain/settings/sex.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
@@ -36,7 +36,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           subtitle: 'In years',
                           leading: Icon(Icons.cake),
                           trailing: TextButton(
-                              child: Text(state.settings.age.toString()),
+                              child: Text(state.settings.age == null
+                                  ? 'Empty'
+                                  : state.settings.age.toString()),
                               onPressed: () => _showDatePicker(context)),
                         ),
                         SettingsTile(
@@ -48,6 +50,19 @@ class _SettingsPageState extends State<SettingsPage> {
                             onSelected: (newSex) =>
                                 BlocProvider.of<SettingsCubit>(context)
                                     .setSex(newSex),
+                            activeStyle: TextStyle(fontWeight: FontWeight.bold),
+                            defaultStyle: TextStyle(),
+                          ),
+                        ),
+                        SettingsTile(
+                          title: 'Acquisition Board',
+                          subtitle: 'What OpenBCI board are you using?',
+                          leading: Icon(Icons.memory),
+                          trailing: _BoardButton(
+                            savedBoard: state.settings.board,
+                            onSelected: (newBoard) =>
+                                BlocProvider.of<SettingsCubit>(context)
+                                    .setBoard(newBoard),
                             activeStyle: TextStyle(fontWeight: FontWeight.bold),
                             defaultStyle: TextStyle(),
                           ),
@@ -98,7 +113,11 @@ class _SexButton extends StatelessWidget {
     return PopupMenuButton<Sex>(
       child:
           // ignore: missing_required_param
-          TextButton(child: Text(savedSex == Sex.Male ? 'Male' : 'Female')),
+          TextButton(
+              child: Text(savedSex.toString().split('.').last),
+              style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.primary))),
       onSelected: onSelected,
       itemBuilder: (BuildContext context) => <PopupMenuItem<Sex>>[
         PopupMenuItem<Sex>(
@@ -113,6 +132,55 @@ class _SexButton extends StatelessWidget {
           child: Text(
             'Female',
             style: savedSex == Sex.Female ? activeStyle : defaultStyle,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BoardButton extends StatelessWidget {
+  const _BoardButton({
+    Key key,
+    @required this.onSelected,
+    @required this.savedBoard,
+    @required this.activeStyle,
+    @required this.defaultStyle,
+  }) : super(key: key);
+
+  final PopupMenuItemSelected<AcquisitionBoard> onSelected;
+  final AcquisitionBoard savedBoard;
+  final TextStyle activeStyle;
+  final TextStyle defaultStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<AcquisitionBoard>(
+      child:
+          // ignore: missing_required_param
+          TextButton(
+              child: Text(savedBoard.toString().split('.').last),
+              style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.primary))),
+      onSelected: onSelected,
+      itemBuilder: (BuildContext context) => <PopupMenuItem<AcquisitionBoard>>[
+        PopupMenuItem<AcquisitionBoard>(
+          value: AcquisitionBoard.Cython,
+          child: Text(
+            'Cython',
+            style: savedBoard == AcquisitionBoard.Cython
+                ? activeStyle
+                : defaultStyle,
+          ),
+        ),
+        PopupMenuItem<AcquisitionBoard>(
+          value: AcquisitionBoard.Ganglion,
+          child: Text(
+            'Ganglion',
+            style: savedBoard == AcquisitionBoard.Ganglion
+                ? activeStyle
+                : defaultStyle,
           ),
         ),
       ],

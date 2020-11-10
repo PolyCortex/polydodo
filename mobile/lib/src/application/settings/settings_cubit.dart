@@ -16,8 +16,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     var settings = Settings(
       age: prefs.getInt('age'),
       board: AcquisitionBoard
-          .values[(prefs.getInt('board')) ?? AcquisitionBoard.Cython.index],
-      sex: Sex.values[(prefs.getInt('sex')) ?? Sex.Male.index],
+          .values[(prefs.getInt('board')) ?? AcquisitionBoard.Empty.index],
+      sex: Sex.values[(prefs.getInt('sex')) ?? Sex.Empty.index],
     );
 
     emit(SettingsLoadSuccess(settings));

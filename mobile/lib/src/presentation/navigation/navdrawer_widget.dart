@@ -97,9 +97,7 @@ class NavDrawer extends StatelessWidget {
         ],
       ),
       onTap: () {
-        //context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
         ExtendedNavigator.of(context).popAndPush(route);
-        // ExtendedNavigator.of(context).replace(route);
       },
       selected: activeTab == tab,
     );

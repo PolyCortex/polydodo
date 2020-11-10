@@ -1,1 +1,1 @@
-enum AcquisitionBoard { Cython, Ganglion }
+enum AcquisitionBoard { Empty, Cython, Ganglion }
