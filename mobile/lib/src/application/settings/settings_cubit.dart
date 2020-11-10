@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:polydodo/src/application/settings/settings_state.dart';
-import 'package:polydodo/src/domain/settings/acquisition_board.dart';
-import 'package:polydodo/src/domain/settings/sex.dart';
 import 'package:polydodo/src/domain/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

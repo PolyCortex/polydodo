@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:polydodo/src/domain/settings/acquisition_board.dart';
-import 'package:polydodo/src/domain/settings/sex.dart';
+
+part 'sex.dart';
+part 'acquisition_board.dart';
 
 class Settings extends Equatable {
   final int age;
