@@ -2,6 +2,8 @@ import numpy as np
 
 from classification.config.constants import EPOCH_DURATION, SleepStage
 
+from metric.time_passed_in_stage import get_time_passed_in_stage
+
 
 class ClassificationResponse():
     def __init__(self, request, predictions, spectrogram):
@@ -19,7 +21,7 @@ class ClassificationResponse():
 
     @property
     def sleep_stages(self):
-        ordered_sleep_stage_names = np.array([SleepStage(stage_index).name for stage_index in range(len(SleepStage))])
+        ordered_sleep_stage_names = np.array(SleepStage.tolist())
         return ordered_sleep_stage_names[self.predictions]
 
     @property
@@ -68,13 +70,8 @@ class ClassificationResponse():
             # time passed in non - wake stage from sleep Onset to sleep
             # offset(totalSleepTime - efficientSleepTime)
             "WASO": 3932,
-            "WTime": 3932,  # [seconds] time passed in this stage between bedTime to wakeUpTime
-            # Total amount of time sleeping including nocturnal awakenings(sleepOffset - sleepOnset)
             "SleepTime": 31045,
-            "REMTime": 2370,
-            "N1Time": 3402,
-            "N2Time": 16032,
-            "N3Time": 5309
+            **get_time_passed_in_stage(self.sleep_stages),
         }
 
     @property
