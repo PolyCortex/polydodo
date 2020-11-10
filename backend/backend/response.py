@@ -4,6 +4,7 @@ from classification.config.constants import EPOCH_DURATION, SleepStage
 
 from metric.time_passed_in_stage import get_time_passed_in_stage
 from metric.latency import get_latencies
+from metric.offset import get_sleep_offset
 
 
 class ClassificationResponse():
@@ -65,9 +66,7 @@ class ClassificationResponse():
             **latencies,
             **time_passed_in_stage,
             **onsets,
-
-            # Time at which the subject woke up(time of the epoch after the last non - wake epoch)
-            "sleepOffset": 1602242425,
+            **get_sleep_offset(self.sleep_stages, self.bedtime),
 
             "sleepEfficiency": 0.8733,  # Overall sense of how well the patient slept(totalSleepTime / bedTime)
             "awakenings": 7,  # number of times the subject woke up between sleep onset & offset

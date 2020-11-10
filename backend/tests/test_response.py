@@ -1,3 +1,10 @@
+"""
+Not tested as they seemed obvious:
+- "SleepTime": 31045, // Total amount of time sleeping including nocturnal awakenings (sleepOffset - sleepOnset)
+- "WASO": 3932, // Total amount of time passed in nocturnal awakenings. It is the total time passed in non-wake stage
+                // from sleep Onset to sleep offset (totalSleepTime - efficientSleepTime)
+"""
+
 import numpy as np
 
 from tests.setup import pytest_generate_tests  # noqa: F401
@@ -122,49 +129,6 @@ class TestReportTimePassedInStage():
         assert report['N3Time'] == N3Time
 
 
-class TestReportDurations():
-    """
-    "wakeAfterSleepOffset": 500, // [seconds] (wakeUpTime - sleepOffset)
-    "efficientSleepTime": 27113, // Total amount of seconds passed in non-wake stages
-    "WASO": 3932, // Total amount of time passed in nocturnal awakenings. It is the total time passed in non-wake stage
-                  // from sleep Onset to sleep offset (totalSleepTime - efficientSleepTime)
-    "SleepTime": 31045, // Total amount of time sleeping including nocturnal awakenings (sleepOffset - sleepOnset)
-    """
-    params = {
-        "test_wake_": [
-            dict(
-                sequence=['W', 'W', 'W'],
-                wakeAfterSleepOffset=0,
-                efficientSleepTime=0,
-                WASO=0,
-                SleepTime=0,
-            ), dict(
-                sequence=['REM', 'REM', 'REM'],
-                wakeAfterSleepOffset=0,
-                efficientSleepTime=0,
-                WASO=0,
-                SleepTime=0,
-            ), dict(
-                sequence=['REM', 'REM', 'REM'],
-                wakeAfterSleepOffset=0,
-                efficientSleepTime=0,
-                WASO=0,
-                SleepTime=0,
-            ), dict(
-                sequence=['REM', 'REM', 'REM'],
-                wakeAfterSleepOffset=0,
-                efficientSleepTime=0,
-                WASO=0,
-                SleepTime=0,
-            ),
-        ],
-    }
-
-    @ classmethod
-    def setup_class(cls):
-        cls.MOCK_REQUEST = get_mock_request()
-
-
 class TestReportLatenciesOnset():
     """Tests the event-related latencies and onsets
     The evaluated metrics are:
@@ -173,9 +137,6 @@ class TestReportLatenciesOnset():
 
     "sleepOnset": 1602211380, // Time at which the subject fell asleep (time of the first non-wake epoch)
     "remOnset": 1602214232, // First REM epoch
-
-    NOT TESTED:
-    "sleepOffset": 1602242425, // Time at which the subject woke up (time of the epoch after the last non-wake epoch)
     """
 
     params = {
@@ -249,12 +210,6 @@ class TestReportLatenciesOnset():
     def setup_class(cls):
         cls.MOCK_REQUEST = get_mock_request()
 
-    def get_latency_report_key(self, test_rem):
-        return 'remLatency' if test_rem else 'sleepLatency'
-
-    def get_onset_report_key(self, test_rem):
-        return 'remOnset' if test_rem else 'sleepOnset'
-
     def test_sequence_starts_with_stage(self, sequence, test_rem):
         expected_latency = 0
         expected_onset = self.MOCK_REQUEST.bedtime
@@ -274,9 +229,15 @@ class TestReportLatenciesOnset():
         expected_onset = latency + self.MOCK_REQUEST.bedtime
         self.assert_latency_equals_expected(latency, expected_onset, sequence, test_rem)
 
+    def get_latency_report_key(self, test_rem):
+        return 'remLatency' if test_rem else 'sleepLatency'
+
+    def get_onset_report_key(self, test_rem):
+        return 'remOnset' if test_rem else 'sleepOnset'
+
     def assert_latency_equals_expected(self, expected_latency, expected_onset, sequence, test_rem):
         sequence = convert_sleep_stage_name_to_values(sequence)
-        response = ClassificationResponse(TestReportLatenciesOnset.MOCK_REQUEST, sequence, None)
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
         report = response.report
 
         assert report[self.get_latency_report_key(test_rem)] == expected_latency, (
@@ -287,12 +248,75 @@ class TestReportLatenciesOnset():
         )
 
 
+class TestReportSleepOffset():
+    """Tests timestamp at which user woke up
+    "sleepOffset": 1602242425, // Time at which the subject woke up (time of the epoch after the last non-wake epoch)
+    """
+    params = {
+        'test_wake_up_end': [dict(
+            sequence=['W', 'N1', 'N2', 'N3', 'REM', 'N1', 'W'],
+        )], 'test_wake_up_middle': [dict(
+            sequence=['W', 'N1', 'N2', 'W', 'W', 'W', 'W'],
+            awake_index=3,
+        )], 'test_awakes_and_goes_back_to_sleep_and_wakes': [dict(
+            sequence=['W', 'N1', 'N2', 'W', 'N1', 'N2', 'W'],
+            awake_index=6,
+        )], 'test_awakes_and_goes_back_to_sleep_and_doesnt_awake': [dict(
+            sequence=['W', 'N1', 'N2', 'W', 'N1', 'N2', 'N2'],
+        )], 'test_always_awake': [
+            dict(sequence=['W', 'W', 'W']),
+            dict(sequence=['W']),
+        ], 'test_doesnt_awaken': [
+            dict(sequence=['W', 'N1', 'N2']),
+            dict(sequence=['N1', 'N1', 'N2']),
+        ],
+    }
+
+    @classmethod
+    def setup_class(cls):
+        cls.MOCK_REQUEST = get_mock_request()
+
+    def test_wake_up_end(self, sequence):
+        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * (len(sequence) - 1)
+        self.assert_sleep_offset(sequence, expected_sleep_offset)
+
+    def test_wake_up_middle(self, sequence, awake_index):
+        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * awake_index
+        self.assert_sleep_offset(sequence, expected_sleep_offset)
+
+    def test_awakes_and_goes_back_to_sleep_and_wakes(self, sequence, awake_index):
+        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * awake_index
+        self.assert_sleep_offset(sequence, expected_sleep_offset)
+
+    def test_awakes_and_goes_back_to_sleep_and_doesnt_awake(self, sequence):
+        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
+        self.assert_sleep_offset(sequence, expected_sleep_offset)
+
+    def test_always_awake(self, sequence):
+        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
+        self.assert_sleep_offset(sequence, expected_sleep_offset)
+
+    def test_doesnt_awaken(self, sequence):
+        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
+        self.assert_sleep_offset(sequence, expected_sleep_offset)
+
+    def assert_sleep_offset(self, sequence, expected_sleep_offset):
+        sequence = convert_sleep_stage_name_to_values(sequence)
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        report = response.report
+
+        assert report['sleepOffset'] == expected_sleep_offset
+
+
 class TestReportMetrics():
     """
     "sleepEfficiency": 0.8733, // Overall sense of how well the patient slept (totalSleepTime/bedTime)
     "awakenings": 7, // number of times the subject woke up between sleep onset & offset
     "stageShifts": 89, // number of times the subject transitionned
                        // from one stage to another between sleep onset & offset
+    "wakeAfterSleepOffset": 500, // [seconds] (wakeUpTime - sleepOffset)
+    "efficientSleepTime": 27113, // Total amount of seconds passed in non-wake stages
+
     """
     params = {
     }
