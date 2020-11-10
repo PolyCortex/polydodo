@@ -103,12 +103,14 @@ class SettingsPopupMenuButton<T> extends StatelessWidget {
       child:
           // ignore: missing_required_param
           TextButton(
-              child: Text(
-                EnumToString.convertToString(savedSetting, camelCase: true),
-              ),
-              style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(
-                      Theme.of(context).colorScheme.primary))),
+        child: Text(
+          EnumToString.convertToString(savedSetting, camelCase: true),
+        ),
+        style: ButtonStyle(
+          foregroundColor:
+              MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+        ),
+      ),
       onSelected: (savedSetting) => BlocProvider.of<SettingsCubit>(context)
           .setSetting(savedSetting.toString().split('.').first, savedSetting),
       itemBuilder: (BuildContext context) =>
