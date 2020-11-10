@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         SettingsTile(
                           title: 'Sex',
-                          subtitle: 'What is your biological sex',
+                          subtitle: 'Your biological sex',
                           leading: Icon(Icons.face),
                           trailing: _SexButton(
                             savedSex: state.settings.sex,
@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         SettingsTile(
                           title: 'Acquisition Board',
-                          subtitle: 'What OpenBCI board are you using?',
+                          subtitle: 'Your OpenBCI board',
                           leading: Icon(Icons.memory),
                           trailing: _BoardButton(
                             savedBoard: state.settings.board,
