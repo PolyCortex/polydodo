@@ -1,7 +1,8 @@
 import pandas as pd
 
-from classification.exceptions import ClassificationError
 from classification.parser.constants import RETAINED_COLUMNS
+from classification.parser.csv import read_csv
+
 
 ROWS_TO_SKIP = 5
 
@@ -13,13 +14,4 @@ def parse_session_file(file):
     Returns:
     - np.array of the two EEG channels of interest
     """
-
-    try:
-        eeg_raw = pd.read_csv(file,
-                              skiprows=ROWS_TO_SKIP,
-                              usecols=RETAINED_COLUMNS
-                              ).to_numpy()
-    except Exception:
-        raise ClassificationError()
-
-    return eeg_raw
+    return read_csv(file, ROWS_TO_SKIP, RETAINED_COLUMNS)

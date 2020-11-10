@@ -1,8 +1,7 @@
-import pandas as pd
 import numpy as np
 
-from classification.exceptions import ClassificationError
 from classification.parser.constants import RETAINED_COLUMNS
+from classification.parser.csv import read_csv
 
 ROWS_TO_SKIP = 2
 
@@ -24,14 +23,7 @@ def parse_sd_file(file):
     Returns:
     - np.array of the two EEG channels of interest
     """
-    try:
-        eeg_raw = pd.read_csv(file,
-                              skiprows=ROWS_TO_SKIP,
-                              usecols=RETAINED_COLUMNS
-                              ).to_numpy()
-    except Exception:
-        raise ClassificationError()
-
+    eeg_raw = read_csv(file, ROWS_TO_SKIP, RETAINED_COLUMNS)
     hexstr_to_int = np.vectorize(_hexstr_to_int)
     eeg_raw = hexstr_to_int(eeg_raw)
 
