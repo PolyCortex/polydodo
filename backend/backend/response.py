@@ -3,6 +3,7 @@ import numpy as np
 from classification.config.constants import EPOCH_DURATION, SleepStage
 
 from metric.time_passed_in_stage import get_time_passed_in_stage
+from metric.latency import get_latencies
 
 
 class ClassificationResponse():
@@ -55,8 +56,7 @@ class ClassificationResponse():
             "sleepOffset": 1602242425,
             "remOnset": 1602214232,  # First REM epoch
 
-            "sleepLatency": 1000,  # Time to fall asleep[seconds](sleepOnset - bedTime)
-            "remLatency": 3852,  # [seconds](remOnset - bedTime)
+            **get_latencies(self.sleep_stages),
 
             "sleepEfficiency": 0.8733,  # Overall sense of how well the patient slept(totalSleepTime / bedTime)
             "awakenings": 7,  # number of times the subject woke up between sleep onset & offset
