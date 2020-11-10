@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_states.dart';
-import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 
 class RecordSleepRecordingPage extends StatelessWidget {

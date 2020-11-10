@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/sleep_history/sleep_history_cubit.dart';
 import 'package:polydodo/src/application/sleep_history/sleep_history_state.dart';
-import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
