@@ -249,32 +249,40 @@ class TestReportLatenciesOnset():
     def setup_class(cls):
         cls.MOCK_REQUEST = get_mock_request()
 
-    def get_report_key(self, test_rem):
+    def get_latency_report_key(self, test_rem):
         return 'remLatency' if test_rem else 'sleepLatency'
+
+    def get_onset_report_key(self, test_rem):
+        return 'remOnset' if test_rem else 'sleepOnset'
 
     def test_sequence_starts_with_stage(self, sequence, test_rem):
         expected_latency = 0
-        self.assert_latency_equals_expected(expected_latency, sequence, test_rem)
+        expected_onset = self.MOCK_REQUEST.bedtime
+        self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_has_no_stage(self, sequence, test_rem):
         expected_latency = -1
-        self.assert_latency_equals_expected(expected_latency, sequence, test_rem)
+        expected_onset = self.MOCK_REQUEST.bedtime
+        self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_ends_with_stage(self, sequence, test_rem):
         expected_latency = EPOCH_DURATION * (len(sequence) - 1)
-        self.assert_latency_equals_expected(expected_latency, sequence, test_rem)
+        expected_onset = expected_latency + self.MOCK_REQUEST.bedtime
+        self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_with_stage_at_middle(self, sequence, test_rem, latency):
-        self.assert_latency_equals_expected(latency, sequence, test_rem)
+        expected_onset = latency + self.MOCK_REQUEST.bedtime
+        self.assert_latency_equals_expected(latency, expected_onset, sequence, test_rem)
 
-    def assert_latency_equals_expected(self, expected, sequence, test_rem):
+    def assert_latency_equals_expected(self, expected_latency, expected_onset, sequence, test_rem):
         sequence = convert_sleep_stage_name_to_values(sequence)
-        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        response = ClassificationResponse(TestReportLatenciesOnset.MOCK_REQUEST, sequence, None)
         report = response.report
 
-        assert report[self.get_report_key(
-            test_rem)] == expected, f"Latency of {'rem' if test_rem else 'sleep'} is not as expected"
-        assert report[self.get_report_key(test_rem)] == expected + self.MOCK_REQUEST.bedtime, (
+        assert report[self.get_latency_report_key(test_rem)] == expected_latency, (
+            f"Latency of {'rem' if test_rem else 'sleep'} is not as expected"
+        )
+        assert report[self.get_onset_report_key(test_rem)] == expected_onset, (
             f"Onset of {'rem' if test_rem else 'sleep'} is not as expected"
         )
 

@@ -50,19 +50,29 @@ class ClassificationResponse():
 
     @property
     def report(self):
+        latencies = get_latencies(self.sleep_stages)
+        time_passed_in_stage = get_time_passed_in_stage(self.sleep_stages)
+        onsets = {
+            "sleepOnset": (
+                latencies['sleepLatency'] if latencies['sleepLatency'] >= 0 else 0
+            ) + self.bedtime,
+            "remOnset": (
+                latencies['remLatency'] if latencies['remLatency'] >= 0 else 0
+            ) + self.bedtime
+        }
+
         return {
-            "sleepOnset": 1602211380,  # Time at which the subject fell asleep(time of the first non - wake epoch)
+            **latencies,
+            **time_passed_in_stage,
+            **onsets,
+
             # Time at which the subject woke up(time of the epoch after the last non - wake epoch)
             "sleepOffset": 1602242425,
-            "remOnset": 1602214232,  # First REM epoch
-
-            **get_latencies(self.sleep_stages),
 
             "sleepEfficiency": 0.8733,  # Overall sense of how well the patient slept(totalSleepTime / bedTime)
             "awakenings": 7,  # number of times the subject woke up between sleep onset & offset
             # number of times the subject transitionned from one stage to another between sleep onset & offset
             "stageShifts": 89,
-
 
             "wakeAfterSleepOffset": 500,  # [seconds](wakeUpTime - sleepOffset)
             "efficientSleepTime": 27113,  # Total amount of seconds passed in non - wake stages
@@ -71,7 +81,6 @@ class ClassificationResponse():
             # offset(totalSleepTime - efficientSleepTime)
             "WASO": 3932,
             "SleepTime": 31045,
-            **get_time_passed_in_stage(self.sleep_stages),
         }
 
     @property
