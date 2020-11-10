@@ -16,4 +16,4 @@ def get_latencies(sequence):
 
 def _get_latency_of_stage(sequence_is_stage):
     epochs_of_stage_of_interest = np.where(sequence_is_stage)[0]
-    return -1 if epochs_of_stage_of_interest.shape[0] == 0 else epochs_of_stage_of_interest[0] * EPOCH_DURATION
+    return int(-1 if epochs_of_stage_of_interest.shape[0] == 0 else epochs_of_stage_of_interest[0] * EPOCH_DURATION)

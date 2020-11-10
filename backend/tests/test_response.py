@@ -165,12 +165,19 @@ class TestReportDurations():
         cls.MOCK_REQUEST = get_mock_request()
 
 
-class TestReportLatency():
-    """Tests the time it took to enter a specific stage
+class TestReportLatenciesOnset():
+    """Tests the event-related latencies and onsets
     The evaluated metrics are:
     "sleepLatency": 1000, // Time to fall asleep [seconds] (sleepOnset - bedTime)
     "remLatency": 3852, // [seconds] (remOnset- bedTime)
+
+    "sleepOnset": 1602211380, // Time at which the subject fell asleep (time of the first non-wake epoch)
+    "remOnset": 1602214232, // First REM epoch
+
+    NOT TESTED:
+    "sleepOffset": 1602242425, // Time at which the subject woke up (time of the epoch after the last non-wake epoch)
     """
+
     params = {
         "test_sequence_starts_with_stage": [
             dict(
@@ -265,21 +272,11 @@ class TestReportLatency():
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
         report = response.report
 
-        assert report[self.get_report_key(test_rem)] == expected
-
-
-class TestReportTimestamps():
-    """
-    "sleepOnset": 1602211380, // Time at which the subject fell asleep (time of the first non-wake epoch)
-    "sleepOffset": 1602242425, // Time at which the subject woke up (time of the epoch after the last non-wake epoch)
-    "remOnset": 1602214232, // First REM epoch
-    """
-    params = {
-        "test_bla": [dict()]
-    }
-
-    def test_bla(self):
-        pass
+        assert report[self.get_report_key(
+            test_rem)] == expected, f"Latency of {'rem' if test_rem else 'sleep'} is not as expected"
+        assert report[self.get_report_key(test_rem)] == expected + self.MOCK_REQUEST.bedtime, (
+            f"Onset of {'rem' if test_rem else 'sleep'} is not as expected"
+        )
 
 
 class TestReportMetrics():
