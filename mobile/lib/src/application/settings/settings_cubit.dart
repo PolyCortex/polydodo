@@ -31,7 +31,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  void setAge(int newAge) async {
+  Future<void> setAge(int newAge) async {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(age: newAge)));
