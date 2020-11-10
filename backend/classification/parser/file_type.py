@@ -1,9 +1,13 @@
-from enum import Enum, auto
+from enum import Enum
 
+from classification.parser.sd_file import parse_sd_file
+from classification.parser.session_file import parse_session_file
 
 class FileType(Enum):
-    SDFile = auto()
-    SessionFile = auto()
+     SDFile = (parse_sd_file,)
+     SessionFile = (parse_session_file,)
+     def __init__(self, parser):
+             self.parser = parser
 
 
 def detect_file_type(file) -> FileType:

@@ -16,15 +16,7 @@ import numpy as np
 
 from classification.config.constants import OPENBCI_CYTON_SAMPLE_RATE, EEG_CHANNELS
 from classification.parser.constants import SCALE_V_PER_COUNT
-from classification.parser.sd_file_parser import parse_sd_file
-from classification.parser.session_file_parser import parse_session_file
 from classification.parser.file_type import FileType, detect_file_type
-
-
-_FILETYPE_PARSER_MAP = {
-    FileType.SDFile: parse_sd_file,
-    FileType.SessionFile: parse_session_file
-}
 
 
 def get_raw_array(file):
@@ -40,7 +32,7 @@ def get_raw_array(file):
     Detected {filetype.name} format.
     """)
 
-    parse = _FILETYPE_PARSER_MAP[filetype]
+    parse = filetype.parser
     eeg_raw = parse(file)
 
     raw_object = RawArray(
