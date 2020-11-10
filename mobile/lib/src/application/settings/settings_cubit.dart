@@ -6,12 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
+  SharedPreferences prefs;
+
   SettingsCubit() : super(SettingsLoadInProgress()) {
     getSettings();
   }
 
   void getSettings() async {
-    var prefs = (await SharedPreferences.getInstance());
+    prefs = (await SharedPreferences.getInstance());
 
     var settings = Settings(
       age: prefs.getInt('age'),
@@ -27,7 +29,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(sex: newSex)));
-      await (await SharedPreferences.getInstance()).setInt('sex', newSex.index);
+      await prefs.setInt('sex', newSex.index);
     }
   }
 
@@ -35,7 +37,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(age: newAge)));
-      await (await SharedPreferences.getInstance()).setInt('age', newAge);
+      await prefs.setInt('age', newAge);
     }
   }
 
@@ -43,8 +45,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(board: newBoard)));
-      await (await SharedPreferences.getInstance())
-          .setInt('board', newBoard.index);
+      await prefs.setInt('board', newBoard.index);
     }
   }
 }
