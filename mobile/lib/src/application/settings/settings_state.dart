@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:polydodo/src/domain/settings/settings.dart';
+part of 'settings_cubit.dart';
 
 abstract class SettingsState extends Equatable {
   const SettingsState();

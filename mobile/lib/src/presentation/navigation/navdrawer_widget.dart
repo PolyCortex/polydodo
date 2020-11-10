@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
-import 'navdrawer_tabs.dart';
+part 'navdrawer_tabs.dart';
 
 class NavDrawer extends StatelessWidget {
   static const name = 'appDrawerRoute';

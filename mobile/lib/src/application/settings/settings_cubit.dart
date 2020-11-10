@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:polydodo/src/application/settings/settings_state.dart';
+import 'package:equatable/equatable.dart';
 import 'package:polydodo/src/domain/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit() : super(SettingsLoadInProgress()) {
