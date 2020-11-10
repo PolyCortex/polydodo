@@ -42,9 +42,11 @@ const SleepAnalysisResults = ({ location }) => {
         description={text['header_description']}
       />
       <Container className="mt-5 mb-5 text-justify">
-        <Row className="mb-5 justify-content-center">
-          <PreviewModeWarning />
-        </Row>
+        {isPreviewMode && (
+          <Row className="mb-5 justify-content-center">
+            <PreviewModeWarning />
+          </Row>
+        )}
         <p>
           Of course, we are analyzing only one night of sleep so it is therefore tricky to draw general conclusions
           about your sleep. It is however fascinating to see how your night was.
