@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:equatable/equatable.dart';
+import 'package:polydodo/src/common/constants.dart';
 import 'package:polydodo/src/domain/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,36 +18,50 @@ class SettingsCubit extends Cubit<SettingsState> {
     var prefs = (await SharedPreferences.getInstance());
 
     var settings = Settings(
-      age: prefs.getInt('age'),
+      age: prefs.getInt(AGEKEY),
       board: AcquisitionBoard
-          .values[(prefs.getInt('board')) ?? AcquisitionBoard.Empty.index],
-      sex: Sex.values[(prefs.getInt('sex')) ?? Sex.Empty.index],
+          .values[(prefs.getInt(BOARDKEY)) ?? AcquisitionBoard.NotSet.index],
+      sex: Sex.values[(prefs.getInt(SEXKEY)) ?? Sex.NotSet.index],
     );
 
     emit(SettingsLoadSuccess(settings));
   }
 
-  Future<void> setSex(Sex newSex) async {
+  Future<void> setSetting<T>(String settingKey, T setting) async {
     if (state is SettingsLoadSuccess) {
-      emit(SettingsLoadSuccess(
-          (state as SettingsLoadSuccess).settings.copyWith(sex: newSex)));
-      await prefs.setInt('sex', newSex.index);
-    }
-  }
+      var settingString = settingKey != AGEKEY
+          ? EnumToString.convertToString(setting)
+          : setting.toString();
+      switch (settingKey) {
+        case AGEKEY:
+          var age = int.parse(settingString);
+          emit(SettingsLoadSuccess(
+            (state as SettingsLoadSuccess).settings.copyWith(age: age),
+          ));
+          await prefs.setInt(AGEKEY, age);
+          break;
+        case SEXKEY:
+          var sex = EnumToString.fromString(Sex.values, settingString);
+          emit(
+            SettingsLoadSuccess(
+              (state as SettingsLoadSuccess).settings.copyWith(sex: sex),
+            ),
+          );
+          await prefs.setInt(SEXKEY, sex.index);
+          break;
+        case BOARDKEY:
+          var board =
+              EnumToString.fromString(AcquisitionBoard.values, settingString);
+          emit(
+            SettingsLoadSuccess(
+              (state as SettingsLoadSuccess).settings.copyWith(board: board),
+            ),
+          );
+          await prefs.setInt(BOARDKEY, board.index);
+          break;
 
-  Future<void> setAge(int newAge) async {
-    if (state is SettingsLoadSuccess) {
-      emit(SettingsLoadSuccess(
-          (state as SettingsLoadSuccess).settings.copyWith(age: newAge)));
-      await prefs.setInt('age', newAge);
-    }
-  }
-
-  Future<void> setBoard(AcquisitionBoard newBoard) async {
-    if (state is SettingsLoadSuccess) {
-      emit(SettingsLoadSuccess(
-          (state as SettingsLoadSuccess).settings.copyWith(board: newBoard)));
-      await prefs.setInt('board', newBoard.index);
+        default:
+      }
     }
   }
 }

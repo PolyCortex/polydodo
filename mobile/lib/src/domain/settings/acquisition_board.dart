@@ -1,3 +1,3 @@
 part of 'settings.dart';
 
-enum AcquisitionBoard { Empty, Cython, Ganglion }
+enum AcquisitionBoard { NotSet, Cython, Ganglion }

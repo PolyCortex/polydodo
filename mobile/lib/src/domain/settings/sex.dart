@@ -1,3 +1,3 @@
 part of 'settings.dart';
 
-enum Sex { Empty, Male, Female }
+enum Sex { NotSet, Male, Female }
