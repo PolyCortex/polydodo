@@ -7,9 +7,13 @@ from classification.file_loading import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
+from classification.request import ClassificationRequest
+from classification.response import ClassificationResponse
+from classification.features.preprocessing import preprocess
+from classification.spectrogram_generator import SpectrogramGenerator
 
 app = Flask(__name__)
-model = SleepStagesClassifier()
+sleep_stage_classifier = SleepStagesClassifier()
 
 
 def allowed_file(filename):
@@ -46,29 +50,28 @@ def analyze_sleep():
         return 'File format not allowed', HTTPStatus.BAD_REQUEST
 
     form_data = request.form.to_dict()
+    raw_array = get_raw_array(file)
 
     try:
-        age = int(form_data['age'])
-        sex = Sex[form_data['sex']]
-        stream_start = int(form_data['stream_start'])
-        bedtime = int(form_data['bedtime'])
-        wakeup = int(form_data['wakeup'])
-    except (KeyError, ValueError):
+        classification_request = ClassificationRequest(
+            age=int(form_data['age']),
+            sex=Sex[form_data['sex']],
+            stream_start=int(form_data['stream_start']),
+            bedtime=int(form_data['bedtime']),
+            wakeup=int(form_data['wakeup']),
+            raw_eeg=raw_array,
+        )
+    except (KeyError, ValueError, ClassificationError):
         return 'Missing or invalid request parameters', HTTPStatus.BAD_REQUEST
 
-    try:
-        raw_array = get_raw_array(file)
-        model.predict(raw_array, info={
-            'sex': sex,
-            'age': age,
-            'in_bed_seconds': bedtime - stream_start,
-            'out_of_bed_seconds': wakeup - stream_start
-        })
-    except ClassificationError as e:
-        return e.message, HTTPStatus.BAD_REQUEST
+    preprocessed_epochs = preprocess(classification_request)
+    predictions = sleep_stage_classifier.predict(preprocessed_epochs, classification_request)
+    spectrogram_generator = SpectrogramGenerator(preprocessed_epochs)
+    classification_response = ClassificationResponse(
+        classification_request, predictions, spectrogram_generator.generate()
+    )
 
-    with open("assets/mock_response.json", "r") as mock_response_file:
-        return mock_response_file.read()
+    return classification_response.response
 
 
 CORS(app,

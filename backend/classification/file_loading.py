@@ -2,9 +2,6 @@
 Function utilities to convert data acquired on an OpenBCI
 Cyton board using the SD card logging strategy.
 
-TODO: We should look into optimizing this conversion. We currently
-convert one line at a time, while a vectorized approach would be much more efficient,
-as the conversion of a line does not depend on the other lines.
 TODO: Consider cropping file (from bed to wake up time) here, before the for loop. Have to consider
 not all lines hold sample values (i.e. first line with comment and second line with a single timestamp).
 
@@ -14,11 +11,12 @@ the raw hexadecimal data to signed decimal values in the OpenBCI GUI:
 The Cyton board logging format is also described here:
 [https://docs.openbci.com/docs/02Cyton/CytonSDCard#data-logging-format]
 """
-from io import StringIO
 from mne import create_info
 from mne.io import RawArray
 import numpy as np
+import pandas as pd
 
+from classification.exceptions import ClassificationError
 from classification.config.constants import (
     EEG_CHANNELS,
     OPENBCI_CYTON_SAMPLE_RATE,
@@ -31,6 +29,7 @@ SCALE_V_PER_COUNT = SCALE_uV_PER_COUNT / 1e6
 
 FILE_COLUMN_OFFSET = 1
 CYTON_TOTAL_NB_CHANNELS = 8
+SKIP_ROWS = 2
 
 
 def get_raw_array(file):
@@ -40,67 +39,44 @@ def get_raw_array(file):
     Returns:
     - mne.RawArray of the two EEG channels of interest
     """
-    file_content = StringIO(file.stream.read().decode("UTF8"))
 
-    eeg_raw = []
-    for line in file_content.readlines():
-        line_splitted = line.split(',')
+    retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
 
-        if len(line_splitted) >= CYTON_TOTAL_NB_CHANNELS:
-            eeg_raw.append(_get_decimals_from_hexadecimal_strings(line_splitted))
+    try:
+        eeg_raw = pd.read_csv(file,
+                              skiprows=SKIP_ROWS,
+                              usecols=retained_columns
+                              ).to_numpy()
+    except Exception:
+        raise ClassificationError()
 
-    eeg_raw = SCALE_V_PER_COUNT * np.array(eeg_raw, dtype='object')
+    hexstr_to_int = np.vectorize(_hexstr_to_int)
+    eeg_raw = hexstr_to_int(eeg_raw)
 
     raw_object = RawArray(
-        np.transpose(eeg_raw),
+        SCALE_V_PER_COUNT * np.transpose(eeg_raw),
         info=create_info(
             ch_names=EEG_CHANNELS,
             sfreq=OPENBCI_CYTON_SAMPLE_RATE,
             ch_types='eeg'),
         verbose=False,
     )
-
-    print('First sample values: ', raw_object[:, 0])
-    print('Second sample values: ', raw_object[:, 1])
-    print('Number of samples: ', raw_object.n_times)
-    print('Duration of signal (h): ', raw_object.n_times / (3600 * OPENBCI_CYTON_SAMPLE_RATE))
-    print('Channel names: ', raw_object.ch_names)
+    print(f"""
+        First sample values: {raw_object[:, 0]}
+        Second sample values: {raw_object[:, 1]}
+        Number of samples: {raw_object.n_times}
+        Duration of signal (h): {raw_object.n_times / (3600 * OPENBCI_CYTON_SAMPLE_RATE)}
+        Channel names: {raw_object.ch_names}
+    """)
 
     return raw_object
 
 
-def _get_decimals_from_hexadecimal_strings(lines):
-    """Converts the array of hexadecimal strings to an array of decimal values of the EEG channels
-    Input:
-    - lines: splitted array of two complement hexadecimal
-    Returns:
-    - array of decimal values for each EEG channel of interest
-    """
-    return np.array([
-        _convert_hexadecimal_to_signed_decimal(hex_value)
-        for hex_value in lines[FILE_COLUMN_OFFSET:FILE_COLUMN_OFFSET + len(EEG_CHANNELS)]
-    ])
-
-
-def _convert_hexadecimal_to_signed_decimal(hex_value):
-    """Converts the hexadecimal value encoded on OpenBCI Cyton SD card to signed decimal
-    Input:
-    - hex_value: signed hexadecimal value
-    Returns:
-    - decimal value
-    """
-    return _get_twos_complement(hex_value) if len(hex_value) % 2 == 0 else 0
-
-
-def _get_twos_complement(hexstr):
+def _hexstr_to_int(hexstr):
     """Converts a two complement hexadecimal value in a string to a signed float
     Input:
     - hex_value: signed hexadecimal value
     Returns:
     - decimal value
     """
-    bits = len(hexstr) * 4
-    value = int(hexstr, 16)
-    if value & (1 << (bits - 1)):
-        value -= 1 << bits
-    return value
+    return int.from_bytes(bytes.fromhex(hexstr), byteorder='big', signed=True)

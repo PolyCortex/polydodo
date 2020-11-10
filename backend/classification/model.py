@@ -1,7 +1,6 @@
 """defines models which predict sleep stages based off EEG signals"""
 
 from classification.features import get_features
-from classification.validation import validate
 from classification.postprocessor import get_hmm_model
 from classification.load_model import load_model, load_hmm
 
@@ -14,31 +13,21 @@ class SleepStagesClassifier():
         self.postprocessor_state = load_hmm()
         self.postprocessor = get_hmm_model(self.postprocessor_state)
 
-    def predict(self, raw_eeg, info):
+    def predict(self, epochs, request):
         """
         Input:
-        - raw_eeg: instance of mne.io.RawArray
+        - raw_eeg: instance of mne.Epochs
             Should contain 2 channels (1: FPZ-CZ, 2: PZ-OZ)
-        - info: dict
-            Should contain the following keys:
-            - sex: instance of Sex enum
-            - age: indicates the subject's age
-            - in_bed_seconds: timespan, in seconds, from which
-                the subject started the recording and went to bed
-            - out_of_bed_seconds: timespan, in seconds, from which
-                the subject started the recording and got out of bed
+        - request: instance of ClassificationRequest
         Returns: array of predicted sleep stages
         """
 
-        validate(raw_eeg, info)
-        features = get_features(raw_eeg, info)
+        features = get_features(epochs, request)
 
         print(features, features.shape)
 
         predictions = self._get_predictions(features)
         predictions = self._get_postprocessed_predictions(predictions)
-
-        print(predictions)
 
         return predictions
 
