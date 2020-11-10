@@ -315,14 +315,64 @@ class TestReportSleepOffset():
         assert report['wakeAfterSleepOffset'] == expected_wake_after_sleep_offset
 
 
-class TestReportMetrics():
+class TestReportSleepEfficiency():
     """
     "sleepEfficiency": 0.8733, // Overall sense of how well the patient slept (totalSleepTime/bedTime)
+    "efficientSleepTime": 27113, // Total amount of seconds passed in non-wake stages
+    """
+    params = {
+        'test_sleep_time_null': [
+            dict(sequence=['W', 'W', 'W']),
+            dict(sequence=['W']),
+        ], 'test_sleep_time_not_null': [
+            dict(
+                sequence=['W', 'W', 'N1', 'W'],
+                expected_efficiency=(1 / 4),
+                expected_efficient_sleep_time=EPOCH_DURATION
+            ), dict(
+                sequence=['W', 'W', 'N2', 'W'],
+                expected_efficiency=(1 / 4),
+                expected_efficient_sleep_time=EPOCH_DURATION
+            ), dict(
+                sequence=['W', 'W', 'N3', 'W'],
+                expected_efficiency=(1 / 4),
+                expected_efficient_sleep_time=EPOCH_DURATION
+            ), dict(
+                sequence=['W', 'W', 'REM', 'W'],
+                expected_efficiency=(1 / 4),
+                expected_efficient_sleep_time=EPOCH_DURATION
+            ), dict(
+                sequence=['W', 'W', 'N1', 'N2', 'N3', 'REM', 'N1', 'W'],
+                expected_efficiency=(5 / 8),
+                expected_efficient_sleep_time=5 * EPOCH_DURATION
+            ),
+        ]
+    }
+
+    @classmethod
+    def setup_class(cls):
+        cls.MOCK_REQUEST = get_mock_request()
+
+    def test_sleep_time_null(self, sequence):
+        self.assert_sleep_efficiency(sequence, expected_efficiency=0, expected_efficient_sleep_time=0)
+
+    def test_sleep_time_not_null(self, sequence, expected_efficiency, expected_efficient_sleep_time):
+        self.assert_sleep_efficiency(sequence, expected_efficiency, expected_efficient_sleep_time)
+
+    def assert_sleep_efficiency(self, sequence, expected_efficiency, expected_efficient_sleep_time):
+        sequence = convert_sleep_stage_name_to_values(sequence)
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        report = response.report
+
+        assert report['sleepEfficiency'] == expected_efficiency
+        assert report['efficientSleepTime'] == expected_efficient_sleep_time
+
+
+class TestReportMetrics():
+    """
     "awakenings": 7, // number of times the subject woke up between sleep onset & offset
     "stageShifts": 89, // number of times the subject transitionned
                        // from one stage to another between sleep onset & offset
-    "wakeAfterSleepOffset": 500, // [seconds] (wakeUpTime - sleepOffset)
-    "efficientSleepTime": 27113, // Total amount of seconds passed in non-wake stages
 
     """
     params = {
