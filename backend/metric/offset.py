@@ -11,8 +11,6 @@ def get_sleep_offset_with_wake(sequence, bedtime):
     ) if len(sleep_indexes) and sequence[-1] == SleepStage.W.name else 0
 
     return {
-        # Time at which the subject woke up(time of the epoch after the last non - wake epoch)
         'sleepOffset': sleep_nb_epochs * EPOCH_DURATION + bedtime,
-        # [seconds](wakeUpTime - sleepOffset)
         'wakeAfterSleepOffset': wake_after_sleep_offset_nb_epochs * EPOCH_DURATION,
     }

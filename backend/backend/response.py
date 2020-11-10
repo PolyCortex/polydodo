@@ -5,6 +5,7 @@ from classification.config.constants import EPOCH_DURATION, SleepStage
 from metric.time_passed_in_stage import get_time_passed_in_stage
 from metric.latency import get_latencies
 from metric.offset import get_sleep_offset_with_wake
+from metric.efficiency import get_efficiency
 
 
 class ClassificationResponse():
@@ -53,6 +54,8 @@ class ClassificationResponse():
     def report(self):
         latencies = get_latencies(self.sleep_stages)
         time_passed_in_stage = get_time_passed_in_stage(self.sleep_stages)
+        efficiencies = get_efficiency(self.sleep_stages)
+        sleep_offset_with_wake = get_sleep_offset_with_wake(self.sleep_stages, self.bedtime)
         onsets = {
             "sleepOnset": (
                 latencies['sleepLatency'] if latencies['sleepLatency'] >= 0 else 0
@@ -61,24 +64,22 @@ class ClassificationResponse():
                 latencies['remLatency'] if latencies['remLatency'] >= 0 else 0
             ) + self.bedtime
         }
+        sleep_time = sleep_offset_with_wake['sleepOffset'] - onsets['sleepOnset']
+        waso = sleep_time - efficiencies['efficientSleepTime']
 
         return {
             **latencies,
             **time_passed_in_stage,
             **onsets,
-            **get_sleep_offset_with_wake(self.sleep_stages, self.bedtime),
+            **efficiencies,
+            **sleep_offset_with_wake,
 
-            "sleepEfficiency": 0.8733,  # Overall sense of how well the patient slept(totalSleepTime / bedTime)
-            "awakenings": 7,  # number of times the subject woke up between sleep onset & offset
-            # number of times the subject transitionned from one stage to another between sleep onset & offset
+            "awakenings": 7,
             "stageShifts": 89,
 
-            "efficientSleepTime": 27113,  # Total amount of seconds passed in non - wake stages
-            # Total amount of time passed in nocturnal awakenings. It is the total
-            # time passed in non - wake stage from sleep Onset to sleep
-            # offset(totalSleepTime - efficientSleepTime)
-            "WASO": 3932,
-            "SleepTime": 31045,
+            # not tested
+            "WASO": waso,
+            "SleepTime": sleep_time,
         }
 
     @property
