@@ -46,7 +46,7 @@ class ClassificationResponse():
         }
 
     @property
-    def _report(self):
+    def report(self):
         return {
             "sleepOnset": 1602211380,  # Time at which the subject fell asleep(time of the first non - wake epoch)
             # Time at which the subject woke up(time of the epoch after the last non - wake epoch)
@@ -81,7 +81,7 @@ class ClassificationResponse():
     def response(self):
         return {
             'epochs': self.epochs,
-            'report': self._report,
+            'report': self.report,
             'metadata': self.metadata,
             'subject': self.subject,
             'board': self.board.name,

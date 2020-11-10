@@ -1,19 +1,16 @@
+from unittest.mock import patch
+
 from tests.setup import pytest_generate_tests  # noqa: F401
+from backend.response import ClassificationResponse
+from backend.request import ClassificationRequest
+from classification.config.constants import EPOCH_DURATION, SleepStage, Sex, AcquisitionBoard
 
-from classification.config.constants import EPOCH_DURATION
-from classification.response import ClassificationResponse
-from classification.request import ClassificationRequest
-
-MOCK_REQUEST = ClassificationRequest
+SLEEP_STAGE_NAMES = [e.name for e in SleepStage]
 
 
 class TestReportTimePassedInStage():
-    """
-    "wakeAfterSleepOffset": 500, // [seconds] (wakeUpTime - sleepOffset)
-    "efficientSleepTime": 27113, // Total amount of seconds passed in non-wake stages
-    "WASO": 3932, // Total amount of time passed in nocturnal awakenings. It is the total time passed in non-wake stage from sleep Onset to sleep offset (totalSleepTime - efficientSleepTime)
-    "SleepTime": 31045, // Total amount of time sleeping including nocturnal awakenings (sleepOffset - sleepOnset)
-
+    """Tests the time passed in each stage metrics in the response metrics
+    The evaluated metrics are:
     "WTime": 3932, // [seconds] time passed in this stage between bedTime to wakeUpTime
     "REMTime": 2370,
     "N1Time": 3402,
@@ -21,30 +18,160 @@ class TestReportTimePassedInStage():
     "N3Time": 5309
     """
     params = {
-        "test_null_time_passed_in_stage": [dict(
-            sequence=['W', 'W', 'W'], w_time=3 * EPOCH_DURATION, rem_time=0, n1_time=0, n2_time=0, n3_time=0,
-        ), dict(
-            sequence=['REM', 'REM', 'REM'], rem_time=3 * EPOCH_DURATION, w_time=0, n1_time=0, n2_time=0, n3_time=0,
-        ), dict(
-            sequence=['N1', 'N1', 'N1'], n1_time=3 * EPOCH_DURATION, w_time=0, rem_time=0, n2_time=0, n3_time=0,
-        ), dict(
-            sequence=['N2', 'N2', 'N2'], n2_time=3 * EPOCH_DURATION, w_time=0, rem_time=0, n1_time=0, n3_time=0,
-        ), dict(
-            sequence=['N3', 'N3', 'N3'], n3_time=3 * EPOCH_DURATION, w_time=0, rem_time=0, n1_time=0, n2_time=0,
-        )],
-        "test_complete_time_passed_in_stage": [dict()],
-        "test_partial_time_passed_in_stage": [dict()],
+        "test_null_time_passed_in_stage": [
+            dict(
+                sequence=[
+                    'W',
+                    'W',
+                    'W'],
+                WTime=3 * EPOCH_DURATION,
+                REMTime=0,
+                N1Time=0,
+                N2Time=0,
+                N3Time=0),
+            dict(
+                sequence=[
+                    'REM',
+                    'REM',
+                    'REM'],
+                REMTime=3 * EPOCH_DURATION,
+                WTime=0,
+                N1Time=0,
+                N2Time=0,
+                N3Time=0),
+            dict(
+                sequence=[
+                    'N1',
+                    'N1',
+                    'N1'],
+                N1Time=3 * EPOCH_DURATION,
+                WTime=0,
+                REMTime=0,
+                N2Time=0,
+                N3Time=0),
+            dict(
+                sequence=[
+                    'N2',
+                    'N2',
+                    'N2'],
+                N2Time=3 * EPOCH_DURATION,
+                WTime=0,
+                REMTime=0,
+                N1Time=0,
+                N3Time=0),
+            dict(
+                sequence=[
+                    'N3',
+                    'N3',
+                    'N3'],
+                N3Time=3 * EPOCH_DURATION,
+                WTime=0,
+                REMTime=0,
+                N1Time=0,
+                N2Time=0)],
+        "test_partial_time_passed_in_stage": [
+            dict(
+                sequence=[
+                    'W',
+                    'N1',
+                    'N2',
+                    'W'],
+                WTime=2 * EPOCH_DURATION,
+                REMTime=0,
+                N1Time=EPOCH_DURATION,
+                N2Time=EPOCH_DURATION,
+                N3Time=0),
+            dict(
+                sequence=[
+                    'N1',
+                    'W',
+                    'W'],
+                WTime=2 * EPOCH_DURATION,
+                REMTime=0,
+                N1Time=EPOCH_DURATION,
+                N2Time=0,
+                N3Time=0),
+            dict(
+                sequence=[
+                    'W',
+                    'N1',
+                    'N2',
+                    'N3',
+                    'REM',
+                    'W'],
+                WTime=2 * EPOCH_DURATION,
+                REMTime=EPOCH_DURATION,
+                N1Time=EPOCH_DURATION,
+                N2Time=EPOCH_DURATION,
+                N3Time=EPOCH_DURATION),
+            dict(
+                sequence=[
+                    'N1',
+                    'N2',
+                    'N2',
+                    'REM'],
+                WTime=0,
+                REMTime=EPOCH_DURATION,
+                N1Time=EPOCH_DURATION,
+                N2Time=2 * EPOCH_DURATION,
+                N3Time=0),
+        ]
     }
 
-    def test_null_time_passed_in_stage(self, sequence, w_time, rem_time, n1_time, n2_time, n3_time):
-        # ClassificationResponse(sequence, )
-        pass
+    @classmethod
+    def setup_class(cls):
+        """ setup any state specific to the execution of the given class (which
+        usually contains tests).
+        """
+        with patch.object(ClassificationRequest, '_validate', lambda *x, **y: None):
+            cls.MOCK_REQUEST = ClassificationRequest(
+                sex=Sex.M,
+                age=22,
+                stream_start=1582418280,
+                bedtime=1582423980,
+                wakeup=1582452240,
+                board=AcquisitionBoard.OPENBCI_CYTON,
+                raw_eeg=None,
+                stream_duration=35760,
+            )
 
-    def test_complete_time_passed_in_stage(self):
-        pass
+    def test_null_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        report = response.report
 
-    def test_partial_time_passed_in_stage(self):
-        pass
+        assert report[sequence[0].upper() + 'Time'] == len(sequence) * EPOCH_DURATION
+        self.assert_times(sequence, report, WTime, REMTime, N1Time, N2Time, N3Time)
+
+    def test_partial_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        report = response.report
+        self.assert_times(sequence, report, WTime, REMTime, N1Time, N2Time, N3Time)
+
+    def assert_times(self, sequence, report, WTime, REMTime, N1Time, N2Time, N3Time):
+        assert (
+            report['WTime']
+            + report['REMTime']
+            + report['N1Time']
+            + report['N2Time']
+            + report['N3Time']
+        ) == len(sequence) * EPOCH_DURATION
+
+        assert report['WTime'] == WTime
+        assert report['REMTime'] == REMTime
+        assert report['N1Time'] == N1Time
+        assert report['N2Time'] == N2Time
+        assert report['N3Time'] == N3Time
+
+
+class TestReportDurations():
+    """
+    "wakeAfterSleepOffset": 500, // [seconds] (wakeUpTime - sleepOffset)
+    "efficientSleepTime": 27113, // Total amount of seconds passed in non-wake stages
+    "WASO": 3932, // Total amount of time passed in nocturnal awakenings. It is the total time passed in non-wake stage
+                  // from sleep Onset to sleep offset (totalSleepTime - efficientSleepTime)
+    "SleepTime": 31045, // Total amount of time sleeping including nocturnal awakenings (sleepOffset - sleepOnset)
+    """
+    pass
 
 
 class TestReportLatency():
@@ -78,7 +205,8 @@ class TestReportMetrics():
     """
     "sleepEfficiency": 0.8733, // Overall sense of how well the patient slept (totalSleepTime/bedTime)
     "awakenings": 7, // number of times the subject woke up between sleep onset & offset
-    "stageShifts": 89, // number of times the subject transitionned from one stage to another between sleep onset & offset
+    "stageShifts": 89, // number of times the subject transitionned
+                       // from one stage to another between sleep onset & offset
     """
     params = {
     }
