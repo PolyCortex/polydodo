@@ -10,7 +10,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     getSettings();
   }
 
-  void getSettings() async {
+  Future<void> getSettings() async {
     var prefs = (await SharedPreferences.getInstance());
 
     var settings = Settings(
