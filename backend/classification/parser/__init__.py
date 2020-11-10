@@ -1,6 +1,5 @@
 """
-Function utilities to convert data acquired on an OpenBCI
-Cyton board using the SD card logging strategy.
+Function utilities to convert data acquired on an OpenBCI board
 
 TODO: Consider cropping file (from bed to wake up time) here, before the for loop. Have to consider
 not all lines hold sample values (i.e. first line with comment and second line with a single timestamp).
@@ -14,44 +13,27 @@ The Cyton board logging format is also described here:
 from mne import create_info
 from mne.io import RawArray
 import numpy as np
-import pandas as pd
 
-from classification.exceptions import ClassificationError
-from classification.config.constants import (
-    EEG_CHANNELS,
-    OPENBCI_CYTON_SAMPLE_RATE,
-)
-
-ADS1299_Vref = 4.5
-ADS1299_gain = 24.
-SCALE_uV_PER_COUNT = ADS1299_Vref / ((2**23) - 1) / ADS1299_gain * 1000000
-SCALE_V_PER_COUNT = SCALE_uV_PER_COUNT / 1e6
-
-FILE_COLUMN_OFFSET = 1
-CYTON_TOTAL_NB_CHANNELS = 8
-SKIP_ROWS = 2
+from classification.config.constants import OPENBCI_CYTON_SAMPLE_RATE, EEG_CHANNELS
+from classification.parser.constants import SCALE_V_PER_COUNT
+from classification.parser.file_type import FileType, detect_file_type
 
 
 def get_raw_array(file):
-    """Converts a file following the Cyton board SD card logging format into a mne.RawArray
+    """Converts a file following a logging format into a mne.RawArray
     Input:
     - file: received as an input file
     Returns:
     - mne.RawArray of the two EEG channels of interest
     """
 
-    retained_columns = tuple(range(1, len(EEG_CHANNELS) + 1))
+    filetype = detect_file_type(file)
+    print(f"""
+    Detected {filetype.name} format.
+    """)
 
-    try:
-        eeg_raw = pd.read_csv(file,
-                              skiprows=SKIP_ROWS,
-                              usecols=retained_columns
-                              ).to_numpy()
-    except Exception:
-        raise ClassificationError()
-
-    hexstr_to_int = np.vectorize(_hexstr_to_int)
-    eeg_raw = hexstr_to_int(eeg_raw)
+    parse = filetype.parser
+    eeg_raw = parse(file)
 
     raw_object = RawArray(
         SCALE_V_PER_COUNT * np.transpose(eeg_raw),
@@ -61,6 +43,7 @@ def get_raw_array(file):
             ch_types='eeg'),
         verbose=False,
     )
+
     print(f"""
         First sample values: {raw_object[:, 0]}
         Second sample values: {raw_object[:, 1]}
@@ -70,13 +53,3 @@ def get_raw_array(file):
     """)
 
     return raw_object
-
-
-def _hexstr_to_int(hexstr):
-    """Converts a two complement hexadecimal value in a string to a signed float
-    Input:
-    - hex_value: signed hexadecimal value
-    Returns:
-    - decimal value
-    """
-    return int.from_bytes(bytes.fromhex(hexstr), byteorder='big', signed=True)
