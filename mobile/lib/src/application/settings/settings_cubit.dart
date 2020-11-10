@@ -23,7 +23,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(SettingsLoadSuccess(settings));
   }
 
-  void setSex(Sex newSex) async {
+  Future<void> setSex(Sex newSex) async {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(sex: newSex)));
