@@ -6,6 +6,10 @@ from backend.response import ClassificationResponse
 from classification.config.constants import EPOCH_DURATION, SleepStage
 
 
+def convert_sleep_stage_name_to_values(sequence):
+    return np.array([SleepStage[stage].value for stage in sequence])
+
+
 class TestReportTimePassedInStage():
     """Tests the time passed in each stage metrics in the response metrics
     The evaluated metrics are:
@@ -89,7 +93,7 @@ class TestReportTimePassedInStage():
         cls.MOCK_REQUEST = get_mock_request()
 
     def test_null_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
-        value_sequence = self.convert_sleep_stage_name_to_values(sequence)
+        value_sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, value_sequence, None)
         report = response.report
 
@@ -97,13 +101,10 @@ class TestReportTimePassedInStage():
         self.assert_times(sequence, report, WTime, REMTime, N1Time, N2Time, N3Time)
 
     def test_partial_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
-        sequence = self.convert_sleep_stage_name_to_values(sequence)
+        sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
         report = response.report
         self.assert_times(sequence, report, WTime, REMTime, N1Time, N2Time, N3Time)
-
-    def convert_sleep_stage_name_to_values(self, sequence):
-        return np.array([SleepStage[stage].value for stage in sequence])
 
     def assert_times(self, sequence, report, WTime, REMTime, N1Time, N2Time, N3Time):
         assert (
@@ -165,16 +166,106 @@ class TestReportDurations():
 
 
 class TestReportLatency():
-    """
+    """Tests the time it took to enter a specific stage
+    The evaluated metrics are:
     "sleepLatency": 1000, // Time to fall asleep [seconds] (sleepOnset - bedTime)
     "remLatency": 3852, // [seconds] (remOnset- bedTime)
     """
     params = {
-        "test_bla": [dict()]
+        "test_sequence_starts_with_stage": [
+            dict(
+                sequence=['REM', 'REM', 'W', 'W'],
+                test_rem=True,
+            ), dict(
+                sequence=['REM', 'W', 'N1', 'W'],
+                test_rem=True,
+            ), dict(
+                sequence=['REM', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
+                test_rem=False,
+            ), dict(
+                sequence=['N1', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
+                test_rem=False,
+            ), dict(
+                sequence=['N2', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
+                test_rem=False,
+            ), dict(
+                sequence=['N3', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
+                test_rem=False,
+            ),
+        ], "test_sequence_has_no_stage": [
+            dict(
+                sequence=['W', 'N1', 'N2', 'N3', 'W'],
+                test_rem=True,
+            ), dict(
+                sequence=['W', 'W', 'W', 'W', 'W'],
+                test_rem=False,
+            ), dict(
+                sequence=['W', ],
+                test_rem=False,
+            ),
+        ], "test_sequence_ends_with_stage": [
+            dict(
+                sequence=['W', 'W', 'REM'],
+                test_rem=True,
+            ), dict(
+                sequence=['W', 'W', 'N1'],
+                test_rem=False,
+            ), dict(
+                sequence=['W', 'W', 'N2'],
+                test_rem=False,
+            ), dict(
+                sequence=['W', 'W', 'N3'],
+                test_rem=False,
+            ),
+        ], "test_sequence_with_stage_at_middle": [
+            dict(
+                sequence=['W', 'N1', 'N2', 'N1', 'REM', 'W'],
+                test_rem=True,
+                latency=4 * EPOCH_DURATION,
+            ), dict(
+                sequence=['W', 'W', 'N1', 'W', 'N1', 'W'],
+                test_rem=False,
+                latency=2 * EPOCH_DURATION,
+            ), dict(
+                sequence=['W', 'W', 'N2', 'W', 'N2', 'W'],
+                test_rem=False,
+                latency=2 * EPOCH_DURATION,
+            ), dict(
+                sequence=['W', 'W', 'N3', 'W', 'N3', 'W'],
+                test_rem=False,
+                latency=2 * EPOCH_DURATION,
+            ),
+        ],
     }
 
-    def test_bla(self):
-        pass
+    @classmethod
+    def setup_class(cls):
+        cls.MOCK_REQUEST = get_mock_request()
+
+    def get_report_key(self, test_rem):
+        return 'remLatency' if test_rem else 'sleepLatency'
+
+    def test_sequence_starts_with_stage(self, sequence, test_rem):
+        expected_latency = 0
+        self.assert_latency_equals_expected(expected_latency, sequence, test_rem)
+
+    def test_sequence_has_no_stage(self, sequence, test_rem):
+        expected_latency = -1
+        self.assert_latency_equals_expected(expected_latency, sequence, test_rem)
+
+    def test_sequence_ends_with_stage(self, sequence, test_rem):
+        expected_latency = EPOCH_DURATION * (len(sequence) - 1)
+        self.assert_latency_equals_expected(expected_latency, sequence, test_rem)
+
+    def test_sequence_with_stage_at_middle(self, sequence, test_rem, latency):
+        self.assert_latency_equals_expected(latency, sequence, test_rem)
+
+    def assert_latency_equals_expected(self, expected, sequence, test_rem):
+        sequence = convert_sleep_stage_name_to_values(sequence)
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        report = response.report
+
+        assert report[self.get_report_key(test_rem)] == expected
 
 
 class TestReportTimestamps():
