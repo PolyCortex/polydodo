@@ -12,7 +12,6 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
       StreamController<String>.broadcast();
 
   List<SleepSequenceStats> _selectedSequences;
-  bool _selectMode = false;
 
   SleepSequenceHistoryCubit(this._sleepHistoryRepository)
       : super(SleepSequenceHistoryInitial()) {
@@ -29,7 +28,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void toggleSelectMode() {
-    if (_selectMode) {
+    if (state is SleepSequenceHistoryEditInProgress) {
       _disableSelection();
     } else {
       _enableSelection();
@@ -37,7 +36,6 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void _enableSelection() {
-    _selectMode = true;
     _selectedSequences = [];
     _selectText.add('Done');
     emit(SleepSequenceHistoryEditInProgress(
@@ -45,7 +43,6 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void _disableSelection() {
-    _selectMode = false;
     _selectedSequences = null;
     _selectText.add('Select');
     emit(SleepSequenceHistoryLoaded(
