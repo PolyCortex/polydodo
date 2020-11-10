@@ -12,8 +12,8 @@ class SettingsCubit extends Cubit<SettingsState> {
     getSettings();
   }
 
-  void getSettings() async {
-    prefs = (await SharedPreferences.getInstance());
+  Future<void> getSettings() async {
+    var prefs = (await SharedPreferences.getInstance());
 
     var settings = Settings(
       age: prefs.getInt('age'),
@@ -25,7 +25,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(SettingsLoadSuccess(settings));
   }
 
-  void setSex(Sex newSex) async {
+  Future<void> setSex(Sex newSex) async {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(sex: newSex)));
@@ -33,7 +33,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  void setAge(int newAge) async {
+  Future<void> setAge(int newAge) async {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(age: newAge)));
@@ -41,7 +41,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  void setBoard(AcquisitionBoard newBoard) async {
+  Future<void> setBoard(AcquisitionBoard newBoard) async {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(board: newBoard)));
