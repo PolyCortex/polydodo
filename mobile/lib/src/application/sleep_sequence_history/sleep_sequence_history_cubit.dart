@@ -52,12 +52,12 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
         _sleepHistoryRepository.getSleepSequences()));
   }
 
-  void selectSleepSequenceForDeletion(SleepSequenceStats sequence) {
-    var idx = _selectedSequences.indexOf(sequence);
-
-    idx == -1
-        ? _selectedSequences.add(sequence)
-        : _selectedSequences.remove(sequence);
+  void toggleSelectSequenceForDeletion(SleepSequenceStats sequence) {
+    if (_selectedSequences.contains(sequence)) {
+      _selectedSequences.remove(sequence);
+    } else {
+      _selectedSequences.add(sequence);
+    }
 
     emit(SleepSequenceHistoryEditInProgress(
         _sleepHistoryRepository.getSleepSequences(), _selectedSequences));

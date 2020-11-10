@@ -18,7 +18,7 @@ Widget _buildItemCard(var context, var state, var historyCubit, var index) {
     onTap: () => {
       if (state is SleepSequenceHistoryEditInProgress)
         {
-          historyCubit.selectSleepSequenceForDeletion(state.history[index]),
+          historyCubit.toggleSelectSequenceForDeletion(state.history[index]),
         }
       else
         {
