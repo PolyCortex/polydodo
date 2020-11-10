@@ -23,7 +23,7 @@ Widget _buildItemCard(var context, var state, var historyCubit, var index) {
       else
         {
           historyCubit.selectSleepSequenceForViewing(state.history[index]),
-          ExtendedNavigator.of(context).replace(Routes.sleepSequenceStatsPage)
+          ExtendedNavigator.of(context).push(Routes.sleepSequenceStatsPage)
         }
     },
     title: Text(state.history[index].id.toString()),

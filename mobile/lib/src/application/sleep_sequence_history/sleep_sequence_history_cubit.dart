@@ -29,16 +29,15 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void toggleSelectMode() {
-    _selectMode = !_selectMode;
-
     if (_selectMode) {
-      _enableSelection();
-    } else {
       _disableSelection();
+    } else {
+      _enableSelection();
     }
   }
 
   void _enableSelection() {
+    _selectMode = true;
     _selectedSequences = [];
     _selectText.add('Done');
     emit(SleepSequenceHistoryEditInProgress(
@@ -46,6 +45,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void _disableSelection() {
+    _selectMode = false;
     _selectedSequences = null;
     _selectText.add('Select');
     emit(SleepSequenceHistoryLoaded(
