@@ -1,3 +1,8 @@
+from unittest.mock import patch
+
+from backend.request import ClassificationRequest
+from classification.config.constants import Sex, AcquisitionBoard
+
 
 def pytest_generate_tests(metafunc):
     # called once per each test function
@@ -6,3 +11,19 @@ def pytest_generate_tests(metafunc):
     metafunc.parametrize(
         argnames, [[funcargs[name] for name in argnames] for funcargs in funcarglist]
     )
+
+
+def get_mock_request():
+    with patch.object(ClassificationRequest, '_validate', lambda *x, **y: None):
+        mock_request = ClassificationRequest(
+            sex=Sex.M,
+            age=22,
+            stream_start=1582418280,
+            bedtime=1582423980,
+            wakeup=1582452240,
+            board=AcquisitionBoard.OPENBCI_CYTON,
+            raw_eeg=None,
+            stream_duration=35760,
+        )
+
+    return mock_request

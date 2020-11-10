@@ -1,9 +1,8 @@
-from unittest.mock import patch
 
 from tests.setup import pytest_generate_tests  # noqa: F401
+from tests.setup import get_mock_request
 from backend.response import ClassificationResponse
-from backend.request import ClassificationRequest
-from classification.config.constants import EPOCH_DURATION, SleepStage, Sex, AcquisitionBoard
+from classification.config.constants import EPOCH_DURATION, SleepStage
 
 SLEEP_STAGE_NAMES = [e.name for e in SleepStage]
 
@@ -34,8 +33,8 @@ class TestReportTimePassedInStage():
                     'REM',
                     'REM',
                     'REM'],
-                REMTime=3 * EPOCH_DURATION,
                 WTime=0,
+                REMTime=3 * EPOCH_DURATION,
                 N1Time=0,
                 N2Time=0,
                 N3Time=0),
@@ -44,9 +43,9 @@ class TestReportTimePassedInStage():
                     'N1',
                     'N1',
                     'N1'],
-                N1Time=3 * EPOCH_DURATION,
                 WTime=0,
                 REMTime=0,
+                N1Time=3 * EPOCH_DURATION,
                 N2Time=0,
                 N3Time=0),
             dict(
@@ -54,22 +53,22 @@ class TestReportTimePassedInStage():
                     'N2',
                     'N2',
                     'N2'],
-                N2Time=3 * EPOCH_DURATION,
                 WTime=0,
                 REMTime=0,
                 N1Time=0,
+                N2Time=3 * EPOCH_DURATION,
                 N3Time=0),
             dict(
                 sequence=[
                     'N3',
                     'N3',
                     'N3'],
-                N3Time=3 * EPOCH_DURATION,
                 WTime=0,
                 REMTime=0,
                 N1Time=0,
-                N2Time=0)],
-        "test_partial_time_passed_in_stage": [
+                N2Time=0,
+                N3Time=3 * EPOCH_DURATION),
+        ], "test_partial_time_passed_in_stage": [
             dict(
                 sequence=[
                     'W',
@@ -123,17 +122,7 @@ class TestReportTimePassedInStage():
         """ setup any state specific to the execution of the given class (which
         usually contains tests).
         """
-        with patch.object(ClassificationRequest, '_validate', lambda *x, **y: None):
-            cls.MOCK_REQUEST = ClassificationRequest(
-                sex=Sex.M,
-                age=22,
-                stream_start=1582418280,
-                bedtime=1582423980,
-                wakeup=1582452240,
-                board=AcquisitionBoard.OPENBCI_CYTON,
-                raw_eeg=None,
-                stream_duration=35760,
-            )
+        cls.MOCK_REQUEST = get_mock_request()
 
     def test_null_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
