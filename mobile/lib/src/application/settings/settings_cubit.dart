@@ -39,7 +39,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  void setBoard(AcquisitionBoard newBoard) async {
+  Future<void> setBoard(AcquisitionBoard newBoard) async {
     if (state is SettingsLoadSuccess) {
       emit(SettingsLoadSuccess(
           (state as SettingsLoadSuccess).settings.copyWith(board: newBoard)));
