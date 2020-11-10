@@ -258,9 +258,11 @@ class TestReportSleepOffset():
         )], 'test_wake_up_middle': [dict(
             sequence=['W', 'N1', 'N2', 'W', 'W', 'W', 'W'],
             awake_index=3,
+            expected_wake_after_sleep_offset=4 * EPOCH_DURATION,
         )], 'test_awakes_and_goes_back_to_sleep_and_wakes': [dict(
             sequence=['W', 'N1', 'N2', 'W', 'N1', 'N2', 'W'],
             awake_index=6,
+            expected_wake_after_sleep_offset=EPOCH_DURATION,
         )], 'test_awakes_and_goes_back_to_sleep_and_doesnt_awake': [dict(
             sequence=['W', 'N1', 'N2', 'W', 'N1', 'N2', 'N2'],
         )], 'test_always_awake': [
@@ -278,34 +280,39 @@ class TestReportSleepOffset():
 
     def test_wake_up_end(self, sequence):
         expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * (len(sequence) - 1)
-        self.assert_sleep_offset(sequence, expected_sleep_offset)
+        expected_wake_after_sleep_offset = EPOCH_DURATION
+        self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
-    def test_wake_up_middle(self, sequence, awake_index):
+    def test_wake_up_middle(self, sequence, awake_index, expected_wake_after_sleep_offset):
         expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * awake_index
-        self.assert_sleep_offset(sequence, expected_sleep_offset)
+        self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
-    def test_awakes_and_goes_back_to_sleep_and_wakes(self, sequence, awake_index):
+    def test_awakes_and_goes_back_to_sleep_and_wakes(self, sequence, awake_index, expected_wake_after_sleep_offset):
         expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * awake_index
-        self.assert_sleep_offset(sequence, expected_sleep_offset)
+        self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
     def test_awakes_and_goes_back_to_sleep_and_doesnt_awake(self, sequence):
         expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
-        self.assert_sleep_offset(sequence, expected_sleep_offset)
+        expected_wake_after_sleep_offset = 0
+        self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
     def test_always_awake(self, sequence):
         expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
-        self.assert_sleep_offset(sequence, expected_sleep_offset)
+        expected_wake_after_sleep_offset = 0
+        self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
     def test_doesnt_awaken(self, sequence):
         expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
-        self.assert_sleep_offset(sequence, expected_sleep_offset)
+        expected_wake_after_sleep_offset = 0
+        self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
-    def assert_sleep_offset(self, sequence, expected_sleep_offset):
+    def assert_sleep_offset_with_wake(self, sequence, expected_sleep_offset, expected_wake_after_sleep_offset):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
         report = response.report
 
         assert report['sleepOffset'] == expected_sleep_offset
+        assert report['wakeAfterSleepOffset'] == expected_wake_after_sleep_offset
 
 
 class TestReportMetrics():
