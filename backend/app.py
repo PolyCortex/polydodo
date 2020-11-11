@@ -3,10 +3,10 @@ from flask_cors import CORS
 from waitress import serve
 from http import HTTPStatus
 
-from backend.file_loading import get_raw_array
 from backend.request import ClassificationRequest
 from backend.response import ClassificationResponse
 from backend.spectrogram_generator import SpectrogramGenerator
+from classification.parser import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, AcquisitionBoard, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
