@@ -2,6 +2,7 @@ import re
 
 from classification.parser.file_type import FileType
 from classification.parser.constants import SESSION_FILE_HEADER_NB_LINES
+from classification.exceptions import ClassificationError
 
 OPENBCI_CYTON_SD_DEFAULT_SAMPLE_RATE = 250
 
@@ -15,6 +16,13 @@ def detect_sample_rate(file, filetype):
 
     for _ in range(SESSION_FILE_HEADER_NB_LINES):
         line = file.readline().decode("utf-8")
-        if SAMPLE_RATE_STRING in line:
+        if SAMPLE_RATE_STRING not in line:
+            continue
+
+        try:
             sample_rate_raw = re.search(SAMPLE_RATE_REGEX, line).group(1)
             return int(sample_rate_raw)
+        except BaseException:
+            raise ClassificationError('Invalid sample rate')
+
+    raise ClassificationError("Couldn't find sample rate")
