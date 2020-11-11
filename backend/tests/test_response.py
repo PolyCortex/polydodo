@@ -369,48 +369,48 @@ class TestReportSleepEfficiency():
         assert report['efficientSleepTime'] == expected_efficient_sleep_time
 
 
-# class TestReportAwakenings():
-#     """Tests number of awakenings per night
-#     "awakenings": 7, // number of times the subject woke up between sleep onset & offset
-#     """
-#     params = {
-#         'test_sleep_time_null': [
-#             dict(sequence=['W', 'W', 'W']),
-#             dict(sequence=['W']),
-#         ], 'test_one_awakening': [
-#             dict(sequence=['W', 'N1', 'W']),
-#             dict(sequence=['W', 'N1', 'N2', 'N3', 'W', 'W']),
-#         ], 'test_doesnt_awaken': [
-#             dict(sequence=['W', 'N1', 'N2', 'N3', 'REM']),
-#             dict(sequence=['W', 'N1']),
-#         ], 'test_many_awakening': [
-#             dict(sequence=['W', 'N1', 'W', 'N1', 'W'], nb_awakenings=2),
-#             dict(sequence=['W', 'N1', 'N2', 'W', 'N1', 'W', 'W', 'N1', 'W'], nb_awakenings=3),
-#         ],
-#     }
+class TestReportAwakenings():
+    """Tests number of awakenings per night
+    "awakenings": 7, // number of times the subject woke up between sleep onset & offset
+    """
+    params = {
+        'test_sleep_time_null': [
+            dict(sequence=['W', 'W', 'W']),
+            dict(sequence=['W']),
+        ], 'test_one_awakening': [
+            dict(sequence=['W', 'N1', 'W']),
+            dict(sequence=['W', 'N1', 'N2', 'N3', 'W', 'W']),
+        ], 'test_doesnt_awaken': [
+            dict(sequence=['W', 'N1', 'N2', 'N3', 'REM']),
+            dict(sequence=['W', 'N1']),
+        ], 'test_many_awakening': [
+            dict(sequence=['W', 'N1', 'W', 'N1', 'W'], nb_awakenings=2),
+            dict(sequence=['W', 'N1', 'N2', 'W', 'N1', 'W', 'W', 'N1', 'W'], nb_awakenings=3),
+        ],
+    }
 
-#     @classmethod
-#     def setup_class(cls):
-#         cls.MOCK_REQUEST = get_mock_request()
+    @classmethod
+    def setup_class(cls):
+        cls.MOCK_REQUEST = get_mock_request()
 
-#     def test_sleep_time_null(self, sequence):
-#         self.assert_sleep_efficiency(sequence, expected_nb_awakenings=0)
+    def test_sleep_time_null(self, sequence):
+        self.assert_sleep_efficiency(sequence, expected_nb_awakenings=0)
 
-#     def test_one_awakening(self, sequence):
-#         self.assert_sleep_efficiency(sequence, expected_nb_awakenings=1)
+    def test_one_awakening(self, sequence):
+        self.assert_sleep_efficiency(sequence, expected_nb_awakenings=1)
 
-#     def test_doesnt_awaken(self, sequence):
-#         self.assert_sleep_efficiency(sequence, expected_nb_awakenings=1)
+    def test_doesnt_awaken(self, sequence):
+        self.assert_sleep_efficiency(sequence, expected_nb_awakenings=1)
 
-#     def test_many_awakening(self, sequence, nb_awakenings):
-#         self.assert_sleep_efficiency(sequence, expected_nb_awakenings=nb_awakenings)
+    def test_many_awakening(self, sequence, nb_awakenings):
+        self.assert_sleep_efficiency(sequence, expected_nb_awakenings=nb_awakenings)
 
-#     def assert_sleep_efficiency(self, sequence, expected_nb_awakenings):
-#         sequence = convert_sleep_stage_name_to_values(sequence)
-#         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-#         report = response.report
+    def assert_sleep_efficiency(self, sequence, expected_nb_awakenings):
+        sequence = convert_sleep_stage_name_to_values(sequence)
+        response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
+        report = response.report
 
-#         assert report['awakenings'] == expected_nb_awakenings
+        assert report['awakenings'] == expected_nb_awakenings
 
 
 class TestReportStageShifts():

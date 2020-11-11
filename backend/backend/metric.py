@@ -9,7 +9,7 @@ def get_metrics(sleep_stages, bedtime):
         **_get_rem_latency(sleep_stages),
         **_get_time_passed_in_stage(sleep_stages),
         **_get_sleep_vs_wake_metrics(sleep_stages, bedtime),
-        **_get_stage_shifts(sleep_stages)
+        **_get_transition_based_metrics(sleep_stages)
     }
     onsets = _get_onsets(independent_metrics, bedtime)
     sleep_time = independent_metrics['sleepOffset'] - onsets['sleepOnset']
@@ -21,8 +21,6 @@ def get_metrics(sleep_stages, bedtime):
         # not tested
         **waso,
         "SleepTime": sleep_time,
-
-        "awakenings": 7,
     }
 
 
@@ -81,20 +79,29 @@ def _get_time_passed_in_stage(sequence):
     }
 
 
-def _get_stage_shifts(sequence):
-    consecutive_stages_occurences = Counter(zip(sequence[1:], sequence[:-1]))
-    transition_occurences = [
-        consecutive_stages_occurences[consecutive_stages]
+def _get_transition_based_metrics(sequence):
+    consecutive_stages_occurences = Counter(zip(sequence[:-1], sequence[1:]))
+    occurences_by_transition = {
+        consecutive_stages: consecutive_stages_occurences[consecutive_stages]
         for consecutive_stages in consecutive_stages_occurences if consecutive_stages[0] != consecutive_stages[1]
+    }
+    transition_occurences = list(occurences_by_transition.values())
+    awakenings_occurences = [
+        occurences_by_transition[transition_stages]
+        for transition_stages in occurences_by_transition
+        if transition_stages[0] != SleepStage.W.name
+        and transition_stages[1] == SleepStage.W.name
     ]
     nb_stage_shifts = sum(transition_occurences)
+    nb_awakenings = sum(awakenings_occurences)
 
     is_last_stage_sleep = sequence[-1] != SleepStage.W.name
     has_slept = len(np.unique(sequence)) != 1 or np.unique(sequence)[0] != SleepStage.W.name
     if is_last_stage_sleep and has_slept:
         nb_stage_shifts += 1
+        nb_awakenings += 1
 
-    return dict(stageShifts=nb_stage_shifts)
+    return dict(stageShifts=nb_stage_shifts, awakenings=nb_awakenings)
 
 
 def _get_onsets(independent_metrics, bedtime):
