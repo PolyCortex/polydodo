@@ -1,4 +1,3 @@
-
 from waitress import serve
 from werkzeug.middleware.profiler import ProfilerMiddleware
 from pathlib import Path
