@@ -16,7 +16,7 @@ import numpy as np
 
 from classification.config.constants import OPENBCI_CYTON_SAMPLE_RATE, EEG_CHANNELS
 from classification.parser.constants import SCALE_V_PER_COUNT
-from classification.parser.file_type import FileType, detect_file_type
+from classification.parser.file_type import detect_file_type
 
 
 def get_raw_array(file):
