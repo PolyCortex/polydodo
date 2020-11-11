@@ -141,50 +141,21 @@ class TestReportLatenciesOnset():
 
     params = {
         "test_sequence_starts_with_stage": [
-            dict(
-                sequence=['REM', 'REM', 'W', 'W'],
-                test_rem=True,
-            ), dict(
-                sequence=['REM', 'W', 'N1', 'W'],
-                test_rem=True,
-            ), dict(
-                sequence=['REM', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
-                test_rem=False,
-            ), dict(
-                sequence=['N1', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
-                test_rem=False,
-            ), dict(
-                sequence=['N2', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
-                test_rem=False,
-            ), dict(
-                sequence=['N3', 'W', 'N1', 'N2', 'N3', 'REM', 'W'],
-                test_rem=False,
-            ),
+            dict(sequence=['REM', 'REM', 'W', 'W'], test_rem=True),
+            dict(sequence=['REM', 'W', 'N1', 'W'], test_rem=True),
+            dict(sequence=['REM', 'W', 'N1', 'N2', 'N3', 'REM', 'W'], test_rem=False),
+            dict(sequence=['N1', 'W', 'N1', 'N2', 'N3', 'REM', 'W'], test_rem=False),
+            dict(sequence=['N2', 'W', 'N1', 'N2', 'N3', 'REM', 'W'], test_rem=False),
+            dict(sequence=['N3', 'W', 'N1', 'N2', 'N3', 'REM', 'W'], test_rem=False),
         ], "test_sequence_has_no_stage": [
-            dict(
-                sequence=['W', 'N1', 'N2', 'N3', 'W'],
-                test_rem=True,
-            ), dict(
-                sequence=['W', 'W', 'W', 'W', 'W'],
-                test_rem=False,
-            ), dict(
-                sequence=['W', ],
-                test_rem=False,
-            ),
+            dict(sequence=['W', 'N1', 'N2', 'N3', 'W'], test_rem=True),
+            dict(sequence=['W', 'W', 'W', 'W', 'W'], test_rem=False),
+            dict(sequence=['W'], test_rem=False),
         ], "test_sequence_ends_with_stage": [
-            dict(
-                sequence=['W', 'W', 'REM'],
-                test_rem=True,
-            ), dict(
-                sequence=['W', 'W', 'N1'],
-                test_rem=False,
-            ), dict(
-                sequence=['W', 'W', 'N2'],
-                test_rem=False,
-            ), dict(
-                sequence=['W', 'W', 'N3'],
-                test_rem=False,
-            ),
+            dict(sequence=['W', 'W', 'REM'], test_rem=True),
+            dict(sequence=['W', 'W', 'N1'], test_rem=False),
+            dict(sequence=['W', 'W', 'N2'], test_rem=False),
+            dict(sequence=['W', 'W', 'N3'], test_rem=False),
         ], "test_sequence_with_stage_at_middle": [
             dict(
                 sequence=['W', 'N1', 'N2', 'N1', 'REM', 'W'],
@@ -217,7 +188,7 @@ class TestReportLatenciesOnset():
 
     def test_sequence_has_no_stage(self, sequence, test_rem):
         expected_latency = -1
-        expected_onset = self.MOCK_REQUEST.bedtime
+        expected_onset = -1
         self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_ends_with_stage(self, sequence, test_rem):
@@ -297,7 +268,7 @@ class TestReportSleepOffset():
         self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
     def test_always_awake(self, sequence):
-        expected_sleep_offset = self.MOCK_REQUEST.bedtime + EPOCH_DURATION * len(sequence)
+        expected_sleep_offset = -1
         expected_wake_after_sleep_offset = 0
         self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
@@ -374,10 +345,8 @@ class TestReportAwakenings():
     "awakenings": 7, // number of times the subject woke up between sleep onset & offset
     """
     params = {
-        'test_sleep_time_null': [
-            dict(sequence=['W', 'W', 'W']),
-            dict(sequence=['W']),
-        ], 'test_one_awakening': [
+        'test_sleep_time_null': [dict(sequence=['W', 'W', 'W']), dict(sequence=['W'])],
+        'test_one_awakening': [
             dict(sequence=['W', 'N1', 'W']),
             dict(sequence=['W', 'N1', 'N2', 'N3', 'W', 'W']),
         ], 'test_doesnt_awaken': [

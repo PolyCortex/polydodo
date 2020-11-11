@@ -3,6 +3,8 @@ import numpy as np
 
 from classification.config.constants import SleepStage, EPOCH_DURATION
 
+INVALID_TIMESTAMP = -1
+
 
 def get_metrics(sleep_stages, bedtime):
     independent_metrics = {
@@ -12,14 +14,15 @@ def get_metrics(sleep_stages, bedtime):
         **_get_transition_based_metrics(sleep_stages)
     }
     onsets = _get_onsets(independent_metrics, bedtime)
-    sleep_time = independent_metrics['sleepOffset'] - onsets['sleepOnset']
-    waso = dict(WASO=sleep_time - independent_metrics['efficientSleepTime'])
+    sleep_time = independent_metrics['sleepOffset'] - \
+        onsets['sleepOnset'] if INVALID_TIMESTAMP == onsets['sleepOnset'] else 0
+    waso = sleep_time - independent_metrics['efficientSleepTime']
 
     return {
         **independent_metrics,
         **onsets,
         # not tested
-        **waso,
+        "WASO": waso,
         "SleepTime": sleep_time,
     }
 
@@ -41,6 +44,12 @@ def _get_sleep_vs_wake_metrics(sequence, bedtime):
 
 
 def _get_sleep_offset_with_wake(sleep_indexes, sequence, bedtime):
+    if not _has_slept(sequence):
+        return {
+            'sleepOffset': INVALID_TIMESTAMP,
+            'wakeAfterSleepOffset': 0,
+        }
+
     sleep_nb_epochs = (sleep_indexes[-1] + 1) if len(sleep_indexes) else len(sequence)
     wake_after_sleep_offset_nb_epochs = (
         len(sequence) - sleep_indexes[-1] - 1
@@ -96,8 +105,7 @@ def _get_transition_based_metrics(sequence):
     nb_awakenings = sum(awakenings_occurences)
 
     is_last_stage_sleep = sequence[-1] != SleepStage.W.name
-    has_slept = len(np.unique(sequence)) != 1 or np.unique(sequence)[0] != SleepStage.W.name
-    if is_last_stage_sleep and has_slept:
+    if is_last_stage_sleep and _has_slept(sequence):
         nb_stage_shifts += 1
         nb_awakenings += 1
 
@@ -107,14 +115,17 @@ def _get_transition_based_metrics(sequence):
 def _get_onsets(independent_metrics, bedtime):
     return {
         "sleepOnset": (
-            independent_metrics['sleepLatency'] if independent_metrics['sleepLatency'] >= 0 else 0
-        ) + bedtime,
+            independent_metrics['sleepLatency']
+            + bedtime if independent_metrics['sleepLatency'] >= 0 else INVALID_TIMESTAMP),
         "remOnset": (
-            independent_metrics['remLatency'] if independent_metrics['remLatency'] >= 0 else 0
-        ) + bedtime
-    }
+            independent_metrics['remLatency']
+            + bedtime if independent_metrics['remLatency'] >= 0 else INVALID_TIMESTAMP)}
 
 
 def _get_latency_of_stage(sequence_is_stage):
     epochs_of_stage_of_interest = np.where(sequence_is_stage)[0]
     return int(-1 if epochs_of_stage_of_interest.shape[0] == 0 else epochs_of_stage_of_interest[0] * EPOCH_DURATION)
+
+
+def _has_slept(sequence):
+    return len(np.unique(sequence)) != 1 or np.unique(sequence)[0] != SleepStage.W.name
