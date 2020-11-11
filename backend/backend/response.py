@@ -1,11 +1,7 @@
 import numpy as np
 
+from backend.metric import get_metrics
 from classification.config.constants import EPOCH_DURATION, SleepStage
-
-from metric.time_passed_in_stage import get_time_passed_in_stage
-from metric.latency import get_latencies
-from metric.offset import get_sleep_offset_with_wake
-from metric.efficiency import get_efficiency
 
 
 class ClassificationResponse():
@@ -52,35 +48,7 @@ class ClassificationResponse():
 
     @property
     def report(self):
-        latencies = get_latencies(self.sleep_stages)
-        time_passed_in_stage = get_time_passed_in_stage(self.sleep_stages)
-        efficiencies = get_efficiency(self.sleep_stages)
-        sleep_offset_with_wake = get_sleep_offset_with_wake(self.sleep_stages, self.bedtime)
-        onsets = {
-            "sleepOnset": (
-                latencies['sleepLatency'] if latencies['sleepLatency'] >= 0 else 0
-            ) + self.bedtime,
-            "remOnset": (
-                latencies['remLatency'] if latencies['remLatency'] >= 0 else 0
-            ) + self.bedtime
-        }
-        sleep_time = sleep_offset_with_wake['sleepOffset'] - onsets['sleepOnset']
-        waso = sleep_time - efficiencies['efficientSleepTime']
-
-        return {
-            **latencies,
-            **time_passed_in_stage,
-            **onsets,
-            **efficiencies,
-            **sleep_offset_with_wake,
-
-            "awakenings": 7,
-            "stageShifts": 89,
-
-            # not tested
-            "WASO": waso,
-            "SleepTime": sleep_time,
-        }
+        return get_metrics(self.sleep_stages, self.bedtime)
 
     @property
     def response(self):
