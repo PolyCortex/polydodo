@@ -10,7 +10,8 @@ abstract class SettingsState extends Equatable {
 class SettingsLoadInProgress extends SettingsState {}
 
 class SettingsLoadSuccess extends SettingsState {
-  final Settings settings;
+  // final Settings settings;
+  final Map<String, dynamic> settings;
 
   const SettingsLoadSuccess(this.settings);
 

@@ -35,27 +35,27 @@ class _SettingsPageState extends State<SettingsPage> {
                           subtitle: 'In years',
                           leading: Icon(Icons.cake),
                           trailing: TextButton(
-                              child: Text(state.settings.age == null
+                              child: Text(state.settings[AGEKEY] == null
                                   ? 'Not Set'
-                                  : state.settings.age.toString()),
+                                  : state.settings[AGEKEY].toString()),
                               onPressed: () => _showDatePicker(context)),
                         ),
                         SettingsTile(
                           title: 'Sex',
                           subtitle: 'Your biological sex',
                           leading: Icon(Icons.face),
-                          trailing: SettingsPopupMenuButton<Sex>(
-                            savedSetting: state.settings.sex,
-                            settingOptions: Sex.values,
+                          trailing: SettingsPopupMenuButton(
+                            savedSetting: state.settings[SEXKEY],
+                            settingEnum: Sex,
                           ),
                         ),
                         SettingsTile(
                           title: 'Acquisition Board',
                           subtitle: 'Your OpenBCI board',
                           leading: Icon(Icons.memory),
-                          trailing: SettingsPopupMenuButton<AcquisitionBoard>(
-                            savedSetting: state.settings.board,
-                            settingOptions: AcquisitionBoard.values,
+                          trailing: SettingsPopupMenuButton(
+                            savedSetting: state.settings[BOARDKEY],
+                            settingEnum: AcquisitionBoard,
                           ),
                         ),
                       ],
@@ -85,21 +85,21 @@ void _showDatePicker(BuildContext context) async {
   }
 }
 
-class SettingsPopupMenuButton<T> extends StatelessWidget {
+class SettingsPopupMenuButton extends StatelessWidget {
   SettingsPopupMenuButton({
     Key key,
     @required this.savedSetting,
-    @required this.settingOptions,
+    @required this.settingEnum,
   }) : super(key: key);
 
-  final T savedSetting;
-  final List<T> settingOptions;
+  final dynamic savedSetting;
+  final dynamic settingEnum;
   final TextStyle activeStyle = TextStyle(fontWeight: FontWeight.bold);
   final TextStyle defaultStyle = TextStyle();
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<T>(
+    return PopupMenuButton(
       child:
           // ignore: missing_required_param
           TextButton(
@@ -113,14 +113,14 @@ class SettingsPopupMenuButton<T> extends StatelessWidget {
       ),
       onSelected: (savedSetting) => BlocProvider.of<SettingsCubit>(context)
           .setSetting(savedSetting.toString().split('.').first, savedSetting),
-      itemBuilder: (BuildContext context) =>
-          _buildPopupItemList<T>(settingOptions),
+      itemBuilder: (BuildContext context) => _buildPopupItemList(settingEnum),
     );
   }
 
-  List<PopupMenuItem<T>> _buildPopupItemList<T>(List<T> options) {
+  List<PopupMenuItem<T>> _buildPopupItemList<T>(dynamic settingEnum) {
     return [
-      for (var setting in options.sublist(1))
+      for (var setting in settingEnum.values
+          .sublist(1)) // Only starting at 1 cause 0 is 'Not Set'
         PopupMenuItem<T>(
           value: setting,
           child: Text(EnumToString.convertToString(setting, camelCase: true),
