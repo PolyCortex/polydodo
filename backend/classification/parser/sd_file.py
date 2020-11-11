@@ -27,5 +27,5 @@ def parse_sd_file(file):
     eeg_raw = read_csv(file, ROWS_TO_SKIP, RETAINED_COLUMNS)
     hexstr_to_int = np.vectorize(_hexstr_to_int)
     eeg_raw = hexstr_to_int(eeg_raw)
-    eeg_raw = SCALE_V_PER_COUNT * np.transpose(eeg_raw),
+    eeg_raw = np.transpose(eeg_raw) * SCALE_V_PER_COUNT
     return eeg_raw
