@@ -8,7 +8,7 @@ import Table from 'components/table';
 import text from './text.json';
 
 import material_needed from './material_needed.json';
-import AlternatingTextImage from 'components/alternating_text_image';
+import AlternatingTextImage from 'components/alternating_text_image/alternating_text_image';
 
 import carousel_images from './carousel_images.json';
 import Carousel from 'components/carousel';

@@ -1,0 +1,12 @@
+.alternating_text_image__img {
+  max-width: 100%;
+  min-height: 10em;
+}
+
+.alternating_text_image__img_left {
+  float: left;
+}
+
+.alternating_text_image__img_right {
+  float: right;
+}
