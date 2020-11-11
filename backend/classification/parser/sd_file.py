@@ -2,6 +2,7 @@ import numpy as np
 
 from classification.parser.constants import RETAINED_COLUMNS
 from classification.parser.csv import read_csv
+from classification.parser.constants import SCALE_V_PER_COUNT
 
 ROWS_TO_SKIP = 2
 
@@ -26,5 +27,5 @@ def parse_sd_file(file):
     eeg_raw = read_csv(file, ROWS_TO_SKIP, RETAINED_COLUMNS)
     hexstr_to_int = np.vectorize(_hexstr_to_int)
     eeg_raw = hexstr_to_int(eeg_raw)
-
+    eeg_raw = SCALE_V_PER_COUNT * np.transpose(eeg_raw),
     return eeg_raw

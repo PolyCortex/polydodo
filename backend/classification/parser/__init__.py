@@ -12,11 +12,9 @@ The Cyton board logging format is also described here:
 """
 from mne import create_info
 from mne.io import RawArray
-import numpy as np
 
 from classification.config.constants import OPENBCI_CYTON_SAMPLE_RATE, EEG_CHANNELS
-from classification.parser.constants import SCALE_V_PER_COUNT
-from classification.parser.file_type import FileType, detect_file_type
+from classification.parser.file_type import detect_file_type
 
 
 def get_raw_array(file):
@@ -36,7 +34,7 @@ def get_raw_array(file):
     eeg_raw = parse(file)
 
     raw_object = RawArray(
-        SCALE_V_PER_COUNT * np.transpose(eeg_raw),
+        eeg_raw,
         info=create_info(
             ch_names=EEG_CHANNELS,
             sfreq=OPENBCI_CYTON_SAMPLE_RATE,
