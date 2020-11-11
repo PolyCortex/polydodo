@@ -35,10 +35,10 @@ List<BlocProvider> createBlocProviders() => [
           _serviceLocator.get<IEEGDataRepository>(),
         ),
       ),
+      BlocProvider<SleepSequenceStatsCubit>(
+          create: (context) => SleepSequenceStatsCubit()),
       BlocProvider<SleepSequenceHistoryCubit>(
           create: (context) => SleepSequenceHistoryCubit(
-              _serviceLocator.get<ISleepSequenceRepository>())),
-      BlocProvider<SleepSequenceStatsCubit>(
-          create: (context) => SleepSequenceStatsCubit(
-              _serviceLocator.get<ISleepSequenceRepository>())),
+              _serviceLocator.get<ISleepSequenceRepository>(),
+              BlocProvider.of<SleepSequenceStatsCubit>(context))),
     ];

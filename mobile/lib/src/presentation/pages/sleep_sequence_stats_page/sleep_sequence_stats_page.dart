@@ -30,8 +30,6 @@ Widget _buildStatsBody(var context, var state, var statsCubit) {
     return Container();
   }
 
-  statsCubit.updateTitle(state.stats.stringId);
-
   return SingleChildScrollView(
     child: Column(
       children: [

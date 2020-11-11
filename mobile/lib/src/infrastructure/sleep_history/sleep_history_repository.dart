@@ -15,16 +15,7 @@ class SleepHistoryRepository implements ISleepSequenceRepository {
   }
 
   @override
-  void selectSleepSequence(SleepSequenceStats sequence) {
-    sequenceStreamController.add(sequence);
-  }
-
-  @override
   List<SleepSequenceStats> getSleepSequences() => _sleepHistoryPersistency;
-
-  @override
-  Stream<SleepSequenceStats> getSelectedSleepSequence() =>
-      sequenceStreamController.stream;
 
   @override
   void deleteSleepSequences(List<SleepSequenceStats> sequences) {

@@ -8,19 +8,14 @@ Widget buildAppBar(var statsCubit) {
     shadowColor: Colors.transparent,
     centerTitle: true,
     iconTheme: IconThemeData(color: Colors.black),
-    title: StreamBuilder<Object>(
-        stream: statsCubit.titleStream,
-        initialData: 'Sleep Sequence Stat',
-        builder: (context, snapshot) {
-          return Text(
-            snapshot.data,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.indigo,
-            ),
-          );
-        }),
+    title: Text(
+      statsCubit.titleText,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.indigo,
+      ),
+    ),
     leading: Builder(builder: (BuildContext context) {
       return IconButton(
         icon: Icon(Icons.arrow_back),

@@ -2,18 +2,21 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polydodo/src/application/sleep_sequence_stats/sleep_sequence_stats_cubit.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
 import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 import 'sleep_sequence_history_state.dart';
 
 class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   final ISleepSequenceRepository _sleepHistoryRepository;
+  final SleepSequenceStatsCubit _sleepSequenceStatsCubit;
   final StreamController<String> _selectText =
       StreamController<String>.broadcast();
 
   List<SleepSequenceStats> _selectedSequences;
 
-  SleepSequenceHistoryCubit(this._sleepHistoryRepository)
+  SleepSequenceHistoryCubit(
+      this._sleepHistoryRepository, this._sleepSequenceStatsCubit)
       : super(SleepSequenceHistoryInitial()) {
     loadHistory();
   }
@@ -23,8 +26,8 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
         _sleepHistoryRepository.getSleepSequences()));
   }
 
-  void selectSleepSequenceForViewing(SleepSequenceStats sequence) {
-    _sleepHistoryRepository.selectSleepSequence(sequence);
+  void loadSleepSequence(SleepSequenceStats sequence) {
+    _sleepSequenceStatsCubit.loadSleepSequence(sequence);
   }
 
   void toggleSelectMode() {

@@ -22,7 +22,7 @@ Widget _buildItemCard(var context, var state, var historyCubit, var index) {
         }
       else
         {
-          historyCubit.selectSleepSequenceForViewing(state.history[index]),
+          historyCubit.loadSleepSequence(state.history[index]),
           ExtendedNavigator.of(context).push(Routes.sleepSequenceStatsPage)
         }
     },
