@@ -1,3 +1,4 @@
 hupper==1.10.2
+snakeviz==2.1.0
 pyinstaller==4.0
 Werkzeug==1.0.1
