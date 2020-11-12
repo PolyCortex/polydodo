@@ -13,6 +13,7 @@ class SettingsRepository extends ISettingsRepository {
     prefs = (await SharedPreferences.getInstance());
     return {
       AGEKEY: prefs.getInt(AGEKEY),
+      SERVERADRESSKEY: prefs.getString(SERVERADRESSKEY),
       SEXKEY: Sex.values[(prefs.getInt(SEXKEY)) ?? Sex.NotSet.index],
     };
   }
@@ -25,6 +26,8 @@ class SettingsRepository extends ISettingsRepository {
       await prefs.setDouble(settingKey, settingValue);
     } else if (settingValue is bool) {
       await prefs.setBool(settingKey, settingValue);
+    } else if (settingValue is String) {
+      await prefs.setString(settingKey, settingValue);
     } else {
       // setting is an enum value
       await prefs.setInt(settingKey, settingValue.index);

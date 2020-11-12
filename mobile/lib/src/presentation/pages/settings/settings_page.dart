@@ -30,25 +30,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     SettingsSection(
                       title: 'Personnal informations',
                       tiles: [
-                        SettingsTile(
-                          title: 'Age',
-                          subtitle: 'In years',
-                          leading: Icon(Icons.cake),
-                          trailing: TextButton(
-                              child: Text(state.settings[AGEKEY] == null
-                                  ? 'Not Set'
-                                  : state.settings[AGEKEY].toString()),
-                              onPressed: () => _showDatePicker(context)),
-                        ),
-                        SettingsTile(
-                          title: 'Sex',
-                          subtitle: 'Your biological sex',
-                          leading: Icon(Icons.face),
-                          trailing: SettingsPopupMenuButton(
-                            savedSetting: state.settings[SEXKEY],
-                            settingOptions: Sex.values,
-                          ),
-                        ),
+                        _buildDatePickerSettingTile(
+                            AGEKEY, 'In years', Icons.cake, context, state),
+                        _buildPopupListSettingTile(SEXKEY, Sex.values,
+                            'Your biological sex', Icons.face, state),
+                        _buildOpenTextSettingTile(
+                            SERVERADRESSKEY,
+                            'The url for classification',
+                            Icons.dns,
+                            context,
+                            state),
                       ],
                     ),
                   ],
@@ -58,6 +49,56 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+}
+
+SettingsTile _buildDatePickerSettingTile(String title, String substitle,
+    IconData icon, BuildContext context, SettingsState state) {
+  return SettingsTile(
+    title: AGEKEY,
+    subtitle: 'In years',
+    leading: Icon(Icons.cake),
+    trailing: TextButton(
+        child: Text(
+          (state as SettingsLoadSuccess).settings[AGEKEY] == null
+              ? 'Not Set'
+              : (state as SettingsLoadSuccess).settings[AGEKEY].toString(),
+        ),
+        onPressed: () => _showDatePicker(context)),
+  );
+}
+
+SettingsTile _buildPopupListSettingTile(
+    String settingKey,
+    dynamic settingOptions,
+    String substitle,
+    IconData icon,
+    SettingsState state) {
+  return SettingsTile(
+    title: settingKey,
+    subtitle: substitle,
+    leading: Icon(icon),
+    trailing: SettingsPopupMenuButton(
+        savedSetting: (state as SettingsLoadSuccess).settings[settingKey],
+        settingOptions: settingOptions),
+  );
+}
+
+SettingsTile _buildOpenTextSettingTile(String settingKey, String subtitle,
+    IconData icon, BuildContext context, SettingsState state) {
+  return SettingsTile(
+    title: settingKey,
+    subtitle: subtitle,
+    leading: Icon(icon),
+    trailing: Container(
+      width: 100,
+      child: TextField(
+        controller: TextEditingController()
+          ..text = (state as SettingsLoadSuccess).settings[settingKey],
+        onSubmitted: (newText) => BlocProvider.of<SettingsCubit>(context)
+            .setSetting(settingKey, newText),
+      ),
+    ),
+  );
 }
 
 void _showDatePicker(BuildContext context) async {
