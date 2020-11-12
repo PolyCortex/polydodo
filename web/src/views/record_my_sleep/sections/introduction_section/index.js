@@ -16,7 +16,7 @@ const IntroductionSection = () => (
         maintain a good signal to noise ratio. Note that the supplies and the application methods are meant to follow
         best practices and to provide good quality data.
       </p>
-      <Col xs="9" className="mx-auto mt-7">
+      <Col md="9" className="mx-auto mt-7">
         <Card className="bg-primary shadow-lg border-0">
           <div className="introduction_section__preview_card">
             <Row className="align-items-center">

@@ -16,36 +16,36 @@ const AlternatingTextImage = ({ elements }) => {
     );
     const textElement = <p className="lead">{text}</p>;
 
-    if (isTabletOrMobile) {
+    if (isTabletOrMobile || !image) {
       return (
-        <div className="pt-lg-6" key={i}>
+        <div className="pt-lg-5" key={i}>
           <Col>
-            <div className="mt-5">{titleElement}</div>
+            <div>{titleElement}</div>
             <Row>{imageElement}</Row>
-            {textElement}
+            <div className="mb-5">{textElement}</div>
           </Col>
         </div>
       );
     }
 
     return (
-      <div className="pt-lg-6" key={i}>
+      <div className="pt-lg-5" key={i}>
         {i % 2 === 0 ? (
           <Row>
-            <Col lg="8">
+            <Col lg="9">
               {titleElement}
               {textElement}
             </Col>
-            <Col lg="4">
+            <Col lg="3">
               <span className="alternating_text_image__right_img_container">{imageElement}</span>
             </Col>
           </Row>
         ) : (
           <Row>
-            <Col lg="4">
+            <Col lg="3">
               <span className="alternating_text_image__left_img_container">{imageElement}</span>
             </Col>
-            <Col lg="8">
+            <Col lg="9">
               {titleElement}
               {textElement}
             </Col>

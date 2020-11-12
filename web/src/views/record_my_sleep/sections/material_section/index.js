@@ -6,7 +6,7 @@ import AlternatingTextImage from 'components/alternating_text_image/alternating_
 import materialNeeded from './material_needed.json';
 
 const MaterialSection = () => (
-  <section className="section bg-secondary">
+  <section className="section section-lg bg-secondary">
     <Container className="text-justify pt-md">
       <h3 className="display-3 mb-5">What you will need</h3>
       <p className="lead">

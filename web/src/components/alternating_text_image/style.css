@@ -1,6 +1,7 @@
 .alternating_text_image__img {
   max-width: 100%;
   min-height: auto;
+  margin: 0 auto;
   padding: 2rem 0;
 }
 

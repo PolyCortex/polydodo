@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'reactstrap';
 
 const SimpleTable = ({ headers, elementsrows }) => (
-  <Table striped borderless responsive>
+  <Table className="bg-secondary" striped borderless responsive>
     <thead>
       <tr>
         {headers.map((header) => (
