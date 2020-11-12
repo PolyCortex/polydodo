@@ -12,6 +12,7 @@ class Metrics():
 
         self.is_sleeping_stages = self.sleep_stages != SleepStage.W.name
         self.sleep_indexes = np.where(self.is_sleeping_stages)[0]
+        self.is_last_stage_sleep = self.sleep_stages[-1] != SleepStage.W.name
 
         self._initialize_sleep_offset()
         self._initialize_sleep_latency()
@@ -85,7 +86,7 @@ class Metrics():
 
         wake_after_sleep_offset_nb_epochs = (
             len(self.sleep_stages) - self.sleep_indexes[-1] - 1
-        ) if len(self.sleep_indexes) and self.sleep_stages[-1] == SleepStage.W.name else 0
+        ) if not self.is_last_stage_sleep else 0
 
         return wake_after_sleep_offset_nb_epochs * EPOCH_DURATION
 
@@ -136,8 +137,7 @@ class Metrics():
         nb_stage_shifts = sum(transition_occurences)
         nb_awakenings = sum(awakenings_occurences)
 
-        is_last_stage_sleep = self.sleep_stages[-1] != SleepStage.W.name
-        if is_last_stage_sleep and self.has_slept:
+        if self.is_last_stage_sleep and self.has_slept:
             nb_stage_shifts += 1
             nb_awakenings += 1
 
