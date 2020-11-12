@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from backend.request import ClassificationRequest
-from classification.config.constants import Sex, AcquisitionBoard
+from classification.config.constants import Sex
 
 
 def pytest_generate_tests(metafunc):
@@ -21,7 +21,6 @@ def get_mock_request():
             stream_start=1582418280,
             bedtime=1582423980,
             wakeup=1582452240,
-            board=AcquisitionBoard.OPENBCI_CYTON,
             raw_eeg=None,
             stream_duration=35760,
         )
