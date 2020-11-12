@@ -21,12 +21,12 @@
       "image": "illustrations/ec2_ten20.png"
     },
     {
-      "title": "An OpenBCI board (Cyton or Ganglion) with its dongle, 5 Gold Cup Electrodes and 4 AA batteries",
+      "title": "An OpenBCI board (Cyton or Ganglion) with its dongle, 5 Gold Cup Electrodes",
       "text": "We’re using two channels and a driven ground. To power your board. This type of electrodes is easy to find and works great for sleep EEG recording",
-      "image": "illustrations/open_bci__battery_electrodes.png"
+      "image": "illustrations/open_bci__electrodes__batteries.png"
     },
     {
-      "title": "A micro SD card (for Cyton users)",
+      "title": "A micro SD card (for Cyton users only) and 4 AA batteries",
       "text": "OpenBCI boards do not work with every kind of microSD card. We tested a SanDisk Ultra 32Gb and Kingston SDHC 8Gb class 4 for our recordings.",
       "image": "illustrations/sd.png"
     },

@@ -14,6 +14,7 @@ import carousel_images from './carousel_images.json';
 import Carousel from 'components/carousel';
 
 import ElectrodesDisplay from './electrodes_display';
+import Emoji from 'components/emoji';
 
 const RecordMySleep = () => {
   return (
@@ -40,7 +41,14 @@ const RecordMySleep = () => {
 
       <section className="section bg-secondary">
         <Container className="text-justify pt-lg">
-          <h3 className="display-3 mb-3">What you need</h3>
+          <h3 className="display-3 mb-5">What you need</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+          </p>
           <AlternatingTextImage elements={material_needed.elements} />
         </Container>
       </section>
@@ -225,7 +233,11 @@ const RecordMySleep = () => {
 
       <section className="section bg-gradient-warning">
         <Container className="mt-5 mb-5 text-justify  text-white">
-          <h3 className="display-3 text-white">Wake up!</h3>
+          <h3 className="display-3 text-white">
+            <Row>
+              <Emoji className="mr-3" symbol="☕" /> Wake up!
+            </Row>
+          </h3>
           <div>
             <h4 className="display-4 text-white">Remove your electrodes</h4>
             <p className="lead">

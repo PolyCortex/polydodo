@@ -1,12 +1,19 @@
 .alternating_text_image__img {
   max-width: 100%;
-  min-height: 10em;
+  min-height: auto;
+  padding: 2rem 0;
 }
 
-.alternating_text_image__img_left {
+@media (max-width: 1140px) {
+  .alternating_text_image__img {
+    margin: 2rem auto;
+  }
+}
+
+.alternating_text_image__left_img_container {
   float: left;
 }
 
-.alternating_text_image__img_right {
+.alternating_text_image__right_img_container {
   float: right;
 }
