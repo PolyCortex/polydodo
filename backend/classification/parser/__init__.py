@@ -12,11 +12,10 @@ The Cyton board logging format is also described here:
 """
 from mne import create_info
 from mne.io import RawArray
-import numpy as np
 
-from classification.config.constants import OPENBCI_CYTON_SAMPLE_RATE, EEG_CHANNELS
-from classification.parser.constants import SCALE_V_PER_COUNT
+from classification.config.constants import EEG_CHANNELS
 from classification.parser.file_type import detect_file_type
+from classification.parser.sample_rate import detect_sample_rate
 
 
 def get_raw_array(file):
@@ -32,14 +31,18 @@ def get_raw_array(file):
     Detected {filetype.name} format.
     """)
 
-    parse = filetype.parser
-    eeg_raw = parse(file)
+    sample_rate = detect_sample_rate(file, filetype)
+    print(f"""
+    Detected {sample_rate}Hz sample rate.
+    """)
+
+    eeg_raw = filetype.parser(file)
 
     raw_object = RawArray(
-        SCALE_V_PER_COUNT * np.transpose(eeg_raw),
+        eeg_raw,
         info=create_info(
             ch_names=EEG_CHANNELS,
-            sfreq=OPENBCI_CYTON_SAMPLE_RATE,
+            sfreq=sample_rate,
             ch_types='eeg'),
         verbose=False,
     )
@@ -48,7 +51,7 @@ def get_raw_array(file):
         First sample values: {raw_object[:, 0]}
         Second sample values: {raw_object[:, 1]}
         Number of samples: {raw_object.n_times}
-        Duration of signal (h): {raw_object.n_times / (3600 * OPENBCI_CYTON_SAMPLE_RATE)}
+        Duration of signal (h): {raw_object.n_times / (3600 * sample_rate)}
         Channel names: {raw_object.ch_names}
     """)
 
