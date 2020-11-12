@@ -22,7 +22,7 @@ class Metrics():
 
     @property
     def report(self):
-        return {
+        report = {
             'sleepOffset': self._sleep_offset,
             'sleepLatency': self._sleep_latency,
             'remLatency': self._rem_latency,
@@ -37,6 +37,13 @@ class Metrics():
             'remOnset': self._rem_onset,
             **self._time_passed_in_stage,
         }
+
+        for metric in report:
+            #  json does not recognize NumPy data types
+            if isinstance(report[metric], np.int64):
+                report[metric] = int(report[metric])
+
+        return report
 
     @property
     def _sleep_time(self):

@@ -30,7 +30,7 @@ class ClassificationResponse():
             'epochs': self._epochs,
             'report': self._report,
             'metadata': self._metadata,
-            'subject': self.subject,
+            'subject': self._subject,
             'board': self.board.name,
             'spectrograms': self.spectrogram,
         }
