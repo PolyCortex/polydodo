@@ -102,7 +102,7 @@ class TestReportTimePassedInStage():
     def test_null_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
         value_sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, value_sequence, None)
-        report = response.report
+        report = response.metrics.report
 
         assert report[sequence[0].upper() + 'Time'] == len(sequence) * EPOCH_DURATION
         self.assert_times(sequence, report, WTime, REMTime, N1Time, N2Time, N3Time)
@@ -110,7 +110,7 @@ class TestReportTimePassedInStage():
     def test_partial_time_passed_in_stage(self, sequence, WTime, REMTime, N1Time, N2Time, N3Time):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-        report = response.report
+        report = response.metrics.report
         self.assert_times(sequence, report, WTime, REMTime, N1Time, N2Time, N3Time)
 
     def assert_times(self, sequence, report, WTime, REMTime, N1Time, N2Time, N3Time):
@@ -209,7 +209,7 @@ class TestReportLatenciesOnset():
     def assert_latency_equals_expected(self, expected_latency, expected_onset, sequence, test_rem):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-        report = response.report
+        report = response.metrics.report
 
         assert report[self.get_latency_report_key(test_rem)] == expected_latency, (
             f"Latency of {'rem' if test_rem else 'sleep'} is not as expected"
@@ -280,7 +280,7 @@ class TestReportSleepOffset():
     def assert_sleep_offset_with_wake(self, sequence, expected_sleep_offset, expected_wake_after_sleep_offset):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-        report = response.report
+        report = response.metrics.report
 
         assert report['sleepOffset'] == expected_sleep_offset
         assert report['wakeAfterSleepOffset'] == expected_wake_after_sleep_offset
@@ -334,7 +334,7 @@ class TestReportSleepEfficiency():
     def assert_sleep_efficiency(self, sequence, expected_efficiency, expected_efficient_sleep_time):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-        report = response.report
+        report = response.metrics.report
 
         assert report['sleepEfficiency'] == expected_efficiency
         assert report['efficientSleepTime'] == expected_efficient_sleep_time
@@ -377,7 +377,7 @@ class TestReportAwakenings():
     def assert_sleep_efficiency(self, sequence, expected_nb_awakenings):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-        report = response.report
+        report = response.metrics.report
 
         assert report['awakenings'] == expected_nb_awakenings
 
@@ -430,6 +430,6 @@ class TestReportStageShifts():
     def assert_sleep_efficiency(self, sequence, expected_sleep_shifts):
         sequence = convert_sleep_stage_name_to_values(sequence)
         response = ClassificationResponse(self.MOCK_REQUEST, sequence, None)
-        report = response.report
+        report = response.metrics.report
 
         assert report['stageShifts'] == expected_sleep_shifts

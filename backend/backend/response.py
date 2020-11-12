@@ -1,6 +1,6 @@
 import numpy as np
 
-from backend.metric import get_metrics
+from backend.metric import Metrics
 from classification.config.constants import EPOCH_DURATION, SleepStage
 
 
@@ -17,6 +17,7 @@ class ClassificationResponse():
 
         self.spectrogram = spectrogram
         self.predictions = predictions
+        self.metrics = Metrics(self.sleep_stages, self.bedtime)
 
     @property
     def sleep_stages(self):
@@ -24,12 +25,23 @@ class ClassificationResponse():
         return ordered_sleep_stage_names[self.predictions]
 
     @property
-    def epochs(self):
+    def response(self):
+        return {
+            'epochs': self._epochs,
+            'report': self._report,
+            'metadata': self._metadata,
+            'subject': self.subject,
+            'board': self.board.name,
+            'spectrograms': self.spectrogram,
+        }
+
+    @property
+    def _epochs(self):
         timestamps = np.arange(self.n_epochs * EPOCH_DURATION, step=EPOCH_DURATION) + self.bedtime
         return {'timestamps': timestamps.tolist(), 'stages': self.sleep_stages.tolist()}
 
     @property
-    def metadata(self):
+    def _metadata(self):
         return {
             "sessionStartTime": self.stream_start,
             "sessionEndTime": self.stream_duration + self.stream_start,
@@ -40,23 +52,12 @@ class ClassificationResponse():
         }
 
     @property
-    def subject(self):
+    def _subject(self):
         return {
             'age': self.age,
             'sex': self.sex.name,
         }
 
     @property
-    def report(self):
-        return get_metrics(self.sleep_stages, self.bedtime)
-
-    @property
-    def response(self):
-        return {
-            'epochs': self.epochs,
-            'report': self.report,
-            'metadata': self.metadata,
-            'subject': self.subject,
-            'board': self.board.name,
-            'spectrograms': self.spectrogram,
-        }
+    def _report(self):
+        return self.metrics.report
