@@ -13,8 +13,6 @@ class SettingsRepository extends ISettingsRepository {
     prefs = (await SharedPreferences.getInstance());
     return {
       AGEKEY: prefs.getInt(AGEKEY),
-      BOARDKEY: AcquisitionBoard
-          .values[(prefs.getInt(BOARDKEY)) ?? AcquisitionBoard.NotSet.index],
       SEXKEY: Sex.values[(prefs.getInt(SEXKEY)) ?? Sex.NotSet.index],
     };
   }

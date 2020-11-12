@@ -49,15 +49,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             settingOptions: Sex.values,
                           ),
                         ),
-                        SettingsTile(
-                          title: 'Acquisition Board',
-                          subtitle: 'Your OpenBCI board',
-                          leading: Icon(Icons.memory),
-                          trailing: SettingsPopupMenuButton(
-                            savedSetting: state.settings[BOARDKEY],
-                            settingOptions: AcquisitionBoard.values,
-                          ),
-                        ),
                       ],
                     ),
                   ],
