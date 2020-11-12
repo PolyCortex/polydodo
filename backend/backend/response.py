@@ -12,7 +12,6 @@ class ClassificationResponse():
         self.stream_duration = request.stream_duration
         self.bedtime = request.bedtime
         self.wakeup = request.wakeup
-        self.board = request.board
         self.n_epochs = request.n_epochs
 
         self.spectrogram = spectrogram
@@ -31,7 +30,6 @@ class ClassificationResponse():
             'report': self._report,
             'metadata': self._metadata,
             'subject': self._subject,
-            'board': self.board.name,
             'spectrograms': self.spectrogram,
         }
 

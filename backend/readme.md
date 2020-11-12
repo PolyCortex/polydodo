@@ -40,3 +40,11 @@ If you want to run the backend with hot reload enabled (you must have installed 
 ```bash
 hupper -m waitress app:app
 ```
+
+## Run the tests
+
+You can run our unit tests with the following command, after installing the development requirements:
+
+```bash
+pytest
+```

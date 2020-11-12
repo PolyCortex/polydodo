@@ -8,7 +8,7 @@ from backend.response import ClassificationResponse
 from backend.spectrogram_generator import SpectrogramGenerator
 from classification.parser import get_raw_array
 from classification.exceptions import ClassificationError
-from classification.config.constants import Sex, AcquisitionBoard, ALLOWED_FILE_EXTENSIONS
+from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
 from classification.features.preprocessing import preprocess
 
@@ -51,7 +51,6 @@ def analyze_sleep():
 
     form_data = request.form.to_dict()
     raw_array = get_raw_array(file)
-    print(AcquisitionBoard[form_data['device']])
 
     try:
         classification_request = ClassificationRequest(
@@ -60,7 +59,6 @@ def analyze_sleep():
             stream_start=int(form_data['stream_start']),
             bedtime=int(form_data['bedtime']),
             wakeup=int(form_data['wakeup']),
-            board=AcquisitionBoard[form_data['device']],
             raw_eeg=raw_array,
         )
     except (KeyError, ValueError, ClassificationError):
