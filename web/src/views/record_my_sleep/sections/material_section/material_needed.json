@@ -2,42 +2,42 @@
   "elements": [
     {
       "title": "Rubbing alcohol, cotton swabs and medical tape",
-      "text": "Rubbing alcohol is important for disinfecting the skin and preventing the risk of infection. Cotton swabs will be used to apply different products to the skin.  Medical tape is optional, but helpful for holding certain electrodes on the skin which could come off. If you don't already have this, you can find it all at the drugstore for cheap.",
+      "text": "Rubbing alcohol is important for disinfecting the skin. Cotton swabs will be used to apply different products to the skin. Medical tape is optional, but helpful to hold certain electrodes on the skin which could come off. If you don't already have these, you can find them all at the drugstore for cheap.",
       "image": "illustrations/alcohol__cotton_swabs__medical_tape.png"
     },
     {
-      "title": "Hypafix and Square gauze pads",
-      "text": "Hypafix is a skin adhesive that holds very well in place while being stretchy and comfortable. This can seem a little bit expensive, but it is really useful to keep the electrodes in place for a very long time such as a whole night even if you move a lot. While we recommend it, you can also use medical tape to apply replace the Hepafix, but it is less suitable for long term recordings like sleep study. Pieces of gauze wrap (or gauze pads) will be used to receive the conductive paste and to isolate it. You will also get this at the drugstore.",
+      "title": "Hypafix and gauze squares",
+      "text": "Hypafix is a skin adhesive that holds very well in place while being stretchy and comfortable. This can seem a little bit expensive, but it is really useful to keep the electrodes in place for the long term such as a whole night. While we recommend it, you can also use medical tape to replace the Hypafix, but it is less suitable for long term recordings like sleep study. You will also need pieces of gauze wrap (or gauze pads) to receive and  to isolate the conductive paste. You will be able to get Hypafix from medical equipment distributors and gauze wrap can be found at your local drugstore.",
       "image": "illustrations/hypafix__gauze_wrap.png"
     },
     {
       "title": "Abrasive paste for skin preparation",
-      "text": "Skin prep gel gets rid of dead skin and other impurities when applied to skin. It lowers the connection's impedance and increases conductivity. Concretly, it helps to improve the signal to noise ratio. You can find it online and multiple equivalent brands are available, but we are using NuPrep Skin Gel Prep. You may find it online from different medical equipment distributors.",
+      "text": "Skin prep gel gets rid of dead skin and other impurities when applied to skin. It lowers the connection's impedance and increases conductivity. Concretly, it helps a lot to reduce the signal's noise. We are using NuPrep Skin Gel Prep, but like we already mentionned, multiple equivalent brands are available. You may find it online from different medical equipment distributors.",
       "image": "illustrations/prep_gel.png"
     },
     {
       "title": "EC2 and Ten20 conductive paste",
-      "text": "Conductive paste is an essential part of the montage, because it ensures a good electrical contact between the skin and the electrodes. EC2 , because it sticks the electrodes really well to your skin, even when applied through hair. It can also be easily washed off afterwards. Ten20 can be a viable solution if you can manage to keep your electrodes in place for the whole night (via medical tape and/or a headband). You can also use both at the same time.",
+      "text": "Conductive paste is an essential part of the montage, because it ensures a good electrical contact between the skin and the electrodes. EC2 is a special conductive paste because it is also a very good adhesive. It comes really handy when applying electrodes to the scalp. Indeed, it holds the electrodes in place all night, even with thick hair, and can be washed off easily afterwards. Ten20 is used for its excellent conductive properties. You can easily find them online along with their equivalent brands.",
       "image": "illustrations/ec2_ten20.png"
     },
     {
-      "title": "An OpenBCI board (Cyton or Ganglion) with its dongle, 5 Gold Cup Electrodes",
-      "text": "We’re using two channels and a driven ground. To power your board. This type of electrodes is easy to find and works great for sleep EEG recording",
+      "title": "An OpenBCI board (Cyton or Ganglion) with its dongle, 5 Gold Cup Electrodes and 4 AA batteries",
+      "text": "OpenBCI boards are low-cost brain-computer interface hardware that provides high quality biosignals. We’re using two channels and a driven ground to record the EEG activity while sleeping. Polydodo is compatible with both Cyton and Ganglion boards. To use them, you will also need the OpenBCI GUI to configure and monitor your recordings. Goldcup electrodes works great for sleep EEG recording and are easy to find. You can find the boards and the electrode on the official OpenBCI store. You'll also need 4 full-charged AA batteries to power the board for the whole night.",
       "image": "illustrations/open_bci__electrodes__batteries.png"
     },
     {
-      "title": "A micro SD card (for Cyton users only) and 4 AA batteries",
-      "text": "OpenBCI boards do not work with every kind of microSD card. We tested a SanDisk Ultra 32Gb and Kingston SDHC 8Gb class 4 for our recordings.",
+      "title": "A micro SD card (for Cyton users only)",
+      "text": "If you have a Cyton board, you will probably want to use a SD card. It makes recordings more convenient because it removes the need to maintain the connection between your board and your computer. If you choose to use one, please note that Cyton boards do not work with every kind of microSD card. We can only approve the one we tested: SanDisk Ultra 32Gb class 10 and Kingston SDHC 8Gb class 4. Some other brands we tested were not compatible at all like the Lexar 633x 32gb class 10. Refer to the OpenBCI SD card documentation for more information. That's why we recommend to stick to these.",
       "image": "illustrations/sd.png"
     },
     {
-      "title": "A flexible measuring tape and An Easily erasable pencil",
-      "text": "To place the electrodes in the right places. To mark where electrodes should go.",
+      "title": "A flexible measuring tape and an easily erasable pencil",
+      "text": "The measuring tape is used to measure the head and the pencil to make a mark at the electrodes' spots.",
       "image": "illustrations/pen_tape.png"
     },
     {
       "title": "Something to attach the board to your body",
-      "text": "So you can move around without having to keep the OpenBCI board in your hands (e.g.: we used a camera bag and a fanny pack)",
+      "text": "You'll need something to put your OpenBCI board in, so you can move around without having to carry the board in your hands. Also, electrode wires can be very short, and thus it makes it useful to secure the board near your chest. We used a camera bag and a fanny pack, but any small bag will do.",
       "image": ""
     }
   ]
