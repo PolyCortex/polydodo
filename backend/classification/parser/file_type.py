@@ -12,11 +12,10 @@ class FileType(Enum):
         self.parser = parser
 
 
-def detect_file_type(file) -> FileType:
+def detect_file_type(file_content) -> FileType:
     """Detects file type
     - file: received as an input file
     Returns:
     - FileType of the input file
     """
-    first_line = file.readline().decode("utf-8")
-    return FileType.SessionFile if "EEG Data" in first_line else FileType.SDFile
+    return FileType.SessionFile if "EEG Data" in file_content else FileType.SDFile
