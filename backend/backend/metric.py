@@ -3,8 +3,6 @@ import numpy as np
 
 from classification.config.constants import SleepStage, EPOCH_DURATION
 
-INVALID_TIMESTAMP = -1
-
 
 class Metrics():
     def __init__(self, sleep_stages, bedtime):
@@ -74,11 +72,11 @@ class Metrics():
 
     @property
     def _sleep_efficiency(self):
-        return self.sleep_indexes.shape[0] / self.sleep_stages.shape[0]
+        return len(self.sleep_indexes) / len(self.sleep_stages)
 
     @property
     def _efficient_sleep_time(self):
-        return self.sleep_indexes.shape[0] * EPOCH_DURATION
+        return len(self.sleep_indexes) * EPOCH_DURATION
 
     @property
     def _wake_after_sleep_offset(self):
@@ -94,21 +92,21 @@ class Metrics():
     @property
     def _sleep_onset(self):
         if not self.has_slept:
-            return INVALID_TIMESTAMP
+            return None
 
         return self._sleep_latency + self.bedtime
 
     @property
     def _rem_onset(self):
         rem_latency = self._rem_latency
-        if rem_latency < 0:
-            return INVALID_TIMESTAMP
+        if rem_latency is None:
+            return None
 
         return rem_latency + self.bedtime
 
     def _initialize_sleep_offset(self):
         if not self.has_slept:
-            sleep_offset = INVALID_TIMESTAMP
+            sleep_offset = None
         else:
             sleep_nb_epochs = (self.sleep_indexes[-1] + 1) if len(self.sleep_indexes) else len(self.sleep_stages)
             sleep_offset = sleep_nb_epochs * EPOCH_DURATION + self.bedtime
@@ -149,7 +147,7 @@ class Metrics():
     def _get_latency_of_stage(self, sequence_is_stage):
         epochs_of_stage_of_interest = np.where(sequence_is_stage)[0]
 
-        if not epochs_of_stage_of_interest.shape[0]:
-            return -1
+        if len(epochs_of_stage_of_interest) == 0:
+            return None
 
-        return int(epochs_of_stage_of_interest[0] * EPOCH_DURATION)
+        return epochs_of_stage_of_interest[0] * EPOCH_DURATION

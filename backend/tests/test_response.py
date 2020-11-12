@@ -184,8 +184,8 @@ class TestReportLatenciesOnset():
         self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_has_no_stage(self, sequence, test_rem):
-        expected_latency = -1
-        expected_onset = -1
+        expected_latency = None
+        expected_onset = None
         self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_ends_with_stage(self, sequence, test_rem):
@@ -262,7 +262,7 @@ class TestReportSleepOffset():
         self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
     def test_always_awake(self, sequence):
-        expected_sleep_offset = -1
+        expected_sleep_offset = None
         expected_wake_after_sleep_offset = 0
         self.assert_sleep_offset_with_wake(sequence, expected_sleep_offset, expected_wake_after_sleep_offset)
 
