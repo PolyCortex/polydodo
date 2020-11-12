@@ -15,6 +15,10 @@ class SleepStage(Enum):
     N3 = 3
     REM = 4
 
+    @staticmethod
+    def tolist():
+        return [e.name for e in SleepStage]
+
 
 class HiddenMarkovModelProbability(Enum):
     emission = auto()
