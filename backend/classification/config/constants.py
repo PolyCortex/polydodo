@@ -15,6 +15,10 @@ class SleepStage(Enum):
     N3 = 3
     REM = 4
 
+    @staticmethod
+    def tolist():
+        return [e.name for e in SleepStage]
+
 
 class HiddenMarkovModelProbability(Enum):
     emission = auto()
@@ -36,8 +40,6 @@ EPOCH_DURATION = 30
 FILE_MINIMUM_DURATION = EPOCH_DURATION
 
 DATASET_SAMPLE_RATE = 100
-OPENBCI_CYTON_SAMPLE_RATE = 250
-OPENBCI_GANGLION_SAMPLE_RATE = 200
 
 AGE_FEATURE_BINS = [
     [12, 49],

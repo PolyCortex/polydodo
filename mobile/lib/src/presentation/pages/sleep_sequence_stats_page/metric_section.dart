@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:polydodo/src/domain/sleep_history/night_stats.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 
-Container buildMetricSection(NightStats stats) {
+Container buildMetricSection(SleepSequenceStats stats) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

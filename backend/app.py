@@ -3,14 +3,14 @@ from flask_cors import CORS
 from waitress import serve
 from http import HTTPStatus
 
-from classification.file_loading import get_raw_array
+from backend.request import ClassificationRequest
+from backend.response import ClassificationResponse
+from backend.spectrogram_generator import SpectrogramGenerator
+from classification.parser import get_raw_array
 from classification.exceptions import ClassificationError
 from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
-from classification.request import ClassificationRequest
-from classification.response import ClassificationResponse
 from classification.features.preprocessing import preprocess
-from classification.spectrogram_generator import SpectrogramGenerator
 
 app = Flask(__name__)
 sleep_stage_classifier = SleepStagesClassifier()
@@ -79,4 +79,5 @@ CORS(app,
      allow_headers='Content-Type')
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-serve(app, host='0.0.0.0', port=8080)
+if __name__ == '__main__':
+    serve(app, host='0.0.0.0', port=8080)
