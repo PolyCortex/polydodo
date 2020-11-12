@@ -20,7 +20,7 @@ const AlternatingTextImage = ({ elements }) => {
       return (
         <div className="pt-lg-6" key={i}>
           <Col>
-            {titleElement}
+            <div className="mt-5">{titleElement}</div>
             <Row>{imageElement}</Row>
             {textElement}
           </Col>

@@ -3,7 +3,7 @@ import { Row, Col } from 'reactstrap';
 
 import Tabs from 'components/tabs';
 
-import './electrode_display.css';
+import './electrodes_display.css';
 
 const ElectrodesDisplay = () => {
   const [selectedElectrode, setSelectedElectrode] = useState('fpz');

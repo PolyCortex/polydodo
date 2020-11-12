@@ -15,6 +15,9 @@ import Carousel from 'components/carousel';
 
 import ElectrodesDisplay from './electrodes_display';
 import Emoji from 'components/emoji';
+import { PreviewButton } from 'components/buttons';
+
+import './style.css';
 
 const RecordMySleep = () => {
   return (
@@ -29,26 +32,41 @@ const RecordMySleep = () => {
       <section className="section">
         <Container className="text-justify">
           <p className="lead">
-            Here are some explanations about how to get your own EEG data in order to score your sleep using this
-            website. If you already own an OpenBCI board, you could have very little (see nothing) to buy.
-          </p>
-          <p className="lead">
-            If you don’t have the time or the resources to create your own sleep lab, we have pre-recorded one of our
-            members' night's sleep. You can take a look at the end result right here:
+            Here is a comprehensive guide that explains how to record your own EEG data with an OpenBCI board. The
+            proposed method ensures that the recorded data will be compatible with Polydodo. This guide presents the
+            list of needed materials, the positioning of the electrodes, their placement, as well as their connection.
+            After, it will focus on configuring the OpenBCI boards and on what to do overnight. Be sure to follow our
+            tips and tricks on how to maintain a good signal to noise ratio.
           </p>
         </Container>
       </section>
 
+      <section className="section section-lg pt-0">
+        <Container>
+          <Col xs="9" className="mx-auto">
+            <Card className="bg-primary shadow-lg border-0">
+              <div className="introduction_section__preview_card">
+                <Row className="align-items-center">
+                  <Col lg="8">
+                    <h4 className="text-white">Not sure yet?</h4>
+                    <p className="text-white text-justify mt-3">
+                      If you'd first like to see what the sleep analysis looks like, check out the preview.
+                    </p>
+                  </Col>
+                  <Col className="ml-lg-auto" lg="4">
+                    <PreviewButton block />
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          </Col>
+        </Container>
+      </section>
+
       <section className="section bg-secondary">
-        <Container className="text-justify pt-lg">
+        <Container className="text-justify pt-md">
           <h3 className="display-3 mb-5">What you need</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
+          <p>If you already own an OpenBCI board, you could have very little (see nothing) to buy.</p>
           <AlternatingTextImage elements={material_needed.elements} />
         </Container>
       </section>
