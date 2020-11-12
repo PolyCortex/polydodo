@@ -5,9 +5,8 @@ import 'package:polydodo/src/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_guide_page.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_recording_page.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_validate_page.dart';
-
 import 'package:polydodo/src/presentation/pages/sleep_history_page/sleep_history_page.dart';
-import 'package:polydodo/src/presentation/pages/night_stats_page/night_stats_page.dart';
+import 'package:polydodo/src/presentation/pages/sleep_sequence_stats_page/sleep_sequence_stats_page.dart';
 
 @MaterialAutoRouter(
     generateNavigationHelperExtension: true,
@@ -32,6 +31,7 @@ import 'package:polydodo/src/presentation/pages/night_stats_page/night_stats_pag
           page: SleepHistoryPage,
           transitionsBuilder: TransitionsBuilders.fadeIn),
       CustomRoute(
-          page: NightStatsPage, transitionsBuilder: TransitionsBuilders.fadeIn),
+          page: SleepSequenceStatsPage,
+          transitionsBuilder: TransitionsBuilders.fadeIn),
     ])
 class $Router {}
