@@ -10,7 +10,6 @@ abstract class SettingsState extends Equatable {
 class SettingsLoadInProgress extends SettingsState {}
 
 class SettingsLoadSuccess extends SettingsState {
-  // final Settings settings;
   final Map<String, dynamic> settings;
 
   const SettingsLoadSuccess(this.settings);
@@ -20,6 +19,12 @@ class SettingsLoadSuccess extends SettingsState {
 
   @override
   String toString() => 'SettingsLoadSuccess { settings: $settings }';
+
+  Map<String, dynamic> copyWith(String settingKey, dynamic settingValue) {
+    var newSettings = Map<String, dynamic>.from(settings);
+    newSettings[settingKey] = settingValue;
+    return newSettings;
+  }
 }
 
 class SettingsLoadFailure extends SettingsState {}

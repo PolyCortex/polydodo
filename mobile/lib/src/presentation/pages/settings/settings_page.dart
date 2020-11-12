@@ -46,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           leading: Icon(Icons.face),
                           trailing: SettingsPopupMenuButton(
                             savedSetting: state.settings[SEXKEY],
-                            settingEnum: Sex,
+                            settingOptions: Sex.values,
                           ),
                         ),
                         SettingsTile(
@@ -55,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           leading: Icon(Icons.memory),
                           trailing: SettingsPopupMenuButton(
                             savedSetting: state.settings[BOARDKEY],
-                            settingEnum: AcquisitionBoard,
+                            settingOptions: AcquisitionBoard.values,
                           ),
                         ),
                       ],
@@ -89,11 +89,11 @@ class SettingsPopupMenuButton extends StatelessWidget {
   SettingsPopupMenuButton({
     Key key,
     @required this.savedSetting,
-    @required this.settingEnum,
+    @required this.settingOptions,
   }) : super(key: key);
 
   final dynamic savedSetting;
-  final dynamic settingEnum;
+  final List<dynamic> settingOptions;
   final TextStyle activeStyle = TextStyle(fontWeight: FontWeight.bold);
   final TextStyle defaultStyle = TextStyle();
 
@@ -113,15 +113,16 @@ class SettingsPopupMenuButton extends StatelessWidget {
       ),
       onSelected: (savedSetting) => BlocProvider.of<SettingsCubit>(context)
           .setSetting(savedSetting.toString().split('.').first, savedSetting),
-      itemBuilder: (BuildContext context) => _buildPopupItemList(settingEnum),
+      itemBuilder: (BuildContext context) =>
+          _buildPopupItemList(settingOptions),
     );
   }
 
-  List<PopupMenuItem<T>> _buildPopupItemList<T>(dynamic settingEnum) {
+  List<PopupMenuItem> _buildPopupItemList(List<dynamic> values) {
     return [
-      for (var setting in settingEnum.values
-          .sublist(1)) // Only starting at 1 cause 0 is 'Not Set'
-        PopupMenuItem<T>(
+      for (var setting
+          in values.sublist(1)) // Only starting at 1 cause 0 is 'Not Set'
+        PopupMenuItem(
           value: setting,
           child: Text(EnumToString.convertToString(setting, camelCase: true),
               style: savedSetting == setting ? activeStyle : defaultStyle),

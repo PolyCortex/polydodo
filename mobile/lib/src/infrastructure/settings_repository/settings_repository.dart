@@ -20,16 +20,16 @@ class SettingsRepository extends ISettingsRepository {
   }
 
   @override
-  void setSetting(String settingKey, dynamic settingValue) {
+  Future<void> setSetting(String settingKey, dynamic settingValue) async {
     if (settingValue is int) {
-      prefs.setInt(settingKey, settingValue);
+      await prefs.setInt(settingKey, settingValue);
     } else if (settingValue is double) {
-      prefs.setDouble(settingKey, settingValue);
+      await prefs.setDouble(settingKey, settingValue);
     } else if (settingValue is bool) {
-      prefs.setBool(settingKey, settingValue);
+      await prefs.setBool(settingKey, settingValue);
     } else {
       // setting is an enum value
-      prefs.setInt(settingKey, settingValue.index);
+      await prefs.setInt(settingKey, settingValue.index);
     }
   }
 }
