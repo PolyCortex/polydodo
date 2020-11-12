@@ -1,23 +1,23 @@
 {
   "elements": [
     {
-      "title": "Some Rubbing alcohol, cotton swabs and Medical tape",
-      "text": "We use them to apply the abrasive paste on the skin. ",
+      "title": "Rubbing alcohol, cotton swabs and medical tape",
+      "text": "Rubbing alcohol is important for disinfecting the skin and preventing the risk of infection. Cotton swabs will be used to apply different products to the skin.  Medical tape is optional, but helpful for holding certain electrodes on the skin which could come off. If you don't already have this, you can find it all at the drugstore for cheap.",
       "image": "illustrations/alcohol__cotton_swabs__medical_tape.png"
     },
     {
       "title": "Hypafix and Square gauze pads",
-      "text": "Hypafix is useful to fix electrodes directly to your skin, and holds on better than EC2. In our case, it would be used for the Fpz on the forehead and for the driven ground electrode on the earlobe. Gauze pad: Place it over the electrodes and EC2 paste",
+      "text": "Hypafix is a skin adhesive that holds very well in place while being stretchy and comfortable. This can seem a little bit expensive, but it is really useful to keep the electrodes in place for a very long time such as a whole night even if you move a lot. While we recommend it, you can also use medical tape to apply replace the Hepafix, but it is less suitable for long term recordings like sleep study. Pieces of gauze wrap (or gauze pads) will be used to receive the conductive paste and to isolate it. You will also get this at the drugstore.",
       "image": "illustrations/hypafix__gauze_wrap.png"
     },
     {
-      "title": "Abrasive paste (Nuprep skin prep gel)",
-      "text": "Gets rid of dead skin and improves electrodes conductivity. Gets rid of dead skin and improves electrodes conductivity. Gets rid of dead skin and improves electrodes conductivity. Gets rid of dead skin and improves electrodes conductivity.",
+      "title": "Abrasive paste for skin preparation",
+      "text": "Skin prep gel gets rid of dead skin and other impurities when applied to skin. It lowers the connection's impedance and increases conductivity. Concretly, it helps to improve the signal to noise ratio. You can find it online and multiple equivalent brands are available, but we are using NuPrep Skin Gel Prep. You may find it online from different medical equipment distributors.",
       "image": "illustrations/prep_gel.png"
     },
     {
-      "title": "EC2 conductive paste and Ten20 conductive paste (alternative)",
-      "text": "We highly recommend you to use EC2 paste, because it sticks the electrodes really well to your skin, even when applied through hair. It can also be easily washed off afterwards. Ten20 can be a viable solution if you can manage to keep your electrodes in place for the whole night (via medical tape and/or a headband). You can also use both at the same time.",
+      "title": "EC2 and Ten20 conductive paste",
+      "text": "Conductive paste is an essential part of the montage, because it ensures a good electrical contact between the skin and the electrodes. EC2 , because it sticks the electrodes really well to your skin, even when applied through hair. It can also be easily washed off afterwards. Ten20 can be a viable solution if you can manage to keep your electrodes in place for the whole night (via medical tape and/or a headband). You can also use both at the same time.",
       "image": "illustrations/ec2_ten20.png"
     },
     {

@@ -9,7 +9,11 @@ const MaterialSection = () => (
   <section className="section bg-secondary">
     <Container className="text-justify pt-md">
       <h3 className="display-3 mb-5">What you will need</h3>
-      <p className="lead">If you already own an OpenBCI board, you could have very little (see nothing) to buy.</p>
+      <p className="lead">
+        If you already own an OpenBCI board and some basic EEG equipment, you could have very little to buy except a few
+        things from the drugstore. Some of the brands that we mention have their equivalent and can be replaced. We do
+        not advertise, but we have used these products and found them useful and of good quality.
+      </p>
       <AlternatingTextImage elements={materialNeeded.elements} />
     </Container>
   </section>

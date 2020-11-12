@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row, Table } from 'reactstrap';
 
-const ElectrodesPlacementStepsSection = () => (
+const ElectrodesApplicationSection = () => (
   <section className="section bg-secondary">
     <Container className="text-justify pt-lg">
       <h3 className="display-3 mb-4">How to place the electrodes</h3>
@@ -49,7 +49,7 @@ const ElectrodesPlacementStepsSection = () => (
         <p className="lead">Here’s is how you need to wire your electrodes to the OpenBCI board you are using:</p>
         <Table
           headers={['Location', 'Pin on Cyton', 'Pin on Ganglion']}
-          elementsRows={[
+          elementsrows={[
             ['Fpz', 'P1', '+1'],
             ['Cz', 'N1', '-1'],
             ['Pz', 'P2', '+2'],
@@ -61,4 +61,4 @@ const ElectrodesPlacementStepsSection = () => (
     </Container>
   </section>
 );
-export default ElectrodesPlacementStepsSection;
+export default ElectrodesApplicationSection;

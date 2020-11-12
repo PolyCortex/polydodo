@@ -22,7 +22,7 @@ const GUIConfigurationSection = () => (
           <h4 className="display-4">Cyton</h4>
           <Table
             headers={['Channel', 'PGA Gain', 'Input Type', 'Bias', 'SRB2', 'SRB1']}
-            elementsRows={[
+            elementsrows={[
               ['1', 'x24', 'Normal', 'Include', 'Off', 'No'],
               ['2', 'x24', 'Normal', 'Include', 'Off', 'No'],
             ]}
@@ -32,7 +32,7 @@ const GUIConfigurationSection = () => (
           <h4 className="display-4">Ganglion</h4>
           <Table
             headers={['Channel', 'PGA Gain', 'Input Type', 'Driven Ground', 'Common Ref']}
-            elementsRows={[
+            elementsrows={[
               ['1', 'x24', 'Normal', 'Include', 'Off'],
               ['2', 'x24', 'Normal', 'Include', 'Off'],
             ]}

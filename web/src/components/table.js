@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'reactstrap';
 
-const SimpleTable = ({ headers, elementsRows }) => (
+const SimpleTable = ({ headers, elementsrows }) => (
   <Table striped borderless responsive>
     <thead>
       <tr>
@@ -11,7 +11,7 @@ const SimpleTable = ({ headers, elementsRows }) => (
       </tr>
     </thead>
     <tbody>
-      {elementsRows.map((row, i) => (
+      {elementsrows.map((row, i) => (
         <tr key={i}>
           {row.map((element) => (
             <td key={element}>{element}</td>
