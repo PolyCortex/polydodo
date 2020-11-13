@@ -17,41 +17,32 @@ const ElectrodesDisplay = ({ className }) => {
             {
               id: 'fpz',
               title: 'Fpz',
-              content: (
-                <span>
-                  Fpz is used as the active electrode of the Fpz-Cz channel. To identify the Fpz location, just measure
-                  the distance starting from your nasion<sup>1</sup> to your inion<sup>2</sup> using your soft tape. Fpz
-                  is located at 10 % of the distance along the midline between your nasion and your inion.
-                </span>
-              ),
+              content:
+                'Fpz is used as the active electrode of the Fpz-Cz channel. Fpz is located at 10% of the distance between your nasion and your inion along the midline.',
             },
             {
               id: 'cz',
               title: 'Cz',
-              content: `
-                  We’re measuring a potential difference between Fpz and that point. Cz is located at 50% of the
-                  distance along the midline starting from your nasion to your inion.`,
+              content:
+                'Cz is used as the reference electrode in the Fpz-Cz channel (we’re measuring a potential difference between Fpz and that point). It is located at 50% of the distance between your nasion and your inion along the midline.',
             },
             {
               id: 'pz',
               title: 'Pz',
-              content: `
-                This is our other active electrode. It is located at 70% of the distance between your nasion and your
-                inion.`,
+              content:
+                'Pz is used as the active electrode of the Pz-Oz channel. Pz is located at 70% of the distance between your nasion and your inion along the midline.',
             },
             {
               id: 'oz',
               title: 'Oz',
-              content: `
-                This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion
-                and your inion.`,
+              content:
+                'Oz is used as the reference electrode in the Pz-Oz channel. This is the point at which Pz is referenced. It is located at 90% of the distance between your nasion and your inion along the midline.',
             },
             {
               id: 'a2',
               title: 'A2',
-              content: `
-              This is the electrode that serves as driven ground between your and your OpenBCI board. Simply place it on
-              your right earlobe.`,
+              content:
+                'This is the electrode that serves as driven ground between you and your OpenBCI board. It prevents noise sources to interfer with the EEG signal. Simply place it on your right earlobe.',
             },
           ]}
         />

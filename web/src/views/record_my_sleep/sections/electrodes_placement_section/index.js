@@ -27,11 +27,11 @@ const ElectrodesPlacementSection = () => (
           <li className="py-2">
             <BadgeBulletPoint badgeColor="primary" iconClass="fas fa-ruler">
               <h6 className="mb-0">
-                First, you will need to measure the distance between your&nbsp;
+                First, you will need to measure the distance starting from your&nbsp;
                 <a href="https://en.wikipedia.org/wiki/Nasion" target="_blank" rel="noreferrer">
                   nasion
                 </a>
-                &nbsp;and your&nbsp;
+                &nbsp;to your&nbsp;
                 <a
                   href="https://en.wikipedia.org/wiki/External_occipital_protuberance"
                   target="_blank"
