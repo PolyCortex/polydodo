@@ -1,5 +1,4 @@
-Flask==1.1.2
-Flask-Cors==1.10.3
+falcon==3.0.0a2
 waitress==1.4.4
 
 mne==0.21.0
