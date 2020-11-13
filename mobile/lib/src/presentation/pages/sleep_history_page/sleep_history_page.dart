@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/sleep_sequence_history/sleep_sequence_history_cubit.dart';
 import 'package:polydodo/src/application/sleep_sequence_history/sleep_sequence_history_state.dart';
-import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/pages/sleep_history_page/app_bar.dart';
 import 'package:polydodo/src/presentation/pages/sleep_history_page/sleep_history_list.dart';

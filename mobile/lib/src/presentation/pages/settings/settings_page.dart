@@ -31,11 +31,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: 'Personnal informations',
                       tiles: [
                         _buildDatePickerSettingTile(
-                            AGEKEY, 'In years', Icons.cake, context, state),
-                        _buildPopupListSettingTile(SEXKEY, Sex.values,
+                            AGE_KEY, 'In years', Icons.cake, context, state),
+                        _buildPopupListSettingTile(SEX_KEY, Sex.values,
                             'Your biological sex', Icons.face, state),
                         _buildOpenTextSettingTile(
-                            SERVERADRESSKEY,
+                            SERVER_URL_KEY,
                             'The url for classification',
                             Icons.dns,
                             context,
@@ -54,14 +54,14 @@ class _SettingsPageState extends State<SettingsPage> {
 SettingsTile _buildDatePickerSettingTile(String title, String substitle,
     IconData icon, BuildContext context, SettingsState state) {
   return SettingsTile(
-    title: AGEKEY,
+    title: AGE_KEY,
     subtitle: 'In years',
     leading: Icon(Icons.cake),
     trailing: TextButton(
         child: Text(
-          (state as SettingsLoadSuccess).settings[AGEKEY] == null
+          (state as SettingsLoadSuccess).settings[AGE_KEY] == null
               ? 'Not Set'
-              : (state as SettingsLoadSuccess).settings[AGEKEY].toString(),
+              : (state as SettingsLoadSuccess).settings[AGE_KEY].toString(),
         ),
         onPressed: () => _showDatePicker(context)),
   );
@@ -113,7 +113,7 @@ void _showDatePicker(BuildContext context) async {
 
   if (datePicked != null && datePicked != DateTime.now()) {
     await BlocProvider.of<SettingsCubit>(context).setSetting(
-        AGEKEY, DateTime.now().difference(datePicked).inDays ~/ 365);
+        AGE_KEY, DateTime.now().difference(datePicked).inDays ~/ 365);
   }
 }
 

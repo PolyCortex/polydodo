@@ -1,5 +1,5 @@
 abstract class ISettingsRepository {
-  Future<Map<String, dynamic>> getSettings();
+  Future<dynamic> getSetting(String key);
 
   Future<void> setSetting(String settingKey, dynamic settingValue);
 }

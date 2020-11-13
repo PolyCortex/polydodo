@@ -1,6 +1,4 @@
-import 'package:polydodo/src/common/constants.dart';
 import 'package:polydodo/src/domain/settings/i_settings_repository.dart';
-import 'package:polydodo/src/domain/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsRepository extends ISettingsRepository {
@@ -9,13 +7,9 @@ class SettingsRepository extends ISettingsRepository {
   SettingsRepository();
 
   @override
-  Future<Map<String, dynamic>> getSettings() async {
+  Future<dynamic> getSetting(String key) async {
     prefs = (await SharedPreferences.getInstance());
-    return {
-      AGEKEY: prefs.getInt(AGEKEY),
-      SERVERADRESSKEY: prefs.getString(SERVERADRESSKEY),
-      SEXKEY: Sex.values[(prefs.getInt(SEXKEY)) ?? Sex.NotSet.index],
-    };
+    return prefs.get(key);
   }
 
   @override

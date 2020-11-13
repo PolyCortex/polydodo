@@ -45,7 +45,7 @@ class NavDrawer extends StatelessWidget {
             icon: Icons.analytics,
             text: 'History',
             route: Routes.sleepHistoryPage,
-            tab: NavdrawerTab.SleepHistory,
+            tab: NavdrawerTab.History,
             context: context,
           ),
           _createDrawerItem(
