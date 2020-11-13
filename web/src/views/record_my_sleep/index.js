@@ -12,6 +12,8 @@ import WakeUpSection from './sections/wake_up_section';
 import HowWeDidSection from './sections/how_we_did_section';
 
 import text from './text.json';
+import WiringSection from './sections/wiring_section';
+import CallToAction from './sections/call_to_action';
 
 const RecordMySleep = () => {
   return (
@@ -23,16 +25,17 @@ const RecordMySleep = () => {
         subtitle={text['header_subtitle']}
         description={text['header_description']}
       />
-
       <IntroductionSection />
       <MaterialSection />
       <ElectrodesPlacementSection />
       <ElectrodesApplicationSection />
       <TipsAndTricksSection />
+      <WiringSection />
       <GUIConfigurationSection />
       <JournalSection />
       <WakeUpSection />
       <HowWeDidSection />
+      <CallToAction />
     </>
   );
 };

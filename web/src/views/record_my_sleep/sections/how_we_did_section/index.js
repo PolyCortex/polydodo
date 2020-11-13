@@ -1,36 +1,51 @@
 import React from 'react';
-import { Button, Col, Container, Row } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { UncontrolledCarousel, Col, Container, Row } from 'reactstrap';
+import _ from 'lodash';
 
-import Carousel from 'components/carousel';
+import HeaderSeparator from 'components/header_separator';
 
 import carouselImages from './carousel_images.json';
 
 const HowWeDidSection = () => (
-  <section className="section section-lg">
+  <section className="section section-shaped section-lg">
+    <div className="shape shape-style-1 shape-dark">
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+    </div>
+
     <Container className="text-justify">
-      <h3 className="display-3">How we did it</h3>
-      <Row>
-        <Col xs="8">
-          <p className="lead">
+      <Row className="justify-content-between align-items-center">
+        <Col xs="5">
+          <h3 className="display-3 text-white font-weight-light">How we did it</h3>
+
+          <p className="lead text-white">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
             nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
             anim id est laborum.
           </p>
-          <Button className="btn-icon mb-3 mb-sm-0" color="success" to="/analyze-my-sleep" tag={Link} size="lg">
-            <span className="btn-inner--icon mr-1">
-              <i className="fas fa-file-medical-alt fa-lg" />
-            </span>
-            <span className="btn-inner--text">Analyze my sleep</span>
-          </Button>
         </Col>
-        <Col xs="4">
-          <Carousel items={carouselImages.items} />
+        <Col className="mb-lg-auto" lg="6">
+          <div className="rounded shadow-lg overflow-hidden transform-perspective-left">
+            <UncontrolledCarousel
+              autoplay
+              items={_.map(carouselImages.items, (item) =>
+                Object({
+                  ...item,
+                  src: `${process.env.PUBLIC_URL}/${item.src}`,
+                }),
+              )}
+            />
+          </div>
         </Col>
       </Row>
     </Container>
+    <HeaderSeparator />
   </section>
 );
 

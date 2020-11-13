@@ -19,7 +19,7 @@ const FloatingCard = ({ cardClassName, headerText, bodyText, button }) => (
 FloatingCard.propTypes = {
   cardClassName: PropTypes.string,
   headerText: PropTypes.string,
-  bodyText: PropTypes.string,
+  bodyText: PropTypes.any.isRequired,
   button: PropTypes.object,
 };
 

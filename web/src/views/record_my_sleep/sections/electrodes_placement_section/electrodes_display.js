@@ -10,7 +10,7 @@ const ElectrodesDisplay = ({ className }) => {
 
   return (
     <Row className={className}>
-      <Col xs="8">
+      <Col className="mb-5" md="8">
         <Tabs
           onSelectTab={setSelectedElectrode}
           elements={[
@@ -47,7 +47,7 @@ const ElectrodesDisplay = ({ className }) => {
           ]}
         />
       </Col>
-      <Col xs="4">
+      <Col md="4">
         <div className="imgs-container">
           <div className="img-container">
             <img src={`${process.env.PUBLIC_URL}/illustrations/top.png`} alt="top" />

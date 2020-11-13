@@ -22,7 +22,7 @@ const ElectrodesPlacementSection = () => (
         ground electrode placed at A2. This montage is based on an alternative electrode placement for sleep analysis
         [Sweden, Kemp, Kamphuisen and Velde, 1990].
       </p>
-      <div className="ml-3 mr-9">
+      <div className="ml-3 mr-md-9">
         <ul className="list-unstyled mt-4">
           <li className="py-2">
             <BadgeBulletPoint badgeColor="primary" iconClass="fas fa-ruler">
