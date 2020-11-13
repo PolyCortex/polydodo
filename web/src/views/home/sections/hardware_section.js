@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge, Col, Container, Row } from 'reactstrap';
 
 import OpenBCIBoards from 'assets/img/items/boards.png';
+import BadgeBulletPoint from 'components/badge_bullet_point';
 
 const PerkItem = ({ iconClass, children }) => (
   <li className="py-2">
@@ -38,9 +39,22 @@ const HardwareSection = () => (
               Buy an OpenBCI board
             </a>
             <ul className="list-unstyled mt-4">
-              <PerkItem iconClass="fas fa-check">Reliable</PerkItem>
-              <PerkItem iconClass="fas fa-dollar-sign">Cheap and accessible</PerkItem>
-              <PerkItem iconClass="fas fa-unlock">Open source hardware</PerkItem>
+              <li className="py-2">
+                <BadgeBulletPoint badgeColor="success" iconClass="fas fa-check">
+                  <h6 className="mb-0">Reliable</h6>
+                </BadgeBulletPoint>
+              </li>
+              <li className="py-2">
+                <BadgeBulletPoint badgeColor="success" iconClass="fas fa-dollar-sign">
+                  <h6 className="mb-0">Cheap and accessible</h6>
+                </BadgeBulletPoint>
+              </li>
+
+              <li className="py-2">
+                <BadgeBulletPoint badgeColor="success" iconClass="fas fa-unlock">
+                  <h6 className="mb-0">Open source hardware</h6>
+                </BadgeBulletPoint>
+              </li>
             </ul>
           </div>
         </Col>

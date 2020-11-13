@@ -5,11 +5,11 @@ import Tabs from 'components/tabs';
 
 import './style.css';
 
-const ElectrodesDisplay = () => {
+const ElectrodesDisplay = ({ className }) => {
   const [selectedElectrode, setSelectedElectrode] = useState('fpz');
 
   return (
-    <Row>
+    <Row className={className}>
       <Col xs="8">
         <Tabs
           onSelectTab={setSelectedElectrode}
@@ -17,11 +17,13 @@ const ElectrodesDisplay = () => {
             {
               id: 'fpz',
               title: 'Fpz',
-              content: `
-                  Fpz is used as one of our active electrodes. To identify the Fpz location, just measure the distance
-                  starting from your nasion (the easily identifiable depressed area between your eyes) to your inion
-                  using your flexible measuring tape. Fpz is located at 10 % of the distance along the midline between
-                  your nasion and your inion.`,
+              content: (
+                <span>
+                  Fpz is used as the active electrode of the Fpz-Cz channel. To identify the Fpz location, just measure
+                  the distance starting from your nasion<sup>1</sup> to your inion<sup>2</sup> using your soft tape. Fpz
+                  is located at 10 % of the distance along the midline between your nasion and your inion.
+                </span>
+              ),
             },
             {
               id: 'cz',
