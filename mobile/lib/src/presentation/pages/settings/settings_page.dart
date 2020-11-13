@@ -54,14 +54,14 @@ class _SettingsPageState extends State<SettingsPage> {
 SettingsTile _buildDatePickerSettingTile(String title, String substitle,
     IconData icon, BuildContext context, SettingsState state) {
   return SettingsTile(
-    title: AGE_KEY,
+    title: title,
     subtitle: 'In years',
     leading: Icon(Icons.cake),
     trailing: TextButton(
         child: Text(
-          (state as SettingsLoadSuccess).settings[AGE_KEY] == null
+          (state as SettingsLoadSuccess).settings[title] == null
               ? 'Not Set'
-              : (state as SettingsLoadSuccess).settings[AGE_KEY].toString(),
+              : (state as SettingsLoadSuccess).settings[title].toString(),
         ),
         onPressed: () => _showDatePicker(context)),
   );
