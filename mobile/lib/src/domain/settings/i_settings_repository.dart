@@ -1,5 +1,5 @@
 abstract class ISettingsRepository {
-  Future<dynamic> getSetting(String key);
+  Future<dynamic> read(String key);
 
-  Future<void> setSetting(String settingKey, dynamic settingValue);
+  Future<void> store(String settingKey, dynamic settingValue);
 }
