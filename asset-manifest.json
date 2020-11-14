@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/polydodo/static/css/main.0c5cddde.chunk.css",
-    "main.js": "/polydodo/static/js/main.2221c233.chunk.js",
+    "main.js": "/polydodo/static/js/main.a145f53e.chunk.js",
     "runtime-main.js": "/polydodo/static/js/runtime-main.05314512.js",
     "static/css/2.b7bc17cd.chunk.css": "/polydodo/static/css/2.b7bc17cd.chunk.css",
     "static/js/2.58dfe525.chunk.js": "/polydodo/static/js/2.58dfe525.chunk.js",
@@ -27,6 +27,6 @@
     "static/css/2.b7bc17cd.chunk.css",
     "static/js/2.58dfe525.chunk.js",
     "static/css/main.0c5cddde.chunk.css",
-    "static/js/main.2221c233.chunk.js"
+    "static/js/main.a145f53e.chunk.js"
   ]
 }
