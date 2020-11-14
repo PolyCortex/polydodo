@@ -15,4 +15,4 @@ if not path.exists(PROFILES_PATH):
 app = ProfilerMiddleware(app, stream=None, profile_dir="profiles")
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=8080)
+    serve(app, host='0.0.0.0', port=8182)
