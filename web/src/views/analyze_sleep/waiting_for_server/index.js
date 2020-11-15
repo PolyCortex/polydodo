@@ -27,10 +27,11 @@ const WaitingForServer = () => {
           </p>
         </Col>
         <Col md="6" className="text-center mb-4">
-          <ListGroup>
+          <ListGroup flush>
             {assets.map((asset) => (
-              <ListGroupItem color="default" key={asset.name} active={asset.currentOs} tag="a" href={asset.url}>
-                {asset.name}
+              <ListGroupItem key={asset.name} active={asset.currentOs} tag="a" href={asset.url}>
+                <i class="fas fa-download fa-lg mr-3" />
+                <span>{asset.name}</span>
               </ListGroupItem>
             ))}
           </ListGroup>
