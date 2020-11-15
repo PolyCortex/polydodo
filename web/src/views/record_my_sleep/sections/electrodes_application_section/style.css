@@ -1,0 +1,9 @@
+.electrodes_application_section__step_image {
+  min-height: 12rem;
+}
+
+@media (min-width: 992px) {
+  .electrodes_application__section {
+    margin-bottom: 20rem;
+  }
+}

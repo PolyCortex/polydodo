@@ -6,6 +6,7 @@ import HeaderSeparator from 'components/header_separator';
 import { RecordMyOwnSleepButton, PreviewButton } from 'components/buttons';
 
 import Logo from 'assets/img/logo.png';
+import PolyCortexFull from 'assets/img/polycortex_full.png';
 
 import './style.css';
 
@@ -42,12 +43,7 @@ class Hero extends React.Component {
                     <div className="mt-4">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>
                       <a href="http://polycortex.polymtl.ca/" target="_blank" rel="noopener noreferrer">
-                        <img
-                          alt="..."
-                          className="ml-1"
-                          style={{ height: '100px' }}
-                          src={require('assets/img/polycortex_full.png')}
-                        />
+                        <img alt="..." className="ml-1" style={{ height: '100px' }} src={PolyCortexFull} />
                       </a>
                     </div>
                   </Col>
