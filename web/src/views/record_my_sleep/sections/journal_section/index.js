@@ -4,26 +4,28 @@ import { Container } from 'reactstrap';
 import BadgeBulletPoint from 'components/badge_bullet_point';
 
 const JournalSection = () => (
-  <section className="section bg-secondary">
-    <Container className="text-justify pt-lg">
-      <h3 className="display-3">Write a journal</h3>
+  <section className="section section-md">
+    <Container className="text-justify">
+      <h3 className="display-3">
+        <i class="fas fa-pencil-alt" /> Write a journal
+      </h3>
       <p className="lead">
         You must keep a journal (accurate to the minute) and write down a few information to help us track and analyze
         your sleep:
       </p>
       <ul className="list-unstyled mt-4 ml-3">
         <li className="py-2">
-          <BadgeBulletPoint badgeColor="success" iconClass="far fa-clock">
+          <BadgeBulletPoint badgeColor="warning" iconClass="far fa-clock">
             <span className="lead">When you start the stream</span>
           </BadgeBulletPoint>
         </li>
         <li className="py-2">
-          <BadgeBulletPoint badgeColor="success" iconClass="fas fa-bed">
+          <BadgeBulletPoint badgeColor="warning" iconClass="fas fa-bed">
             <span className="lead">When you go to bed</span>
           </BadgeBulletPoint>
         </li>
         <li className="py-2">
-          <BadgeBulletPoint badgeColor="success" iconClass="fas fa-sun">
+          <BadgeBulletPoint badgeColor="warning" iconClass="fas fa-sun">
             <span className="lead">When you wake up</span>
           </BadgeBulletPoint>
         </li>

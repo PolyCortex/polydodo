@@ -26,7 +26,18 @@ const Step = ({ imgElement, titlePrefix, title, description }) => (
 
 const ElectrodesApplicationSection = () => (
   <section className="section section-shaped section-lg">
-    <div className="shape shape-style-1 shape-dark"></div>
+    <div className="shape shape-style-1 shape-dark">
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+    </div>{' '}
     <Container className="text-justify">
       <h3 className="display-3 mb-4 text-white">How to place the electrodes</h3>
 

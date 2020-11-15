@@ -1,15 +1,11 @@
 import React from 'react';
-import { Container, Row } from 'reactstrap';
-
-import Emoji from 'components/emoji';
+import { Container } from 'reactstrap';
 
 const WakeUpSection = () => (
-  <section className="section bg-gradient-warning">
-    <Container className="mt-5 mb-5 text-justify text-white">
+  <section className="section section-sm bg-gradient-warning">
+    <Container className="text-justify text-white">
       <h3 className="display-3 text-white">
-        <Row>
-          <Emoji className="mr-3" symbol="☕" /> Wake up!
-        </Row>
+        <i class="fas fa-coffee" /> Wake up!
       </h3>
       <div>
         <h4 className="display-4 text-white">Remove your electrodes</h4>

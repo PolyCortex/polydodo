@@ -31,10 +31,10 @@ const RecordMySleep = () => {
       <ElectrodesApplicationSection />
       <TipsAndTricksSection />
       <ConnectionsSection />
+      <HowWeDidSection />
       <GUIConfigurationSection />
       <JournalSection />
       <WakeUpSection />
-      <HowWeDidSection />
       <CallToAction />
     </>
   );

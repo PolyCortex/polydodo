@@ -7,7 +7,7 @@ import HeaderSeparator from 'components/header_separator';
 import carouselImages from './carousel_images.json';
 
 const HowWeDidSection = () => (
-  <section className="section section-shaped section-lg">
+  <section className="section section-shaped my-md section-lg">
     <div className="shape shape-style-1 shape-dark">
       <span />
       <span />
