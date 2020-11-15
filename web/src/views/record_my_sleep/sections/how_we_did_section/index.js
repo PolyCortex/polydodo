@@ -19,15 +19,15 @@ const HowWeDidSection = () => (
 
     <Container className="text-justify">
       <Row className="justify-content-between align-items-center">
-        <Col xs="5">
+        <Col lg="5" className="mb-md">
           <h3 className="display-3 text-white font-weight-light">How we did it</h3>
 
           <p className="lead text-white">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+            On these photos, we can clearly see the application of the electrodes. Please ignore the electrodes placed
+            at chin and eye level (they were used for manual data scoring purposes). For this recording, we used the
+            Cyton board and a microSD card. We put the board in a disposable plastic container that we covered with
+            aluminum foil, to limit EMIs. Then, we put the container in a camera bag worn with a shoulder strap to be
+            able to carry the board on us.
           </p>
         </Col>
         <Col className="mb-lg-auto" lg="6">

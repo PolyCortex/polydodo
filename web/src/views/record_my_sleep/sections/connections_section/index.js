@@ -14,14 +14,14 @@ const ConnectionsSection = () => (
         <Row>
           <Col md="6">
             <img
-              className="connections_section__connections_img"
+              className="connections_section__connections_img w-100"
               src={`${process.env.PUBLIC_URL}/img/cyton_connections.png`}
               alt=""
             />
           </Col>
           <Col md="6">
             <img
-              className="connections_section__connections_img"
+              className="connections_section__connections_img w-100"
               src={`${process.env.PUBLIC_URL}/img/ganglion_connections.png`}
               alt=""
             />

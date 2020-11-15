@@ -7,11 +7,11 @@ const JournalSection = () => (
   <section className="section section-md">
     <Container className="text-justify">
       <h3 className="display-3">
-        <i class="fas fa-pencil-alt" /> Write a journal
+        <i class="fas fa-pencil-alt mr-2" /> Write a journal
       </h3>
       <p className="lead">
-        You must keep a journal (accurate to the minute) and write down a few information to help us track and analyze
-        your sleep:
+        During the night, you must keep a journal, accurate to the minute, and write down a few information to help us
+        track and analyze your sleep:
       </p>
       <ul className="list-unstyled mt-4 ml-3">
         <li className="py-2">
@@ -26,11 +26,15 @@ const JournalSection = () => (
         </li>
         <li className="py-2">
           <BadgeBulletPoint badgeColor="warning" iconClass="fas fa-sun">
-            <span className="lead">When you wake up</span>
+            <span className="lead">When you get out of bed</span>
           </BadgeBulletPoint>
         </li>
       </ul>
-      <p className="lead">You will need to provide this information in order to score your EEG recording.</p>
+      <p className="lead">This information must be given when filling out the upload form for your EEG data file.</p>
+      <h4 className="mt-5">
+        <i class="fas fa-moon mr-2" />
+        Good night!
+      </h4>
     </Container>
   </section>
 );
