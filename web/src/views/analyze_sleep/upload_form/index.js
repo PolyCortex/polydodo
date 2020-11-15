@@ -3,14 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Container, CustomInput, Form, FormGroup, Label, Input, InputGroup, Col, Row, Alert } from 'reactstrap';
 import { DateTime } from 'luxon';
 
-import {
-  ACCEPTED_FILE_EXTENSION,
-  ACCEPTED_FILE_TYPE,
-  DEVICES,
-  MAX_AGE,
-  MAX_FILE_UPLOAD_SIZE,
-  MIN_AGE,
-} from './constants';
+import { ACCEPTED_FILE_EXTENSION, ACCEPTED_FILE_TYPE, MAX_AGE, MAX_FILE_UPLOAD_SIZE, MIN_AGE } from './constants';
 
 import './style.css';
 import useGlobalState from 'hooks/useGlobalState';
@@ -111,24 +104,6 @@ const UploadForm = () => {
               While recording your EEG data, you also gathered some informations about your device, yourself and your
               sleep:
             </p>
-            <FormGroup>
-              <Label for="openbci-device">OpenBCI device used</Label>
-              <Row>
-                <Col md={12}>
-                  <CustomInput
-                    innerRef={register({ required: 'A selection must be made.' })}
-                    type="select"
-                    id="openbci-device"
-                    name="device"
-                  >
-                    <option defaultValue></option>
-                    <option value={DEVICES.CYTON}>Cyton</option>
-                    <option value={DEVICES.GANGLION}>Ganglion</option>
-                  </CustomInput>
-                  <div className="upload-form__error-text">{errors.device?.message}</div>
-                </Col>
-              </Row>
-            </FormGroup>
 
             <Row form>
               <Col md={6}>
@@ -191,7 +166,7 @@ const UploadForm = () => {
                             // prettier-ignore
                             const streamStart = new Date(`${getValues('stream_start_date')} ${getValues('stream_start_time')}`);
                             const bedTime = new Date(`${getValues('bedtime_date')} ${getValues('bedtime_time')}`);
-                            if (streamStart > bedTime) {
+                            if (streamStart >= bedTime) {
                               return 'Stream start must be prior to bedtime.';
                             }
                           },

@@ -54,7 +54,7 @@ const Navfooter = () => {
         </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="https://github.com/PolyCortex" target="_blank">
+        <NavLink href="https://github.com/PolyCortex/polydodo/blob/master/LICENSE" target="_blank">
           {text['footer_license']}
         </NavLink>
       </NavItem>

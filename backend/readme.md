@@ -17,7 +17,7 @@ source venv/bin/activate
 Install the required dependencies.
 
 ```bash
-pip install -r requirements.txt requirements-dev.txt
+pip install -r requirements.txt -r requirements-dev.txt
 ```
 
 If you are running on Linux or MacOS, you also have to install OpenMP with your package manager. It is a dependency of ONNX runtime, used to load our model and make predictions.
@@ -40,3 +40,19 @@ If you want to run the backend with hot reload enabled (you must have installed 
 ```bash
 hupper -m waitress app:app
 ```
+
+## Run the tests
+
+You can run our unit tests with the following command, after installing the development requirements:
+
+```bash
+pytest
+```
+
+## Profile application
+
+- Run `python profiler.py`
+
+- Send the request to the server
+
+- Open the profiler result contained in `profiles` folder with `snakeviz`
