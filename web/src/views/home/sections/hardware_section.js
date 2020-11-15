@@ -1,23 +1,8 @@
 import React from 'react';
-import { Badge, Col, Container, Row } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 
 import OpenBCIBoards from 'assets/img/items/boards.png';
 import BadgeBulletPoint from 'components/badge_bullet_point';
-
-const PerkItem = ({ iconClass, children }) => (
-  <li className="py-2">
-    <div className="d-flex align-items-center">
-      <div>
-        <Badge className="badge-circle mr-3" color="success">
-          <i className={`${iconClass}`} />
-        </Badge>
-      </div>
-      <div>
-        <h6 className="mb-0">{children}</h6>
-      </div>
-    </div>
-  </li>
-);
 
 const HardwareSection = () => (
   <section className="section section-lg">

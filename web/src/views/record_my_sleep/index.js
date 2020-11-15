@@ -12,7 +12,7 @@ import WakeUpSection from './sections/wake_up_section';
 import HowWeDidSection from './sections/how_we_did_section';
 
 import text from './text.json';
-import WiringSection from './sections/wiring_section';
+import ConnectionsSection from './sections/connections_section';
 import CallToAction from './sections/call_to_action';
 
 const RecordMySleep = () => {
@@ -30,7 +30,7 @@ const RecordMySleep = () => {
       <ElectrodesPlacementSection />
       <ElectrodesApplicationSection />
       <TipsAndTricksSection />
-      <WiringSection />
+      <ConnectionsSection />
       <GUIConfigurationSection />
       <JournalSection />
       <WakeUpSection />

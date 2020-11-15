@@ -31,16 +31,16 @@ const ElectrodesApplicationSection = () => (
       <h3 className="display-3 mb-4 text-white">How to place the electrodes</h3>
 
       <div>
-        <h4 className="display-4 text-white">Apply skin preparation gel</h4>
+        <h4 className="display-4 mt-5 text-white">Apply skin preparation gel</h4>
         <p className="lead text-white">
           Pour a small amount of abrasive paste where your Fpz mark is and exfoliate the skin with a cotton swab until
           it begins to turn pink. Using rubbing alcohol and a cotton swab, wipe away the skin several times in order to
-          remove dead skin. Repeat this for all marked location.
+          remove dead skin. Repeat this for all marked locations.
         </p>
       </div>
 
       <div className="electrodes_application__section">
-        <h4 className="display-4 text-white">Place Cz, Pz and Oz (electrodes over the scalp)</h4>
+        <h4 className="display-4 mt-5 text-white">Place the scalp electrodes (Cz, Pz and Oz)</h4>
         <p className="lead text-white">
           First, make sure your electrodes are clean. For more info on how to wash them, see the Wake Up section below.
           Then, follow these three steps:
@@ -58,7 +58,7 @@ const ElectrodesApplicationSection = () => (
             titlePrefix="02|"
             title="Pour some EC2"
             imgElement={<img src={`${process.env.PUBLIC_URL}/illustrations/gauze_ec2.png`} alt="EC2 on gauze" />}
-            description="Squeeze some EC2 conductive paste on a gauze pad. Ensure there's enough so that it'll surround the electrode."
+            description="Squeeze some EC2 conductive paste on a gauze pad. Ensure there's enough so that it will surround the electrode."
           />
           <Step
             titlePrefix="03|"
@@ -72,9 +72,10 @@ const ElectrodesApplicationSection = () => (
         <p className="lead text-white">
           Finally, take the gauze pad with the electrode and the EC2 and place it on the marked area. Exerce a small
           pressure on the gauze square with your palm. The electrode should stay in place. The EC2 conductive paste
-          should take a couple minutes to dry. Repeat these steps for every scalp electrodes.
+          should take a couple minutes to dry (try to avoid sudden movements). Repeat these steps for the two others
+          scalp electrodes.
         </p>
-        <h4 className="mt-5 display-4 text-white">Place Fpz and A2 (electrodes over the skin)</h4>
+        <h4 className="mt-5 display-4 text-white">Place the skin electrodes (Fpz and A2)</h4>
         <p className="lead text-white">
           As with the scalp electrodes' first step, fill the electrode cup with a good amount of Ten20. Afterwards,
           cutoff a small piece of Hypafix. Place the electrode over the mark and apply the Hypafix medical tape tightly.

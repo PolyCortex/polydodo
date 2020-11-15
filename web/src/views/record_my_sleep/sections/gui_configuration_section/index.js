@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'reactstrap';
 import Table from 'components/table';
 
 const GUIConfigurationSection = () => (
-  <section className="section section-lg">
+  <section className="section section-md">
     <Container className="text-justify">
       <h3 className="display-3">How to use OpenBCI GUI</h3>
       <p className="lead">
