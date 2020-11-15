@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
@@ -20,6 +21,12 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   void initializeRepository() {
     _acquisitionDevicePersistency.clear();
     _serialDevices.clear();
+    UsbSerial.usbEventStream.listen((event) {
+      if (event.event == UsbEvent.ACTION_USB_ATTACHED) {
+        addDevices([event.device]);
+      }
+    });
+
     UsbSerial.listDevices().then((devices) => addDevices(devices));
   }
 
@@ -27,7 +34,8 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     for (var serialDevice in serialDevices) {
       var device = AcquisitionDevice(
           UniqueId.from(serialDevice.deviceId.toString()),
-          serialDevice.productName);
+          serialDevice.productName,
+          DeviceType.serial);
 
       _acquisitionDevicePersistency.add(device);
       _serialDevices.add(serialDevice);

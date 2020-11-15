@@ -7,23 +7,25 @@ import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 
-class BluetoothSelectorPage extends StatelessWidget {
-  static const name = 'bluetoothRoute';
+import 'device_list.dart';
 
-  BluetoothSelectorPage({Key key}) : super(key: key);
+class DeviceSelectorPage extends StatelessWidget {
+  static const name = 'DeviceSelectorRoute';
+
+  DeviceSelectorPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Polydodo')),
-      drawer: NavDrawer(activeTab: NavdrawerTab.BluetoothSelector),
+      drawer: NavDrawer(activeTab: NavdrawerTab.DeviceSelector),
       body: BlocConsumer<DeviceSelectorCubit, DeviceState>(
         listener: (context, state) {
           print(state.runtimeType);
           if (state is DeviceSearchFailure) {
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                  'Unable to search for bluetooth devices because ${state.cause}'),
+              content:
+                  Text('Unable to search for devices because ${state.cause}'),
             ));
           } else if (state is DeviceConnectionFailure) {
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -36,18 +38,7 @@ class BluetoothSelectorPage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is DeviceSearchInProgress) {
-            return ListView.builder(
-                itemCount: state.devices.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                        onTap: () =>
-                            BlocProvider.of<DeviceSelectorCubit>(context)
-                                .connect(state.devices[index]),
-                        title: Text(state.devices[index].name),
-                        subtitle: Text(state.devices[index].id.toString())),
-                  );
-                });
+            return buildDeviceList(state);
           } else {
             return Container();
           }
