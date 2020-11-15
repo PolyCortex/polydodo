@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Alert } from 'reactstrap';
+import { Container, Row, Col, Alert, ListGroup, ListGroupItem } from 'reactstrap';
+
 import { getLatestServerReleaseAssets } from 'requests/latest_release';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+
+import './style.css';
 
 const WaitingForServer = () => {
   const [assets, setAssets] = useState([]);
@@ -13,8 +15,8 @@ const WaitingForServer = () => {
   return (
     <Container className="my-6">
       <Alert color="warning" className="lead mb-5 mr-3">
-        <i class="fas fa-server fa-lg mr-3" />
-        <strong>Waiting for local server to be running...</strong>
+        <i className="fas fa-server fa-lg mr-3" />
+        <strong className="waiting_alert__text">Waiting for local server to be running</strong>
       </Alert>
 
       <h3 className="mb-4">Download latest server release</h3>
