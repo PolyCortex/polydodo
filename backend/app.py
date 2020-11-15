@@ -1,6 +1,6 @@
 from waitress import serve
 
-from web import App
+from backend import App
 
 app = App()
 
