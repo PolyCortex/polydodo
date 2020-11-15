@@ -1,7 +1,9 @@
 import React from 'react';
-import { CardDeck, Col, Container } from 'reactstrap';
+import { CardDeck, Col, Container, UncontrolledTooltip } from 'reactstrap';
 
 import FloatingCard from 'components/floating_card';
+
+import './style.css';
 
 const TipsAndTricksSection = () => (
   <section className="section section-lg pt-lg-0 pb-lg-0 mt--300">
@@ -17,9 +19,12 @@ const TipsAndTricksSection = () => (
                 You can check the impedance between your active electrode and its reference (e.g.: Fpz and Cz) through
                 the OpenBCI GUI. The&nbsp;
                 <strong>
-                  <a href={`${process.env.PUBLIC_URL}/img/impedance_btn.png`} target="_blank" rel="noreferrer">
+                  <span id="tooltip_impedance_btn" className="text-primary" target="_blank" rel="noreferrer">
                     impedance button
-                  </a>
+                  </span>
+                  <UncontrolledTooltip delay={0} placement="top" target="tooltip_impedance_btn">
+                    <img className="rounded" src={`${process.env.PUBLIC_URL}/img/impedance_btn.png`} alt=""></img>
+                  </UncontrolledTooltip>
                 </strong>
                 &nbsp;appears just beside the channel number. As a rule of thumb, low impedance (like 10 KOhms) is good
                 and high ones are bad (such as 150 KOhms).

@@ -19,7 +19,7 @@ const HowWeDidSection = () => (
 
     <Container className="text-justify">
       <Row className="justify-content-between align-items-center">
-        <Col lg="5" className="mb-md">
+        <Col lg="6" className="mb-md">
           <h3 className="display-3 text-white font-weight-light">How we did it</h3>
 
           <p className="lead text-white">
@@ -30,7 +30,7 @@ const HowWeDidSection = () => (
             able to carry the board on us.
           </p>
         </Col>
-        <Col className="mb-lg-auto" lg="6">
+        <Col className="mb-lg-auto" lg="5">
           <div className="rounded shadow-lg overflow-hidden transform-perspective-left">
             <UncontrolledCarousel
               autoplay
