@@ -1,6 +1,6 @@
 from waitress import serve
 
-from backend import App
+from backend.app import App
 
 app = App()
 
