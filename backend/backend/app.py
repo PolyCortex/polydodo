@@ -1,7 +1,7 @@
 import falcon
 
-from web.ping import Ping
-from web.analyze_sleep import AnalyzeSleep
+from backend.ping import Ping
+from backend.analyze_sleep import AnalyzeSleep
 
 
 def App():

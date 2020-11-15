@@ -10,10 +10,11 @@ from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
 from classification.features.preprocessing import preprocess
 
-sleep_stage_classifier = SleepStagesClassifier()
-
 
 class AnalyzeSleep:
+    def __init__(self):
+        self.sleep_stage_classifier = SleepStagesClassifier()
+
     @staticmethod
     def _validate_file(file_content):
         if file_content is None:
@@ -72,7 +73,7 @@ class AnalyzeSleep:
             return
 
         preprocessed_epochs = preprocess(classification_request)
-        predictions = sleep_stage_classifier.predict(preprocessed_epochs, classification_request)
+        predictions = self.sleep_stage_classifier.predict(preprocessed_epochs, classification_request)
         spectrogram_generator = SpectrogramGenerator(preprocessed_epochs)
         classification_response = ClassificationResponse(
             classification_request, predictions, spectrogram_generator.generate()
