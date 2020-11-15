@@ -1,5 +1,6 @@
 import json
 import falcon
+import logging
 
 from backend.request import ClassificationRequest
 from backend.response import ClassificationResponse
@@ -10,9 +11,12 @@ from classification.config.constants import Sex, ALLOWED_FILE_EXTENSIONS
 from classification.model import SleepStagesClassifier
 from classification.features.preprocessing import preprocess
 
+_logger = logging.getLogger(__name__)
+
 
 class AnalyzeSleep:
     def __init__(self):
+        _logger.info("Initializing sleep stage classfier.")
         self.sleep_stage_classifier = SleepStagesClassifier()
 
     @staticmethod
