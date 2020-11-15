@@ -1,7 +1,10 @@
 import falcon
+import logging
 
 from backend.ping import Ping
 from backend.analyze_sleep import AnalyzeSleep
+
+_logger = logging.getLogger(__name__)
 
 
 def App():
@@ -13,4 +16,8 @@ def App():
     analyze = AnalyzeSleep()
     app.add_route('/analyze-sleep', analyze)
 
+    _logger.info(
+        'Completed local server initialization. '
+        'Please go back to the website in order to submit your sleep EEG file. '
+    )
     return app

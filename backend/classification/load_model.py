@@ -55,10 +55,10 @@ def _has_latest_object(filename, local_path):
 
 def load_model():
     if not path.exists(MODEL_PATH) or not _has_latest_object(MODEL_FILENAME, MODEL_PATH):
-        _logger.info("Downloading latest sleep stage model...")
+        _logger.info("Downloading latest sleep stage model")
         _download_file(MODEL_URL, MODEL_PATH)
 
-    _logger.info(f"Loading latest sleep stage model from {MODEL_PATH}...")
+    _logger.info(f"Loading latest sleep stage model from {MODEL_PATH}")
     return onnxruntime.InferenceSession(str(MODEL_PATH))
 
 
@@ -77,4 +77,5 @@ def load_hmm():
 
         hmm_matrices[hmm_probability.name] = np.load(str(model_path))
 
+    _logger.info(f"Downloading and saving postprocessing model at {SCRIPT_PATH / HMM_FOLDER}")
     return hmm_matrices

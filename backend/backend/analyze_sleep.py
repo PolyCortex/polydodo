@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 class AnalyzeSleep:
     def __init__(self):
-        _logger.info("Initializing sleep stage classfier.")
+        _logger.info("Initializing sleep stage classifier.")
         self.sleep_stage_classifier = SleepStagesClassifier()
 
     @staticmethod
