@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/polydodo/static/css/main.1d1228e5.chunk.css",
-    "main.js": "/polydodo/static/js/main.cd84a6da.chunk.js",
+    "main.css": "/polydodo/static/css/main.2043d83d.chunk.css",
+    "main.js": "/polydodo/static/js/main.1cf72f30.chunk.js",
     "runtime-main.js": "/polydodo/static/js/runtime-main.05314512.js",
     "static/css/2.b7bc17cd.chunk.css": "/polydodo/static/css/2.b7bc17cd.chunk.css",
-    "static/js/2.430641fd.chunk.js": "/polydodo/static/js/2.430641fd.chunk.js",
+    "static/js/2.e2565ecf.chunk.js": "/polydodo/static/js/2.e2565ecf.chunk.js",
     "index.html": "/polydodo/index.html",
-    "static/js/2.430641fd.chunk.js.LICENSE.txt": "/polydodo/static/js/2.430641fd.chunk.js.LICENSE.txt",
+    "static/js/2.e2565ecf.chunk.js.LICENSE.txt": "/polydodo/static/js/2.e2565ecf.chunk.js.LICENSE.txt",
     "static/media/aep.180e7a01.png": "/polydodo/static/media/aep.180e7a01.png",
     "static/media/boards.43184593.png": "/polydodo/static/media/boards.43184593.png",
     "static/media/diptrace.ba4249e5.png": "/polydodo/static/media/diptrace.ba4249e5.png",
@@ -25,8 +25,8 @@
   "entrypoints": [
     "static/js/runtime-main.05314512.js",
     "static/css/2.b7bc17cd.chunk.css",
-    "static/js/2.430641fd.chunk.js",
-    "static/css/main.1d1228e5.chunk.css",
-    "static/js/main.cd84a6da.chunk.js"
+    "static/js/2.e2565ecf.chunk.js",
+    "static/css/main.2043d83d.chunk.css",
+    "static/js/main.1cf72f30.chunk.js"
   ]
 }
