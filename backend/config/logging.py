@@ -1,8 +1,8 @@
 import logging
 import sys
 
-STD_OUTPUT_FORMAT = "[%(asctime)s]:\t%(levelname)s\t%(message)s (%(name)s)"
-SUBLEVEL_OUTPUT_FORMAT = "[%(asctime)s]:\t%(levelname)s\t\t%(message)s (%(name)s)"
+STD_OUTPUT_FORMAT = "[%(asctime)s - %(levelname)s]:\t%(message)s (%(name)s)"
+SUBLEVEL_OUTPUT_FORMAT = "[%(asctime)s - %(levelname)s]:\t\t%(message)s (%(name)s)"
 
 
 def config_logger(logger_name, log_level, message_sublevel=False):
