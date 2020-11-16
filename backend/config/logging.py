@@ -2,7 +2,7 @@ import logging
 import sys
 
 STDOUT_FORMATTER = logging.Formatter(
-    "%(asctime)s — %(name)s — %(levelname)s — %(message)s "
+    "[%(asctime)s]:\t%(levelname)s\t%(message)s (%(name)s)"
 )
 
 
