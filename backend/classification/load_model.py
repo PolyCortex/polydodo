@@ -55,7 +55,10 @@ def _has_latest_object(filename, local_path):
 
 def load_model():
     if not path.exists(MODEL_PATH) or not _has_latest_object(MODEL_FILENAME, MODEL_PATH):
-        _logger.info("Downloading latest sleep stage classification model... (storing it to {MODEL_PATH})")
+        _logger.info(
+            "Downloading latest sleep stage classification model... "
+            f"This could take a few minutes. (storing it to {MODEL_PATH})"
+        )
         _download_file(MODEL_URL, MODEL_PATH)
 
     _logger.info(f"Loading latest sleep stage classification model... (from {MODEL_PATH})")

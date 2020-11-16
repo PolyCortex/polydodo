@@ -18,6 +18,6 @@ def App():
 
     _logger.info(
         'Completed local server initialization. '
-        'Please go back to the website in order to submit your sleep EEG file. '
+        'Please go back to your browser in order to submit your sleep EEG file. '
     )
     return app

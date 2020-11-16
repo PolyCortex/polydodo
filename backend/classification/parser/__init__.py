@@ -37,9 +37,10 @@ def get_raw_array(file):
 
     _logger.info(
         f"EEG data has been detected to be in the {filetype.name} format "
-        f"and has a {sample_rate}Hz sample rate"
+        f"and has a {sample_rate}Hz sample rate."
     )
 
+    _logger.info("Parsing EEG file to a mne.RawArray object...")
     eeg_raw = filetype.parser(file)
 
     raw_object = RawArray(
