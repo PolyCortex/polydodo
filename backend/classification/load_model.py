@@ -57,7 +57,7 @@ def load_model():
     if not path.exists(MODEL_PATH) or not _has_latest_object(MODEL_FILENAME, MODEL_PATH):
         _logger.info(
             "Downloading latest sleep stage classification model... "
-            f"This could take a few minutes. (storing it to {MODEL_PATH})"
+            f"This could take a few minutes. (storing it at {MODEL_PATH})"
         )
         _download_file(MODEL_URL, MODEL_PATH)
 
@@ -76,7 +76,7 @@ def load_hmm():
         model_path = SCRIPT_PATH / HMM_FOLDER / hmm_file
 
         if not path.exists(model_path) or not _has_latest_object(hmm_file, model_path):
-            _logger.info(f"Downloading postprocessing model... (storing it to {model_path})")
+            _logger.info(f"Downloading postprocessing model... (storing it at {model_path})")
             _download_file(url=f"{BUCKET_URL}/{hmm_file}", output=model_path)
 
         _logger.info(f"Loading postprocessing model... (from {model_path})")
