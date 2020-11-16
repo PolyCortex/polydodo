@@ -53,7 +53,7 @@ def get_raw_array(file):
 
     _logger.info(
         f"Finished converting EEG file to mne.RawArray object "
-        f"with the first sample being {raw_object[:, 0]}, "
+        f"with the first sample being {*(raw_object[:, 0][0]),}, "
         f"with {raw_object.n_times} samples, "
         f"with a {raw_object.n_times / (3600 * sample_rate):.2f} hours duration and "
         f"with channels named {raw_object.ch_names}."

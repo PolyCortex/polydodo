@@ -81,16 +81,18 @@ class AnalyzeSleep:
             response.body = 'Missing or invalid request parameters'
             return
 
-        _logger.info("Preprocessing raw EEG data")
+        _logger.info("Preprocessing of raw EEG data.")
         preprocessed_epochs = preprocess(classification_request)
 
-        _logger.info("Prediction of EEG data to sleep stages")
+        _logger.info("Prediction of EEG data to sleep stages.")
         predictions = self.sleep_stage_classifier.predict(preprocessed_epochs, classification_request)
 
-        _logger.info("Computations of visualisation data & of sleep report metrics")
+        _logger.info("Computations of visualisation data & of sleep report metrics...")
         spectrogram_generator = SpectrogramGenerator(preprocessed_epochs)
         classification_response = ClassificationResponse(
             classification_request, predictions, spectrogram_generator.generate()
         )
 
         response.body = json.dumps(classification_response.response)
+
+        _logger.info("Request completed")
