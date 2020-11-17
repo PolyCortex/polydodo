@@ -20,15 +20,13 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   FlutterReactiveBle flutterReactiveBle;
   StreamSubscription<ConnectionStateUpdate> _connectedDeviceStream;
   StreamSubscription<DiscoveredDevice> _bluetoothScanSubscription;
-  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
-  final streamController = StreamController<List<AcquisitionDevice>>();
+  final streamController = StreamController<AcquisitionDevice>();
 
   @override
-  Stream<List<AcquisitionDevice>> scan() {
+  Stream<AcquisitionDevice> scan() {
     if (_bluetoothScanSubscription == null) {
       _initScan();
     } else {
-      _acquisitionDevicePersistency.clear();
       resumeScan();
     }
 
@@ -41,15 +39,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         (bluetoothDevice.name.isEmpty) ? 'Unknown' : bluetoothDevice.name,
         DeviceType.bluetooth);
 
-    final idx = _acquisitionDevicePersistency.indexOf(device);
-
-    if (idx == -1) {
-      _acquisitionDevicePersistency.add(device);
-    } else {
-      _acquisitionDevicePersistency[idx] = device;
-    }
-
-    streamController.add(_acquisitionDevicePersistency);
+    streamController.add(device);
   }
 
   void _initScan() {
@@ -71,7 +61,6 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   void connect(
       AcquisitionDevice device, Function(bool, [Exception]) callback) async {
     _selectedDevice = device;
-    _acquisitionDevicePersistency.clear();
     pauseScan();
 
     _connectedDeviceStream = flutterReactiveBle

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
@@ -14,13 +15,11 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   UsbPort _serialPort;
   StreamSubscription _inputStreamSubscription;
   StreamSubscription _usbEventSubscription;
-  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
-  final List<UsbDevice> _serialDevices = [];
-  final streamController = StreamController<List<AcquisitionDevice>>();
+  final Map _serialDevices = <String, UsbDevice>{};
+  final streamController = StreamController<AcquisitionDevice>();
 
   @override
-  Stream<List<AcquisitionDevice>> scan() {
-    _acquisitionDevicePersistency.clear();
+  Stream<AcquisitionDevice> scan() {
     _serialDevices.clear();
     _usbEventSubscription ??= UsbSerial.usbEventStream.listen((event) {
       if (event.event == UsbEvent.ACTION_USB_ATTACHED) {
@@ -35,7 +34,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
 
   void addDevices(List<UsbDevice> serialDevices) {
     for (var serialDevice in serialDevices) {
-      if (_serialDevices.contains(serialDevice)) {
+      if (_serialDevices.containsKey(serialDevice.deviceId.toString())) {
         continue;
       }
 
@@ -44,18 +43,16 @@ class SerialRepository implements IAcquisitionDeviceRepository {
           serialDevice.productName,
           DeviceType.serial);
 
-      _acquisitionDevicePersistency.add(device);
-      _serialDevices.add(serialDevice);
-    }
+      streamController.add(device);
 
-    streamController.add(_acquisitionDevicePersistency);
+      _serialDevices[serialDevice.deviceId.toString()] = serialDevice;
+    }
   }
 
   @override
   Future<void> connect(
       AcquisitionDevice device, Function(bool, Exception) callback) async {
-    _selectedDevice =
-        _serialDevices[_acquisitionDevicePersistency.indexOf(device)];
+    _selectedDevice = _serialDevices[device.id.toString()];
     _serialPort = await _selectedDevice.create();
     var openSuccessful = await _serialPort.open();
 

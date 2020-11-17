@@ -8,10 +8,10 @@ import 'device_selector_state.dart';
 
 class DeviceSelectorCubit extends Cubit<DeviceState> {
   final IDeviceLocatorService _deviceLocatorService;
-  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
+  final List<AcquisitionDevice> _scannedDevices = [];
 
   Stream _deviceLocatorStream;
-  StreamSubscription<List<AcquisitionDevice>> _deviceLocatorStreamSubscription;
+  StreamSubscription<AcquisitionDevice> _deviceLocatorStreamSubscription;
 
   DeviceSelectorCubit(this._deviceLocatorService) : super(DeviceInitial()) {
     startSearching();
@@ -20,8 +20,8 @@ class DeviceSelectorCubit extends Cubit<DeviceState> {
   void startSearching() {
     _deviceLocatorStream = _deviceLocatorService.scan();
 
-    _deviceLocatorStreamSubscription ??= _deviceLocatorStream.listen((devices) {
-      _addDevices(devices);
+    _deviceLocatorStreamSubscription ??= _deviceLocatorStream.listen((device) {
+      _addDevice(device);
     });
   }
 
@@ -46,17 +46,15 @@ class DeviceSelectorCubit extends Cubit<DeviceState> {
     startSearching();
   }
 
-  void _addDevices(List<AcquisitionDevice> devices) {
-    for (var device in devices) {
-      var idx = _acquisitionDevicePersistency.indexOf(device);
+  void _addDevice(AcquisitionDevice device) {
+    var idx = _scannedDevices.indexOf(device);
 
-      if (idx == -1) {
-        _acquisitionDevicePersistency.add(device);
-      } else {
-        _acquisitionDevicePersistency[idx] = device;
-      }
+    if (idx == -1) {
+      _scannedDevices.add(device);
+    } else {
+      _scannedDevices[idx] = device;
     }
 
-    emit(DeviceSearchInProgress(_acquisitionDevicePersistency));
+    emit(DeviceSearchInProgress(_scannedDevices));
   }
 }

@@ -15,7 +15,7 @@ class DeviceLocatorService implements IDeviceLocatorService {
 
   StreamSubscription _serialStreamSubscription;
   StreamSubscription _bluetoothStreamSubscription;
-  StreamController<List<AcquisitionDevice>> _acquisitionDeviceController;
+  StreamController<AcquisitionDevice> _acquisitionDeviceController;
 
   DeviceLocatorService() {
     _currentRepository = _serialRepository;
@@ -23,7 +23,7 @@ class DeviceLocatorService implements IDeviceLocatorService {
   }
 
   @override
-  Stream<List<AcquisitionDevice>> scan() {
+  Stream<AcquisitionDevice> scan() {
     var bluetoothStream = _bluetoothRepository.scan();
     var serialStream = _serialRepository.scan();
 
