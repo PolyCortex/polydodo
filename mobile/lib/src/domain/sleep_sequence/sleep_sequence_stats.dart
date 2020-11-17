@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 
 class SleepSequenceStats extends Entity {
   final DateTimeRange recordingTime;
-  final DateTime effectiveSleepTime;
+  final double effectiveSleepTime;
   final double sleepEfficiency;
   final int sleepLatency;
-  final DateTime waso;
+  final double waso;
   final int awakenings;
   final int remLatency;
   final int numberTransitions;

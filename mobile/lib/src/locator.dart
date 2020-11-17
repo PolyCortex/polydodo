@@ -9,7 +9,7 @@ import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
 import 'package:polydodo/src/infrastructure/connection_repositories/acquisition_device_repository.dart';
 import 'package:polydodo/src/infrastructure/connection_repositories/eeg_data_repository.dart';
-import 'package:polydodo/src/infrastructure/sleep_history/sleep_history_repository.dart';
+import 'package:polydodo/src/infrastructure/sleep_history/sleep_squence_repository.dart';
 
 /// Private GetIt instance as we want all DI to be performed here in this file
 final _serviceLocator = GetIt.asNewInstance();
@@ -19,7 +19,7 @@ void registerServices() {
       AcquisitionDeviceRepository());
   _serviceLocator.registerSingleton<IEEGDataRepository>(EEGDataRepository());
   _serviceLocator
-      .registerSingleton<ISleepSequenceRepository>(SleepHistoryRepository());
+      .registerSingleton<ISleepSequenceRepository>(SleepSequenceRepository());
 }
 
 /// This function creates all the BlocProviders used in this app
