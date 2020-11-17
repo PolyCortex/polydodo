@@ -13,25 +13,32 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   UsbDevice _selectedDevice;
   UsbPort _serialPort;
   StreamSubscription _inputStreamSubscription;
+  StreamSubscription _usbEventSubscription;
   final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
   final List<UsbDevice> _serialDevices = [];
   final streamController = StreamController<List<AcquisitionDevice>>();
 
   @override
-  void initializeRepository() {
+  Stream<List<AcquisitionDevice>> scan() {
     _acquisitionDevicePersistency.clear();
     _serialDevices.clear();
-    UsbSerial.usbEventStream.listen((event) {
+    _usbEventSubscription ??= UsbSerial.usbEventStream.listen((event) {
       if (event.event == UsbEvent.ACTION_USB_ATTACHED) {
         addDevices([event.device]);
       }
     });
 
     UsbSerial.listDevices().then((devices) => addDevices(devices));
+
+    return streamController.stream;
   }
 
   void addDevices(List<UsbDevice> serialDevices) {
     for (var serialDevice in serialDevices) {
+      if (_serialDevices.contains(serialDevice)) {
+        continue;
+      }
+
       var device = AcquisitionDevice(
           UniqueId.from(serialDevice.deviceId.toString()),
           serialDevice.productName,
@@ -40,6 +47,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
       _acquisitionDevicePersistency.add(device);
       _serialDevices.add(serialDevice);
     }
+
     streamController.add(_acquisitionDevicePersistency);
   }
 
@@ -108,7 +116,4 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   Future<void> stopDataStream() async {
     await _serialPort.write(Uint8List.fromList(STOP_STREAM_CHAR.codeUnits));
   }
-
-  @override
-  Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }

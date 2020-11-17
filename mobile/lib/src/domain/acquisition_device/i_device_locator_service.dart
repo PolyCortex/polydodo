@@ -1,6 +1,6 @@
-import 'acquisition_device.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 
-abstract class IAcquisitionDeviceRepository {
+abstract class IDeviceLocatorService {
   Stream<List<AcquisitionDevice>> scan();
 
   void connect(AcquisitionDevice device, Function(bool, [Exception]) callback);

@@ -3,37 +3,38 @@ import 'dart:async';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
+import 'package:polydodo/src/domain/acquisition_device/i_device_locator_service.dart';
 import 'package:polydodo/src/infrastructure/connection_repositories/bluetooth_repository.dart';
 import 'package:polydodo/src/infrastructure/connection_repositories/serial_repository.dart';
 
-class AcquisitionDeviceRepository implements IAcquisitionDeviceRepository {
+class DeviceLocatorService implements IDeviceLocatorService {
   final BluetoothRepository _bluetoothRepository = BluetoothRepository();
   final SerialRepository _serialRepository = SerialRepository();
-  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
 
   IAcquisitionDeviceRepository _currentRepository;
 
-  StreamSubscription _bluetoothStream;
-  StreamSubscription _serialStream;
+  StreamSubscription _serialStreamSubscription;
+  StreamSubscription _bluetoothStreamSubscription;
   StreamController<List<AcquisitionDevice>> _acquisitionDeviceController;
 
-  AcquisitionDeviceRepository() {
+  DeviceLocatorService() {
     _currentRepository = _serialRepository;
     _acquisitionDeviceController = StreamController();
   }
 
   @override
-  Future<void> initializeRepository() async {
-    _acquisitionDevicePersistency.clear();
-    _bluetoothRepository.initializeRepository();
-    _serialRepository.initializeRepository();
+  Stream<List<AcquisitionDevice>> scan() {
+    var bluetoothStream = _bluetoothRepository.scan();
+    var serialStream = _serialRepository.scan();
 
-    _serialStream ??= _serialRepository.watch().listen((event) {
-      _addDevices(event);
+    _serialStreamSubscription ??= bluetoothStream.listen((event) {
+      _acquisitionDeviceController.add(event);
     });
-    _bluetoothStream ??= _bluetoothRepository.watch().listen((event) {
-      _addDevices(event);
+    _bluetoothStreamSubscription ??= serialStream.listen((event) {
+      _acquisitionDeviceController.add(event);
     });
+
+    return _acquisitionDeviceController.stream;
   }
 
   @override
@@ -60,19 +61,5 @@ class AcquisitionDeviceRepository implements IAcquisitionDeviceRepository {
   @override
   void stopDataStream() {
     _currentRepository.stopDataStream();
-  }
-
-  @override
-  Stream<List<AcquisitionDevice>> watch() {
-    return _acquisitionDeviceController.stream;
-  }
-
-  void _addDevices(List<AcquisitionDevice> devices) {
-    for (var device in devices) {
-      if (!_acquisitionDevicePersistency.contains(device)) {
-        _acquisitionDevicePersistency.add(device);
-      }
-    }
-    _acquisitionDeviceController.add(_acquisitionDevicePersistency);
   }
 }

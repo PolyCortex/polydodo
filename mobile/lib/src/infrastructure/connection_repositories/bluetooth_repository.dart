@@ -24,13 +24,15 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   final streamController = StreamController<List<AcquisitionDevice>>();
 
   @override
-  void initializeRepository() {
+  Stream<List<AcquisitionDevice>> scan() {
     if (_bluetoothScanSubscription == null) {
       _initScan();
     } else {
       _acquisitionDevicePersistency.clear();
       resumeScan();
     }
+
+    return streamController.stream;
   }
 
   void addDevice(DiscoveredDevice bluetoothDevice) {
@@ -127,7 +129,4 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         _sendCharacteristic,
         value: STOP_STREAM_CHAR.codeUnits));
   }
-
-  @override
-  Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }
