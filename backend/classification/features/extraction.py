@@ -31,11 +31,6 @@ def get_eeg_features(epochs, in_bed_seconds, out_of_bed_seconds):
 
         features.append(channel_features)
 
-        print(
-            f"Done extracting {channel_features.shape[1]} features "
-            f"on {channel_features.shape[0]} epochs for {channel}\n"
-        )
-
     return np.hstack(tuple(features))
 
 

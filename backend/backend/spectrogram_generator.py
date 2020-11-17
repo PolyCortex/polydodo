@@ -20,6 +20,7 @@ class SpectrogramGenerator():
             self.epochs,
             fmin=self.spectrogram_min_freq,
             fmax=self.spectrogram_max_freq,
+            verbose=False,
         )
         psds_db = self._convert_amplitudes_to_decibel(psds)
 

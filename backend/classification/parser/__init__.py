@@ -10,12 +10,17 @@ the raw hexadecimal data to signed decimal values in the OpenBCI GUI:
 The Cyton board logging format is also described here:
 [https://docs.openbci.com/docs/02Cyton/CytonSDCard#data-logging-format]
 """
+import logging
+
 from mne import create_info
 from mne.io import RawArray
 
 from classification.config.constants import EEG_CHANNELS
 from classification.parser.file_type import detect_file_type
 from classification.parser.sample_rate import detect_sample_rate
+
+
+_logger = logging.getLogger(__name__)
 
 
 def get_raw_array(file):
@@ -27,15 +32,15 @@ def get_raw_array(file):
     """
 
     filetype = detect_file_type(file)
-    print(f"""
-    Detected {filetype.name} format.
-    """)
 
     sample_rate = detect_sample_rate(file, filetype)
-    print(f"""
-    Detected {sample_rate}Hz sample rate.
-    """)
 
+    _logger.info(
+        f"EEG data has been detected to be in the {filetype.name} format "
+        f"and has a {sample_rate}Hz sample rate."
+    )
+
+    _logger.info("Parsing EEG file to a mne.RawArray object...")
     eeg_raw = filetype.parser(file)
 
     raw_object = RawArray(
@@ -47,12 +52,12 @@ def get_raw_array(file):
         verbose=False,
     )
 
-    print(f"""
-        First sample values: {raw_object[:, 0]}
-        Second sample values: {raw_object[:, 1]}
-        Number of samples: {raw_object.n_times}
-        Duration of signal (h): {raw_object.n_times / (3600 * sample_rate)}
-        Channel names: {raw_object.ch_names}
-    """)
+    _logger.info(
+        f"Finished converting EEG file to mne.RawArray object "
+        f"with the first sample being {*(raw_object[:, 0][0]),}, "
+        f"with {raw_object.n_times} samples, "
+        f"with a {raw_object.n_times / (3600 * sample_rate):.2f} hours duration and "
+        f"with channels named {raw_object.ch_names}."
+    )
 
     return raw_object
