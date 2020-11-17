@@ -21,7 +21,6 @@ class DeviceSelectorPage extends StatelessWidget {
       drawer: NavDrawer(activeTab: NavdrawerTab.DeviceSelector),
       body: BlocConsumer<DeviceSelectorCubit, DeviceState>(
         listener: (context, state) {
-          print(state.runtimeType);
           if (state is DeviceSearchFailure) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content:
