@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
-import 'package:polydodo/src/domain/acquisition_device/i_device_locator_service.dart';
+import 'package:polydodo/src/domain/acquisition_device/device_locator_service.dart';
 import 'device_selector_state.dart';
 
 class DeviceSelectorCubit extends Cubit<DeviceState> {
-  final IDeviceLocatorService _deviceLocatorService;
+  final DeviceLocatorService _deviceLocatorService;
   final List<AcquisitionDevice> _scannedDevices = [];
 
   Stream _deviceLocatorStream;
