@@ -22,11 +22,11 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     _serialDevices.clear();
     _usbEventSubscription ??= UsbSerial.usbEventStream.listen((event) {
       if (event.event == UsbEvent.ACTION_USB_ATTACHED) {
-        addDevices([event.device]);
+        _addDevices([event.device]);
       }
     });
 
-    UsbSerial.listDevices().then((devices) => addDevices(devices));
+    UsbSerial.listDevices().then((devices) => _addDevices(devices));
 
     return streamController.stream;
   }
@@ -34,7 +34,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   @override
   void pauseScan() {}
 
-  void addDevices(List<UsbDevice> serialDevices) {
+  void _addDevices(List<UsbDevice> serialDevices) {
     for (var serialDevice in serialDevices) {
       if (_serialDevices.containsKey(serialDevice.deviceId.toString())) {
         continue;
