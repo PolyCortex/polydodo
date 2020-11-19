@@ -57,11 +57,14 @@ class EEGDataRepository implements IEEGDataRepository {
 
   @override
   Future<void> stopRecordingFromStream() async {
-    // todo: move save future to another file
     unawaited(_currentTransformerStream.cancel());
 
     if (_recordingData == null) return;
 
+    _saveRecordingToFile();
+  }
+
+  void _saveRecordingToFile() async {
     final directory = await getExternalStorageDirectory();
     final pathOfTheFileToWrite =
         directory.path + '/' + _recordingData.fileName + '.txt';

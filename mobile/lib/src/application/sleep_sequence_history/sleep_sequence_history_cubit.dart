@@ -8,7 +8,7 @@ import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 import 'sleep_sequence_history_state.dart';
 
 class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
-  final ISleepSequenceRepository _sleepHistoryRepository;
+  final ISleepSequenceRepository _sleepSequenceRepository;
   final SleepSequenceStatsCubit _sleepSequenceStatsCubit;
   final StreamController<String> _selectText =
       StreamController<String>.broadcast();
@@ -16,14 +16,13 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   List<SleepSequenceStats> _selectedSequences;
 
   SleepSequenceHistoryCubit(
-      this._sleepHistoryRepository, this._sleepSequenceStatsCubit)
+      this._sleepSequenceRepository, this._sleepSequenceStatsCubit)
       : super(SleepSequenceHistoryInitial()) {
     loadHistory();
   }
 
   void loadHistory() {
-    emit(SleepSequenceHistoryLoaded(
-        _sleepHistoryRepository.getSleepSequences()));
+    emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
   void loadSleepSequence(SleepSequenceStats sequence) {
@@ -42,14 +41,13 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     _selectedSequences = [];
     _selectText.add('Done');
     emit(SleepSequenceHistoryEditInProgress(
-        _sleepHistoryRepository.getSleepSequences(), _selectedSequences));
+        _sleepSequenceRepository.getAll(), _selectedSequences));
   }
 
   void _disableSelection() {
     _selectedSequences = null;
     _selectText.add('Select');
-    emit(SleepSequenceHistoryLoaded(
-        _sleepHistoryRepository.getSleepSequences()));
+    emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
   void toggleSelectSequenceForDeletion(SleepSequenceStats sequence) {
@@ -60,11 +58,13 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     }
 
     emit(SleepSequenceHistoryEditInProgress(
-        _sleepHistoryRepository.getSleepSequences(), _selectedSequences));
+        _sleepSequenceRepository.getAll(), _selectedSequences));
   }
 
   void deleteSelected() {
-    _sleepHistoryRepository.deleteSleepSequences(_selectedSequences);
+    _sleepSequenceRepository.delete(
+        (state as SleepSequenceHistoryEditInProgress).history,
+        _selectedSequences);
     _disableSelection();
   }
 
