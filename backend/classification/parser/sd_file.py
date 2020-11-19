@@ -6,6 +6,9 @@ from classification.parser.constants import SCALE_V_PER_COUNT
 
 ROWS_TO_SKIP = 2
 
+SIGNED_BIT = int("800000", 16)
+SIGNED_BIT_2 = 2 * SIGNED_BIT
+
 
 def _hexstr_to_int(hexstr):
     """Converts a two complement hexadecimal value in a string to a signed float
@@ -14,7 +17,8 @@ def _hexstr_to_int(hexstr):
     Returns:
     - decimal value
     """
-    return int.from_bytes(bytes.fromhex(hexstr), byteorder='big', signed=True)
+    raw_int = int(hexstr, 16)
+    return raw_int - SIGNED_BIT_2 if raw_int >= SIGNED_BIT else raw_int
 
 
 def parse_sd_file(file):

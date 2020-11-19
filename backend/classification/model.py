@@ -1,8 +1,11 @@
 """defines models which predict sleep stages based off EEG signals"""
+import logging
 
 from classification.features import get_features
 from classification.postprocessor import get_hmm_model
 from classification.load_model import load_model, load_hmm
+
+_logger = logging.getLogger(__name__)
 
 
 class SleepStagesClassifier():
@@ -21,12 +24,14 @@ class SleepStagesClassifier():
         - request: instance of ClassificationRequest
         Returns: array of predicted sleep stages
         """
-
+        _logger.info("Extracting features...")
         features = get_features(epochs, request)
+        _logger.info(f"Finished extracting {features.shape[1]} features over {features.shape[0]} epochs.")
 
-        print(features, features.shape)
-
+        _logger.info("Classifying sleep stages from extracted features...")
         predictions = self._get_predictions(features)
+
+        _logger.info("Applying postprocessing step to the resulted sleep stages...")
         predictions = self._get_postprocessed_predictions(predictions)
 
         return predictions

@@ -31,7 +31,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           path: .
-      - uses: JamesIves/github-pages-deploy-action@3.6.1
+      - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

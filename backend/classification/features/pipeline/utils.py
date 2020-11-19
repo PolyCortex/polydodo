@@ -16,7 +16,7 @@ def get_psds_from_epochs(epochs):
     --------
     psds with associated frequencies calculated with the welch method.
     """
-    psds, freqs = psd_welch(epochs, fmin=0.5, fmax=30.)
+    psds, freqs = psd_welch(epochs, fmin=0.5, fmax=30., verbose=False)
     return psds, freqs
 
 

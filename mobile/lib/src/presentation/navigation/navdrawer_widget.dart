@@ -26,10 +26,11 @@ class NavDrawer extends StatelessWidget {
             route: Routes.dashboardPage,
             context: context,
           ),
+          // Todo: find the real place for the device selector, up to debate
           _createDrawerItem(
             icon: Icons.bluetooth,
-            text: 'Bluetooth selector',
-            route: Routes.bluetoothSelectorPage,
+            text: 'Device selector',
+            route: Routes.deviceSelectorPage,
             context: context,
           ),
           _createDrawerItem(

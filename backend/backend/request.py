@@ -1,3 +1,4 @@
+import logging
 
 from classification.config.constants import EPOCH_DURATION
 from classification.config.constants import (
@@ -9,6 +10,8 @@ from classification.exceptions import (
     FileSizeError,
     ClassificationError,
 )
+
+_logger = logging.getLogger(__name__)
 
 
 class ClassificationRequest():
@@ -56,21 +59,27 @@ class ClassificationRequest():
             and has_got_out_of_bed_after_in_bed
             and has_respected_minimum_bed_time
         ):
+            _logger.warn("Received timestamps are invalid.")
             raise TimestampsError()
 
     def _validate_file_with_timestamps(self):
         has_raw_respected_minimum_file_size = self.raw_eeg.times[-1] > FILE_MINIMUM_DURATION
 
         if not has_raw_respected_minimum_file_size:
+            _logger.warn(f"Uploaded file must at least have {FILE_MINIMUM_DURATION} seconds of data.")
             raise FileSizeError()
 
         is_raw_at_least_as_long_as_out_of_bed = self.raw_eeg.times[-1] >= self.out_of_bed_seconds
 
         if not is_raw_at_least_as_long_as_out_of_bed:
+            _logger.warn(
+                "Uploaded file must at least last the time between the start of the "
+                f"stream and out of bed time, which is {self.out_of_bed_seconds} seconds.")
             raise TimestampsError()
 
     def _validate_age(self):
         is_in_accepted_range = ACCEPTED_AGE_RANGE[0] <= int(self.age) <= ACCEPTED_AGE_RANGE[1]
 
         if not(is_in_accepted_range):
+            _logger.warn(f"Age must be in the following range: {ACCEPTED_AGE_RANGE}")
             raise ClassificationError('invalid age')
