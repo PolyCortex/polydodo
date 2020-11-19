@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
-import 'package:polydodo/src/infrastructure/connection_repositories/bluetooth_repository.dart';
-import 'package:polydodo/src/infrastructure/connection_repositories/serial_repository.dart';
 
 class DeviceLocatorService {
-  final BluetoothRepository _bluetoothRepository;
-  final SerialRepository _serialRepository;
+  final IAcquisitionDeviceRepository _bluetoothRepository;
+  final IAcquisitionDeviceRepository _serialRepository;
 
   IAcquisitionDeviceRepository _currentRepository;
 

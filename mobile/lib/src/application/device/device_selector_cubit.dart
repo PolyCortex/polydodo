@@ -47,14 +47,10 @@ class DeviceSelectorCubit extends Cubit<DeviceState> {
   }
 
   void _addDevice(AcquisitionDevice device) {
-    var idx = _scannedDevices.indexOf(device);
-
-    if (idx == -1) {
+    if (!_scannedDevices.contains(device)) {
       _scannedDevices.add(device);
-    } else {
-      _scannedDevices[idx] = device;
-    }
 
-    emit(DeviceSearchInProgress(_scannedDevices));
+      emit(DeviceSearchInProgress(_scannedDevices));
+    }
   }
 }
