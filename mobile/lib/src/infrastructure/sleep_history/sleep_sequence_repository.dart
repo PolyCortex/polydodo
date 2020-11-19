@@ -21,7 +21,7 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
   }
 
   @override
-  List<SleepSequenceStats> getSleepSequences() {
+  List<SleepSequenceStats> getAll() {
     return _parseHiveSleepSequenceList(
         _sleepSequencesListBox.get(SLEEP_SEQUENCES_LIST_KEY) ?? []);
   }

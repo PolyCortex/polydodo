@@ -15,7 +15,7 @@ class MockSleepSequenceRepository implements ISleepSequenceRepository {
   }
 
   @override
-  List<SleepSequenceStats> getSleepSequences() => _sleepSequencesPersistency;
+  List<SleepSequenceStats> getAll() => _sleepSequencesPersistency;
 
   @override
   void store(List<SleepSequenceStats> sequenceList) {

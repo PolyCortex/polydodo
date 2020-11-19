@@ -22,8 +22,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void loadHistory() {
-    emit(SleepSequenceHistoryLoaded(
-        _sleepSequenceRepository.getSleepSequences()));
+    emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
   void loadSleepSequence(SleepSequenceStats sequence) {
@@ -42,14 +41,13 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     _selectedSequences = [];
     _selectText.add('Done');
     emit(SleepSequenceHistoryEditInProgress(
-        _sleepSequenceRepository.getSleepSequences(), _selectedSequences));
+        _sleepSequenceRepository.getAll(), _selectedSequences));
   }
 
   void _disableSelection() {
     _selectedSequences = null;
     _selectText.add('Select');
-    emit(SleepSequenceHistoryLoaded(
-        _sleepSequenceRepository.getSleepSequences()));
+    emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
   void toggleSelectSequenceForDeletion(SleepSequenceStats sequence) {
@@ -60,7 +58,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     }
 
     emit(SleepSequenceHistoryEditInProgress(
-        _sleepSequenceRepository.getSleepSequences(), _selectedSequences));
+        _sleepSequenceRepository.getAll(), _selectedSequences));
   }
 
   void deleteSelected() {
