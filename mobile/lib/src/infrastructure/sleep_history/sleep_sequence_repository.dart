@@ -8,47 +8,40 @@ import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 
+import 'mock_data.dart';
+
 class SleepSequenceRepository implements ISleepSequenceRepository {
-  final List<SleepSequenceStats> _sleepSequencesPersistency = [];
   final sequenceStreamController = StreamController<SleepSequenceStats>();
   Box _sleepSequencesListBox;
 
   SleepSequenceRepository() {
-    _loadSleepSequences();
+    _loadHiveBox();
   }
 
-  void _loadSleepSequences() async {
+  void _loadHiveBox() async {
     _sleepSequencesListBox = await Hive.openBox(POLYDODO_BOX);
+  }
 
-    var sequenceList = _sleepSequencesListBox.get(SLEEP_SEQUENCES_LIST_KEY);
-    print(sequenceList);
+  @override
+  List<SleepSequenceStats> getSleepSequences() {
+    return _parseHiveSleepSequenceList(
+        _sleepSequencesListBox.get(SLEEP_SEQUENCES_LIST_KEY) ?? []);
+  }
 
-    if (sequenceList != null) {
-      _sleepSequencesPersistency
-          .addAll(_parseHiveSleepSequenceList(sequenceList));
+  @override
+  void store(List<SleepSequenceStats> sequence) {
+    _sleepSequencesListBox.put(
+        SLEEP_SEQUENCES_LIST_KEY, _parseSleepSequenceList(sequence));
+  }
+
+  @override
+  void delete(List<SleepSequenceStats> sequences,
+      List<SleepSequenceStats> sequencesToDelete) {
+    for (var sequence in sequencesToDelete) {
+      sequences.remove(sequence);
     }
-  }
 
-  @override
-  List<SleepSequenceStats> getSleepSequences() => _sleepSequencesPersistency;
-
-  @override
-  void addSleepSequence(SleepSequenceStats sequence) {
-    _sleepSequencesPersistency.add(sequence);
-
-    _saveSleepSequences();
-  }
-
-  @override
-  void deleteSleepSequences(List<SleepSequenceStats> sequences) {
-    for (var sequence in sequences) {
-      _sleepSequencesPersistency.remove(sequence);
-    }
-  }
-
-  void _saveSleepSequences() {
-    _sleepSequencesListBox.put(SLEEP_SEQUENCES_LIST_KEY,
-        _parseSleepSequenceList(_sleepSequencesPersistency));
+    store(sequences);
   }
 
   List<SleepSequenceStats> _parseHiveSleepSequenceList(var historyList) {

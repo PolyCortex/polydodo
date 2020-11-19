@@ -7,6 +7,6 @@ import 'package:polydodo/src/domain/sleep_sequence/hive_sleep_sequence_stats.dar
 Future<void> initDatabase() async {
   WidgetsFlutterBinding.ensureInitialized();
   var appDocDir = await getApplicationDocumentsDirectory();
-  await Hive.initFlutter(appDocDir.path + '/hive');
+  await Hive.initFlutter(appDocDir.path + '/test');
   Hive.registerAdapter(HiveSleepSequenceStatsAdapter());
 }

@@ -64,7 +64,9 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void deleteSelected() {
-    _sleepSequenceRepository.deleteSleepSequences(_selectedSequences);
+    _sleepSequenceRepository.delete(
+        (state as SleepSequenceHistoryEditInProgress).history,
+        _selectedSequences);
     _disableSelection();
   }
 

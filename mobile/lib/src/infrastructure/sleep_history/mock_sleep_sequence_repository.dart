@@ -5,8 +5,8 @@ import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 import 'package:polydodo/src/infrastructure/sleep_history/mock_data.dart';
 
 class MockSleepSequenceRepository implements ISleepSequenceRepository {
-  final List<SleepSequenceStats> _sleepSequencesPersistency = [];
   final sequenceStreamController = StreamController<SleepSequenceStats>();
+  List<SleepSequenceStats> _sleepSequencesPersistency = [];
 
   MockSleepSequenceRepository() {
     _sleepSequencesPersistency.add(mock_data_1);
@@ -18,12 +18,13 @@ class MockSleepSequenceRepository implements ISleepSequenceRepository {
   List<SleepSequenceStats> getSleepSequences() => _sleepSequencesPersistency;
 
   @override
-  void addSleepSequence(SleepSequenceStats sequence) {
-    _sleepSequencesPersistency.add(sequence);
+  void store(List<SleepSequenceStats> sequenceList) {
+    _sleepSequencesPersistency = sequenceList;
   }
 
   @override
-  void deleteSleepSequences(List<SleepSequenceStats> sequences) {
+  void delete(List<SleepSequenceStats> sequences,
+      List<SleepSequenceStats> sequencesToDelete) {
     for (var sequence in sequences) {
       _sleepSequencesPersistency.remove(sequence);
     }
