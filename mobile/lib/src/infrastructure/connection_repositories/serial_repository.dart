@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
@@ -12,34 +13,48 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   UsbDevice _selectedDevice;
   UsbPort _serialPort;
   StreamSubscription _inputStreamSubscription;
-  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
-  final List<UsbDevice> _serialDevices = [];
-  final streamController = StreamController<List<AcquisitionDevice>>();
+  StreamSubscription _usbEventSubscription;
+  final Map _serialDevices = <String, UsbDevice>{};
+  final streamController = StreamController<AcquisitionDevice>();
 
   @override
-  void initializeRepository() {
-    _acquisitionDevicePersistency.clear();
+  Stream<AcquisitionDevice> scan() {
     _serialDevices.clear();
-    UsbSerial.listDevices().then((devices) => addDevices(devices));
+    _usbEventSubscription ??= UsbSerial.usbEventStream.listen((event) {
+      if (event.event == UsbEvent.ACTION_USB_ATTACHED) {
+        _addDevices([event.device]);
+      }
+    });
+
+    UsbSerial.listDevices().then((devices) => _addDevices(devices));
+
+    return streamController.stream;
   }
 
-  void addDevices(List<UsbDevice> serialDevices) {
+  @override
+  void pauseScan() {}
+
+  void _addDevices(List<UsbDevice> serialDevices) {
     for (var serialDevice in serialDevices) {
+      if (_serialDevices.containsKey(serialDevice.deviceId.toString())) {
+        continue;
+      }
+
       var device = AcquisitionDevice(
           UniqueId.from(serialDevice.deviceId.toString()),
-          serialDevice.productName);
+          serialDevice.productName,
+          DeviceType.serial);
 
-      _acquisitionDevicePersistency.add(device);
-      _serialDevices.add(serialDevice);
+      streamController.add(device);
+
+      _serialDevices[serialDevice.deviceId.toString()] = serialDevice;
     }
-    streamController.add(_acquisitionDevicePersistency);
   }
 
   @override
   Future<void> connect(
       AcquisitionDevice device, Function(bool, Exception) callback) async {
-    _selectedDevice =
-        _serialDevices[_acquisitionDevicePersistency.indexOf(device)];
+    _selectedDevice = _serialDevices[device.id.toString()];
     _serialPort = await _selectedDevice.create();
     var openSuccessful = await _serialPort.open();
 
@@ -100,7 +115,4 @@ class SerialRepository implements IAcquisitionDeviceRepository {
   Future<void> stopDataStream() async {
     await _serialPort.write(Uint8List.fromList(STOP_STREAM_CHAR.codeUnits));
   }
-
-  @override
-  Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }
