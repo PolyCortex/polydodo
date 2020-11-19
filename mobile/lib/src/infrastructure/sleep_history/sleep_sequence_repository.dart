@@ -8,8 +8,6 @@ import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 
-import 'mock_data.dart';
-
 class SleepSequenceRepository implements ISleepSequenceRepository {
   final sequenceStreamController = StreamController<SleepSequenceStats>();
   Box _sleepSequencesListBox;
