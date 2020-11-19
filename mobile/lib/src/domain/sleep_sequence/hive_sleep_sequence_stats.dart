@@ -11,7 +11,7 @@ class HiveSleepSequenceStats {
   DateTime recordingEnd;
 
   @HiveField(2)
-  double effectiveSleepTime;
+  int effectiveSleepTimeInSeconds;
 
   @HiveField(3)
   double sleepEfficiency;
@@ -20,7 +20,7 @@ class HiveSleepSequenceStats {
   int sleepLatency;
 
   @HiveField(5)
-  double waso;
+  int wasoInSeconds;
 
   @HiveField(6)
   int awakenings;
@@ -34,10 +34,10 @@ class HiveSleepSequenceStats {
   HiveSleepSequenceStats(
       this.recordingStart,
       this.recordingEnd,
-      this.effectiveSleepTime,
+      this.effectiveSleepTimeInSeconds,
       this.sleepEfficiency,
       this.sleepLatency,
-      this.waso,
+      this.wasoInSeconds,
       this.awakenings,
       this.remLatency,
       this.numberTransitions);

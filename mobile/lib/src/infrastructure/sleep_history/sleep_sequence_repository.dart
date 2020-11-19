@@ -45,18 +45,20 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
   List<SleepSequenceStats> _parseHiveSleepSequenceList(var historyList) {
     // ignore: omit_local_variable_types
     List<SleepSequenceStats> list = [];
+
     for (var sequence in historyList) {
       list.add(SleepSequenceStats(
           id: UniqueId.from(sequence.recordingStart.toString()),
           awakenings: sequence.awakenings,
-          effectiveSleepTime: sequence.effectiveSleepTime,
+          effectiveSleepTime:
+              Duration(seconds: sequence.effectiveSleepTimeInSeconds),
           numberTransitions: sequence.numberTransitions,
           recordingTime: DateTimeRange(
               start: sequence.recordingStart, end: sequence.recordingEnd),
           remLatency: sequence.remLatency,
           sleepEfficiency: sequence.sleepEfficiency,
           sleepLatency: sequence.sleepLatency,
-          waso: sequence.waso));
+          waso: Duration(seconds: sequence.wasoInSeconds)));
     }
 
     return list;
@@ -71,10 +73,10 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
       list.add(HiveSleepSequenceStats(
           sequence.recordingTime.start,
           sequence.recordingTime.end,
-          sequence.effectiveSleepTime,
+          sequence.effectiveSleepTime.inSeconds,
           sequence.sleepEfficiency,
           sequence.sleepLatency,
-          sequence.waso,
+          sequence.waso.inSeconds,
           sequence.awakenings,
           sequence.remLatency,
           sequence.numberTransitions));

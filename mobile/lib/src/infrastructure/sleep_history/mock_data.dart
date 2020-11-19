@@ -5,21 +5,21 @@ import 'package:polydodo/src/domain/unique_id.dart';
 SleepSequenceStats mock_data_1 = SleepSequenceStats(
     id: UniqueId.from('test'),
     awakenings: 3,
-    effectiveSleepTime: 80.0,
+    effectiveSleepTime: Duration(minutes: 59),
     numberTransitions: 5,
     recordingTime: DateTimeRange(start: DateTime.now(), end: DateTime.now()),
     remLatency: 20,
     sleepEfficiency: 20.0,
     sleepLatency: 10,
-    waso: 80.0);
+    waso: Duration(minutes: 59));
 
 SleepSequenceStats mock_data_2 = SleepSequenceStats(
     id: UniqueId.from('test2'),
     awakenings: 100,
-    effectiveSleepTime: 100.0,
+    effectiveSleepTime: Duration(minutes: 100),
     numberTransitions: 5,
     recordingTime: DateTimeRange(start: DateTime.now(), end: DateTime.now()),
     remLatency: 20,
     sleepEfficiency: 20.0,
     sleepLatency: 10,
-    waso: 100.0);
+    waso: Duration(minutes: 100));
