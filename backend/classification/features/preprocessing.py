@@ -1,3 +1,4 @@
+import logging
 import mne
 from scipy.signal import cheby1
 
@@ -11,6 +12,8 @@ from classification.features.constants import (
     HIGH_PASS_MAX_RIPPLE_DB,
 )
 
+_logger = logging.getLogger(__name__)
+
 
 def preprocess(classification_request):
     """Returns preprocessed epochs of the specified channel
@@ -20,13 +23,20 @@ def preprocess(classification_request):
     """
     raw_data = classification_request.raw_eeg.copy()
 
+    _logger.info("Cropping data from bed time to out of bed time.")
     raw_data = _crop_raw_data(
         raw_data,
         classification_request.in_bed_seconds,
         classification_request.out_of_bed_seconds,
     )
+
+    _logger.info(f"Applying high pass filter at {DATASET_HIGH_PASS_FREQ}Hz.")
     raw_data = _apply_high_pass_filter(raw_data)
+
+    _logger.info(f"Resampling data at the dataset's sampling rate of {DATASET_SAMPLE_RATE} Hz.")
     raw_data = raw_data.resample(DATASET_SAMPLE_RATE)
+
+    _logger.info(f"Epoching data with a {EPOCH_DURATION} seconds duration.")
     raw_data = _convert_to_epochs(raw_data)
 
     return raw_data

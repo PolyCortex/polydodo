@@ -75,3 +75,6 @@ const OPEN_BCI_CYTON_HEADER = [
     ' Timestamp (Formatted)'
   ]
 ];
+
+const POLYDODO_BOX = 'Polydodo';
+const SLEEP_SEQUENCES_LIST_KEY = 'sequence_list';

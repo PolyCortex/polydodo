@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 from os import path, makedirs
 from pathlib import Path
 import re
@@ -11,6 +12,10 @@ from requests import get
 import onnxruntime
 
 from classification.config.constants import HiddenMarkovModelProbability
+
+
+_logger = logging.getLogger(__name__)
+
 
 SCRIPT_PATH = Path(path.realpath(sys.argv[0])).parent
 
@@ -50,9 +55,13 @@ def _has_latest_object(filename, local_path):
 
 def load_model():
     if not path.exists(MODEL_PATH) or not _has_latest_object(MODEL_FILENAME, MODEL_PATH):
-        print("Downloading latest model...")
+        _logger.info(
+            "Downloading latest sleep stage classification model... "
+            f"This could take a few minutes. (storing it at {MODEL_PATH})"
+        )
         _download_file(MODEL_URL, MODEL_PATH)
-    print("Loading model...")
+
+    _logger.info(f"Loading latest sleep stage classification model... (from {MODEL_PATH})")
     return onnxruntime.InferenceSession(str(MODEL_PATH))
 
 
@@ -67,8 +76,10 @@ def load_hmm():
         model_path = SCRIPT_PATH / HMM_FOLDER / hmm_file
 
         if not path.exists(model_path) or not _has_latest_object(hmm_file, model_path):
+            _logger.info(f"Downloading postprocessing model... (storing it at {model_path})")
             _download_file(url=f"{BUCKET_URL}/{hmm_file}", output=model_path)
 
+        _logger.info(f"Loading postprocessing model... (from {model_path})")
         hmm_matrices[hmm_probability.name] = np.load(str(model_path))
 
     return hmm_matrices
