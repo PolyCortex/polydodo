@@ -5,7 +5,7 @@ import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/sleep_sequence_history/sleep_sequence_history_cubit.dart';
 import 'package:polydodo/src/application/sleep_sequence_stats/sleep_sequence_stats_cubit.dart';
 import 'package:polydodo/src/domain/acquisition_device/device_locator_service.dart';
-import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
+import 'package:polydodo/src/domain/eeg_data/eeg_analysis_service.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
 import 'package:polydodo/src/infrastructure/connection_repositories/serial_repository.dart';
@@ -22,6 +22,8 @@ void registerServices() {
   _serviceLocator.registerSingleton<IEEGDataRepository>(EEGDataRepository());
   _serviceLocator
       .registerSingleton<ISleepSequenceRepository>(SleepSequenceRepository());
+  _serviceLocator.registerSingleton<EEGAnalysisService>(
+      EEGAnalysisService(_serviceLocator.get<ISleepSequenceRepository>()));
 }
 
 /// This function creates all the BlocProviders used in this app
@@ -33,7 +35,8 @@ List<BlocProvider> createBlocProviders() => [
       ),
       BlocProvider<DataCubit>(
         create: (context) => DataCubit(
-          _serviceLocator.get<IAcquisitionDeviceRepository>(),
+          _serviceLocator.get<DeviceLocatorService>(),
+          _serviceLocator.get<EEGAnalysisService>(),
           _serviceLocator.get<IEEGDataRepository>(),
         ),
       ),

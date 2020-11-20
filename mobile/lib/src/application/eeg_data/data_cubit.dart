@@ -1,35 +1,39 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:polydodo/src/domain/acquisition_device/device_locator_service.dart';
+import 'package:polydodo/src/domain/eeg_data/eeg_analysis_service.dart';
 
-import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
 import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 import 'package:polydodo/src/application/eeg_data/data_states.dart';
 
 class DataCubit extends Cubit<DataState> {
-  final IAcquisitionDeviceRepository _deviceRepository;
+  final DeviceLocatorService _deviceLocatorService;
+  final EEGAnalysisService _eegAnalysisService;
   final IEEGDataRepository _eegDataRepository;
 
-  DataCubit(this._deviceRepository, this._eegDataRepository)
+  DataCubit(this._deviceLocatorService, this._eegAnalysisService,
+      this._eegDataRepository)
       : super(DataStateInitial());
 
   Future<void> startStreaming() async {
     emit(DataStateRecording());
-    _eegDataRepository.initialize();
-    _eegDataRepository
-        .createRecordingFromStream(await _deviceRepository.startDataStream());
+    _eegDataRepository.initialize(_deviceLocatorService.getCurrentDeviceType());
+    _eegDataRepository.createRecordingFromStream(
+        await _deviceLocatorService.startDataStream());
   }
 
-  void stopStreaming() {
+  void stopStreaming() async {
     emit(DataStateInitial());
-    _deviceRepository.stopDataStream();
-    _eegDataRepository.stopRecordingFromStream();
+    _deviceLocatorService.stopDataStream();
+    _eegAnalysisService.analyzeRecordingData(
+        await _eegDataRepository.stopRecordingFromStream());
   }
 
   Future<void> startSignalValidation() async {
-    _eegDataRepository.initialize();
+    _eegDataRepository.initialize(_deviceLocatorService.getCurrentDeviceType());
     _eegDataRepository.testSignal(
-        await _deviceRepository.startDataStream(), signalCallback);
+        await _deviceLocatorService.startDataStream(), signalCallback);
 
     emit(DataStateTestSignalInProgress(
         SignalResult.untested, SignalResult.untested));

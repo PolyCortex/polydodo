@@ -35,10 +35,12 @@ class AnalyzeSleep:
         file_content = None
 
         for part in form:
+
             if part.name == 'file':
                 AnalyzeSleep._validate_filename(part.filename)
                 file_content = part.stream.read().decode('utf-8')
             else:
+
                 form_data[part.name] = part.text
 
         AnalyzeSleep._validate_file(file_content)
@@ -63,6 +65,13 @@ class AnalyzeSleep:
         try:
             form_data, file = self._parse_form(request.get_media())
             raw_array = get_raw_array(file)
+            print('validating')
+            print(int(form_data['age']))
+            print(Sex[form_data['sex']])
+            print(int(form_data['stream_start']))
+            print(int(form_data['bedtime']))
+            print(int(form_data['wakeup']))
+            print('done')
             classification_request = ClassificationRequest(
                 age=int(form_data['age']),
                 sex=Sex[form_data['sex']],

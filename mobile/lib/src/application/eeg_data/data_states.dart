@@ -7,10 +7,11 @@ class DataStateInitial extends DataState {}
 class DataStateRecording extends DataState {}
 
 class DataStateTestSignalInProgress extends DataState {
-  final SignalResult channelOneResult;
-  final SignalResult channelTwoResult;
+  final SignalResult fpzCzChannelResult;
+  final SignalResult pzOzChannelResult;
 
-  DataStateTestSignalInProgress(this.channelOneResult, this.channelTwoResult);
+  DataStateTestSignalInProgress(
+      this.fpzCzChannelResult, this.pzOzChannelResult);
 }
 
 class DataStateTestSignalSuccess extends DataState {

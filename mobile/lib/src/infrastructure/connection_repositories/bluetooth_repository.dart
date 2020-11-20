@@ -26,8 +26,6 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   Stream<AcquisitionDevice> scan() {
     if (_bluetoothScanSubscription == null) {
       _initScan();
-    } else {
-      resumeScan();
     }
 
     return bluetoothStream;
@@ -41,15 +39,6 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
             UniqueId.from(device.id),
             (device.name.isEmpty) ? 'Unknown' : device.name,
             DeviceType.bluetooth));
-  }
-
-  @override
-  void pauseScan() {
-    _bluetoothScanSubscription.pause();
-  }
-
-  void resumeScan() {
-    _bluetoothScanSubscription.resume();
   }
 
   @override

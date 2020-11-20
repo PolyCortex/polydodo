@@ -34,8 +34,6 @@ class DeviceLocatorService {
   }
 
   void connect(AcquisitionDevice device, Function(bool, Exception) callback) {
-    _bluetoothRepository.pauseScan();
-
     _currentRepository = (device.deviceType == DeviceType.bluetooth)
         ? _bluetoothRepository
         : _serialRepository;
@@ -53,5 +51,11 @@ class DeviceLocatorService {
 
   void stopDataStream() {
     _currentRepository.stopDataStream();
+  }
+
+  DeviceType getCurrentDeviceType() {
+    return (_currentRepository == _bluetoothRepository)
+        ? DeviceType.bluetooth
+        : DeviceType.serial;
   }
 }

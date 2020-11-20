@@ -1,1 +1,1 @@
-enum DeviceType { serial, bluetooth }
+enum DeviceType { serial, bluetooth, none }
