@@ -12,20 +12,20 @@ class DashboardPage extends StatelessWidget {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              backgroundColor: Color(3289693),
+              brightness: Brightness.dark,
               expandedHeight: 200.0,
               floating: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Text('Polydodo',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      )),
-                  background: Image.asset(
-                    'common/assets/img/Objets.png',
+                centerTitle: true,
+                background: Container(
+                  child: Image.asset(
+                    'common/assets/img/polydodo_sliverbar_3_e.png',
                     fit: BoxFit.cover,
-                  )),
+                  ),
+                ),
+              ),
             ),
           ];
         },
