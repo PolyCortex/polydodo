@@ -20,11 +20,18 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   console.log(report, metadata);
 
-  const getTimeString = (numberSecondsUTC) => new Date(numberSecondsUTC * 1000).toLocaleTimeString();
+  const getTimeString = (numberSecondsUTC) => (
+    <span className="text-primary">{new Date(numberSecondsUTC * 1000).toLocaleTimeString()}</span>
+  );
   const getDurationString = (numberSeconds) => {
     const nbHours = Math.floor(numberSeconds / 3600);
     const nbMinutes = Math.floor((numberSeconds % 3600) / 60);
-    return nbHours > 0 ? `${nbHours} hours and ${nbMinutes} minutes` : `${nbMinutes} minutes`;
+
+    return (
+      <span className="text-primary">
+        {nbHours > 0 ? `${nbHours} hours and ${nbMinutes} minutes` : `${nbMinutes} minutes`}
+      </span>
+    );
   };
 
   const { bedTime, wakeUpTime, totalBedTime } = metadata;
@@ -125,7 +132,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
         <CardBody>
           <p>
             From here, we can look at your sleep efficiency, which is the proportion of time spent asleep over the
-            overall time spent in bed. In your case, it corresponds to {(sleepEfficiency * 100).toFixed()}%, or&nbsp;
+            overall time spent in bed. In your case, it corresponds to&nbsp;
+            <span className="text-primary">{(sleepEfficiency * 100).toFixed()}%</span>, or&nbsp;
             {getDurationString(sleepEfficiency * totalBedTime)}.
           </p>
         </CardBody>
