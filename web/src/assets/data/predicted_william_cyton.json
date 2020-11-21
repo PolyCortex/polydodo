@@ -1,4 +1,35 @@
 {
+  "subject": {
+    "age": 30,
+    "sex": "M"
+  },
+  "metadata": {
+    "bedTime": 1582441980,
+    "sessionEndTime": 1582473261.596,
+    "sessionStartTime": 1582436280,
+    "totalBedTime": 28260,
+    "totalSessionTime": 36981.596,
+    "wakeUpTime": 1582470240
+  },
+  "report": {
+    "N1Time": 630,
+    "N2Time": 11640,
+    "N3Time": 7530,
+    "REMTime": 6150,
+    "WASO": 960,
+    "WTime": 2310,
+    "awakenings": 4,
+    "efficientSleepTime": 25950,
+    "remLatency": 5940,
+    "remOnset": 1582447920,
+    "sleepEfficiency": 0.9182590233545648,
+    "sleepLatency": 1260,
+    "sleepOffset": 1582470150,
+    "sleepOnset": 1582443240,
+    "sleepTime": 26910,
+    "stageShifts": 43,
+    "wakeAfterSleepOffset": 90
+  },
   "epochs": {
     "timestamps": [
       1582441980,

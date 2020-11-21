@@ -5,7 +5,7 @@ const WakeUpSection = () => (
   <section className="section section-sm bg-gradient-warning">
     <Container className="text-justify text-white">
       <h3 className="display-3 text-white">
-        <i class="fas fa-coffee mr-2" /> Wake up!
+        <i className="fas fa-coffee mr-2" /> Wake up!
       </h3>
       <div>
         <h4 className="display-4 text-white mt-4">Remove & clean your electrodes</h4>
