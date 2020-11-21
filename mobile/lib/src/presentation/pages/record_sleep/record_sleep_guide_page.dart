@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/blocs.dart';
+import 'package:polydodo/src/constants.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
@@ -24,11 +25,13 @@ class RecordSleepGuidePage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 100.0, horizontal: 20),
+                          vertical: 100.0,
+                          horizontal: 20,
+                        ),
                       ),
                     ],
                   ),
-                  _buildCenterButton(context),
+                  _buildSleepGuideCard(context),
                 ],
               ),
             ),
@@ -49,15 +52,14 @@ class RecordSleepGuidePage extends StatelessWidget {
 }
 
 void _launchURL() async {
-  const url = 'https://polycortex.github.io/polydodo/#/record-my-sleep';
-  if (await canLaunch(url)) {
-    await launch(url);
+  if (await canLaunch(SETUP_GUIDE_URL)) {
+    await launch(SETUP_GUIDE_URL);
   } else {
-    throw 'Could not launch $url';
+    throw 'Could not launch $SETUP_GUIDE_URL';
   }
 }
 
-Widget _buildCenterButton(BuildContext context) {
+Widget _buildSleepGuideCard(BuildContext context) {
   return Container(
     child: InkWell(
       onTap: _launchURL,
