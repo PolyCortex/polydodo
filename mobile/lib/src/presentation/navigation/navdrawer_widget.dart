@@ -17,13 +17,14 @@ class NavDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero, //only(top: 8.0),
+        padding: EdgeInsets.only(top: 45.0),
         children: <Widget>[
           _createHeader(),
           _createDrawerItem(
             icon: Icons.dashboard,
             text: 'Dashboard',
             route: Routes.dashboardPage,
+            tab: NavdrawerTab.Dashboard,
             context: context,
           ),
           // Todo: find the real place for the device selector, up to debate
@@ -37,12 +38,14 @@ class NavDrawer extends StatelessWidget {
             icon: Icons.hotel,
             text: 'Record Sleep sequence',
             route: Routes.recordSleepGuidePage,
+            tab: NavdrawerTab.RecordSleep,
             context: context,
           ),
           _createDrawerItem(
             icon: Icons.analytics,
             text: 'History',
             route: Routes.sleepHistoryPage,
+            tab: NavdrawerTab.History,
             context: context,
           ),
         ],
@@ -52,22 +55,18 @@ class NavDrawer extends StatelessWidget {
 
   Widget _createHeader() {
     return DrawerHeader(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('common/assets/img/Material-Wallpaper.jpg'))),
-        child: Stack(children: <Widget>[
-          Positioned(
-              bottom: 12.0,
-              left: 16.0,
-              child: Text('Polydodo',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500))),
-        ]));
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: Color(3289693),
+        image: DecorationImage(
+          scale: 15,
+          fit: BoxFit.fitWidth,
+          image: AssetImage('common/assets/img/Objets.png'),
+        ),
+      ),
+      child: Stack(children: <Widget>[]),
+    );
   }
 
   Widget _createDrawerItem(
@@ -87,9 +86,7 @@ class NavDrawer extends StatelessWidget {
         ],
       ),
       onTap: () {
-        //context.bloc<NavdrawerBloc>().add(NavdrawerUpdated(state));
         ExtendedNavigator.of(context).popAndPush(route);
-        // ExtendedNavigator.of(context).replace(route);
       },
       selected: activeTab == tab,
     );

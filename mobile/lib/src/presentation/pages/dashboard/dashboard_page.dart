@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
+import 'package:polydodo/src/presentation/pages/dashboard/sliver_app_bar_title.dart';
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -12,20 +13,19 @@ class DashboardPage extends StatelessWidget {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              brightness: Brightness.dark,
               expandedHeight: 200.0,
-              floating: false,
               pinned: true,
+              title: SliverAppBarTitle(child: Text('Polydodo')),
               flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  title: Text('Polydodo',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      )),
-                  background: Image.network(
-                    'https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350',
+                centerTitle: true,
+                background: Container(
+                  child: Image.asset(
+                    'common/assets/img/polydodo_sliverbar_3_e.png',
                     fit: BoxFit.cover,
-                  )),
+                  ),
+                ),
+              ),
             ),
           ];
         },

@@ -44,8 +44,9 @@ dependencies:
   percent_indicator: '^2.1.8'
   share: ^0.6.5
   streaming_shared_preferences: ^1.0.1
-  uuid: ^2.2.2
+  url_launcher: ^5.7.10
   usb_serial: ^0.2.4
+  uuid: ^2.2.2
 
 dev_dependencies:
   auto_route_generator: ^0.6.10
@@ -93,4 +94,4 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_icons:
   android: true
-  image_path: 'common/assets/img/logo2.png'
+  image_path: 'common/assets/img/Dodo4.png'
