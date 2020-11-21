@@ -14,7 +14,9 @@ import createEvolvingChart, {
 } from 'd3/evolving_chart/evolving_chart';
 import { STAGES_ORDERED } from 'd3/constants';
 
-const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
+import './style.css';
+
+const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   const [isInitialized, setIsInitialized] = useState(false);
   console.log(report, metadata);
 
@@ -43,7 +45,7 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
   const mostProminentStage = _.maxBy(_.keys(sleepStageTimes), (stage) => sleepStageTimes[stage]);
 
   return (
-    <Container>
+    <Container className="evolving_chart__container">
       <div style={{ position: 'sticky', top: '10%' }}>
         <D3ComponentScrollyTelling
           callback={createEvolvingChart}
@@ -68,7 +70,6 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
       {isInitialized && (
         <WaypointDirection onDown={instanceChartCallbacks.fromTimeline} onUp={timelineChartCallbacks.fromInstance} />
       )}
@@ -116,7 +117,6 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
       {isInitialized && (
         <WaypointDirection onDown={barChartCallbacks.fromInstance} onUp={instanceChartCallbacks.fromBarChart} />
       )}
@@ -166,8 +166,8 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
   );
 };
 
-StackedBarChartScrollyTelling.propTypes = {
+EvolvingChartScrollyTelling.propTypes = {
   epochs: PropTypes.object.isRequired,
 };
 
-export default StackedBarChartScrollyTelling;
+export default EvolvingChartScrollyTelling;

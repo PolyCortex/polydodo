@@ -10,7 +10,7 @@ import { createSingleHypnogram } from 'd3/hypnogram/hypnogram';
 
 import useGlobalState from 'hooks/useGlobalState';
 import text from './text.json';
-import StackedBarChartScrollyTelling from './stacked_bar_chart_scrollytelling';
+import EvolvingChartScrollyTelling from './evolving_chart_scrollytelling';
 import SpectrogramScrollyTelling from './spectrogram_scrollytelling';
 
 import previewSequence from 'assets/data/predicted_william_cyton';
@@ -54,7 +54,7 @@ const SleepAnalysisResults = ({ location }) => {
           about your sleep. It is however fascinating to see how your night was.
         </p>
         <p>Without further ado, this is what was your night of sleep:</p>
-        <StackedBarChartScrollyTelling epochs={epochs} report={report} metadata={metadata} />
+        <EvolvingChartScrollyTelling epochs={epochs} report={report} metadata={metadata} />
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe
           different stage proportions across age, gender and different sleep disorders. We’ve also defined other
