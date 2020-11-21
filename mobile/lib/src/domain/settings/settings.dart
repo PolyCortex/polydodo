@@ -1,22 +1,21 @@
-export 'sex.dart';
+import 'package:equatable/equatable.dart';
 
 part 'sex.dart';
-part 'acquisition_board.dart';
 
 class Settings extends Equatable {
   final int age;
-  final String serverAdress;
+  final String serverAddress;
   final Sex sex;
 
-  Settings({this.age, this.serverAdress, this.sex});
+  Settings({this.age, this.serverAddress, this.sex});
 
   @override
-  List<Object> get props => [age, serverAdress, sex];
+  List<Object> get props => [age, serverAddress, sex];
 
-  Settings copyWith({int newAge, String newServerAdress, Sex newSex}) {
+  Settings copyWith({int age, String serverAddress, Sex sex}) {
     return Settings(
-        age: newAge ?? age,
-        serverAdress: newServerAdress ?? serverAdress,
-        sex: newSex ?? sex);
+        age: age ?? this.age,
+        serverAddress: serverAddress ?? this.serverAddress,
+        sex: sex ?? this.sex);
   }
 }

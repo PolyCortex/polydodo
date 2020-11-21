@@ -1,3 +1,3 @@
-const String AGEKEY = 'Age';
-const String SERVERADRESSKEY = 'ServerAdress';
-const String SEXKEY = 'Sex';
+const String AGE_KEY = 'Age';
+const String SERVER_ADRESS_KEY = 'ServerAdress';
+const String SEX_KEY = 'Sex';

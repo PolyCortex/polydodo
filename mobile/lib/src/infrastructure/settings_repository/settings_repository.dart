@@ -9,18 +9,18 @@ class SettingsRepository extends ISettingsRepository {
   SettingsRepository();
 
   @override
-  Future<Settings> store() async {
+  Future<Settings> read() async {
     _prefs = (await SharedPreferences.getInstance());
 
     return Settings(
-      age: _prefs.getInt(AGEKEY),
-      serverAdress: _prefs.getString(SERVERADRESSKEY) ?? 'Not Set',
-      sex: Sex.values[(_prefs.getInt(SEXKEY)) ?? Sex.NotSet.index],
+      age: _prefs.getInt(AGE_KEY),
+      serverAddress: _prefs.getString(SERVER_ADRESS_KEY) ?? 'Not Set',
+      sex: Sex.values[(_prefs.getInt(SEX_KEY)) ?? Sex.NotSet.index],
     );
   }
 
   @override
-  Future<void> load(String settingKey, dynamic settingValue) async {
+  Future<void> store(String settingKey, dynamic settingValue) async {
     if (settingValue is int) {
       await _prefs.setInt(settingKey, settingValue);
     } else if (settingValue is double) {

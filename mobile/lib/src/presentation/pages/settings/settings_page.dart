@@ -31,11 +31,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: 'Personnal informations',
                       tiles: [
                         _buildDatePickerSettingTile(
-                            AGEKEY, 'In years', Icons.cake, context, state),
-                        _buildSexSettingTile(SEXKEY, Sex.values,
+                            AGE_KEY, 'In years', Icons.cake, context, state),
+                        _buildSexSettingTile(SEX_KEY, Sex.values,
                             'Your biological sex', Icons.face, state),
                         _buildServerAdressSettingTile(
-                            SERVERADRESSKEY,
+                            SERVER_ADRESS_KEY,
                             'The url for classification',
                             Icons.dns,
                             context,
@@ -66,7 +66,7 @@ SettingsTile _buildSexSettingTile(String settingKey, dynamic settingOptions,
 SettingsTile _buildDatePickerSettingTile(String title, String substitle,
     IconData icon, BuildContext context, SettingsState state) {
   return SettingsTile(
-    title: AGEKEY,
+    title: AGE_KEY,
     subtitle: 'In years',
     leading: Icon(Icons.cake),
     trailing: TextButton(
@@ -105,7 +105,7 @@ SettingsTile _buildServerAdressSettingTile(String settingKey, String subtitle,
       width: 100,
       child: TextField(
         controller: TextEditingController()
-          ..text = (state as SettingsLoadSuccess).settings.serverAdress,
+          ..text = (state as SettingsLoadSuccess).settings.serverAddress,
         onSubmitted: (newText) => BlocProvider.of<SettingsCubit>(context)
             .setSetting(settingKey, newText),
       ),

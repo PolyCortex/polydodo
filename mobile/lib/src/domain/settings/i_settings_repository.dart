@@ -1,7 +1,7 @@
 import 'package:polydodo/src/domain/settings/settings.dart';
 
 abstract class ISettingsRepository {
-  Future<Settings> load();
+  Future<Settings> read();
 
-  void store(String settingKey, dynamic settingValue);
+  Future<void> store(String settingKey, dynamic settingValue);
 }
