@@ -9,7 +9,7 @@ class SettingsRepository extends ISettingsRepository {
   SettingsRepository();
 
   @override
-  Future<Settings> getSettings() async {
+  Future<Settings> store() async {
     _prefs = (await SharedPreferences.getInstance());
 
     return Settings(
@@ -20,7 +20,7 @@ class SettingsRepository extends ISettingsRepository {
   }
 
   @override
-  Future<void> setSetting(String settingKey, dynamic settingValue) async {
+  Future<void> load(String settingKey, dynamic settingValue) async {
     if (settingValue is int) {
       await _prefs.setInt(settingKey, settingValue);
     } else if (settingValue is double) {

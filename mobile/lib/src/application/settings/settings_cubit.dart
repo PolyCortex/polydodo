@@ -14,7 +14,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> getSettings() async {
-    await emit(SettingsLoadSuccess(await _repository.getSettings()));
+    await emit(SettingsLoadSuccess(await _repository.load()));
   }
 
   Future<void> setSetting(String settingKey, dynamic setting) async {
@@ -32,7 +32,7 @@ class SettingsCubit extends Cubit<SettingsState> {
           break;
       }
       emit(SettingsLoadSuccess(settings));
-      await _repository.setSetting(settingKey, setting);
+      await _repository.store(settingKey, setting);
     }
   }
 }
