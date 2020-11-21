@@ -22,7 +22,6 @@ class ClassificationRequest():
         self.bedtime = bedtime
         self.wakeup = wakeup
         self.raw_eeg = raw_eeg
-        print("hey")
         self.stream_duration = stream_duration if stream_duration else self._get_stream_duration()
 
         self._validate()
@@ -39,8 +38,6 @@ class ClassificationRequest():
     @property
     def out_of_bed_seconds(self):
         """timespan, in seconds, from which the subject started the recording and got out of bed"""
-        print(self.wakeup)
-        print(self.stream_start)
         return self.wakeup - self.stream_start
 
     @property
@@ -48,7 +45,6 @@ class ClassificationRequest():
         return (self.wakeup - self.bedtime) / EPOCH_DURATION
 
     def _validate(self):
-        print('validating')
         self._validate_timestamps()
         self._validate_file_with_timestamps()
         self._validate_age()
@@ -70,15 +66,12 @@ class ClassificationRequest():
         has_raw_respected_minimum_file_size = self.raw_eeg.times[-1] > FILE_MINIMUM_DURATION
 
         if not has_raw_respected_minimum_file_size:
-            print("HERE 1")
             _logger.warn(f"Uploaded file must at least have {FILE_MINIMUM_DURATION} seconds of data.")
             raise FileSizeError()
-        print(self.raw_eeg.times)
-        print(self.out_of_bed_seconds)
+
         is_raw_at_least_as_long_as_out_of_bed = self.raw_eeg.times[-1] >= self.out_of_bed_seconds
 
         if not is_raw_at_least_as_long_as_out_of_bed:
-            print("HERE 2")
             _logger.warn(
                 "Uploaded file must at least last the time between the start of the "
                 f"stream and out of bed time, which is {self.out_of_bed_seconds} seconds.")
@@ -88,6 +81,5 @@ class ClassificationRequest():
         is_in_accepted_range = ACCEPTED_AGE_RANGE[0] <= int(self.age) <= ACCEPTED_AGE_RANGE[1]
 
         if not(is_in_accepted_range):
-            print("HERE 3")
             _logger.warn(f"Age must be in the following range: {ACCEPTED_AGE_RANGE}")
             raise ClassificationError('invalid age')
