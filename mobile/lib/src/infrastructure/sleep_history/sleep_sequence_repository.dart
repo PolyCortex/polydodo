@@ -48,7 +48,8 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
 
     for (var sequence in historyList) {
       list.add(SleepSequenceStats(
-          id: UniqueId.from(sequence.recordingStart.toString()),
+          id: UniqueId.from(sequence.uniqueId),
+          analysisState: sequence.analysisState,
           awakenings: sequence.awakenings,
           effectiveSleepTime:
               Duration(seconds: sequence.effectiveSleepTimeInSeconds),
@@ -71,6 +72,8 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
 
     for (var sequence in historyList) {
       list.add(HiveSleepSequenceStats(
+          sequence.id.toString(),
+          sequence.analysisState,
           sequence.recordingTime.start,
           sequence.recordingTime.end,
           sequence.effectiveSleepTime.inSeconds,

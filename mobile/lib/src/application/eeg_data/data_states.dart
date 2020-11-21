@@ -4,8 +4,6 @@ abstract class DataState {}
 
 class DataStateInitial extends DataState {}
 
-class DataStateRecording extends DataState {}
-
 class DataStateTestSignalInProgress extends DataState {
   final SignalResult fpzCzChannelResult;
   final SignalResult pzOzChannelResult;
@@ -26,3 +24,9 @@ class DataStateTestSignalFailure extends DataState {
 
   DataStateTestSignalFailure(this.cause);
 }
+
+class DataStateRecordInProgress extends DataState {}
+
+class DataStateAnalyzeInProgress extends DataState {}
+
+class DataStateAnalyzeSuccessful extends DataState {}

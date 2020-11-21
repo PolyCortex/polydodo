@@ -9,7 +9,7 @@ class SleepSequenceStatsCubit extends Cubit<SleepSequenceStatsState> {
   SleepSequenceStatsCubit() : super(SleepSequenceStatsInitial());
 
   void loadSleepSequence(SleepSequenceStats sequence) {
-    titleText = sequence.stringId;
+    titleText = sequence.id.toString();
     emit(SleepSequenceStatsLoaded(sequence));
   }
 }

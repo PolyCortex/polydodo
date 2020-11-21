@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:polydodo/src/domain/entity.dart';
 import 'package:flutter/foundation.dart';
+import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
 
-class SleepSequenceStats extends Entity {
+import '../unique_id.dart';
+
+class SleepSequenceStats {
+  final UniqueId id;
   final DateTimeRange recordingTime;
-  final Duration effectiveSleepTime;
-  final double sleepEfficiency;
-  final int sleepLatency;
-  final Duration waso;
-  final int awakenings;
-  final int remLatency;
-  final int numberTransitions;
+  AnalysisState analysisState;
+  Duration effectiveSleepTime;
+  double sleepEfficiency;
+  int sleepLatency;
+  Duration waso;
+  int awakenings;
+  int remLatency;
+  int numberTransitions;
 
-  SleepSequenceStats(
-      {id,
-      @required this.recordingTime,
-      @required this.effectiveSleepTime,
-      @required this.sleepEfficiency,
-      @required this.sleepLatency,
-      @required this.waso,
-      @required this.awakenings,
-      @required this.remLatency,
-      @required this.numberTransitions})
-      : super(id);
-
-  String get stringId => id.toString();
+  SleepSequenceStats({
+    @required this.id,
+    @required this.analysisState,
+    @required this.recordingTime,
+    this.effectiveSleepTime,
+    this.sleepEfficiency,
+    this.sleepLatency,
+    this.waso,
+    this.awakenings,
+    this.remLatency,
+    this.numberTransitions,
+  });
 }

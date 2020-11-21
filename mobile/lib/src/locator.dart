@@ -33,15 +33,15 @@ List<BlocProvider> createBlocProviders() => [
           _serviceLocator.get<DeviceLocatorService>(),
         ),
       ),
-      BlocProvider<DataCubit>(
-        create: (context) => DataCubit(
-          _serviceLocator.get<DeviceLocatorService>(),
-          _serviceLocator.get<EEGAnalysisService>(),
-          _serviceLocator.get<IEEGDataRepository>(),
-        ),
-      ),
       BlocProvider<SleepSequenceStatsCubit>(
           create: (context) => SleepSequenceStatsCubit()),
+      BlocProvider<DataCubit>(
+        create: (context) => DataCubit(
+            _serviceLocator.get<DeviceLocatorService>(),
+            _serviceLocator.get<EEGAnalysisService>(),
+            _serviceLocator.get<IEEGDataRepository>(),
+            BlocProvider.of<SleepSequenceStatsCubit>(context)),
+      ),
       BlocProvider<SleepSequenceHistoryCubit>(
           create: (context) => SleepSequenceHistoryCubit(
               _serviceLocator.get<ISleepSequenceRepository>(),

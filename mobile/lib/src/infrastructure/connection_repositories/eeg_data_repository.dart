@@ -4,12 +4,14 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
-import 'package:polydodo/src/domain/eeg_data/eeg_metadata.dart';
 import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
 import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
+import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/baseOpenBCITransformer.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
@@ -54,14 +56,18 @@ class EEGDataRepository implements IEEGDataRepository {
   }
 
   @override
-  Future<EEGMetadata> stopRecordingFromStream() async {
+  Future<SleepSequenceStats> stopRecordingFromStream() async {
     unawaited(_currentTransformerStream.cancel());
 
     if (_recordingData == null) return null;
 
     await _saveRecording();
-    return EEGMetadata(
-        _recordingData.id, _recordingData.startTime, DateTime.now());
+
+    return SleepSequenceStats(
+        id: _recordingData.id,
+        analysisState: AnalysisState.analysis_pending,
+        recordingTime: DateTimeRange(
+            start: _recordingData.startTime, end: DateTime.now()));
   }
 
   @override

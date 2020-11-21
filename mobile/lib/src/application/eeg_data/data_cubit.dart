@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:polydodo/src/application/sleep_sequence_stats/sleep_sequence_stats_cubit.dart';
 import 'package:polydodo/src/domain/acquisition_device/device_locator_service.dart';
 import 'package:polydodo/src/domain/eeg_data/eeg_analysis_service.dart';
 
@@ -11,23 +13,29 @@ class DataCubit extends Cubit<DataState> {
   final DeviceLocatorService _deviceLocatorService;
   final EEGAnalysisService _eegAnalysisService;
   final IEEGDataRepository _eegDataRepository;
+  final SleepSequenceStatsCubit _sleepSequenceStatsCubit;
 
   DataCubit(this._deviceLocatorService, this._eegAnalysisService,
-      this._eegDataRepository)
+      this._eegDataRepository, this._sleepSequenceStatsCubit)
       : super(DataStateInitial());
 
   Future<void> startStreaming() async {
-    emit(DataStateRecording());
+    emit(DataStateRecordInProgress());
     _eegDataRepository.initialize(_deviceLocatorService.getCurrentDeviceType());
     _eegDataRepository.createRecordingFromStream(
         await _deviceLocatorService.startDataStream());
   }
 
   void stopStreaming() async {
-    emit(DataStateInitial());
+    emit(DataStateAnalyzeInProgress());
     _deviceLocatorService.stopDataStream();
-    _eegAnalysisService.analyzeRecordingData(
+    var analyzedRecording = _eegAnalysisService.analyzeRecordingData(
         await _eegDataRepository.stopRecordingFromStream());
+
+    unawaited(analyzedRecording.then((value) {
+      _sleepSequenceStatsCubit.loadSleepSequence(value);
+      emit(DataStateAnalyzeSuccessful());
+    }));
   }
 
   Future<void> startSignalValidation() async {

@@ -1,37 +1,47 @@
 import 'package:hive/hive.dart';
 
+import 'analysis_state.dart';
+
 part 'hive_sleep_sequence_stats.g.dart'; // Name of the TypeAdapter that we will generate in the future
 
 @HiveType(typeId: 1)
 class HiveSleepSequenceStats {
   @HiveField(0)
-  DateTime recordingStart;
+  String uniqueId;
 
   @HiveField(1)
-  DateTime recordingEnd;
+  AnalysisState analysisState;
 
   @HiveField(2)
-  int effectiveSleepTimeInSeconds;
+  DateTime recordingStart;
 
   @HiveField(3)
-  double sleepEfficiency;
+  DateTime recordingEnd;
 
   @HiveField(4)
-  int sleepLatency;
+  int effectiveSleepTimeInSeconds;
 
   @HiveField(5)
-  int wasoInSeconds;
+  double sleepEfficiency;
 
   @HiveField(6)
-  int awakenings;
+  int sleepLatency;
 
   @HiveField(7)
-  int remLatency;
+  int wasoInSeconds;
 
   @HiveField(8)
+  int awakenings;
+
+  @HiveField(9)
+  int remLatency;
+
+  @HiveField(10)
   int numberTransitions;
 
   HiveSleepSequenceStats(
+      this.uniqueId,
+      this.analysisState,
       this.recordingStart,
       this.recordingEnd,
       this.effectiveSleepTimeInSeconds,

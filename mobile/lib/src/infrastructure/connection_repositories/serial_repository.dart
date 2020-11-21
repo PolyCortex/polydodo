@@ -31,9 +31,6 @@ class SerialRepository implements IAcquisitionDeviceRepository {
     return streamController.stream;
   }
 
-  @override
-  void pauseScan() {}
-
   void _addDevices(List<UsbDevice> serialDevices) {
     for (var serialDevice in serialDevices) {
       if (_serialDevices.containsKey(serialDevice.deviceId.toString())) {

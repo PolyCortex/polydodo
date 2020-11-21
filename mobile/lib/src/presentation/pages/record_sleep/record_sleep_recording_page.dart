@@ -1,9 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
 import 'package:polydodo/src/application/eeg_data/data_states.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
+import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
+import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_analyzing_section.dart';
+import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_start_section.dart';
+import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_stop_section.dart';
 
 class RecordSleepRecordingPage extends StatelessWidget {
   @override
@@ -16,31 +21,20 @@ class RecordSleepRecordingPage extends StatelessWidget {
           print(state.runtimeType);
         },
         builder: (context, state) {
-          if (state is DataStateTestSignalSuccess) {
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text('Start'),
-                      onPressed: () =>
-                          BlocProvider.of<DataCubit>(context).startStreaming(),
-                    )
-                  ]),
-            );
-          } else {
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text('Stop'),
-                      onPressed: () =>
-                          BlocProvider.of<DataCubit>(context).stopStreaming(),
-                    ),
-                  ]),
-            );
+          if (state is DataStateAnalyzeSuccessful) {
+            ExtendedNavigator.of(context).push(Routes.sleepSequenceStatsPage);
           }
+
+          if (state is DataStateTestSignalSuccess) {
+            return buildStartSection(context);
+          }
+          if (state is DataStateRecordInProgress) {
+            return buildStopSection(context);
+          }
+          if (state is DataStateAnalyzeInProgress) {
+            return buildAnalyzeInProgress(context);
+          }
+          return Container();
         },
       ),
     );

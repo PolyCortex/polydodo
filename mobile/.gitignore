@@ -42,3 +42,4 @@ app.*.map.json
 
 # Project related
 *.gr.dart
+*.g.dart
