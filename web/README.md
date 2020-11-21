@@ -7,7 +7,7 @@ This app was designed on top of React.js and the data visualizations were create
 ## Getting started
 
 - Install Yarn package manager
-- Open workspace `polydodo.code-workspace`
+- Open VS Code workspace `polydodo.code-workspace`
 - Install Python packages by running `pip install --user -r backend/requirements.txt`
 - Install node modules by running `yarn install --cwd web`
 - Fetch Flutter dependencies through the `Flutter` extension
