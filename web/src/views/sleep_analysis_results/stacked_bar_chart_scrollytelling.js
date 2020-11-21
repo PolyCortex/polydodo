@@ -25,7 +25,7 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
   };
 
   const { bedTime, wakeUpTime, totalBedTime } = metadata;
-  const { efficientSleepTime, sleepOnset, sleepOffset } = report;
+  const { efficientSleepTime, sleepOnset, sleepOffset, sleepLatency, WASO, sleepEfficiency } = report;
   const numberStagesTraversed = _.filter(
     [report.N1Time, report.N2Time, report.N3Time, report.REMTime, report.WTime],
     (time) => time > 0,
@@ -66,14 +66,19 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
         <CardBody>
           <p>Wake stage is of course the stage we want to minimize when in bed. It can be decomposed into two parts:</p>
           <ul>
-            <li> Sleep latency : Time spent before falling asleep, which corresponds to X minutes in your case. </li>
-            <li> Wake after sleep onset (WASO): Time spent awake after first falling asleep and before waking up. </li>
             <li>
-              {' '}
-              For healthy adults, it is normal to experience small awakenings during the night. Unprovoked awakenings
-              are mostly during or after REM stages.{' '}
+              Sleep latency : Time spent before falling asleep, which corresponds to {getDurationString(sleepLatency)}
+              &nbsp;minutes in your case.
+            </li>
+            <li>
+              Wake after sleep onset (WASO): Time spent awake after first falling asleep and before waking up, which
+              corresponds to {getDurationString(WASO)}.
             </li>
           </ul>
+          <p>
+            For healthy adults, it is normal to experience small awakenings during the night. Unprovoked awakenings are
+            mostly during or after REM stages.
+          </p>
         </CardBody>
       </Card>
       <div style={{ marginBottom: '125%' }} />
@@ -109,7 +114,8 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
         <CardBody>
           <p>
             From here, we can look at your sleep efficiency, which is the proportion of time spent asleep over the
-            overall time spent in bed. In your case, it corresponds to 79%, or 7h27.
+            overall time spent in bed. In your case, it corresponds to {(sleepEfficiency * 100).toFixed()}%, or&nbsp;
+            {getDurationString(sleepEfficiency * totalBedTime)}.
           </p>
         </CardBody>
       </Card>
