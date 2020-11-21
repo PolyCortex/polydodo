@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Card, CardBody } from 'reactstrap';
+import _ from 'lodash';
 
 import D3ComponentScrollyTelling from 'components/d3component_scrollytelling';
 import WaypointDirection from 'components/waypoint_direction';
@@ -12,8 +13,23 @@ import createEvolvingChart, {
   stackedBarChartCallbacks,
 } from 'd3/evolving_chart/evolving_chart';
 
-const StackedBarChartScrollyTelling = ({ epochs }) => {
+const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
   const [isInitialized, setIsInitialized] = useState(false);
+  console.log(report, metadata);
+
+  const getTimeString = (numberSecondsUTC) => new Date(numberSecondsUTC * 1000).toLocaleTimeString();
+  const getDurationString = (numberSeconds) => {
+    const nbHours = Math.floor(numberSeconds / 3600);
+    const nbMinutes = Math.floor((numberSeconds % 3600) / 60);
+    return nbHours > 0 ? `${nbHours} hours and ${nbMinutes} minutes` : `${nbMinutes} minutes`;
+  };
+
+  const { bedTime, wakeUpTime, totalBedTime } = metadata;
+  const { efficientSleepTime, sleepOnset, sleepOffset } = report;
+  const numberStagesTraversed = _.filter(
+    [report.N1Time, report.N2Time, report.N3Time, report.REMTime, report.WTime],
+    (time) => time > 0,
+  ).length;
 
   return (
     <Container>
@@ -31,11 +47,13 @@ const StackedBarChartScrollyTelling = ({ epochs }) => {
           <p>
             We can see that each colored block represents a part of your night. They are ordered from bed time to out of
             bed timestamps you’ve written in your journal. Each color is associated with a specific sleep stage. You
-            went to bed at 12:22 am and you got out of bed at 9:47 am, which adds up to 9 hours and 25 minutes of time
-            spent in bed. Of this total time, you spent 7 hours and 27 minutes actually sleeping. You first fell asleep
-            at XX:XX, to which we will refer to as sleep onset. The last non wake block ended at XX:XX, which can also
-            be referred to as sleep offset. During that night's sleep, you went through each of the 5 five stages. Let's
-            try to see a little better what happened about each of them.
+            went to bed at {getTimeString(bedTime)} and you got out of bed at {getTimeString(wakeUpTime)}, which adds up
+            to {getDurationString(totalBedTime)} of time spent in bed. Of this total time, you spent{' '}
+            {getDurationString(efficientSleepTime)} actually sleeping. You first fell asleep at{' '}
+            {getTimeString(sleepOnset)}, to which we will refer to as sleep onset. The last non wake block ended at{' '}
+            {getTimeString(sleepOffset)}, which can also be referred to as sleep offset. During that night's sleep, you
+            went through {numberStagesTraversed} sleep stages. Let's try to see a little better what happened about each
+            of them.
           </p>
         </CardBody>
       </Card>

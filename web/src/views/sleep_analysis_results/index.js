@@ -19,7 +19,8 @@ import './style.css';
 
 const SleepAnalysisResults = ({ location }) => {
   const [response] = useGlobalState('response');
-  const isPreviewMode = location.state?.isPreviewMode;
+  // const isPreviewMode = location.state?.isPreviewMode;
+  const isPreviewMode = true;
   if (!isPreviewMode && !response) {
     return (
       <Redirect
@@ -30,6 +31,7 @@ const SleepAnalysisResults = ({ location }) => {
     );
   }
   const data = isPreviewMode ? previewSequence : response.data;
+  const { epochs, report, metadata } = data;
   const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   return (
@@ -52,7 +54,7 @@ const SleepAnalysisResults = ({ location }) => {
           about your sleep. It is however fascinating to see how your night was.
         </p>
         <p>Without further ado, this is what was your night of sleep:</p>
-        <StackedBarChartScrollyTelling epochs={data.epochs} />
+        <StackedBarChartScrollyTelling epochs={epochs} report={report} metadata={metadata} />
         <p>
           We have seen that sleep can be decomposed in mainly two stages, whereas REM and NREM, and that we can observe
           different stage proportions across age, gender and different sleep disorders. We’ve also defined other
