@@ -38,7 +38,7 @@ source venv/bin/activate
 If you want to run the backend with hot reload enabled (you must have installed the development requirements), run the following command.
 
 ```bash
-hupper -m waitress app:app
+hupper -m app
 ```
 
 ## Run the tests

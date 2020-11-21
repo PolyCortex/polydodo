@@ -166,7 +166,7 @@ const UploadForm = () => {
                             // prettier-ignore
                             const streamStart = new Date(`${getValues('stream_start_date')} ${getValues('stream_start_time')}`);
                             const bedTime = new Date(`${getValues('bedtime_date')} ${getValues('bedtime_time')}`);
-                            if (streamStart > bedTime) {
+                            if (streamStart >= bedTime) {
                               return 'Stream start must be prior to bedtime.';
                             }
                           },

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
+import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
@@ -19,43 +20,42 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   FlutterReactiveBle flutterReactiveBle;
   StreamSubscription<ConnectionStateUpdate> _connectedDeviceStream;
   StreamSubscription<DiscoveredDevice> _bluetoothScanSubscription;
-  final List<AcquisitionDevice> _acquisitionDevicePersistency = [];
-  final streamController = StreamController<List<AcquisitionDevice>>();
+  Stream<AcquisitionDevice> bluetoothStream;
 
   @override
-  void initializeRepository() {
+  Stream<AcquisitionDevice> scan() {
     if (_bluetoothScanSubscription == null) {
-      flutterReactiveBle = FlutterReactiveBle();
-
-      _bluetoothScanSubscription = flutterReactiveBle.scanForDevices(
-          withServices: []).listen((device) => addDevice(device));
+      _initScan();
     } else {
-      _bluetoothScanSubscription.resume();
-      _acquisitionDevicePersistency.clear();
+      resumeScan();
     }
+
+    return bluetoothStream;
   }
 
-  void addDevice(DiscoveredDevice bluetoothDevice) {
-    var device = AcquisitionDevice(
-        UniqueId.from(bluetoothDevice.id.toString()), bluetoothDevice.name);
+  void _initScan() {
+    flutterReactiveBle = FlutterReactiveBle();
 
-    final idx = _acquisitionDevicePersistency.indexOf(device);
+    bluetoothStream = flutterReactiveBle.scanForDevices(withServices: []).map(
+        (device) => AcquisitionDevice(
+            UniqueId.from(device.id),
+            (device.name.isEmpty) ? 'Unknown' : device.name,
+            DeviceType.bluetooth));
+  }
 
-    if (idx == -1) {
-      _acquisitionDevicePersistency.add(device);
-    } else {
-      _acquisitionDevicePersistency[idx] = device;
-    }
+  @override
+  void pauseScan() {
+    _bluetoothScanSubscription.pause();
+  }
 
-    streamController.add(_acquisitionDevicePersistency);
+  void resumeScan() {
+    _bluetoothScanSubscription.resume();
   }
 
   @override
   void connect(
       AcquisitionDevice device, Function(bool, [Exception]) callback) async {
     _selectedDevice = device;
-    _acquisitionDevicePersistency.clear();
-    _bluetoothScanSubscription.pause();
 
     _connectedDeviceStream = flutterReactiveBle
         .connectToDevice(
@@ -112,7 +112,4 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         _sendCharacteristic,
         value: STOP_STREAM_CHAR.codeUnits));
   }
-
-  @override
-  Stream<List<AcquisitionDevice>> watch() => streamController.stream;
 }

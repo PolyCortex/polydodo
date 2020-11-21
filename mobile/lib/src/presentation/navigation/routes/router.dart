@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
-import 'package:polydodo/src/presentation/pages/bluetooth_page/bluetoothSelector_page.dart';
 import 'package:polydodo/src/presentation/pages/dashboard/dashboard_page.dart';
+import 'package:polydodo/src/presentation/pages/device_selector/device_selector_page.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_guide_page.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_recording_page.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_validate_page.dart';
@@ -26,7 +26,7 @@ import 'package:polydodo/src/presentation/pages/sleep_sequence_stats_page/sleep_
           page: RecordSleepRecordingPage,
           transitionsBuilder: TransitionsBuilders.fadeIn),
       CustomRoute(
-          page: BluetoothSelectorPage,
+          page: DeviceSelectorPage,
           transitionsBuilder: TransitionsBuilders.fadeIn),
       CustomRoute(
           page: SleepHistoryPage,
