@@ -12,6 +12,7 @@ import createEvolvingChart, {
   barChartCallbacks,
   stackedBarChartCallbacks,
 } from 'd3/evolving_chart/evolving_chart';
+import { STAGES_ORDERED } from 'd3/constants';
 
 const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -25,11 +26,21 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
   };
 
   const { bedTime, wakeUpTime, totalBedTime } = metadata;
-  const { efficientSleepTime, sleepOnset, sleepOffset, sleepLatency, WASO, sleepEfficiency } = report;
-  const numberStagesTraversed = _.filter(
-    [report.N1Time, report.N2Time, report.N3Time, report.REMTime, report.WTime],
-    (time) => time > 0,
-  ).length;
+  const {
+    efficientSleepTime,
+    sleepOnset,
+    sleepOffset,
+    sleepLatency,
+    WASO,
+    sleepEfficiency,
+    wakeAfterSleepOffset,
+  } = report;
+  const sleepStageTimes = STAGES_ORDERED.reduce(
+    (obj, stage) => Object({ ...obj, [stage]: report[`${stage}Time`] }),
+    {},
+  );
+  const numberStagesTraversed = _.filter(sleepStageTimes, (time) => time > 0).length;
+  const mostProminentStage = _.maxBy(_.keys(sleepStageTimes), (stage) => sleepStageTimes[stage]);
 
   return (
     <Container>
@@ -124,21 +135,16 @@ const StackedBarChartScrollyTelling = ({ epochs, report, metadata }) => {
         <CardBody>
           <p>
             We are currently looking at your in bed sleep stage proportions. Wake time may be overrepresented, because
-            it includes your sleep latency and the time you spent in bed after waking up. In order to look at your
-            actual stage proportions, we must cut them out from wake time to only keep WASO.
+            it includes your sleep latency ({getDurationString(sleepLatency)}) and the time you spent in bed after
+            waking up ({getDurationString(wakeAfterSleepOffset)}).
           </p>
-        </CardBody>
-      </Card>
-      <div style={{ marginBottom: '125%' }} />
-      <Card className="shadow" style={{ position: 'relative' }}>
-        <CardBody>
           <p>
-            We can see that the most prominent sleep stage is N2, which in your case corresponds to XXXX. How does your
-            night compare to other people’s night?
+            We can see that your most prominent sleep stage is {mostProminentStage}, which in your case corresponds
+            to&nbsp;{getDurationString(sleepStageTimes[mostProminentStage])}. Usually, the most prominent sleep stage
+            is&nbsp;{mostProminentStage === 'N2' && ', as it is in your case, '}N2.
           </p>
         </CardBody>
       </Card>
-      <div style={{ marginBottom: '125%' }} />
       {isInitialized && (
         <WaypointDirection
           onDown={stackedBarChartCallbacks.fromBarChart}
