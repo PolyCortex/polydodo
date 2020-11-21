@@ -1,5 +1,7 @@
-abstract class ISettingsRepository {
-  Future<dynamic> read(String key);
+import 'package:polydodo/src/domain/settings/settings.dart';
 
-  Future<void> store(String settingKey, dynamic settingValue);
+abstract class ISettingsRepository {
+  Future<Settings> getSettings();
+
+  void setSetting(String settingKey, dynamic settingValue);
 }

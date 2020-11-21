@@ -14,22 +14,25 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> getSettings() async {
-    var settings = {
-      AGE_KEY: await _repository.read(AGE_KEY),
-      SERVER_URL_KEY: await _repository.read(SERVER_URL_KEY) ?? 'Not Set',
-      SEX_KEY:
-          Sex.values[await _repository.read(SEX_KEY)] ?? Sex.NotSet.index,
-    };
-    emit(SettingsLoadSuccess(settings));
+    await emit(SettingsLoadSuccess(await _repository.getSettings()));
   }
 
-  Future<void> setSetting(String settingKey, dynamic settingValue) async {
+  Future<void> setSetting(String settingKey, dynamic setting) async {
     if (state is SettingsLoadSuccess) {
-      await _repository.store(settingKey, settingValue);
-      emit(
-        SettingsLoadSuccess(
-            (state as SettingsLoadSuccess).copyWith(settingKey, settingValue)),
-      );
+      var settings = (state as SettingsLoadSuccess).settings;
+      switch (settingKey) {
+        case AGEKEY:
+          settings = settings.copyWith(newAge: setting);
+          break;
+        case SERVERADRESSKEY:
+          settings = settings.copyWith(newServerAdress: setting);
+          break;
+        case SEXKEY:
+          settings = settings.copyWith(newSex: setting);
+          break;
+      }
+      emit(SettingsLoadSuccess(settings));
+      await _repository.setSetting(settingKey, setting);
     }
   }
 }

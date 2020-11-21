@@ -31,11 +31,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: 'Personnal informations',
                       tiles: [
                         _buildDatePickerSettingTile(
-                            AGE_KEY, 'In years', Icons.cake, context, state),
-                        _buildPopupListSettingTile(SEX_KEY, Sex.values,
+                            AGEKEY, 'In years', Icons.cake, context, state),
+                        _buildSexSettingTile(SEXKEY, Sex.values,
                             'Your biological sex', Icons.face, state),
-                        _buildOpenTextSettingTile(
-                            SERVER_URL_KEY,
+                        _buildServerAdressSettingTile(
+                            SERVERADRESSKEY,
                             'The url for classification',
                             Icons.dns,
                             context,
@@ -51,53 +51,31 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-SettingsTile _buildDatePickerSettingTile(String title, String substitle,
-    IconData icon, BuildContext context, SettingsState state) {
-  return SettingsTile(
-    title: title,
-    subtitle: 'In years',
-    leading: Icon(Icons.cake),
-    trailing: TextButton(
-        child: Text(
-          (state as SettingsLoadSuccess).settings[title] == null
-              ? 'Not Set'
-              : (state as SettingsLoadSuccess).settings[title].toString(),
-        ),
-        onPressed: () => _showDatePicker(context)),
-  );
-}
-
-SettingsTile _buildPopupListSettingTile(
-    String settingKey,
-    dynamic settingOptions,
-    String substitle,
-    IconData icon,
-    SettingsState state) {
+SettingsTile _buildSexSettingTile(String settingKey, dynamic settingOptions,
+    String substitle, IconData icon, SettingsState state) {
   return SettingsTile(
     title: settingKey,
     subtitle: substitle,
     leading: Icon(icon),
     trailing: SettingsPopupMenuButton(
-        savedSetting: (state as SettingsLoadSuccess).settings[settingKey],
+        savedSetting: (state as SettingsLoadSuccess).settings.sex,
         settingOptions: settingOptions),
   );
 }
 
-SettingsTile _buildOpenTextSettingTile(String settingKey, String subtitle,
+SettingsTile _buildDatePickerSettingTile(String title, String substitle,
     IconData icon, BuildContext context, SettingsState state) {
   return SettingsTile(
-    title: settingKey,
-    subtitle: subtitle,
-    leading: Icon(icon),
-    trailing: Container(
-      width: 100,
-      child: TextField(
-        controller: TextEditingController()
-          ..text = (state as SettingsLoadSuccess).settings[settingKey],
-        onSubmitted: (newText) => BlocProvider.of<SettingsCubit>(context)
-            .setSetting(settingKey, newText),
-      ),
-    ),
+    title: AGEKEY,
+    subtitle: 'In years',
+    leading: Icon(Icons.cake),
+    trailing: TextButton(
+        child: Text(
+          (state as SettingsLoadSuccess).settings.age == null
+              ? 'Not Set'
+              : (state as SettingsLoadSuccess).settings.age.toString(),
+        ),
+        onPressed: () => _showDatePicker(context)),
   );
 }
 
@@ -117,7 +95,25 @@ void _showDatePicker(BuildContext context) async {
   }
 }
 
-class SettingsPopupMenuButton extends StatelessWidget {
+SettingsTile _buildServerAdressSettingTile(String settingKey, String subtitle,
+    IconData icon, BuildContext context, SettingsState state) {
+  return SettingsTile(
+    title: settingKey,
+    subtitle: subtitle,
+    leading: Icon(icon),
+    trailing: Container(
+      width: 100,
+      child: TextField(
+        controller: TextEditingController()
+          ..text = (state as SettingsLoadSuccess).settings.serverAdress,
+        onSubmitted: (newText) => BlocProvider.of<SettingsCubit>(context)
+            .setSetting(settingKey, newText),
+      ),
+    ),
+  );
+}
+
+class SettingsPopupMenuButton<T> extends StatelessWidget {
   SettingsPopupMenuButton({
     Key key,
     @required this.savedSetting,
@@ -143,8 +139,8 @@ class SettingsPopupMenuButton extends StatelessWidget {
               MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
         ),
       ),
-      onSelected: (savedSetting) => BlocProvider.of<SettingsCubit>(context)
-          .setSetting(savedSetting.toString().split('.').first, savedSetting),
+      onSelected: (newSetting) => BlocProvider.of<SettingsCubit>(context)
+          .setSetting(newSetting.toString().split('.').first, newSetting),
       itemBuilder: (BuildContext context) =>
           _buildPopupItemList(settingOptions),
     );
