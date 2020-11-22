@@ -131,8 +131,14 @@ SettingsTile _buildServerAdressSettingTile(
       child: TextField(
         controller: TextEditingController()
           ..text = (state as SettingsLoadSuccess).settings.serverAddress,
-        onSubmitted: (newText) =>
-            BlocProvider.of<SettingsCubit>(context).setServerAddress(newText),
+        onSubmitted: (newAdress) {
+          try {
+            BlocProvider.of<SettingsCubit>(context).setServerAddress(newAdress);
+          } on InvalidIPAddressException catch (e) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(e.cause), duration: Duration(seconds: 3)));
+          }
+        },
       ),
     ),
   );

@@ -8,19 +8,19 @@ class Settings extends Equatable {
   final String serverAddress;
   final Sex sex;
 
-  factory Settings(
-      {int age = 30, String serverAddress = '0.0.0.0', Sex sex = Sex.NotSet}) {
-    if (age == null) throw ("L'âge ne peut pas être nul.");
+  factory Settings({int age, String serverAddress, Sex sex}) {
+    age = age ?? DEFAULT_AGE;
+    serverAddress = serverAddress ?? DEFAULT_SERVER_ADDRESS;
+    sex = sex ?? Sex.NotSet;
     if (age < MIN_AGE || age > MAX_AGE) {
-      throw ("L'âge doit être entre 12 et 125 ans.");
+      throw AgeNotInValidIntervalException(
+          "L'âge configuré doit être entre 12 et 125 ans.");
     }
-    if (serverAddress == null) {
-      throw ("L'adresse du serveur ne peut être nulle.");
-    }
+
     if (!IP_ADDRESS_REGEX.hasMatch(serverAddress)) {
-      throw ("L'adresse du serveur doit être une adresse de format IPv4.");
+      throw InvalidIPAddressException(
+          "L'adresse du serveur configurée doit être une adresse de format IPv4.");
     }
-    if (sex == null) throw ('Le sex ne peut être nul.');
 
     return Settings._internal(age, serverAddress, sex);
   }
@@ -37,4 +37,14 @@ class Settings extends Equatable {
       sex: sex ?? this.sex,
     );
   }
+}
+
+class InvalidIPAddressException implements Exception {
+  String cause;
+  InvalidIPAddressException(this.cause);
+}
+
+class AgeNotInValidIntervalException implements Exception {
+  String cause;
+  AgeNotInValidIntervalException(this.cause);
 }
