@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Button, UncontrolledTooltip } from 'reactstrap';
+import { Container, Row, Button, UncontrolledTooltip, Badge } from 'reactstrap';
 import { Link, Redirect } from 'react-router-dom';
 
 import Header from 'components/header';
@@ -135,15 +135,81 @@ const SleepAnalysisResults = ({ location }) => {
     <Container className="text-justify">
       <h3 className="mt-5">Spectrogram</h3>
       <p className="lead">
-        Below are represented spectrograms of both your EEG channels. Spectrograms can be viewed as if we took all of
-        your signals, we’ve separated it in contiguous 30 seconds chunks, stacked then horizontally and to which we’ve
-        applied the fast fourier transform. We then have, for each 30 seconds epoch, the corresponding amplitudes for
-        each frequency that makes up the signal, hence the spectra.
+        Below are represented spectrograms of the EEG signals recorded for each channel. Spectrogram is a special
+        visualization of a signal in the frequency and time domain. Indeed, it represents the spectrum of a signal as it
+        changes over time. Concretely, spectrograms can be viewed as if we took your signal, we’ve separated it into 30
+        seconds blocs, stacked then horizontally and to which we’ve applied the fast fourier transform. We then have,
+        for each 30 seconds epoch, the corresponding amplitudes for each frequency that makes up the signal, hence the
+        spectra.
       </p>
       <p className="my-5 lead">
         We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
         signal power instead of signal amplitude, because we look at the spectrums in a logarithmic scale.
       </p>
+      <h4>Why are spectrograms useful to observe EEG?</h4>
+      <p className="my-5 lead">
+        Electroencephalography signals allows us to observe brainwaves, which have been traditionnally splitted into
+        defined frequency bands, as they appear and disappear under specific conditions with specific voltage [M.
+        Corsi-Cabrera and al., 2000]. Thus, observing the spectrum of a signal is great, as we can see the voltage
+        amplitude for each band, and then try to predict under which physiological condition was the subject in. But, as
+        we've mentionned, the EEG signals' spectrum do change over time, as EEG is not a stationnary signal. So, we need
+        to split the signal into much smaller chunks, and then observe the spectrum of these chunks, and their evolution
+        over time.
+      </p>
+      <p className="my-5 lead">
+        Furthermore, brainwaves frequency bands are widely used and their associated states are defined as below. Please
+        note that the ranges defined often varies, but we've settled on the definitions proposed by D.Purves in the
+        "Stages of Sleep" manual [D. Purves et al., 2001]. Also, brain waves are inherently associated with different
+        region through the brain. As our EEG montage is composed of electrodes placed on the midline axis, not all
+        frequency band ranges will be easily visible through our spectrograms. It can also explain why the expected
+        voltage intensity will be sometimes more explicit on the Fpz-Cz spectrogram vs the Pz-Oz spectrogram.
+      </p>
+      <ul className="list-unstyled my-4">
+        <li className="py-2">
+          <div className="d-flex mb-0">
+            <Badge className="badge-circle flex-shrink-0 mr-3" color="primary">
+              &beta;
+            </Badge>
+            <div>
+              The <strong>beta frequency band range</strong> is defined as between 14 and 60 Hz. It is mostly seen at
+              the front side of the scalp.
+            </div>
+          </div>
+        </li>
+        <li className="py-2">
+          <div className="d-flex mb-0">
+            <Badge className="badge-circle flex-shrink-0 mr-3" color="primary">
+              &alpha;
+            </Badge>
+            <div>
+              The <strong>alpha frequency band range</strong> is between 8 and 13 Hz. We mostly find these amplitudes on
+              the posterior regions of the head, and on both sides.
+            </div>
+          </div>
+        </li>
+        <li className="py-2">
+          <div className="d-flex mb-0">
+            <Badge className="badge-circle flex-shrink-0 mr-3" color="primary">
+              &theta;
+            </Badge>
+            <div>
+              The <strong>theta frequency band range</strong> is characterized by frequencies between 4 and 7 Hz. These
+              frequencies are not tied to any specific location of the brain.
+            </div>
+          </div>
+        </li>
+        <li className="py-2">
+          <div className="d-flex mb-0">
+            <Badge className="badge-circle flex-shrink-0 mr-3" color="primary">
+              &delta;
+            </Badge>
+            <div>
+              The <strong>delta frequency band range</strong> is described as the lowest range, whereas below 4 Hz. This
+              EEG band is located frontally for adults, and posteriorly for children.
+            </div>
+          </div>
+        </li>
+      </ul>
       <h4>How to read it?</h4>
       <p className="my-5 lead">
         Yellow therefore means that in that 30 seconds time frame, that particular frequency had a big amplitude. Pink
@@ -216,6 +282,11 @@ const SleepAnalysisResults = ({ location }) => {
         <div className="mt-2">
           [D. Purves et al., 2001] D. Purves et al., “Stages of Sleep,” Neuroscience. 2nd edition, 2001, Accessed: Nov.
           22, 2020. [Online]. Available: https://www.ncbi.nlm.nih.gov/books/NBK10996/.
+        </div>
+        <div className="mt-2">
+          [M. Corsi-Cabrera, and al., 2000] M. Corsi-Cabrera, M. A. Guevara, Y. Del Río-Portilla, C. Arce, and Y.
+          Villanueva-Hernández, “EEG Bands During Wakefulness, Slow-Wave and Paradoxical Sleep as a Result Of Principal
+          Component Analysis in Man,” Sleep, vol. 23, no. 6, pp. 1–7, Sep. 2000, doi: 10.1093/sleep/23.6.1a.
         </div>
       </small>
     </Container>
