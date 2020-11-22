@@ -14,8 +14,6 @@ import createEvolvingChart, {
 } from 'd3/evolving_chart/evolving_chart';
 import { STAGES_ORDERED } from 'd3/constants';
 
-import './style.css';
-
 const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -51,7 +49,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   };
 
   return (
-    <Container className="evolving_chart__container">
+    <Container>
       <div style={{ position: 'sticky', top: '10%' }}>
         <D3ComponentScrollyTelling
           callback={createEvolvingChart}
@@ -140,6 +138,9 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
               wake up from. It is during those stages that your cells get repaired, and that tissue grows.
             </p>
             <p>
+              N1, N2 and N3 are called, in opposition to REM, the <strong>NREM sleep stages</strong>.
+            </p>
+            <p>
               We've looked at the different functions of each sleep stages. But how much time did you actually spend in
               each during the night?
             </p>
@@ -173,7 +174,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
             <p>
               From here, we can also look at your sleep efficiency, which is the proportion of time spent asleep over
               the overall time spent in bed. In your case, it corresponds to&nbsp;
-              <span className="text-primary">{(sleepEfficiency * 100).toFixed()}%</span>, or&nbsp;
+              <Metric>{(sleepEfficiency * 100).toFixed()}%</Metric>, or&nbsp;
               {getDurationString(sleepEfficiency * totalBedTime)}.
             </p>
           </CardBody>
@@ -190,8 +191,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              As a rule of thumb, adults approximately stay 5% of their total sleep time in N1; 50% in N2; and 20% is in
-              N3. The remaining 25% is REM stage sleep.
+              As a rule of thumb, adults approximately stay 5% of their total sleep time in N1, 50% in N2 and 20% in N3.
+              The remaining 25% is spent in the REM stage sleep.
             </p>
           </CardBody>
         </Card>
