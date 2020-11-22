@@ -3,6 +3,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/settings/settings_cubit.dart';
+import 'package:polydodo/src/common/constants.dart';
 import 'package:polydodo/src/domain/settings/settings.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/widgets/loading_indicator.dart';
@@ -34,8 +35,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           'In years',
                           Icons.cake,
                           (datePicked) =>
-                              BlocProvider.of<SettingsCubit>(context)
-                                  .setAge(datePicked),
+                              BlocProvider.of<SettingsCubit>(context).setAge(
+                                  DateTime.now()
+                                          .difference(datePicked)
+                                          .inDays ~/
+                                      365),
                           context,
                           state,
                         ),
@@ -110,9 +114,9 @@ void _showDatePicker(
       context: context,
       initialEntryMode: DatePickerEntryMode.calendar,
       initialDatePickerMode: DatePickerMode.year,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      initialDate: MAX_BIRTH_DATE,
+      firstDate: MIN_BIRTH_DATE,
+      lastDate: MAX_BIRTH_DATE,
       helpText: 'Select birthdate');
 
   if (datePicked != null && datePicked != DateTime.now()) {
