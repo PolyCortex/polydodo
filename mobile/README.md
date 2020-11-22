@@ -21,7 +21,7 @@ We target Android as our only platform. While development frameworks like Flutte
 
 ### Setup:
 First, download the required dependencies using:
-````
+```
 flutter pub get
 ```
 
