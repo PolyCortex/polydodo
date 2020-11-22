@@ -66,14 +66,14 @@ const createEvolvingChart = (containerNode, data) => {
   data = preprocessData(data);
 
   setDomainOnScales(xTime, xLinear, y, colors, data.epochs);
-  const { barToolTip, stackedToolTip } = initializeTooltips(containerNode, svg, data);
+  const { barToolTip, stackedToolTip } = initializeTooltips(containerNode, data);
   bindAnnotationsToRects(g, data.annotations);
 
   timelineChartCallbacks = createTimelineChartCallbacks(g, xTime, xTimeAxis, colors, barToolTip);
 
-  instanceChartCallbacks = createInstanceChartCallbacks(g, data, xTime, y, xTimeAxis, yAxis, colors, barToolTip);
+  instanceChartCallbacks = createInstanceChartCallbacks(g, data, xTime, xTimeAxis, yAxis, colors, barToolTip);
 
-  barChartCallbacks = createBarChartCallbacks(g, data, y, xLinearAxis, yAxis, colors, stackedToolTip);
+  barChartCallbacks = createBarChartCallbacks(g, data, xLinearAxis, yAxis, colors, stackedToolTip);
 
   stackedBarChartCallbacks = createStackedBarChartCallbacks(g, data, stackedToolTip);
 

@@ -3,16 +3,16 @@ import * as d3 from 'd3';
 import { EPOCH_DURATION_MS } from '../constants';
 import { DateTime, Duration } from 'luxon';
 
-export const initializeTooltips = (containerNode, g, data) => {
-  const stackedToolTip = initializeTooltip(containerNode, g, (d) =>
+export const initializeTooltips = (containerNode, data) => {
+  const stackedToolTip = initializeTooltip(containerNode, (d) =>
     getStackedToolTipText(d, data.stageTimeProportions, data.epochs.length),
   );
-  const barToolTip = initializeTooltip(containerNode, g, getBarToolTipText);
+  const barToolTip = initializeTooltip(containerNode, getBarToolTipText);
 
   return { barToolTip, stackedToolTip };
 };
 
-const initializeTooltip = (containerNode, g, getToolTipText) => {
+const initializeTooltip = (containerNode, getToolTipText) => {
   var tooltip = d3
     .select(containerNode)
     .append('div')
