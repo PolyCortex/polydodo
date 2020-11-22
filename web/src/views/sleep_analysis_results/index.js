@@ -46,7 +46,7 @@ const SleepAnalysisResults = ({ location }) => {
       )}
       <p className="lead my-5">
         That's it! We have created your personalized sleep data visualizations. Through the following visualizations,
-        you will discover the time you spent in which sleep stages, how they are defined and what are their respective
+        you will discover the time you spent in each sleep stage, how they are defined and what are their respective
         functions. Then, an interactive hypnogram allows you to see the transitions between the sleep stages. Finally,
         your spectrogram will be presented in detail and some explanations will try to give you a sense of how we were
         able to find your sleep stages from your EEG data.
