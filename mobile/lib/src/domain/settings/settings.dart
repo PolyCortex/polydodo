@@ -8,12 +8,24 @@ class Settings extends Equatable {
   final String serverAddress;
   final Sex sex;
 
-  Settings(
-      {this.age = 30, this.serverAddress = '0.0.0.0', this.sex = Sex.NotSet})
-      : assert(age != null || (age == null && age > MIN_AGE && age < MAX_AGE)),
-        assert(
-            serverAddress != null || IP_ADDRESS_REGEX.hasMatch(serverAddress)),
-        assert(sex != null);
+  factory Settings(
+      {int age = 30, String serverAddress = '0.0.0.0', Sex sex = Sex.NotSet}) {
+    if (age == null) throw ("L'âge ne peut pas être nul.");
+    if (age < MIN_AGE || age > MAX_AGE) {
+      throw ("L'âge doit être entre 12 et 125 ans.");
+    }
+    if (serverAddress == null) {
+      throw ("L'adresse du serveur ne peut être nulle.");
+    }
+    if (!IP_ADDRESS_REGEX.hasMatch(serverAddress)) {
+      throw ("L'adresse du serveur doit être une adresse de format IPv4.");
+    }
+    if (sex == null) throw ('Le sex ne peut être nul.');
+
+    return Settings._internal(age, serverAddress, sex);
+  }
+
+  Settings._internal(this.age, this.serverAddress, this.sex);
 
   @override
   List<Object> get props => [age, serverAddress, sex];
