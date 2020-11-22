@@ -108,7 +108,7 @@ const SleepAnalysisResults = ({ location }) => {
         seconds resolution, as we scored the night for each 30 seconds epochs, we can see that you have woken up&nbsp;
         <Metric>{report.awakenings}</Metric> times.
       </p>
-      <p>
+      <p className="my-5 lead">
         We can also see that, throughout the night, stages follow about the same pattern, whereas we go from NREM
         (either N1, N2 and N3) and then to REM, and so on. We call those sleep cycles, and those typically range from
         four to six, each one lasting from 1 hour and a half to almost 2 hours. Another commonly looked at measurement
@@ -121,7 +121,7 @@ const SleepAnalysisResults = ({ location }) => {
   );
   const hypnogramOutro = (
     <Container className="text-justify">
-      <p>
+      <p className="lead">
         You’ve been able to visualize and inspect your night of sleep, which we’ve classified only based on your EEG
         recordings. In a sleep lab, electrophysiology technologists generally look at your EEG, EOG and submental EMG,
         and then manually classify each epoch of 30 seconds that compose your night. By looking at your EEG recordings,
@@ -140,17 +140,17 @@ const SleepAnalysisResults = ({ location }) => {
         applied the fast fourier transform. We then have, for each 30 seconds epoch, the corresponding amplitudes for
         each frequency that makes up the signal, hence the spectra.
       </p>
-      <p>
+      <p className="my-5 lead">
         We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
         signal power instead of signal amplitude, because we look at the spectrums in a logarithmic scale.
       </p>
       <h4>How to read it?</h4>
-      <p>
+      <p className="my-5 lead">
         Yellow therefore means that in that 30 seconds time frame, that particular frequency had a big amplitude. Pink
         means that you had that frequency with a lower amplitude. Purple means that you didn’t have that frequency in
         the signal.
       </p>
-      <p>
+      <p className="my-5 lead">
         To get a better understanding at how spectrograms work, you can&nbsp;
         <a href="https://musiclab.chromeexperiments.com/Spectrogram/" rel="noopener noreferrer" target="_blank">
           check out this example
@@ -161,12 +161,12 @@ const SleepAnalysisResults = ({ location }) => {
   );
   const spectrogramOutro = (
     <Container className="text-justify">
-      <p className="mt-5">BLABLABLA</p>
+      <p className="mt-5 lead">BLABLABLA</p>
     </Container>
   );
   const callToAction = (
     <Container className="text-justify">
-      <p>Wanna know how accurate this data is?</p>
+      <p className="lead">Wanna know how accurate this data is?</p>
       <Row className="scrollytelling-container__buttons">
         <Link to="/performance">
           <Button className="mt-4" color="default">
