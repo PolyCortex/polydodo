@@ -23,6 +23,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
     efficientSleepTime,
     sleepTime,
     sleepOnset,
+    stageShifts,
+    awakenings,
     sleepOffset,
     sleepLatency,
     WASO,
@@ -56,8 +58,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               We can see that each colored block represents a part of your night. This timeline starts at your bed time,
-              so <Metric isTime>{bedTime}</Metric>, and ends at the time you got out of bed, whereas{' '}
-              <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent{' '}
+              so <Metric isTime>{bedTime}</Metric>, and ends at the time you got out of bed, whereas&nbsp;
+              <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent&nbsp;
               <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping. According to the American Academy of
               Sleep Medicine, <Metric>{recommendedSleepStage}</Metric>.
             </p>
@@ -77,6 +79,19 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           </CardBody>
         </Card>
       </Row>
+      <div style={{ marginBottom: '125%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 mx-auto">
+          <CardBody>
+            <p>
+              In total, there were <Metric>{stageShifts}</Metric> sleep stage shifts and <Metric>{awakenings}</Metric>
+              &nbsp;noctural awakenings. "High levels of sleep fragmentation, as defined by recurrent awakenings and/or
+              stage shifts may result in complaints of non-restorative sleep even when an apparently normal total sleep
+              time is present." [Shrivastava and al., 2014]
+            </p>
+          </CardBody>
+        </Card>
+      </Row>
       {isInitialized && (
         <WaypointDirection onDown={instanceChartCallbacks.fromTimeline} onUp={timelineChartCallbacks.fromInstance} />
       )}
@@ -89,16 +104,16 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
               sleep report, usually decomposed as three different components.
             </p>
             <p>
-              First, <strong>sleep latency</strong> corresponds to the time you spend in bed before first falling
+              First, <strong>sleep latency</strong> corresponds to the time you spend awake in bed before first falling
               asleep, which here is <Metric isDuration>{sleepLatency}</Metric>.
             </p>
             <p>
               Secondly, <strong>wake after sleep onset</strong>, often abbreviated as WASO, is the time spent awake
-              after first falling asleep and before waking up. In your case, it corresponds to{' '}
+              between sleep onset and sleep offset. In your case, it corresponds to&nbsp;
               <Metric isDuration>{WASO}</Metric>.
             </p>
             <p>
-              Thirdly, the time you spend in bed after waking up and getting out of bed, here being{' '}
+              Thirdly, the time you spend in bed after waking up and getting out of bed, here being&nbsp;
               <Metric isDuration>{wakeAfterSleepOffset}</Metric>, is called <strong>wake after sleep offset</strong>.
             </p>
           </CardBody>
@@ -137,7 +152,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <strong>N3 stage</strong> is when you are deeply asleep, hence it’s also called{' '}
+              <strong>N3 stage</strong> is when you are deeply asleep, hence it’s also called&nbsp;
               <strong>deep sleep</strong>, or sometimes <strong>slow wave sleep</strong>, and is the most difficult to
               wake up from. It is during those stages that your cells get repaired, and that tissue grows.
             </p>
@@ -161,12 +176,12 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
             <p>
               We are currently looking at your in bed sleep stage proportions. Wake time may be overrepresented, because
               it includes your sleep latency (<Metric isDuration>{sleepLatency}</Metric>) and the time you spent in bed
-              after waking up (<Metric isDuration>{wakeAfterSleepOffset}</Metric>).
+              after sleep offset (<Metric isDuration>{wakeAfterSleepOffset}</Metric>).
             </p>
             <p>
               We can see that your most prominent sleep stage is <Metric>{mostProminentStage}</Metric>, which in your
               case corresponds to&nbsp;<Metric isDuration>{sleepStageTimes[mostProminentStage]}</Metric>. Usually, the
-              most prominent sleep stage is{' '}
+              most prominent sleep stage is&nbsp;
               <Metric>{mostProminentStage === 'N2' && ', as it is in your case, '}</Metric>N2.
             </p>
           </CardBody>
@@ -197,7 +212,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               As a rule of thumb, adults approximately stay 5% of their total sleep time in N1, 50% in N2 and 20% in N3.
-              The remaining 25% is spent in the REM stage sleep.
+              The remaining 25% is spent in the REM stage sleep. A higher proportion of N3 should correspond to an
+              overall more intense sleep.
             </p>
           </CardBody>
         </Card>

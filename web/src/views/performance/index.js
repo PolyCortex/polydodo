@@ -68,7 +68,7 @@ const Performance = () => {
           <li>
             First, we will check how our classifier’s scoring agrees with the scoring within the Physionet's Sleep-EDF
             dataset. Of course, we will perform this agreement test on a subset of EEG data that was never trained on.
-            This subset is composed of full nights of sleep coming from five subject of a different age group.{' '}
+            This subset is composed of full nights of sleep coming from five subject of a different age group.&nbsp;
           </li>
           <li>
             Then, we will check how this classifier performs on a full night recorded on one of our members. In order to

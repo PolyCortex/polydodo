@@ -38,34 +38,56 @@ const SleepAnalysisResults = ({ location }) => {
   const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   const sleepAnalysisIntro = (
-    <Container className="mt-5 mb-5 text-justify">
+    <Container className="mt-5 mb-8 text-justify">
       {isPreviewMode && (
         <Row className="mb-5 justify-content-center">
           <PreviewModeWarning />
         </Row>
       )}
-      <p className="lead mb-5">
-        Through the following visualizations, you will be able to discover the time you spent in which sleep stages, how
-        they are defined and their functions. There are also, here and there, commonly seen sleep analysis metrics,
-        which have been calculated on your night. Then, an interactive hypnogram allows you to see the transitions
-        between the sleep stages. Finally, a visualization illustrates how we've been able to classify the recorded EEG
-        data into sleep stages.
+      <p className="lead my-5">
+        That's it! We have created your personalized sleep data visualizations. Through the following visualizations,
+        you will discover the time you spent in which sleep stages, how they are defined and what are their respective
+        functions. Then, an interactive hypnogram allows you to see the transitions between the sleep stages. Finally,
+        your spectrogram will be presented in detail and some explanations will try to give you a sense of how we were
+        able to find your sleep stages from your EEG data.
       </p>
+
+      <p className="lead my-5">
+        Throughout these visualizations, your personalized sleep metrics will be presented to you. These were calculated
+        from the stages of sleep that we found. They will appear, here and there, <Metric>in blue</Metric>, in order to
+        stand out from the rest of the text.
+      </p>
+
+      <p className="lead mt-5">Without further ado, let's get started:</p>
     </Container>
   );
   const evolvingChartOutro = (
     <>
       <Container className="text-justify">
-        <p>
+        <p className="lead">
           We have seen that sleep can be decomposed into two stages, whereas REM and NREM. We’ve also defined other
           measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time.
+        </p>
+        <h4>This is about your hormones</h4>
+        <p className="lead">
+          Hormones such as melatonin and cortisol play a decisive role in sleep. In fact, it is their variation that
+          partly explains the circadian cycle.
+        </p>
+        <p className="lead">
+          During the day, a neurotranmitter called serotonin gradually accumulates in the pineal gland. When it gets
+          dark, the pineal gland synthesizes melatonin which is a hormone that is synthesized in the pineal gland from
+          this serotonin. Melatonin helps induce the sleepiness that prevails in the evening. Exposure to light
+          including that of screens, street lighting, etc. inhibits the secretion of melatonin and impairs sleep. On the
+          other hand, in the morning, the adrenal gland secretes the hormone cortisol from cholesterol. Its effect is to
+          promote light sleep and possibly awake. Any imbalance in these hormones or their secretion can have an
+          inhibiting effect on sleep.
         </p>
       </Container>
       <SleepMechanisms />
       <section className="section bg-secondary pt-150">
         <Container className="text-justify">
           <TipsToImproveSleep />
-          <p>
+          <p className="lead">
             Although we’ve looked at many aspects of your night’s sleep, we haven’t properly looked at your sleep
             dynamics, whereas how your sleep evolves overnight.
           </p>
@@ -83,23 +105,23 @@ const SleepAnalysisResults = ({ location }) => {
         stages (along with N1), because we unknowingly wake up from that stage. Those short periods of arousal often
         last no longer than 15 seconds, are followed by a lighter sleep stage, and cannot be remembered the next
         morning. If they are too frequent, they can affect your sleep quality. Considering that we only have a 30
-        seconds resolution, as we scored the night for each 30 seconds epochs, we can see that you have woken up{' '}
+        seconds resolution, as we scored the night for each 30 seconds epochs, we can see that you have woken up&nbsp;
         <Metric>{report.awakenings}</Metric> times.
       </p>
-      <p>
+      <p className="my-5 lead">
         We can also see that, throughout the night, stages follow about the same pattern, whereas we go from NREM
         (either N1, N2 and N3) and then to REM, and so on. We call those sleep cycles, and those typically range from
         four to six, each one lasting from 1 hour and a half to almost 2 hours. Another commonly looked at measurement
-        is the time between sleep onset and the first REM epoch, namely REM latency, which corresponds to{' '}
-        <Metric isDuration>{report.remLatency}</Metric>. It can be interesting as paradoxical sleep{' '}
-        <q>is very sensitive to the effects of medication, sleep deprivation, and circadian rhythm disorders</q>{' '}
+        is the time between sleep onset and the first REM epoch, namely REM latency, which corresponds to&nbsp;
+        <Metric isDuration>{report.remLatency}</Metric>. It can be interesting as paradoxical sleep&nbsp;
+        <q>is very sensitive to the effects of medication, sleep deprivation, and circadian rhythm disorders</q>&nbsp;
         [Shrivastava and al., 2014].
       </p>
     </Container>
   );
   const hypnogramOutro = (
     <Container className="text-justify">
-      <p>
+      <p className="lead">
         You’ve been able to visualize and inspect your night of sleep, which we’ve classified only based on your EEG
         recordings. In a sleep lab, electrophysiology technologists generally look at your EEG, EOG and submental EMG,
         and then manually classify each epoch of 30 seconds that compose your night. By looking at your EEG recordings,
@@ -118,18 +140,18 @@ const SleepAnalysisResults = ({ location }) => {
         applied the fast fourier transform. We then have, for each 30 seconds epoch, the corresponding amplitudes for
         each frequency that makes up the signal, hence the spectra.
       </p>
-      <p>
+      <p className="my-5 lead">
         We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
         signal power instead of signal amplitude, because we look at the spectrums in a logarithmic scale.
       </p>
       <h4>How to read it?</h4>
-      <p>
+      <p className="my-5 lead">
         Yellow therefore means that in that 30 seconds time frame, that particular frequency had a big amplitude. Pink
         means that you had that frequency with a lower amplitude. Purple means that you didn’t have that frequency in
         the signal.
       </p>
-      <p>
-        To get a better understanding at how spectrograms work, you can{' '}
+      <p className="my-5 lead">
+        To get a better understanding at how spectrograms work, you can&nbsp;
         <a href="https://musiclab.chromeexperiments.com/Spectrogram/" rel="noopener noreferrer" target="_blank">
           check out this example
         </a>
@@ -139,12 +161,12 @@ const SleepAnalysisResults = ({ location }) => {
   );
   const spectrogramOutro = (
     <Container className="text-justify">
-      <p className="mt-5">BLABLABLA</p>
+      <p className="mt-5 lead">BLABLABLA</p>
     </Container>
   );
   const callToAction = (
     <Container className="text-justify">
-      <p>Wanna know how accurate this data is?</p>
+      <p className="lead">Wanna know how accurate this data is?</p>
       <Row className="scrollytelling-container__buttons">
         <Link to="/performance">
           <Button className="mt-4" color="default">

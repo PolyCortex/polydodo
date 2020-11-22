@@ -37,7 +37,7 @@ PlatformButton.defaultProps = {
 const Copyright = () => {
   return (
     <div className="copyright">
-      © {new Date().getFullYear()}{' '}
+      © {new Date().getFullYear()}&nbsp;
       <a href="http://polycortex.polymtl.ca/" target="_blank" rel="noopener noreferrer">
         {text['footer_copyright_polycortex']}
       </a>
