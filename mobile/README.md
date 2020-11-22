@@ -14,12 +14,12 @@ We target Android as our only platform. While development frameworks like Flutte
 
 ## Getting Started
 
-### Prerequisites:
+### Prerequisites
 - Install the latest stable version of [flutter](https://flutter.dev/docs/get-started/install/).
 - Install the latest stable version of [Android Studio](https://developer.android.com/studio/index.html).
   - Android Studio is a great tool as it installs the required Android SDK, but also provides an Android Virtual Device manager which allows you to emulate an android device.
 
-### Setup:
+### Setup
 First, download the required dependencies using:
 ```
 flutter pub get

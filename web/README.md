@@ -6,7 +6,7 @@ This app was designed on top of React.js and the data visualizations were create
 
 ## Getting started
 
-### Prerequisites:
+### Prerequisites
 - Install the latest stable version of  [Yarn package manager](https://classic.yarnpkg.com/lang/en/).
 - Install the latest LTS version of [Node.js](https://nodejs.org/en/download/).
 

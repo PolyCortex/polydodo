@@ -2,22 +2,35 @@
 
 This server is responsible for the automatic sleep stage scoring of recorded EEG data. For more info about the deployed model, see [our wiki page](https://github.com/PolyCortex/polydodo/wiki/model).
 
-## Setup
 
-Create a new virtual environment to isolate Python packages.
+## Prerequesites
+- Install [Python 3.7](https://www.python.org/downloads/).
+  - Make sure that the "Python37\Scripts" folder is added to your environnment path varible on Windows in order to use pip and hupper without any issue.
 
+## Setup - Linux
+
+Create a new virtual environment to isolate Python packages. This step will need to be done everytime you re-open your terminal.
+
+Linux:
 ```bash
 virtualenv -p /usr/local/bin/python3.7 venv
 ```
+Windows:
+```
+python -m venv .venv
+```
 
 Activate your virtual environment.
-
+Linux:
 ```bash
 source venv/bin/activate
 ```
+Windows:
+```
+.\.venv\Scripts\activate.bat
+```
 
 Install the required dependencies.
-
 ```bash
 pip install -r requirements.txt -r requirements-dev.txt
 ```
@@ -31,19 +44,9 @@ brew install libomp         # on macos
 
 ## Run it locally
 
-- Install Python 3 and pip
-
-- Consider using `venv` to create a virtual environment
-
-Activate your virtual environment.
-
-```bash
-source venv/bin/activate
-```
-
 If you want to run the backend with hot reload enabled (you must have installed the development requirements), run the following command.
 
-```bash
+```
 hupper -m app
 ```
 
