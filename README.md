@@ -56,10 +56,12 @@ The web client allows the user to upload a data file acquired using an OpenBCI b
 On the other hand, the mobile client offers a tool that can be used on a regular basis. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes, until the end of his acquisition.
 
 Finally, both these clients use a local http server that is easy to installed. This server is local so that your data is not sent over the internet. Biosignals data are sensitive and this is our way to promise you security.
-
-![General architecture of the project](https://github.com/PolyCortex/polydodo/wiki/img/general_architecture_small.png)
-
+<p align="center">
+  <br>
+  <img alt="General architecture of the project" src="https://github.com/PolyCortex/polydodo/wiki/img/general_architecture_small.png">
+  <br>
 *Figure 1. Technology diagram with the flow of incoming and outgoing data to clients.*
+ </p>
 
 As the above diagram states, in the case of the mobile application, the data is received in real time, and in the case of the web application, the data is received asynchronously. In both cases, the data is classified after the end of the acquisition on the local server.
 
