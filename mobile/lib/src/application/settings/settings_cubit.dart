@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:polydodo/src/common/constants.dart';
 import 'package:polydodo/src/domain/settings/i_settings_repository.dart';
 import 'package:polydodo/src/domain/settings/settings.dart';
 
@@ -17,22 +16,41 @@ class SettingsCubit extends Cubit<SettingsState> {
     await emit(SettingsLoadSuccess(await _repository.read()));
   }
 
-  Future<void> setSetting(String settingKey, dynamic setting) async {
+  Future<void> setAge(int newAge) async {
     if (state is SettingsLoadSuccess) {
-      var settings = (state as SettingsLoadSuccess).settings;
-      switch (settingKey) {
-        case AGE_KEY:
-          settings = settings.copyWith(age: setting);
-          break;
-        case SERVER_ADRESS_KEY:
-          settings = settings.copyWith(serverAddress: setting);
-          break;
-        case SEX_KEY:
-          settings = settings.copyWith(sex: setting);
-          break;
-      }
-      emit(SettingsLoadSuccess(settings));
-      await _repository.store(settingKey, setting);
+      emit(
+        SettingsLoadSuccess(
+          await _repository.store(
+            (state as SettingsLoadSuccess).settings.copyWith(age: newAge),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> setSex(Sex newSex) async {
+    if (state is SettingsLoadSuccess) {
+      emit(
+        SettingsLoadSuccess(
+          await _repository.store(
+            (state as SettingsLoadSuccess).settings.copyWith(sex: newSex),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> setServerAddress(String newServerAddress) async {
+    if (state is SettingsLoadSuccess) {
+      emit(
+        SettingsLoadSuccess(
+          await _repository.store(
+            (state as SettingsLoadSuccess)
+                .settings
+                .copyWith(serverAddress: newServerAddress),
+          ),
+        ),
+      );
     }
   }
 }

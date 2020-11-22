@@ -1,3 +1,3 @@
-const String AGE_KEY = 'Age';
-const String SERVER_ADRESS_KEY = 'ServerAdress';
-const String SEX_KEY = 'Sex';
+RegExp IP_ADDRESS_REGEX = RegExp(
+  r'^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$',
+);
