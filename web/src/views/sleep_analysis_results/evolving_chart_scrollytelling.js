@@ -108,7 +108,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, to which we will refer to as sleep onset.
-              You woke up at <Metric isTime>{sleepOffset}</Metric>, which can also be referred to as sleep offset.
+              You woke up at <Metric isTime>{sleepOffset}</Metric>, which we will refer to as sleep offset.
               During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different stages.
               Let's take a look at them.
             </p>
