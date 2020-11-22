@@ -9,13 +9,11 @@ This app was designed on top of React.js and the data visualizations were create
 ### Prerequisites:
 - Install the latest stable version of  [Yarn package manager](https://classic.yarnpkg.com/lang/en/).
 - Install the latest LTS version of [Node.js](https://nodejs.org/en/download/).
-- We will also be needing [Python](https://www.python.org/downloads/).
-  - We recommend installing Python 3 as it is the version required for the backend.
 
 ### Setup
-Open VS Code workspace and then open a new terminal for the web directory. 
+Once you have installed the required frameworks, you can now go into the mobile folder using a terminal.
 
-Install the required node modules using:
+From there, you can install the required node modules using:
 ```
 yarn install
 ```
