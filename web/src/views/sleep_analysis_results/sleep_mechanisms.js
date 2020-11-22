@@ -6,7 +6,7 @@ import FloatingCard from 'components/floating_card';
 import './style.css';
 
 const SleepMechanisms = () => (
-  <Container className="text-justify mt-6 mb--150">
+  <Container className="text-justify mt-6 mb--300">
     <CardDeck>
       <Col lg="6" className="mb-6">
         <FloatingCard

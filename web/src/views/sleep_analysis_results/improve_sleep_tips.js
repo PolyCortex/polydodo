@@ -3,7 +3,7 @@ import React from 'react';
 
 const TipsToImproveSleep = () => (
   <>
-    <p className="lead">
+    <p className="lead mt-8">
       Sleep deficiency increases the risk of health disorders like high blood pressure, cardiovascular disease,
       diabetes, depression and obesity. It can also have huge side effects such as a decrease in mental capabilities
       like learning, decision making process and problem-solving skills. Sleep deficiency is often caused by sleep
@@ -27,7 +27,7 @@ const TipsToImproveSleep = () => (
           <BadgeBulletPoint badgeColor="warning" iconClass="fas fa-wine-glass-alt fa-sm">
             Alcohol, drugs and medicines: Just as caffeine influences sleep, the consumption of alcohol, drugs and
             certain medications have a significant effect on it. Alcohol, for example, reduces significantly the amount
-            of REM sleep.
+            of REM sleep and lead to multiple awakenings throughout each sleep cycle. [Shrivastava and al., 2014]
           </BadgeBulletPoint>
         </h6>
       </li>
