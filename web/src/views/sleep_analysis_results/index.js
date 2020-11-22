@@ -38,19 +38,27 @@ const SleepAnalysisResults = ({ location }) => {
   const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   const sleepAnalysisIntro = (
-    <Container className="mt-5 mb-5 text-justify">
+    <Container className="mt-5 mb-8 text-justify">
       {isPreviewMode && (
         <Row className="mb-5 justify-content-center">
           <PreviewModeWarning />
         </Row>
       )}
-      <p className="lead mb-5">
-        Through the following visualizations, you will be able to discover the time you spent in which sleep stages, how
-        they are defined and their functions. There are also, here and there, commonly seen sleep analysis metrics,
-        which have been calculated on your night. Then, an interactive hypnogram allows you to see the transitions
-        between the sleep stages. Finally, a visualization illustrates how we've been able to classify the recorded EEG
-        data into sleep stages.
+      <p className="lead my-5">
+        That's it! We have created your personalized sleep data visualizations. Through the following visualizations,
+        you will discover the time you spent in which sleep stages, how they are defined and what are their respective
+        functions. Then, an interactive hypnogram allows you to see the transitions between the sleep stages. Finally,
+        your spectrogram will be presented in detail and some explanations will try to give you a sense of how we were
+        able to find your sleep stages from your EEG data.
       </p>
+
+      <p className="lead my-5">
+        Throughout these visualizations, your personalized sleep metrics will be presented to you. These were calculated
+        from the stages of sleep that we found. They will appear, here and there, <Metric>in blue</Metric>, in order to
+        stand out from the rest of the text.
+      </p>
+
+      <p className="lead mt-5">Without further ado, let's get started:</p>
     </Container>
   );
   const evolvingChartOutro = (
