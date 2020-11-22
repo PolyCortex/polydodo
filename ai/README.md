@@ -104,7 +104,7 @@ la s´equence d’´etats cach´es la plus probable ´etant donn´e nos
 
 ## Model export
 
-The ONNX library from Facebook and Microsoft is used to serialize the model and export it to production. This allows to improve the interoperability of the models developed by allowing to serialize, thanks to Protobuf, pipelines sklearn, pytorch and others to onnxruntime. Onnxruntime then makes it possible to run these pipelines on platforms other than Python.
+The ONNX library from Facebook and Microsoft is used to serialize the model and export it to production. This allows to improve the interoperability of the models developed by allowing to serialize sklearn pipelines, pytorch and others to onnxruntime thanks to protobuf,. onnxruntime then makes it possible to run these pipelines on platforms other than Python.
 
 Check out `export_to_onnx.ipynb` to see how we serialized our trained model for it to be used in production.
 Refer to `backend/` to see how we are then using it in a production environment.

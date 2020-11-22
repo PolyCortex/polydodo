@@ -25,11 +25,11 @@ In the case of the Cyton, this is done using the serial protocol via an OTG cabl
 
 ## Development Framework
 
-We are using Flutter which is a high-level framework for mobile development. The speed of development and the possibility to develop a cross-platform product (Android and iOS) from a single code repository without sacrificing performances has been the determining factor in the use of this technology. Flutter uses the Dart language which is typed and compiled.
+We are using Flutter which is a high-level framework for mobile development. The speed of development and the possibility to develop a cross-platform product (Android and iOS) from a single code repository without sacrificing performance has been the determining factor in the use of this technology. Flutter uses the Dart language which is typed and compiled.
 
 ## Targeted Platform
 
-We target Android as our only platform. While development frameworks like Flutter allow these two platforms to be targeted using a single source code, there are some small tasks and extra attention that should be paid in this regard. If it became worth it, we will also target iOS in the future.
+We target Android as our only platform. While development frameworks like Flutter allow these two platforms to be targeted using a single source code, there are some small tasks and extra attention that should be paid in this regard. If it becomes worth it, we will also target iOS in the future.
 
 ## Getting Started
 

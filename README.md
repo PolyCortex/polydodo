@@ -53,9 +53,9 @@ Polydodo is composed of two client apps, a web one and a mobile one, through whi
 
 The web client allows the user to upload a data file acquired using an OpenBCI board and then presents him a detailed and personalized analysis of his sleep. Additionally, this client will further detail the process by which we come to classify sleep in stages and offer a review of this process. OpenBCI boards must be configured via OpenBCI GUI and data must be saved on a SD card (Cyton only) or through a session file.
 
-On the other hand, the mobile client offers a tool that can be used on a regular basis. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes, until the end of his acquisition.
+On the other hand, the mobile client offers a tool that can be used on a regular basis. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes to the end of his data acquisition.
 
-Finally, both these clients use a local http server that is easy to installed. This server is local so that your data is not sent over the internet. Biosignals data are sensitive and this is our way to promise you security.
+Finally, both these clients use a local HTTP server that is easy to install. This server is hosted locally so that your data is not sent over the internet. Biosignal data are sensitive and this is our way to promise you security.
 <p align="center">
   <br>
   <img alt="General architecture of the project" src="https://github.com/PolyCortex/polydodo/wiki/img/general_architecture_small.png">
@@ -67,12 +67,12 @@ As the above diagram states, in the case of the mobile application, the data is 
 
 ## Project Structure
 
-This project is split into four different folders that represents the four different standalone parts of our project:
+This project is split into different folders that represent the standalone parts of our project:
 
-- The `ai/` folder contains all of our machine learning prototypes. It mainly consists of a set of notebooks that documents our work. It is there that we trained our sleep stage classification algorithm, validated, tested and serialized it for production. For more information, see [`ai/README.md`](https://github.com/PolyCortex/polydodo/tree/master/ai); and open the notebooks as a lot of documentation is found there;
+- The `ai/` folder contains all of our machine learning prototypes. It mainly consists of a set of notebooks that documents our work. It is there that we trained our sleep stage classification algorithm, validated, tested and serialized it for production. For more information, see [`ai/README.md`](https://github.com/PolyCortex/polydodo/tree/master/ai); and open the notebooks as a lot of documentation can be found there;
 - The `backend/` folder contains the python server that uses the serialized model from the `ai/` notebooks. This is the local server that must be used with the web app and the mobile app. See [`server/README.md`](https://github.com/PolyCortex/polydodo/tree/master/backend);
 - `web/` contains the React web app which is the UI for our project. See [`web/README.md`](https://github.com/PolyCortex/polydodo/tree/master/web) for more info;
-- `mobile` contains the Flutter app. This app is an alternative to our web app. It can interface itself directly to the OpenBCI boards which makes it even simpler to proceed to your own sleep analysis. See [`mobile/README.md`](https://github.com/PolyCortex/polydodo/tree/master/mobile) for more info.
+- `mobile` contains the Flutter app. This app is an alternative to our web app. It can interface directly with OpenBCI boards which makes it even simpler to proceed to your own sleep analysis. See [`mobile/README.md`](https://github.com/PolyCortex/polydodo/tree/master/mobile) for more info.
 
 ## Getting started
 
