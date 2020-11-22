@@ -56,8 +56,39 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              We can see that each colored block represents a part of your night. This timeline starts at your bed time,
-              so <Metric isTime>{bedTime}</Metric>, and ends at the time you got out of bed, whereas&nbsp;
+              This is your sleep time line. Each color represent one of the 5 sleep stages which are&nbsp;
+              <span className="text-red">
+                <strong>Wake</strong>
+              </span>
+              ,&nbsp;
+              <span className="text-yellow">
+                <strong>REM</strong>
+              </span>
+              ,&nbsp;
+              <span className="text-info">
+                <strong>N1</strong>
+              </span>
+              ,&nbsp;
+              <span className="text-blue">
+                <strong>N2</strong>
+              </span>
+              &nbsp;and&nbsp;
+              <span className="text-default">
+                <strong>N3</strong>
+              </span>
+              . Each of the colored blocks reprensent a part of your night that was associated to one of these five
+              stages.
+            </p>
+          </CardBody>
+        </Card>
+      </Row>
+      <div style={{ marginBottom: '125%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 mx-auto">
+          <CardBody>
+            <p>
+              Our timeline starts at the bedtime, so <Metric isTime>{bedTime}</Metric> in your case, and ends at the
+              time you got out of bed, whereas&nbsp;
               <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent&nbsp;
               <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping. According to the American Academy of
               Sleep Medicine, <Metric>{recommendedSleepStage}</Metric>.
