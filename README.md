@@ -1,7 +1,10 @@
 # Polydodo: Automatic Sleep Analysis Tool
 
-![dodo](https://github.com/PolyCortex/polydodo/releases/latest/download/polydodo_app_android.apk
-)
+## Run the apps
+### Web
+Head to [this address](https://polycortex.github.io/polydodo) to test our latest web release.
+### Mobile
+[![dodo](https://img.shields.io/badge/Android-Get_the_Latest_apk-blueviolet?style=flat_square&logo=android)](https://github.com/PolyCortex/polydodo/releases/latest/download/polydodo_app_android.apk)
 
 This projects aims to offer a comprehensive guide to **record polysomnographic EEG data from home** with an OpenBCI, a website to **upload sleep data** to our classifier and an **interactive visualisation** tool to observe the classified night of sleep.
 
