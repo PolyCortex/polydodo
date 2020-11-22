@@ -57,5 +57,5 @@ Run `python -m PyInstaller --onefile app.py`
 - Prior to build, execute build-runner at the root of the mobile folder to generate the app's routes.  
 `flutter packages pub run build_runner watch --delete-conflicting-outputs`
 - You can build the project and try it on your Android device or with the Android emulator.
-  - If you don't own any Android device and still want to try our app, head to [Install android emulator](https://developer.android.com/studio/run/emulator) to install the emulator.
+  - If you don't own any Android device and still want to try our app, head to [Install android emulator](https://developer.android.com/studio/run/emulator) and follow the instructions to get the latest emulator.
   - Build & Launch configurations are already setted for VSCode. Head to the **Run** tab and run the **Mobile debug** option.
