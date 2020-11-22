@@ -79,8 +79,9 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              Our timeline starts at the bedtime, so <Metric isTime>{bedTime}</Metric> in your case, and ends at the
-              time you got out of bed, whereas&nbsp;
+              The time you spent out of bed is not taken into account in this analysis. Thus, our timeline starts at the
+              bedtime, so <Metric isTime>{bedTime}</Metric> in your case, and ends at the time you got out of bed,
+              whereas&nbsp;
               <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent&nbsp;
               <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping. According to the American Academy of
               Sleep Medicine, <Metric>{recommendedSleepStage}</Metric>.
@@ -117,14 +118,25 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
       {isInitialized && (
         <WaypointDirection onDown={instanceChartCallbacks.fromTimeline} onUp={timelineChartCallbacks.fromInstance} />
       )}
-      <div style={{ marginBottom: '125%' }} />
+      <div style={{ marginBottom: '175%' }} />
       <Row>
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
+              Let's first look at your <span className="scrollytelling_cards__w_text">Wake</span> stage. This stage
+              corresponds to when you are fully conscious and active.
+            </p>
+            <p>
               You spent <Metric isDuration>{report.WTime}</Metric> awake through your night. This duration is, in a
               sleep report, usually decomposed as three different components.
             </p>
+          </CardBody>
+        </Card>
+      </Row>
+      <div style={{ marginBottom: '125%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 mx-auto">
+          <CardBody>
             <p>
               First, <strong>sleep latency</strong> corresponds to the time you spend awake in bed before first falling
               asleep, which here is <Metric isDuration>{sleepLatency}</Metric>.
@@ -146,10 +158,14 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <span className="scrollytelling_cards__rem_text">REM</span> stage, which is short for{' '}
-              <i>rapid eyes movement</i>, is the moment of the night where you experience dreams. During this stage,
-              your muscles should be completely immobilized, and on the opposite, the activity of your brain should be
-              very active, which illustrates why this stage is also called paradoxical sleep.
+              <span className="scrollytelling_cards__rem_text">REM</span> stage, which is short for&nbsp;
+              <i>rapid eyes movement</i>, is a stage caracterized by, like its name implies it, rapid eyes movements.
+              During this stage, your muscles are completely immobilized, but on the opposite, your brain and your heart
+              should be very active, which illustrates why this stage is also called paradoxical sleep. This sleep stage
+              therefore closely resembles wake and it is hard to tell the difference using EEG signals. We are dreaming
+              in all sleep stages but this is in the&nbsp;
+              <span className="scrollytelling_cards__rem_text">REM</span> stage that dreams are best remembered and seem
+              the most vivid.
             </p>
           </CardBody>
         </Card>
@@ -160,12 +176,29 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with that drowsy feeling
-              before falling asleep. Most people wouldn’t say they fell asleep if they’ve been woken up from N1 sleep.
+              before falling asleep. It is a transition stage between wake and sleep. This stage is caracterized by a
+              reduced alertness, muscle tone and heart rate. Most people wouldn’t say they fell asleep if they’ve been
+              woken up from N1 sleep.
             </p>
+          </CardBody>
+        </Card>
+      </Row>
+      <div style={{ marginBottom: '100%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 mx-auto">
+          <CardBody>
             <p>
-              <span className="scrollytelling_cards__n2_text">N2</span>&nbsp; stage still corresponds to a light sleep,
-              but where the muscle activity decreases more, and the eyes have stopped moving. It is called, along with
-              N1, <strong>light sleep</strong>.
+              <span className="scrollytelling_cards__n2_text">N2</span>&nbsp; stage corresponds to light sleep. The
+              muscle activity decreases more, and the eyes have stopped moving. In this stage, the sensitivity to
+              external stimuli is still noticeable. On the EEG, this stage can be identified by the presence of&nbsp;
+              <a href="https://en.wikipedia.org/wiki/K-complex" target="_blank" rel="noreferrer">
+                K complexes
+              </a>
+              &nbsp;and&nbsp;
+              <a href="https://en.wikipedia.org/wiki/Sleep_spindle" target="_blank" rel="noreferrer">
+                sleep spindles
+              </a>
+              .
             </p>
           </CardBody>
         </Card>
@@ -178,8 +211,16 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
               <span className="scrollytelling_cards__n3_text">N3</span> stage is when you are deeply asleep, hence it’s
               also called&nbsp;
               <strong>deep sleep</strong>, or sometimes <strong>slow wave sleep</strong>, and is the most difficult to
-              wake up from. It is during those stages that your cells get repaired, and that tissue grows.
+              wake up from. During this stage, virtually no muscle activity can be detected. It is during those stages
+              that your cells get repaired, and that tissue grows. This is considered the most restful phase of sleep.
             </p>
+          </CardBody>
+        </Card>
+      </Row>
+      <div style={{ marginBottom: '100%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 mx-auto">
+          <CardBody>
             <p>
               <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
               <span className="scrollytelling_cards__n2_text">N2</span> and&nbsp;
@@ -201,7 +242,17 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 ml-auto">
           <CardBody>
             <p>
-              We are currently looking at your in bed sleep stage proportions.{' '}
+              This view relativizes the total time spent in each sleep stage according to the other stages. Take your
+              time to hover each stage and compare the time spent in each stage.
+            </p>
+          </CardBody>
+        </Card>
+      </Row>
+      <div style={{ marginBottom: '125%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 ml-auto">
+          <CardBody>
+            <p>
               <span className="scrollytelling_cards__w_text">Wake</span> time may be overrepresented, because it
               includes your sleep latency (<Metric isDuration>{sleepLatency}</Metric>) and the time you spent in bed
               after sleep offset (<Metric isDuration>{wakeAfterSleepOffset}</Metric>).
@@ -209,9 +260,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
             <p>
               We can see that your most prominent sleep stage is <Metric>{mostProminentStage}</Metric>, which in your
               case corresponds to&nbsp;<Metric isDuration>{sleepStageTimes[mostProminentStage]}</Metric>. Usually, the
-              most prominent sleep stage is
-              <Metric>{mostProminentStage === 'N2' && ', as it is in your case, '}</Metric>
-              <span className="scrollytelling_cards__n2_text">N2</span>.
+              most prominent sleep stage is <span className="scrollytelling_cards__n2_text">N2</span>
+              <Metric>{mostProminentStage === 'N2' ? ', as it is in your case. ' : '.'}</Metric>
             </p>
           </CardBody>
         </Card>
