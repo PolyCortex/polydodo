@@ -18,6 +18,7 @@ import previewSequence from 'assets/data/predicted_william_cyton';
 import './style.css';
 import SleepMechanisms from './sleep_mechanisms';
 import TipsToImproveSleep from './improve_sleep_tips';
+import Metric from './metric';
 
 const SleepAnalysisResults = ({ location }) => {
   const [response] = useGlobalState('response');
@@ -76,16 +77,23 @@ const SleepAnalysisResults = ({ location }) => {
   const hypnogramIntro = (
     <Container className="text-justify mt-5">
       <h4>Hypnogram</h4>
-      <p>
+      <p className="mt-3">
         A hypnogram allows you to visually inspect the evolution of your night, through time. The vertical axis
         represents how hard it is to wake up, namely the sleep deepness. We see that REM is one of the lightest sleep
         stages (along with N1), because we unknowingly wake up from that stage. Those short periods of arousal often
         last no longer than 15 seconds, are followed by a lighter sleep stage, and cannot be remembered the next
-        morning. If they are too frequent, they can affect your sleep quality. [5] We can see that, throughout the
-        night, stages follow about the same pattern, whereas we go from NREM (either N1, N2 and N3) and then to REM, and
-        so on. We call those sleep cycles, and those typically range from four to six, each one lasting from 90 to 110
-        minutes. Another commonly looked at measurement is the time between sleep onset and the first REM epoch, namely
-        REM latency, which corresponds to 20 minutes.
+        morning. If they are too frequent, they can affect your sleep quality. Considering that we only have a 30
+        seconds resolution, as we scored the night for each 30 seconds epochs, we can see that you have woken up{' '}
+        <Metric>{report.awakenings}</Metric> times.
+      </p>
+      <p>
+        We can also see that, throughout the night, stages follow about the same pattern, whereas we go from NREM
+        (either N1, N2 and N3) and then to REM, and so on. We call those sleep cycles, and those typically range from
+        four to six, each one lasting from 1 hour and a half to almost 2 hours. Another commonly looked at measurement
+        is the time between sleep onset and the first REM epoch, namely REM latency, which corresponds to{' '}
+        <Metric isDuration>{report.remLatency}</Metric>. It can be interesting as paradoxical sleep{' '}
+        <q>is very sensitive to the effects of medication, sleep deprivation, and circadian rhythm disorders</q>{' '}
+        (Shrivastava et al., “How to Interpret the Results of a Sleep Study.”).
       </p>
     </Container>
   );

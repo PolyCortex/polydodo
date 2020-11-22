@@ -23,7 +23,15 @@ const SleepMechanisms = () => (
         <FloatingCard
           cardClassName="bg-primary"
           headerText="Sleep Homeothesis"
-          bodyText="Sleep homeostasis is a biological regulatory process that rules over how much sleep time and intensity you need to get.  It is tightly coupled with the 'sleep debt' concept as the more you are awake, the more and the deeper you'll need to eventually sleep."
+          bodyText={
+            <p>
+              Sleep homeostasis is a biological regulatory process that rules over how much sleep time and intensity you
+              need to get. It is tightly coupled with the <q>sleep debt</q> concept as the more you are awake, the more
+              and the deeper you'll need to eventually sleep. One of the main factors that explains this comes from the
+              adenosine cycle. When you are awake, the level of adenosine continuously increases in the brain. When we
+              sleep, it is the opposite, it continuously falls.
+            </p>
+          }
         />
       </Col>
     </CardDeck>

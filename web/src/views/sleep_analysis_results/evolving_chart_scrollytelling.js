@@ -13,6 +13,7 @@ import createEvolvingChart, {
   stackedBarChartCallbacks,
 } from 'd3/evolving_chart/evolving_chart';
 import { STAGES_ORDERED } from 'd3/constants';
+import Metric from './metric';
 
 const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -20,6 +21,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   const { bedTime, wakeUpTime, totalBedTime } = metadata;
   const {
     efficientSleepTime,
+    sleepTime,
     sleepOnset,
     sleepOffset,
     sleepLatency,
@@ -33,20 +35,6 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   );
   const numberStagesTraversed = _.filter(sleepStageTimes, (time) => time > 0).length;
   const mostProminentStage = _.maxBy(_.keys(sleepStageTimes), (stage) => sleepStageTimes[stage]);
-
-  const Metric = ({ children }) => (
-    <span className="text-primary">
-      <strong>{children}</strong>
-    </span>
-  );
-
-  const getTimeString = (numberSecondsUTC) => <Metric>{new Date(numberSecondsUTC * 1000).toLocaleTimeString()}</Metric>;
-  const getDurationString = (numberSeconds) => {
-    const nbHours = Math.floor(numberSeconds / 3600);
-    const nbMinutes = Math.floor((numberSeconds % 3600) / 60);
-
-    return <Metric>{nbHours > 0 ? `${nbHours} hours and ${nbMinutes} minutes` : `${nbMinutes} minutes`}</Metric>;
-  };
 
   return (
     <Container className="text-justify">
@@ -64,11 +52,15 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
           <CardBody>
             <p>
               We can see that each colored block represents a part of your night. This timeline starts at your bed time,
-              so {getTimeString(bedTime)}, and ends at the time you got out of bed, whereas {getTimeString(wakeUpTime)}.
-              Of this total time, you spent {getDurationString(efficientSleepTime)} actually sleeping. You first fell
-              asleep at {getTimeString(sleepOnset)}, to which we will refer to as sleep onset. You woke up at{' '}
-              {getTimeString(sleepOffset)}, which can also be referred to as sleep offset. During that night's sleep,
-              you went through {numberStagesTraversed} different stages. Let's take a look at them.
+              so <Metric isTime>{bedTime}</Metric>, and ends at the time you got out of bed, whereas{' '}
+              <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent{' '}
+              <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping.
+            </p>
+            <p>
+              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, to which we will refer to as sleep onset.
+              You woke up at <Metric isTime>{sleepOffset}</Metric>, which can also be referred to as sleep offset.
+              During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different stages.
+              Let's take a look at them.
             </p>
           </CardBody>
         </Card>
@@ -81,21 +73,21 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              You spent {getDurationString(report.WTime)} awake through your night. This duration is, in a sleep report,
-              usually decomposed as three different components.
+              You spent <Metric isDuration>{report.WTime}</Metric> awake through your night. This duration is, in a
+              sleep report, usually decomposed as three different components.
             </p>
             <p>
               First, <strong>sleep latency</strong> corresponds to the time you spend in bed before first falling
-              asleep, which here is {getDurationString(sleepLatency)}.
+              asleep, which here is <Metric isDuration>{sleepLatency}</Metric>.
             </p>
             <p>
               Secondly, <strong>wake after sleep onset</strong>, often abbreviated as WASO, is the time spent awake
-              after first falling asleep and before waking up. In your case, it corresponds to {getDurationString(WASO)}
-              .
+              after first falling asleep and before waking up. In your case, it corresponds to{' '}
+              <Metric isDuration>{WASO}</Metric>.
             </p>
             <p>
               Thirdly, the time you spend in bed after waking up and getting out of bed, here being{' '}
-              {getDurationString(wakeAfterSleepOffset)}, is called <strong>wake after sleep offset</strong>.
+              <Metric isDuration>{wakeAfterSleepOffset}</Metric>, is called <strong>wake after sleep offset</strong>.
             </p>
           </CardBody>
         </Card>
@@ -156,13 +148,14 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
           <CardBody>
             <p>
               We are currently looking at your in bed sleep stage proportions. Wake time may be overrepresented, because
-              it includes your sleep latency ({getDurationString(sleepLatency)}) and the time you spent in bed after
-              waking up ({getDurationString(wakeAfterSleepOffset)}).
+              it includes your sleep latency (<Metric isDuration>{sleepLatency}</Metric>) and the time you spent in bed
+              after waking up (<Metric isDuration>{wakeAfterSleepOffset}</Metric>).
             </p>
             <p>
               We can see that your most prominent sleep stage is <Metric>{mostProminentStage}</Metric>, which in your
-              case corresponds to&nbsp;{getDurationString(sleepStageTimes[mostProminentStage])}. Usually, the most
-              prominent sleep stage is&nbsp;{mostProminentStage === 'N2' && ', as it is in your case, '}N2.
+              case corresponds to&nbsp;<Metric isDuration>{sleepStageTimes[mostProminentStage]}</Metric>. Usually, the
+              most prominent sleep stage is{' '}
+              <Metric>{mostProminentStage === 'N2' && ', as it is in your case, '}</Metric>N2.
             </p>
           </CardBody>
         </Card>
@@ -175,7 +168,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
               From here, we can also look at your sleep efficiency, which is the proportion of time spent asleep over
               the overall time spent in bed. In your case, it corresponds to&nbsp;
               <Metric>{(sleepEfficiency * 100).toFixed()}%</Metric>, or&nbsp;
-              {getDurationString(sleepEfficiency * totalBedTime)}.
+              <Metric isDuration>{sleepEfficiency * totalBedTime}</Metric>.
             </p>
           </CardBody>
         </Card>
