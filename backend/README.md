@@ -36,7 +36,7 @@ apt-get install libgomp1    # on linux
 brew install libomp         # on macos
 ```
 
-## Run the server
+### Run the server
 
 If you want to run the backend with hot reload enabled (you must have installed the development requirements), run the following command.
 
@@ -44,7 +44,7 @@ If you want to run the backend with hot reload enabled (you must have installed 
 hupper -m app
 ```
 
-## Run the tests
+### Run the tests
 
 You can run our unit tests with the following command, after installing the development requirements:
 
@@ -52,7 +52,7 @@ You can run our unit tests with the following command, after installing the deve
 pytest
 ```
 
-## Profile application
+### Profile application
 *A profile is a set of statistics that describes how often and for how long various parts of the program executed.* -[Python Software Foundation](https://docs.python.org/3/library/profile.html)
 
 - Run `python profiler.py`
@@ -61,6 +61,6 @@ pytest
 
 - Open the profiler result contained in `profiles` folder with `snakeviz`
 
-## Building the server as a single executable
+### Building the server as a single executable
 
 Run `python -m PyInstaller --onefile app.py`
