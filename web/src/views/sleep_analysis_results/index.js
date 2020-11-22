@@ -34,7 +34,7 @@ const SleepAnalysisResults = ({ location }) => {
     );
   }
   const data = isPreviewMode ? previewSequence : response.data;
-  const { epochs, report, metadata } = data;
+  const { epochs, report, metadata, subject } = data;
   const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   const sleepAnalysisIntro = (
@@ -76,8 +76,8 @@ const SleepAnalysisResults = ({ location }) => {
 
   const hypnogramIntro = (
     <Container className="text-justify mt-5">
-      <h4>Hypnogram</h4>
-      <p className="mt-3">
+      <h3>Hypnogram</h3>
+      <p className="mt-3 lead">
         A hypnogram allows you to visually inspect the evolution of your night, through time. The vertical axis
         represents how hard it is to wake up, namely the sleep deepness. We see that REM is one of the lightest sleep
         stages (along with N1), because we unknowingly wake up from that stage. Those short periods of arousal often
@@ -93,7 +93,7 @@ const SleepAnalysisResults = ({ location }) => {
         is the time between sleep onset and the first REM epoch, namely REM latency, which corresponds to{' '}
         <Metric isDuration>{report.remLatency}</Metric>. It can be interesting as paradoxical sleep{' '}
         <q>is very sensitive to the effects of medication, sleep deprivation, and circadian rhythm disorders</q>{' '}
-        (Shrivastava et al., “How to Interpret the Results of a Sleep Study.”).
+        [Shrivastava and al., 2014].
       </p>
     </Container>
   );
@@ -111,8 +111,8 @@ const SleepAnalysisResults = ({ location }) => {
 
   const spectrogramIntro = (
     <Container className="text-justify">
-      <h4 className="mt-5">Spectrogram</h4>
-      <p>
+      <h3 className="mt-5">Spectrogram</h3>
+      <p className="lead">
         Below are represented spectrograms of both your EEG channels. Spectrograms can be viewed as if we took all of
         your signals, we’ve separated it in contiguous 30 seconds chunks, stacked then horizontally and to which we’ve
         applied the fast fourier transform. We then have, for each 30 seconds epoch, the corresponding amplitudes for
@@ -122,7 +122,7 @@ const SleepAnalysisResults = ({ location }) => {
         We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
         signal power instead of signal amplitude, because we look at the spectrums in a logarithmic scale.
       </p>
-      <h5>How to read it?</h5>
+      <h4>How to read it?</h4>
       <p>
         Yellow therefore means that in that 30 seconds time frame, that particular frequency had a big amplitude. Pink
         means that you had that frequency with a lower amplitude. Purple means that you didn’t have that frequency in
@@ -170,6 +170,31 @@ const SleepAnalysisResults = ({ location }) => {
     </Container>
   );
 
+  const references = (
+    <Container className="my-6">
+      <small className="text-muted text-justify">
+        <div className="mt-2">
+          [Paruthi and al., 2016] S. Paruthi, L. J. Brooks, C. Dambrosio, W. A. Hall, S. Kotagal, R. M. Lloyd, B. A.
+          Malow, K. Maski, C. Nichols, S. F. Quan, C. L. Rosen, M. M. Troester, and M. S. Wise, “Recommended Amount of
+          Sleep for Pediatric Populations: A Consensus Statement of the American Academy of Sleep Medicine,” Journal of
+          Clinical Sleep Medicine, vol. 12, no. 06, pp. 785–786, 2016.
+        </div>
+        <div className="mt-2">
+          [Watson and al., 2015] N. F. Watson, M. S. Badr, G. Belenky, D. L. Bliwise, O. M. Buxton, D. Buysse, D. F.
+          Dinges, J. Gangwisch, M. A. Grandner, C. Kushida, R. K. Malhotra, J. L. Martin, S. R. Patel, S. F. Quan, and
+          E. Tasali, “Recommended Amount of Sleep for a Healthy Adult: A Joint Consensus Statement of the American
+          Academy of Sleep Medicine and Sleep Research Society,” Journal of Clinical Sleep Medicine, vol. 11, no. 06,
+          pp. 591–592, 2015.
+        </div>
+        <div className="mt-2">
+          [Shrivastava and al., 2014] D. Shrivastava, S. Jung, M. Saadat, R. Sirohi, and K. Crewson, “How to interpret
+          the results of a sleep study,” Journal of Community Hospital Internal Medicine Perspectives, vol. 4, no. 5, p.
+          24983, 2014.
+        </div>
+      </small>
+    </Container>
+  );
+
   return (
     <>
       <Header
@@ -180,7 +205,7 @@ const SleepAnalysisResults = ({ location }) => {
         description={text['header_description']}
       />
       {sleepAnalysisIntro}
-      <EvolvingChartScrollyTelling epochs={epochs} report={report} metadata={metadata} />
+      <EvolvingChartScrollyTelling epochs={epochs} report={report} metadata={metadata} subject={subject} />
       {evolvingChartOutro}
       {hypnogramIntro}
       <Container>
@@ -191,6 +216,7 @@ const SleepAnalysisResults = ({ location }) => {
       <SpectrogramScrollyTelling spectrograms={data.spectrograms} epochs={data.epochs} />
       {spectrogramOutro}
       {callToAction}
+      {references}
     </>
   );
 };

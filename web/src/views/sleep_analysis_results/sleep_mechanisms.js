@@ -12,11 +12,14 @@ const SleepMechanisms = () => (
         <FloatingCard
           cardClassName="bg-warning"
           headerText="Circadian Rhythms"
-          bodyText="
-                This is your biological clock! It is a self-sustained internal proccess responsable for regulating your
-                sleep and wake cycles every 24 hours. This is why you feel sleepy at night and awake during the day. Some habits
-                or events may have an influence on these rhythms. Sleep cycles then take place in these broader processes.
-          "
+          bodyText={
+            <p>
+              This is your biological clock! It is a self-sustained internal proccess responsable for regulating your
+              sleep and wake cycles every 24 hours. This is why you feel sleepy at night and awake during the day. Some
+              habits or events may have an influence on these rhythms. Sleep cycles then take place in these broader
+              processes.
+            </p>
+          }
         />
       </Col>
       <Col lg="6">

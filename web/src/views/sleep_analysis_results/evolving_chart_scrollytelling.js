@@ -15,7 +15,7 @@ import createEvolvingChart, {
 import { STAGES_ORDERED } from 'd3/constants';
 import Metric from './metric';
 
-const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
+const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { bedTime, wakeUpTime, totalBedTime } = metadata;
@@ -35,7 +35,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   );
   const numberStagesTraversed = _.filter(sleepStageTimes, (time) => time > 0).length;
   const mostProminentStage = _.maxBy(_.keys(sleepStageTimes), (stage) => sleepStageTimes[stage]);
-
+  const recommendedSleepStage =
+    parseInt(subject.age) > 18
+      ? 'an adult should sleep more than 7 hours per night to promote optimal health [Watson and al., 2015]'
+      : 'teenagers, from 13 to 18 years of age, should sleep 8 to 10 hours on a regular basis to promote optimal health [Paruthi and al., 2016]';
   return (
     <Container className="text-justify">
       <div style={{ position: 'sticky', top: '10%' }}>
@@ -54,8 +57,16 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
               We can see that each colored block represents a part of your night. This timeline starts at your bed time,
               so <Metric isTime>{bedTime}</Metric>, and ends at the time you got out of bed, whereas{' '}
               <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent{' '}
-              <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping.
+              <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping. According to the American Academy of
+              Sleep Medicine, <Metric>{recommendedSleepStage}</Metric>.
             </p>
+          </CardBody>
+        </Card>
+      </Row>
+      <div style={{ marginBottom: '125%' }} />
+      <Row>
+        <Card className="shadow col-lg-6 mx-auto">
+          <CardBody>
             <p>
               You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, to which we will refer to as sleep onset.
               You woke up at <Metric isTime>{sleepOffset}</Metric>, which can also be referred to as sleep offset.
