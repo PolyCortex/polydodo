@@ -19,7 +19,7 @@
   </a>
  </p>
 
-This mobile app receives, scores, saves and aggregates sleep sequences. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes, until the end of his acquisition. It does not require the use of OpenBCI GUI as it directly interface itself with the OpenBCI board.
+This mobile app receives, scores, saves and aggregates sleep sequences. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes, until the end of their data acquisition. It does not require the use of OpenBCI GUI since it directly interfaces with the OpenBCI board.
 
 In the case of the Cyton, this is done using the serial protocol via an OTG cable that is plugged into the phone and with the Cyton Dongle plugged in. In the case of the Ganglion, the connection is made by bluetooth.
 
