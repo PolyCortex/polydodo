@@ -191,6 +191,10 @@ const SleepAnalysisResults = ({ location }) => {
           the results of a sleep study,” Journal of Community Hospital Internal Medicine Perspectives, vol. 4, no. 5, p.
           24983, 2014.
         </div>
+        <div className="mt-2">
+          [D. Purves et al., 2001] D. Purves et al., “Stages of Sleep,” Neuroscience. 2nd edition, 2001, Accessed: Nov.
+          22, 2020. [Online]. Available: https://www.ncbi.nlm.nih.gov/books/NBK10996/.
+        </div>
       </small>
     </Container>
   );
