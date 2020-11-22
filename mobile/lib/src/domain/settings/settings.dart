@@ -10,7 +10,7 @@ class Settings extends Equatable {
 
   Settings(
       {this.age = 30, this.serverAddress = '0.0.0.0', this.sex = Sex.NotSet})
-      : assert(age != null || (age == null && age > 12 && age < 125)),
+      : assert(age != null || (age == null && age > MIN_AGE && age < MAX_AGE)),
         assert(
             serverAddress != null || IP_ADDRESS_REGEX.hasMatch(serverAddress)),
         assert(sex != null);
