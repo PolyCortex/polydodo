@@ -56,16 +56,30 @@ const SleepAnalysisResults = ({ location }) => {
   const evolvingChartOutro = (
     <>
       <Container className="text-justify">
-        <p>
+        <p className="lead">
           We have seen that sleep can be decomposed into two stages, whereas REM and NREM. We’ve also defined other
           measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time.
+        </p>
+        <h4>This is about your hormones</h4>
+        <p className="lead">
+          Hormones such as melatonin and cortisol play a decisive role in sleep. In fact, it is their variation that
+          partly explains the circadian cycle.
+        </p>
+        <p className="lead">
+          During the day, a neurotranmitter called serotonin gradually accumulates in the pineal gland. When it gets
+          dark, the pineal gland synthesizes melatonin which is a hormone that is synthesized in the pineal gland from
+          this serotonin. Melatonin helps induce the sleepiness that prevails in the evening. Exposure to light
+          including that of screens, street lighting, etc. inhibits the secretion of melatonin and impairs sleep. On the
+          other hand, in the morning, the adrenal gland secretes the hormone cortisol from cholesterol. Its effect is to
+          promote light sleep and possibly awake. Any imbalance in these hormones or their secretion can have an
+          inhibiting effect on sleep.
         </p>
       </Container>
       <SleepMechanisms />
       <section className="section bg-secondary pt-150">
         <Container className="text-justify">
           <TipsToImproveSleep />
-          <p>
+          <p className="lead">
             Although we’ve looked at many aspects of your night’s sleep, we haven’t properly looked at your sleep
             dynamics, whereas how your sleep evolves overnight.
           </p>
@@ -83,16 +97,16 @@ const SleepAnalysisResults = ({ location }) => {
         stages (along with N1), because we unknowingly wake up from that stage. Those short periods of arousal often
         last no longer than 15 seconds, are followed by a lighter sleep stage, and cannot be remembered the next
         morning. If they are too frequent, they can affect your sleep quality. Considering that we only have a 30
-        seconds resolution, as we scored the night for each 30 seconds epochs, we can see that you have woken up{' '}
+        seconds resolution, as we scored the night for each 30 seconds epochs, we can see that you have woken up&nbsp;
         <Metric>{report.awakenings}</Metric> times.
       </p>
       <p>
         We can also see that, throughout the night, stages follow about the same pattern, whereas we go from NREM
         (either N1, N2 and N3) and then to REM, and so on. We call those sleep cycles, and those typically range from
         four to six, each one lasting from 1 hour and a half to almost 2 hours. Another commonly looked at measurement
-        is the time between sleep onset and the first REM epoch, namely REM latency, which corresponds to{' '}
-        <Metric isDuration>{report.remLatency}</Metric>. It can be interesting as paradoxical sleep{' '}
-        <q>is very sensitive to the effects of medication, sleep deprivation, and circadian rhythm disorders</q>{' '}
+        is the time between sleep onset and the first REM epoch, namely REM latency, which corresponds to&nbsp;
+        <Metric isDuration>{report.remLatency}</Metric>. It can be interesting as paradoxical sleep&nbsp;
+        <q>is very sensitive to the effects of medication, sleep deprivation, and circadian rhythm disorders</q>&nbsp;
         [Shrivastava and al., 2014].
       </p>
     </Container>
@@ -129,7 +143,7 @@ const SleepAnalysisResults = ({ location }) => {
         the signal.
       </p>
       <p>
-        To get a better understanding at how spectrograms work, you can{' '}
+        To get a better understanding at how spectrograms work, you can&nbsp;
         <a href="https://musiclab.chromeexperiments.com/Spectrogram/" rel="noopener noreferrer" target="_blank">
           check out this example
         </a>

@@ -10,7 +10,7 @@ const PreviewModeWarning = () => (
     <span>
       <Emoji symbol="⚠️" />
       <strong> You are in preview mode. </strong>
-      The data that is shown here comes from a recording we took on{' '}
+      The data that is shown here comes from a recording we took on&nbsp;
       {new Date(BEDTIME_PREVIEW_MODE_TIMESTAMP).toDateString()} <Emoji symbol="⚠️" />
     </span>
   </Alert>
