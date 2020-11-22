@@ -1,3 +1,24 @@
+<p align="center">
+   <a href="https://polycortex.github.io/polydodo/#/">
+    <img src="https://img.shields.io/badge/Coming soon-Android-3EDDC84?logo=Android"
+         alt="web client">
+  </a>
+     <a href="https://polycortex.github.io/polydodo/#/">
+    <img src="https://img.shields.io/badge/Coming soon-iOS-purple?logo=Apple"
+         alt="web client">
+  </a>
+  <a href="https://polycortex.github.io/polydodo/#/">
+    <img src="https://img.shields.io/badge/Language-Dart-blue?logo=Dart"
+         alt="web client">
+  </a>
+    <a href="https://polycortex.github.io/polydodo/#/">
+    <img src="https://img.shields.io/badge/Framework-Flutter-44D1fd?logo=Flutter"
+         alt="web client">
+  </a>
+ </p>
+  
+  
+
 # Polydodo mobile client
 
 This mobile app receives, scores, saves and aggregates sleep sequences. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes, until the end of his acquisition. It does not require the use of OpenBCI GUI as it directly interface itself with the OpenBCI board.
