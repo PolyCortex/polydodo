@@ -57,9 +57,8 @@ const Performance = () => {
       />
       <Container className="mt-5 text-justify">
         <p>
-          Ever wonder what is the value of this application? This page aims to illustrate the relative performance of
-          our sleep scoring compared to clinical hypnogram scoring (which is usually considered the state-of-the-art
-          technique).
+          This page aims to illustrate the relative performance of our sleep scoring compared to clinical hypnogram
+          scoring (which is usually considered the state-of-the-art technique).
         </p>
         <p>
           <strong>Here is the plan:</strong>
