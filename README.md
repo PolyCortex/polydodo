@@ -60,7 +60,7 @@ Finally, both these clients use a local http server that is easy to installed. T
   <br>
   <img alt="General architecture of the project" src="https://github.com/PolyCortex/polydodo/wiki/img/general_architecture_small.png">
   <br>
-*Figure 1. Technology diagram with the flow of incoming and outgoing data to clients.*
+<i>Figure 1. Technology diagram with the flow of incoming and outgoing data to clients.</i>
  </p>
 
 As the above diagram states, in the case of the mobile application, the data is received in real time, and in the case of the web application, the data is received asynchronously. In both cases, the data is classified after the end of the acquisition on the local server.
