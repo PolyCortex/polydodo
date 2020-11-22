@@ -34,7 +34,7 @@ ___
 
 This project aims to offer a cheaper and more accessible way to perform sleep studies from home. To achieve this, a machine learning classifier is used to automate the manual sleep scoring step. This drastically cuts the time needed to process each and every sleep sequences and it completely eliminates the learning curve associated with manual sleep scoring.
 
-🌐 Our web application does exactly all that and is available at [this link](https://polycortex.github.io/polydodo/). Check it out!
+🌐 Our web application does exactly all that and is available [here](https://polycortex.github.io/polydodo/). Check it out!
 
 🤖 Our Android app is underway. Give us a star to stay tuned for upcoming news about its release!
 
