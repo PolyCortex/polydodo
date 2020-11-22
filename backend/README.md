@@ -1,4 +1,4 @@
-# Classification backend (local server)
+# Polydodo classification backend (local server)
 
 <p align="center">
    <a href="https://falcon.readthedocs.io/en/stable/">
