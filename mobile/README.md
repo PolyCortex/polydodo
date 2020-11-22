@@ -20,7 +20,7 @@ We target Android as our only platform. While development frameworks like Flutte
   - Android Studio is a great tool as it installs the required Android SDK, but also provides an Android Virtual Device manager which allows you to emulate an android device.
 
 ### Setup
-First, download the required dependencies using:
+First, at the root of the mobile/ folder, download the required dependencies using:
 ```
 flutter pub get
 ```
@@ -36,6 +36,7 @@ Once you have an emulator setup or a connection to your live device, you can now
 ```
 flutter run
 ```
+If you are using Microsoft's Visual Studio Code IDE, build & Launch configurations are already setted for you. Head to the **Run** tab and run the **Mobile debug** option.
 
 ## Learn more
 
