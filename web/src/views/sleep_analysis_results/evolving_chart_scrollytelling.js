@@ -243,7 +243,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               This view relativizes the total time spent in each sleep stage according to the other stages. Take your
-              time to hover each stage and compare the time spent in each stage.
+              time to compare the time spent in each stage. Note that the horizontal axis now represents the time spent
+              in hours since bedtime.
             </p>
           </CardBody>
         </Card>
@@ -300,8 +301,9 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           </CardBody>
         </Card>
       </Row>
+      <div style={{ marginBottom: '125%' }} />
       <Row>
-        <div style={{ marginBottom: '70%' }} />
+        <div style={{ marginBottom: '100%' }} />
       </Row>
     </Container>
   );
