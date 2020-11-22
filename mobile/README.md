@@ -4,7 +4,7 @@
          alt="web client">
   </a>
      <a href="https://polycortex.github.io/polydodo/#/">
-    <img src="https://img.shields.io/badge/Coming soon-iOS-purple?logo=Apple"
+    <img src="https://img.shields.io/badge/Future release-iOS-purple?logo=Apple"
          alt="web client">
   </a>
   <a href="https://polycortex.github.io/polydodo/#/">
