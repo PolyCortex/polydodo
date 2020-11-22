@@ -14,10 +14,22 @@ We target Android as our only platform. While development frameworks like Flutte
 
 ## Getting Started
 
-- Install the latest stable version of flutter
+### Prerequisites:
+- Install the latest stable version of [flutter](https://flutter.dev/docs/get-started/install/).
+- Install the latest stable version of [Android Studio](https://developer.android.com/studio/index.html).
+  - Android Studio is a great tool as it installs the required Android SDK, but also provides an Android Virtual Device manager which allows you to emulate an android device.
+
+### Setup:
+First, download the required dependencies using:
+`flutter pub get`
 
 Prior to build execute build-runner to generate the app's routes.  
 `flutter packages pub run build_runner watch --delete-conflicting-outputs`
+
+You now have the option to run the app on an emulator or on a live device. If you wish to run the app on a live device, you will need to use [Android Debug Brige](https://developer.android.com/studio/command-line/adb).
+
+Once you have an emulator setup or a connection to your live device, you can now run the app using:
+`flutter run`
 
 ## Learn more
 

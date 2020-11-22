@@ -6,9 +6,17 @@ This app was designed on top of React.js and the data visualizations were create
 
 ## Getting started
 
-- Install Yarn package manager
-- Open VS Code workspace `polydodo.code-workspace`
-- Install Python packages by running `pip install --user -r backend/requirements.txt`
-- Install node modules by running `yarn install --cwd web`
-- Fetch Flutter dependencies through the `Flutter` extension
-- Start dev server by running `python backend/app.py`
+### Prerequisites:
+- Install the latest stable version of  [Yarn package manager](https://classic.yarnpkg.com/lang/en/).
+- Install the latest LTS version of [Node.js](https://nodejs.org/en/download/).
+- We will also be needing [Python](https://www.python.org/downloads/).
+  - We recommend installing Python 3 as it is the version required for the backend.
+
+### Setup
+Open VS Code workspace and then open a new terminal for the web directory. 
+
+Install the required node modules using:
+`yarn install`
+
+Aftwards, it is possible to run the web client using:
+`yarn run start`
