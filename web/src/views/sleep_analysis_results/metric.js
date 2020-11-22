@@ -11,10 +11,11 @@ const Metric = ({ isTime, isDuration, children }) => {
   };
 
   let content = children;
+
   if (isTime) {
-    content = getTimeString(children);
+    content = content !== null ? getTimeString(children) : 'never';
   } else if (isDuration) {
-    content = getDurationString(children);
+    content = content !== null ? getDurationString(children) : '0 minutes';
   }
 
   return (
