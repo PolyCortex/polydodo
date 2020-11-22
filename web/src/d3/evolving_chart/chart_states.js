@@ -11,6 +11,7 @@ export const createTimelineChartCallbacks = (g, xTime, xTimeAxis, color, tooltip
   Object({
     fromInitial: () => {
       const annotationRects = g.selectAll('.rect-stacked').interrupt();
+      g.selectAll('text.proportion').remove();
 
       setAttrOnAnnotationRects(annotationRects, xTime, 0, color, tooltip);
 
@@ -21,7 +22,7 @@ export const createTimelineChartCallbacks = (g, xTime, xTimeAxis, color, tooltip
     },
     fromInstance: () => {
       const annotationRects = g.selectAll('.rect-stacked').interrupt();
-
+      g.selectAll('text.proportion').remove();
       g.selectAll('.y.visualization__axis').remove();
 
       setAttrOnAnnotationRects(annotationRects, xTime, 0, color, tooltip);
@@ -34,6 +35,7 @@ export const createInstanceChartCallbacks = (g, data, xTime, xTimeAxis, yAxis, c
   Object({
     fromTimeline: () => {
       const annotationRects = g.selectAll('.rect-stacked').interrupt();
+      g.selectAll('text.proportion').remove();
 
       createVerticalAxis(g, yAxis, color);
       transitionHorizontalAxis(g, STAGES_ORDERED.length * BAR_HEIGHT);
@@ -56,7 +58,6 @@ export const createInstanceChartCallbacks = (g, data, xTime, xTimeAxis, yAxis, c
 export const createBarChartCallbacks = (g, data, xAxisLinear, yAxis, color, tip) =>
   Object({
     fromInstance: () => {
-      const { firstStageIndexes, stageTimeProportions } = data;
       const annotationRects = g.selectAll('.rect-stacked').interrupt();
       const xProportionCallback = getOffsetSleepStageProportionCallback(data);
 
@@ -68,13 +69,7 @@ export const createBarChartCallbacks = (g, data, xAxisLinear, yAxis, color, tip)
         .duration(TRANSITION_TIME_MS)
         .attr('y', getVerticalPositionCallback)
         .attr('x', xProportionCallback)
-        .on('end', () => {
-          // Only keep the first rectangle of each stage to be visible
-          g.selectAll('.rect-stacked')
-            .attr('x', 0)
-            .attr('width', getFirstRectangleProportionWidthCallback(firstStageIndexes, stageTimeProportions));
-          createProportionLabels(g, data);
-        });
+        .on('end', () => setFirstRectangleToBeAsWideAsStageProportion(data, g));
     },
     fromStackedBarChart: () => {
       const annotationRects = g.selectAll('.rect-stacked').interrupt();
@@ -90,7 +85,7 @@ export const createBarChartCallbacks = (g, data, xAxisLinear, yAxis, color, tip)
         .transition()
         .duration(TRANSITION_TIME_MS / 2)
         .attr('x', 0)
-        .on('end', () => createProportionLabels(g, data));
+        .on('end', () => setFirstRectangleToBeAsWideAsStageProportion(data, g));
     },
   });
 
@@ -146,6 +141,16 @@ const setAttrOnAnnotationRects = (annotationRects, x, yPosition, color, tooltip)
     .attr('y', yPosition)
     .attr('width', ({ end, start }) => x(end) - x(start))
     .attr('fill', ({ stage }) => color(stage));
+
+const setFirstRectangleToBeAsWideAsStageProportion = (data, g) => {
+  const { firstStageIndexes, stageTimeProportions } = data;
+
+  // Only keep the first rectangle of each stage to be visible
+  g.selectAll('.rect-stacked')
+    .attr('x', 0)
+    .attr('width', getFirstRectangleProportionWidthCallback(firstStageIndexes, stageTimeProportions));
+  createProportionLabels(g, data);
+};
 
 const setTooltip = (element, tooltip) =>
   element
