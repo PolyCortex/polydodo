@@ -14,8 +14,7 @@ class SettingsRepository extends ISettingsRepository {
 
     return Settings(
       age: _prefs.getInt(settings_keys.AGE),
-      serverAddress:
-          _prefs.getString(settings_keys.SERVER_ADDRESS) ?? 'Not Set',
+      serverAddress: _prefs.getString(settings_keys.SERVER_ADDRESS),
       sex: Sex.values[(_prefs.getInt(settings_keys.SEX)) ?? Sex.NotSet.index],
     );
   }
@@ -23,7 +22,8 @@ class SettingsRepository extends ISettingsRepository {
   @override
   Future<Settings> store(Settings newSettings) async {
     await _prefs.setInt(settings_keys.AGE, newSettings.age);
-    await _prefs.setInt(settings_keys.SERVER_ADDRESS, newSettings.age);
+    await _prefs.setString(
+        settings_keys.SERVER_ADDRESS, newSettings.serverAddress);
     await _prefs.setInt(settings_keys.SEX, newSettings.sex.index);
 
     return newSettings;
