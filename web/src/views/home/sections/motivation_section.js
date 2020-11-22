@@ -7,7 +7,7 @@ const MotivationSection = () => (
       <h2 className="mt-3">Why Would I Analyze My Sleep?</h2>
       <p className="lead text-justify">
         Although we spend a major part of our day sleeping, we cannot truly understand what happens during this time, as
-        sleep is inherently an altered state of consciousness. With Polydodo we offer an accessible way to answer the
+        sleep is inherently an altered state of consciousness. With Polydodo we offer a practical and fairly accurate way to answer the
         question "How was my sleep?".
       </p>
       <p className="text-justify">

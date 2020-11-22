@@ -64,7 +64,7 @@ const TeamSection = () => (
             <span className="btn-inner--icon mr-1 text-primary">
               <i className="fas fa-globe" />
             </span>
-            <span className="btn-inner--text text-primary">Go To Website</span>
+            <span className="btn-inner--text text-primary">Learn more</span>
           </Button>
         </Col>
       </Row>
