@@ -15,6 +15,8 @@ import createEvolvingChart, {
 import { STAGES_ORDERED } from 'd3/constants';
 import Metric from './metric';
 
+import './style.css';
+
 const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -58,27 +60,16 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               This is your sleep time line. Each color represent one of the 5 sleep stages which are&nbsp;
-              <span className="text-red">
-                <strong>Wake</strong>
-              </span>
+              <span className="scrollytelling_cards__w_text">Wake</span>
               ,&nbsp;
-              <span className="text-yellow">
-                <strong>REM</strong>
-              </span>
+              <span className="scrollytelling_cards__rem_text">REM</span>
               ,&nbsp;
-              <span className="text-info">
-                <strong>N1</strong>
-              </span>
-              ,&nbsp;
-              <span className="text-blue">
-                <strong>N2</strong>
-              </span>
+              <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
+              <span className="scrollytelling_cards__n2_text">N2</span>
               &nbsp;and&nbsp;
-              <span className="text-default">
-                <strong>N3</strong>
-              </span>
-              . Each of the colored blocks reprensent a part of your night that was associated to one of these five
-              stages.
+              <span className="scrollytelling_cards__n3_text">N3</span>. Each of the colored blocks reprensent a part of
+              your night that was associated to one of these five stages. You may want to hover them as it shows more
+              details about that part of your night.
             </p>
           </CardBody>
         </Card>
@@ -155,10 +146,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <strong>REM stage</strong>, which is short for <i>rapid eyes movement</i>, is the moment of the night
-              where you experience dreams. During this stage, your muscles should be completely immobilized, and on the
-              opposite, the activity of your brain should be very active, which illustrates why this stage is also
-              called paradoxical sleep.
+              <span className="scrollytelling_cards__rem_text">REM</span> stage, which is short for{' '}
+              <i>rapid eyes movement</i>, is the moment of the night where you experience dreams. During this stage,
+              your muscles should be completely immobilized, and on the opposite, the activity of your brain should be
+              very active, which illustrates why this stage is also called paradoxical sleep.
             </p>
           </CardBody>
         </Card>
@@ -168,12 +159,13 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <strong>N1 stage</strong> is associated with that drowsy feeling before falling asleep. Most people
-              wouldn’t say they fell asleep if they’ve been woken up from N1 sleep.
+              <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with that drowsy feeling
+              before falling asleep. Most people wouldn’t say they fell asleep if they’ve been woken up from N1 sleep.
             </p>
             <p>
-              <strong>N2 stage</strong> still corresponds to a light sleep, but where the muscle activity decreases
-              more, and the eyes have stopped moving. It is called, along with N1, <strong>light sleep</strong>.
+              <span className="scrollytelling_cards__n2_text">N2</span>&nbsp; stage still corresponds to a light sleep,
+              but where the muscle activity decreases more, and the eyes have stopped moving. It is called, along with
+              N1, <strong>light sleep</strong>.
             </p>
           </CardBody>
         </Card>
@@ -183,12 +175,16 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <strong>N3 stage</strong> is when you are deeply asleep, hence it’s also called&nbsp;
+              <span className="scrollytelling_cards__n3_text">N3</span> stage is when you are deeply asleep, hence it’s
+              also called&nbsp;
               <strong>deep sleep</strong>, or sometimes <strong>slow wave sleep</strong>, and is the most difficult to
               wake up from. It is during those stages that your cells get repaired, and that tissue grows.
             </p>
             <p>
-              N1, N2 and N3 are called, in opposition to REM, the <strong>NREM sleep stages</strong>.
+              <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
+              <span className="scrollytelling_cards__n2_text">N2</span> and&nbsp;
+              <span className="scrollytelling_cards__n3_text">N3</span> are called, in opposition to REM, the&nbsp;
+              <strong>NREM sleep stages</strong>.
             </p>
             <p>
               We've looked at the different functions of each sleep stages. But how much time did you actually spend in
@@ -205,15 +201,17 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 ml-auto">
           <CardBody>
             <p>
-              We are currently looking at your in bed sleep stage proportions. Wake time may be overrepresented, because
-              it includes your sleep latency (<Metric isDuration>{sleepLatency}</Metric>) and the time you spent in bed
+              We are currently looking at your in bed sleep stage proportions.{' '}
+              <span className="scrollytelling_cards__w_text">Wake</span> time may be overrepresented, because it
+              includes your sleep latency (<Metric isDuration>{sleepLatency}</Metric>) and the time you spent in bed
               after sleep offset (<Metric isDuration>{wakeAfterSleepOffset}</Metric>).
             </p>
             <p>
               We can see that your most prominent sleep stage is <Metric>{mostProminentStage}</Metric>, which in your
               case corresponds to&nbsp;<Metric isDuration>{sleepStageTimes[mostProminentStage]}</Metric>. Usually, the
-              most prominent sleep stage is&nbsp;
-              <Metric>{mostProminentStage === 'N2' && ', as it is in your case, '}</Metric>N2.
+              most prominent sleep stage is
+              <Metric>{mostProminentStage === 'N2' && ', as it is in your case, '}</Metric>
+              <span className="scrollytelling_cards__n2_text">N2</span>.
             </p>
           </CardBody>
         </Card>
@@ -242,9 +240,12 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              As a rule of thumb, adults approximately stay 5% of their total sleep time in N1, 50% in N2 and 20% in N3.
-              The remaining 25% is spent in the REM stage sleep. A higher proportion of N3 should correspond to an
-              overall more intense sleep.
+              As a rule of thumb, adults approximately stay 5% of their total sleep time in N1, 50% in&nbsp;
+              <span className="scrollytelling_cards__n2_text">N2</span> and 20% in&nbsp;
+              <span className="scrollytelling_cards__n3_text">N3</span>. The remaining 25% is spent in the&nbsp;
+              <span className="scrollytelling_cards__rem_text">REM</span> stage sleep. A higher proportion of&nbsp;
+              <span className="scrollytelling_cards__n3_text">N3</span> should corresponds to an overall more intense
+              sleep.
             </p>
           </CardBody>
         </Card>
