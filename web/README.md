@@ -16,7 +16,12 @@ This app was designed on top of React.js and the data visualizations were create
 Open VS Code workspace and then open a new terminal for the web directory. 
 
 Install the required node modules using:
-`yarn install`
+```
+yarn install
+```
 
 Aftwards, it is possible to run the web client using:
-`yarn run start`
+```
+yarn run start
+```
+
