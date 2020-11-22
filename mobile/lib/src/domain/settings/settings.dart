@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:polydodo/src/common/constants.dart';
 
 part 'sex.dart';
 
@@ -7,15 +8,21 @@ class Settings extends Equatable {
   final String serverAddress;
   final Sex sex;
 
-  Settings({this.age, this.serverAddress, this.sex});
+  Settings(
+      {this.age = 30, this.serverAddress = '0.0.0.0', this.sex = Sex.NotSet})
+      : assert(age != null || (age == null && age > 12 && age < 125)),
+        assert(
+            serverAddress != null || IP_ADDRESS_REGEX.hasMatch(serverAddress)),
+        assert(sex != null);
 
   @override
   List<Object> get props => [age, serverAddress, sex];
 
   Settings copyWith({int age, String serverAddress, Sex sex}) {
     return Settings(
-        age: age ?? this.age,
-        serverAddress: serverAddress ?? this.serverAddress,
-        sex: sex ?? this.sex);
+      age: age ?? this.age,
+      serverAddress: serverAddress ?? this.serverAddress,
+      sex: sex ?? this.sex,
+    );
   }
 }
