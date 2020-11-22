@@ -1,46 +1,38 @@
 import * as d3 from 'd3';
-import './style.css';
 
 import { EPOCH_DURATION_MS } from '../constants';
 import { DateTime, Duration } from 'luxon';
 
-export const initializeTooltips = (containerNode, data) => {
-  // const barToolTip = initializeTooltip(svg, getBarToolTipText);
-  // const stackedToolTip = initializeTooltip(svg, (d) =>
-  //   getStackedToolTipText(d, data.stageTimeProportions, data.epochs.length),
-  // );
-  const barToolTip = initializeTooltip(containerNode, getBarToolTipText);
+export const initializeTooltips = (containerNode, g, data) => {
+  const stackedToolTip = initializeTooltip(containerNode, g, (d) =>
+    getStackedToolTipText(d, data.stageTimeProportions, data.epochs.length),
+  );
+  const barToolTip = initializeTooltip(containerNode, g, getBarToolTipText);
 
-  return { barToolTip, stackedToolTip: barToolTip };
+  return { barToolTip, stackedToolTip };
 };
 
-// const initializeTooltip = (svg, getToolTipText) => {
-//   const tooltip = tip().attr('class', 'evolving_chart__tooltip').offset([-10, 0]);
-//   svg.call(tooltip);
-//   tooltip.html(getToolTipText);
+const initializeTooltip = (containerNode, g, getToolTipText) => {
+  var tooltip = d3
+    .select(containerNode)
+    .append('div')
+    .attr('class', 'tooltip')
+    .attr('border-radius', '2px')
+    .style('background-color', 'rgba(235, 235, 235, 0.9)')
+    .style('opacity', 0)
+    .style('position', 'absolute');
+  var tooltipText = tooltip.append('div').style('padding', '1em').style('font-size', '1em');
 
-//   return tooltip;
-// };
-
-const initializeTooltip = (containerNode, getToolTipText) => {
-  // const tooltip = tip().attr('class', 'evolving_chart__tooltip').offset([-10, 0]);
-  // svg.call(tooltip);
-  // tooltip.html(getToolTipText);
-  var tooltip = d3.select(containerNode).append('div').style('opacity', 1).style('position', 'absolute').html('fsfse');
-
-  // Three function that change the tooltip when user hover / move / leave a cell
-  var mouseover = function (d) {
-    tooltip.html('fsdisdfjisjie').style('opacity', 1).attr('class', 'tooltip');
+  var mouseover = (d) => {
+    tooltip.style('opacity', 1);
   };
-  var mousemove = function (d, mouse) {
-    tooltip
-      .html('fsdisdfjisjifjejiw deewf wedwejie')
-      // .html(getToolTipText(d))
-      .style('left', mouse[0] + 70 + 'px')
-      .style('top', mouse[1] + 'px');
+  var mousemove = function (d, mouse, yPosition) {
+    // localize d3.mouse into viewbox: https://stackoverflow.com/a/11936865
+    tooltip.style('opacity', 1).style('left', `${mouse[0]}px`).style('top', yPosition);
+    tooltipText.html(() => getToolTipText(d));
   };
   var mouseleave = function () {
-    tooltip.style('opacity', 0);
+    tooltip.style('opacity', 0).style('left', `0px`).style('top', '0px');
   };
 
   return { mouseover, mousemove, mouseleave };
