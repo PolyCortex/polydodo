@@ -2,28 +2,22 @@
 
 This server is responsible for the automatic sleep stage scoring of recorded EEG data. For more info about the deployed model, see [our wiki page](https://github.com/PolyCortex/polydodo/wiki/model).
 
+## Getting started
+### Prerequesites
+- Install [Python 3.8](https://www.python.org/downloads/).
+  - Make sure that the "Python38\Scripts" folder is added to your environnment path varible on Windows in order to use pip and hupper without any issue.
 
-## Prerequesites
-- Install [Python 3.7](https://www.python.org/downloads/).
-  - Make sure that the "Python37\Scripts" folder is added to your environnment path varible on Windows in order to use pip and hupper without any issue.
+### Setup
 
-## Setup - Linux
-
-Create a new virtual environment to isolate Python packages. This step will need to be done everytime you re-open your terminal.
-
-- Linux:
-```bash
-virtualenv -p /usr/local/bin/python3.7 venv
-```
-- Windows:
+Create a new virtual environment to isolate Python packages.
 ```
 python -m venv .venv
 ```
 
-Activate your virtual environment.
-- Linux:
+Activate your virtual environment. This step will need to be done everytime you re-open your terminal.
+- Linux/macOS:
 ```bash
-source venv/bin/activate
+source .venv/bin/activate
 ```
 - Windows:
 ```
@@ -42,7 +36,7 @@ apt-get install libgomp1    # on linux
 brew install libomp         # on macos
 ```
 
-## Run it locally
+## Run the server
 
 If you want to run the backend with hot reload enabled (you must have installed the development requirements), run the following command.
 
@@ -59,6 +53,7 @@ pytest
 ```
 
 ## Profile application
+*A profile is a set of statistics that describes how often and for how long various parts of the program executed.* -[Python Software Foundation](https://docs.python.org/3/library/profile.html)
 
 - Run `python profiler.py`
 
@@ -69,9 +64,3 @@ pytest
 ## Building the server as a single executable
 
 Run `python -m PyInstaller --onefile app.py`
-
-## Running the server locally
-
-- [Login](https://docs.github.com/en/free-pro-team@latest/packages/using-github-packages-with-your-projects-ecosystem/configuring-docker-for-use-with-github-packages#authenticating-with-a-personal-access-token) to Github Docker registry
-- `docker pull docker.pkg.github.com/polycortex/polydodo/backend:latest`
-- `docker run -p 8080:8080 docker.pkg.github.com/polycortex/polydodo/backend:latest`
