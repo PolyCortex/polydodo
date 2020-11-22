@@ -65,10 +65,13 @@ const SleepAnalysisResults = ({ location }) => {
     <>
       <Container className="text-justify">
         <p className="lead">
-          We have seen that sleep can be decomposed into two stages, whereas REM and NREM. We’ve also defined other
-          measures of your sleep architecture, such as your sleep latency, efficiency and total sleep time.
+          You should now have a pretty good picture of how you spent your night. Also, we have seen that sleep can be
+          decomposed into two groups, whereas REM and NREM. We’ve also defined other measures of your sleep
+          architecture, such as your sleep latency, efficiency and total sleep time. All of these metrics are very
+          interesting. However, it would be interesting to understand a little bit more about sleep in order to make
+          sense of this.
         </p>
-        <h4>This is about your hormones</h4>
+        <h4 className="mt-5">This is about your hormones</h4>
         <p className="lead">
           Hormones such as melatonin and cortisol play a decisive role in sleep. In fact, it is their variation that
           partly explains the circadian cycle.
