@@ -1,17 +1,17 @@
 <p align="center">
-   <a href="https://polycortex.github.io/polydodo/#/">
-    <img src="https://img.shields.io/badge/Coming soon-Android-3EDDC84?logo=Android"
+   <a href="https://github.com/PolyCortex/polydodo/releases/latest/download/polydodo_app_android.apk">
+    <img src="https://img.shields.io/badge/Get latest release-Android-3EDDC84?logo=Android"
          alt="web client">
   </a>
-     <a href="https://polycortex.github.io/polydodo/#/">
+     <a>
     <img src="https://img.shields.io/badge/Future release-iOS-purple?logo=Apple"
          alt="web client">
   </a>
-  <a href="https://polycortex.github.io/polydodo/#/">
+  <a href="https://github.com/dart-lang">
     <img src="https://img.shields.io/badge/Language-Dart-blue?logo=Dart"
          alt="web client">
   </a>
-    <a href="https://polycortex.github.io/polydodo/#/">
+    <a href="https://flutter.dev/">
     <img src="https://img.shields.io/badge/Framework-Flutter-44D1fd?logo=Flutter"
          alt="web client">
   </a>
