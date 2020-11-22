@@ -82,7 +82,7 @@ This project is split into four different folders that represents the four diffe
 - Open this project's workspace via the `polydodo.code-workspace` file.
 - Install all the project's recommended extensions
 
-For more information about how to get started for each part (web, server, mobile) of the project, see their respective `README.md` file located in the eponym folder name.
+For more information about how to get started for each part (web, server, mobile) of the project, head to the eponym folder and look for the `README.md` file.
 
 ## Learn more
 
