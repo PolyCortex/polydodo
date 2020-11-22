@@ -57,7 +57,7 @@ On the other hand, the mobile client offers a tool that can be used on a regular
 
 Finally, both these clients use a local http server that is easy to installed. This server is local so that your data is not sent over the internet. Biosignals data are sensitive and this is our way to promise you security.
 
-![General architecture of the project](https://github.com/PolyCortex/polydodo/wiki/img/general_architecture.png)
+![General architecture of the project](https://github.com/PolyCortex/polydodo/wiki/img/general_architecture_small.png)
 
 *Figure 1. Technology diagram with the flow of incoming and outgoing data to clients.*
 
