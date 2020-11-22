@@ -51,7 +51,8 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
           <CardBody>
             <p>
               By slowly falling asleep, the signal frequencies tend to decrease into the 4 to 8 Hz range, or the theta
-              band, and to have larger amplitudes. These characteristics are associated with N1.
+              band, and to have larger amplitudes. You should then see more yellow in the the specified frequency band
+              range. These characteristics are associated with N1.
             </p>
           </CardBody>
         </Card>
@@ -76,7 +77,7 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
           <CardBody>
             <p>
               Stage N3, also called slow wave sleep, is characterized by slower waves between 0.5 and 4 Hz, known as the
-              delta range, with large amplitudes. [6]
+              delta range, with large amplitudes. [6] There should then be bright yellow at the lower freqency range.
             </p>
           </CardBody>
         </Card>
@@ -88,7 +89,7 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
           <CardBody>
             <p>
               REM stage has the same characteristics as Wake stage, whereas there are low voltage high frequency
-              activity. [6]
+              activity. This means you should once again be able to see, between 15 to 60 Hz, pink-ish colors.
             </p>
           </CardBody>
         </Card>
