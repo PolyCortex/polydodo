@@ -21,15 +21,21 @@ We target Android as our only platform. While development frameworks like Flutte
 
 ### Setup:
 First, download the required dependencies using:
-`flutter pub get`
+````
+flutter pub get
+```
 
 Prior to build execute build-runner to generate the app's routes.  
-`flutter packages pub run build_runner watch --delete-conflicting-outputs`
+```
+flutter packages pub run build_runner watch --delete-conflicting-outputs
+```
 
 You now have the option to run the app on an emulator or on a live device. If you wish to run the app on a live device, you will need to use [Android Debug Brige](https://developer.android.com/studio/command-line/adb).
 
 Once you have an emulator setup or a connection to your live device, you can now run the app using:
-`flutter run`
+```
+flutter run
+```
 
 ## Learn more
 
