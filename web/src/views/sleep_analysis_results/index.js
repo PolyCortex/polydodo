@@ -77,13 +77,13 @@ const SleepAnalysisResults = ({ location }) => {
           partly explains the circadian cycle.
         </p>
         <p className="lead">
-          During the day, a neurotranmitter called serotonin gradually accumulates in the pineal gland. When it gets
-          dark, the pineal gland synthesizes melatonin which is a hormone that is synthesized in the pineal gland from
-          this serotonin. Melatonin helps induce the sleepiness that prevails in the evening. Exposure to light
-          including that of screens, street lighting, etc. inhibits the secretion of melatonin and impairs sleep. On the
-          other hand, in the morning, the adrenal gland secretes the hormone cortisol from cholesterol. Its effect is to
-          promote light sleep and possibly awake. Any imbalance in these hormones or their secretion can have an
-          inhibiting effect on sleep.
+          During the day, a neurotransmitter called serotonin gradually accumulates in the pineal gland. When it gets
+          dark, the pineal gland synthesizes melatonin which is a hormone that is synthesized from this serotonin.
+          Melatonin helps induce the sleepiness that prevails in the evening. Exposure to light including that of
+          screens, street lighting, etc. inhibits the secretion of melatonin and impairs sleep. On the other hand, in
+          the morning, the adrenal gland secretes the hormone cortisol from cholesterol. Its effect is to promote light
+          sleep and possibly awake. Any imbalance in these hormones or their secretion can have an inhibiting effect on
+          sleep.
         </p>
       </Container>
       <SleepMechanisms />
@@ -230,13 +230,33 @@ const SleepAnalysisResults = ({ location }) => {
   );
   const spectrogramOutro = (
     <Container className="text-justify">
-      <p className="mt-5 lead">BLABLABLA</p>
+      <p className="mt-5 lead">
+        We've covered each of the band power frequency ranges we have used in our classification algorithm, and their
+        associated expected power depending on the sleep stages.
+      </p>
     </Container>
   );
   const callToAction = (
     <Container className="text-justify">
-      <p className="lead">Wanna know how accurate this data is?</p>
       <Row className="scrollytelling-container__buttons">
+        <p className="mt-5 lead">
+          If you found our visualization helpful in better understanding how sleep works, and especially how you slept
+          on your recorded night, you can come say hi at our &nbsp;
+          <a href="https://www.facebook.com/PolyCortex/" target="_blank" rel="noopener noreferrer">
+            Facebook page
+          </a>
+          . On another hand, if there has been problems or unexpected results while recording and analyzing your sleep,
+          you can always open an issue in our &nbsp;
+          <a href="https://github.com/PolyCortex/polydodo" target="_blank" rel="noopener noreferrer">
+            Github repository
+          </a>
+          .
+        </p>
+
+        <p className="mt-5 lead">
+          If you are curious about the performances of our classifier, we've written a short post about our methodology
+          and our results. Check it out! Otherwise, you can also download the predicted sleep stages.
+        </p>
         <Link to="/performance">
           <Button className="mt-4" color="default">
             Check out the performances

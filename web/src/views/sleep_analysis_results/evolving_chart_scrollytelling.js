@@ -59,7 +59,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              This is your sleep time line. Each color represent one of the 5 sleep stages which are&nbsp;
+              This is your sleep time line. Each color represents one of the 5 sleep stages which are&nbsp;
               <span className="scrollytelling_cards__w_text">Wake</span>
               ,&nbsp;
               <span className="scrollytelling_cards__rem_text">REM</span>
@@ -94,10 +94,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, to which we will refer to as sleep onset.
-              You woke up at <Metric isTime>{sleepOffset}</Metric>, which can also be referred to as sleep offset.
-              During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different stages.
-              Let's take a look at them.
+              In total, there were <Metric>{stageShifts}</Metric> sleep stage shifts and <Metric>{awakenings}</Metric>
+              &nbsp;noctural awakenings. "High levels of sleep fragmentation, as defined by recurrent awakenings and/or
+              stage shifts may result in complaints of non-restorative sleep even when an apparently normal total sleep
+              time is present." [Shrivastava and al., 2014]
             </p>
           </CardBody>
         </Card>
@@ -107,10 +107,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              In total, there were <Metric>{stageShifts}</Metric> sleep stage shifts and <Metric>{awakenings}</Metric>
-              &nbsp;noctural awakenings. "High levels of sleep fragmentation, as defined by recurrent awakenings and/or
-              stage shifts may result in complaints of non-restorative sleep even when an apparently normal total sleep
-              time is present." [Shrivastava and al., 2014]
+              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, to which we will refer to as sleep onset.
+              You woke up at <Metric isTime>{sleepOffset}</Metric>, which can also be referred to as sleep offset.
+              During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different stages.
+              Let's take a look at them.
             </p>
           </CardBody>
         </Card>
@@ -159,11 +159,11 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               <span className="scrollytelling_cards__rem_text">REM</span> stage, which is short for&nbsp;
-              <i>rapid eyes movement</i>, is a stage caracterized by, like its name implies it, rapid eyes movements.
+              <i>rapid eyes movement</i>, is a stage characterized by, like its name implies it, rapid eyes movements.
               During this stage, your muscles are completely immobilized, but on the opposite, your brain and your heart
               should be very active, which illustrates why this stage is also called paradoxical sleep. This sleep stage
               therefore closely resembles wake and it is hard to tell the difference using EEG signals. We are dreaming
-              in all sleep stages but this is in the&nbsp;
+              in all sleep stages but it is in the&nbsp;
               <span className="scrollytelling_cards__rem_text">REM</span> stage that dreams are best remembered and seem
               the most vivid.
             </p>
@@ -176,9 +176,9 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with that drowsy feeling
-              before falling asleep. It is a transition stage between wake and sleep. This stage is caracterized by a
+              before falling asleep. It is a transition stage between wake and sleep. This stage is characterized by
               reduced alertness, muscle tone and heart rate. Most people wouldn’t say they fell asleep if they’ve been
-              woken up from N1 sleep.
+              woken up from <span className="scrollytelling_cards__n1_text">N1</span> sleep.
             </p>
           </CardBody>
         </Card>
@@ -224,7 +224,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
             <p>
               <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
               <span className="scrollytelling_cards__n2_text">N2</span> and&nbsp;
-              <span className="scrollytelling_cards__n3_text">N3</span> are called, in opposition to REM, the&nbsp;
+              <span className="scrollytelling_cards__n3_text">N3</span> are called, in opposition to{' '}
+              <span className="scrollytelling_cards__rem_text">REM</span>, the&nbsp;
               <strong>NREM sleep stages</strong>.
             </p>
             <p>
@@ -301,7 +302,6 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           </CardBody>
         </Card>
       </Row>
-      <div style={{ marginBottom: '125%' }} />
       <Row>
         <div style={{ marginBottom: '100%' }} />
       </Row>

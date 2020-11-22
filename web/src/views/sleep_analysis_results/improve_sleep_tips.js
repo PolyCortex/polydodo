@@ -25,7 +25,7 @@ const TipsToImproveSleep = () => (
       <li className="py-2">
         <h6 className="mb-0">
           <BadgeBulletPoint badgeColor="warning" iconClass="fas fa-wine-glass-alt fa-sm">
-            Alcohol, drugs and medicines: Just as caffeine influences sleep, the consumption of alcohol, drugs and
+            Alcohol, drugs and medicines: just as caffeine influences sleep, the consumption of alcohol, drugs and
             certain medications have a significant effect on it. Alcohol, for example, reduces significantly the amount
             of REM sleep and lead to multiple awakenings throughout each sleep cycle. [Shrivastava and al., 2014]
           </BadgeBulletPoint>
