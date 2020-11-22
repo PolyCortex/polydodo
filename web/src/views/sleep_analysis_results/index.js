@@ -22,8 +22,8 @@ import Metric from './metric';
 
 const SleepAnalysisResults = ({ location }) => {
   const [response] = useGlobalState('response');
-  // const isPreviewMode = location.state?.isPreviewMode;
-  const isPreviewMode = true;
+  const isPreviewMode = location.state?.isPreviewMode;
+
   if (!isPreviewMode && !response) {
     return (
       <Redirect
