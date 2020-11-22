@@ -54,7 +54,10 @@ const bindAnnotationsToRects = (g, annotations) =>
   g.selectAll('.rect').data(annotations).enter().append('rect').attr('class', 'rect-stacked');
 
 const createEvolvingChart = (containerNode, data) => {
-  const svg = d3.select(containerNode).attr('viewBox', `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
+  const svg = d3
+    .select(containerNode)
+    .append('svg')
+    .attr('viewBox', `0, 0, ${CANVAS_DIMENSION.WIDTH}, ${CANVAS_DIMENSION.HEIGHT}`);
   const { xTime, xLinear, y, colors } = initializeScales();
   const { xTimeAxis, xLinearAxis, yAxis } = initializeAxes(xTime, xLinear, y);
   const g = createDrawingGroup(svg);
@@ -63,7 +66,7 @@ const createEvolvingChart = (containerNode, data) => {
   data = preprocessData(data);
 
   setDomainOnScales(xTime, xLinear, y, colors, data.epochs);
-  const { barToolTip, stackedToolTip } = initializeTooltips(svg, data);
+  const { barToolTip, stackedToolTip } = initializeTooltips(containerNode, data);
   bindAnnotationsToRects(g, data.annotations);
 
   timelineChartCallbacks = createTimelineChartCallbacks(g, xTime, xTimeAxis, colors, barToolTip);

@@ -155,12 +155,16 @@ const setFirstRectangleToBeAsWideAsStageProportion = (data, g) => {
 const setTooltip = (element, tooltip) =>
   element
     .on('mouseover', function (d) {
-      tooltip.show(d, this);
-      d3.select(this).style('opacity', 0.8);
+      console.log(d);
+      tooltip.mouseover(d);
+      d3.select(this).style('stroke', 'black').style('opacity', 0.7);
+    })
+    .on('mousemove', function (d) {
+      tooltip.mousemove(d, d3.mouse(this));
     })
     .on('mouseout', function () {
-      tooltip.hide();
-      d3.select(this).style('opacity', 1);
+      tooltip.mouseleave();
+      d3.select(this).style('stroke', 'none').style('opacity', 1);
     });
 
 const getVerticalPositionCallback = (d) => BAR_HEIGHT * STAGES_ORDERED.indexOf(d.stage);

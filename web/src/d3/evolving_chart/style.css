@@ -4,4 +4,8 @@
   border-radius: 2px;
   color: #0d0d0d;
   background: rgba(235, 235, 235, 0.9);
+  width: 10em;
+  height: 10em;
+  position: absolute;
+  z-index: 100;
 }
