@@ -93,10 +93,10 @@ const SleepAnalysisResults = ({ location }) => {
     <Container className="text-justify">
       <p>
         You’ve been able to visualize and inspect your night of sleep, which we’ve classified only based on your EEG
-        recordings. In a sleep lab, electrophysiology technicians generally look at your EEG, EOG and submental EMG, and
-        then manually classify each epoch of 30 seconds that compose your night. By looking at your EEG recordings, we
-        can see some patterns that can help electrophysiology technicians, and our classifier, discriminate sleep stages
-        throughout the night.
+        recordings. In a sleep lab, electrophysiology technologists generally look at your EEG, EOG and submental EMG,
+        and then manually classify each epoch of 30 seconds that compose your night. By looking at your EEG recordings,
+        we can see some patterns that can help electrophysiology technologists, and our classifier, discriminate sleep
+        stages throughout the night.
       </p>
     </Container>
   );
@@ -105,53 +105,37 @@ const SleepAnalysisResults = ({ location }) => {
     <Container className="text-justify">
       <h4 className="mt-5">Spectrogram</h4>
       <p>
-        Above, we can see the same chart from the first visualization, which represents your sleep stages through the
-        night. Below it, there are spectrograms of both your EEG channels. Spectrograms can be viewed as if we took all
-        of your nights signal, we’ve separated it in contiguous 30 seconds chunks, stacked then horizontally and to
-        which we’ve applied the fast fourier transform. We then have, for each 30 seconds epoch, the corresponding
-        amplitudes for each frequency that makes up the signal, hence the spectra. We then converted the scale to
-        logarithmic, to better see the differences in the spectrums. We then speak of signal power instead of signal
-        amplitude, because we look at the spectrums in a logarithmic scale.
+        Below are represented spectrograms of both your EEG channels. Spectrograms can be viewed as if we took all of
+        your signals, we’ve separated it in contiguous 30 seconds chunks, stacked then horizontally and to which we’ve
+        applied the fast fourier transform. We then have, for each 30 seconds epoch, the corresponding amplitudes for
+        each frequency that makes up the signal, hence the spectra.
       </p>
       <p>
-        <strong>How to read it?</strong>
+        We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
+        signal power instead of signal amplitude, because we look at the spectrums in a logarithmic scale.
       </p>
+      <h5>How to read it?</h5>
       <p>
-        Red therefore means that in that 30 seconds time frame, that particular frequency had a big amplitude. Green
-        means that you had that frequency with a lower amplitude. Dark blue means that you didn’t have that frequency in
+        Yellow therefore means that in that 30 seconds time frame, that particular frequency had a big amplitude. Pink
+        means that you had that frequency with a lower amplitude. Purple means that you didn’t have that frequency in
         the signal.
       </p>
       <p>
-        To get a better understanding at how spectrograms work, you can check out
-        <a href="https://musiclab.chromeexperiments.com/Spectrogram/" target="_blank" rel="noopener noreferrer">
-          {' '}
-          this visualization{' '}
+        To get a better understanding at how spectrograms work, you can{' '}
+        <a href="https://musiclab.chromeexperiments.com/Spectrogram/" rel="noopener noreferrer" target="_blank">
+          check out this example
         </a>
-        that decomposes sound frequency from your microphone.
+        &nbsp;that decomposes sound frequency from your microphone.
       </p>
     </Container>
   );
   const spectrogramOutro = (
     <Container className="text-justify">
-      <p className="mt-5">
-        Generally, when talking about brain waves, we group certain frequencies together into bands. There are overall
-        five frequency bands, where each has a general associated behaviour, or state of mind. We will cover those when
-        looking at time frames corresponding to each sleep stage.
-      </p>
-      <p>
-        We can associate wake stages with low-amplitude activity in the 15 to 60 Hz frequency range, called the beta
-        band. By slowly falling asleep, the signal frequencies tend to decrease into the 4 to 8 Hz range, or the theta
-        band, and to have larger amplitudes. These characteristics are associated with N1. N2 stage has the same
-        characteristics, and also includes sleep spindles. They last only a few seconds and are a large oscillation in
-        the 10 to 15 hz band. Because they do not occur during all of the 30 seconds period, they cannot be seen here.
-        Stage N3, also called slow wave sleep, is characterized by slower waves between 0.5 and 4 Hz, known as the delta
-        range, with large amplitudes. REM stage has the same characteristics as Wake stage, whereas there are low
-        voltage high frequency activity.
-      </p>
+      <p className="mt-5">BLABLABLA</p>
     </Container>
   );
   const callToAction = (
-    <Container className="text-align">
+    <Container className="text-justify">
       <p>Wanna know how accurate this data is?</p>
       <Row className="scrollytelling-container__buttons">
         <Link to="/performance">

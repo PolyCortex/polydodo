@@ -49,7 +49,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata }) => {
   };
 
   return (
-    <Container>
+    <Container className="text-justify">
       <div style={{ position: 'sticky', top: '10%' }}>
         <D3ComponentScrollyTelling
           callback={createEvolvingChart}
