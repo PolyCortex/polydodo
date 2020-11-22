@@ -49,6 +49,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           data={epochs}
           isInitialized={isInitialized}
           setIsInitialized={setIsInitialized}
+          useDiv
         />
       </div>
       <div style={{ marginBottom: '50%' }} />
