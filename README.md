@@ -10,13 +10,15 @@
 
 <p align="center">
   <a href="https://polycortex.github.io/polydodo/#/">
-    <img src="https://img.shields.io/badge/web-client-9cf"
+    <img src="https://img.shields.io/badge/web-client-9cf?style=for-the-badge&logo=React"
          alt="web client">
   </a>
-<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/PolyCortex/polydodo?label=android&logoColor=green">
-<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/PolyCortex/polydodo/total?color=orange&label=downloads">
+  <a href="https://github.com/PolyCortex/polydodo/releases/latest/download/polydodo_app_android.apk">
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/PolyCortex/polydodo?label=android-apk&logo=android&style=for-the-badge">
+  </a>
+<img alt="GitHub all releases" src="https://img.shields.io/github/downloads/PolyCortex/polydodo/total?color=orange&label=downloads&style=for-the-badge">
   <a href="http://polycortex.polymtl.ca/">
-    <img src="https://img.shields.io/badge/about%20us-%E2%84%B9-blue">
+    <img src="https://img.shields.io/badge/about%20us-%E2%84%B9-blue?style=for-the-badge">
   </a>
 </p>
 
