@@ -11,21 +11,21 @@ This server is responsible for the automatic sleep stage scoring of recorded EEG
 
 Create a new virtual environment to isolate Python packages. This step will need to be done everytime you re-open your terminal.
 
-Linux:
+- Linux:
 ```bash
 virtualenv -p /usr/local/bin/python3.7 venv
 ```
-Windows:
+- Windows:
 ```
 python -m venv .venv
 ```
 
 Activate your virtual environment.
-Linux:
+- Linux:
 ```bash
 source venv/bin/activate
 ```
-Windows:
+- Windows:
 ```
 .\.venv\Scripts\activate.bat
 ```
