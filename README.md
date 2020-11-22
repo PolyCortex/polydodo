@@ -5,8 +5,11 @@ This projects aims to offer a comprehensive guide to **record polysomnographic E
 ## Try our apps on the fly
 #### Web
 Our latest running web-app is live on github pages.  
+
 [![dodo](https://img.shields.io/badge/Web-Run_the_latest_web_app-blueviolet?style=flat_square&logo=React)](https://polycortex.github.io/polydodo)
 #### Mobile
+Until we are able to publish our Android and iOS apps, you can get the latest .apk release and install it on your Android device.  
+
 [![dodo](https://img.shields.io/badge/Android-Get_the_Latest_apk-blueviolet?style=flat_square&logo=android)](https://github.com/PolyCortex/polydodo/releases/latest/download/polydodo_app_android.apk)
 
 ## Dev requirements
