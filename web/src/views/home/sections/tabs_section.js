@@ -97,7 +97,7 @@ const TabsSection = () => {
                   <TabPane className="tabs_section__body" tabId={`activeTab${TABS.SECOND}`}>
                     <p className="text-justify">
                       Your data is in your hand. Nothing is sent over the internet. Biosignals are sensitive data and we
-                      take your privacy very seriously. That is why everything is running locally.
+                      take your privacy very seriously. That's why everything runs locally, on your machine.
                     </p>
                   </TabPane>
                   <TabPane className="tabs_section__body" tabId={`activeTab${TABS.THIRD}`}>

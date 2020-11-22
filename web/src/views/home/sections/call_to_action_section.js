@@ -12,7 +12,7 @@ const CallToActionSection = () => (
           <FloatingCard
             cardClassName="bg-gradient-warning"
             headerText="Record my sleep"
-            bodyText="Use our comprehensive guide to get your own results. It shows a list of the necessary equipment, the EEG montage, the hardware setup, and also gives some tips and tricks!"
+            bodyText="Use our comprehensive guide to get your own results. It shows a list of the necessary equipment, the EEG montage, the hardware setup, and also gives some tips and tricks to get the most accurate results!"
             button={<RecordMyOwnSleepButton className="btn-white mt-4" />}
           />
         </Col>
