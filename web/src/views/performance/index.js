@@ -186,11 +186,42 @@ const Performance = () => {
           to certify, in the same maner as we did for the Cyton, that the classification works also accurately on this
           board.
         </p>
+        <h3 className="mt-5">Inter-scorer agreement based on a night from our dataset</h3>
+        <p className="mt-5">
+          As it is stated in{' '}
+          <q>The American Academy of Sleep Medicine Inter-scorer Reliability Program: Sleep Stage Scoring</q>, written
+          by R. Rosenberg, manual sleep stage agreement averaged 82.6% when scorers based their analysis on the AASM's
+          scoring manual [R. Rosenberg, 2013]. Based on that statistic, we were curious to see how the classification
+          made by Alexandra compares to the classification found in our dataset. As we've already mentionned, we were
+          expecting some differences, as the scoring is based on two different manuals (see our further developmnent
+          section below).
+        </p>
+        <p className="mt-5">
+          We then randomly selected a night of sleep within our dataset and asked Alexandra to score it. The selected
+          subject is a 74 year old women. You can see below the differences between both classification. The Cohen's
+          Kappa agreement score is of{' '}
+          <strong>
+            <span className="text-primary">0.6315</span>
+          </strong>
+          .
+        </p>
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement (kappa:0.6315)</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Electrophysiologist', 'Sleep-EDF'])}
           data={[electrophysiologistWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
         />
+        <p className="my-5">
+          The main differences can be seen at the N3 sleep stage level, as no epochs were tagged as N3 by our
+          electrophysiologist. She'd explain to us, in an{' '}
+          <a
+            href="https://drive.google.com/file/d/11RgOksnavKMp8yMRKy4wE2_9ebyXXhmw/view?usp=sharing"
+            target="_blank"
+            rel="noreferrer"
+          >
+            interview you can view here
+          </a>{' '}
+          (in french only), that no epochs filled all the N3 sleep stage conditions.
+        </p>
         <ClassificationReport
           rows={[
             ['W', 87, 100, 93, 409],
@@ -250,7 +281,9 @@ const Performance = () => {
             an article
           </a>{' '}
           about the results we've obtained, which currently is in french only). Since we were limited in both time and
-          in hardware, we only trained on a few subjects.
+          in hardware, we only trained on a few subjects. Also, considering that the dependancy of sleep stages over
+          time is quite important, we could greatly improve our model by exploring recurrent neural networks (RNN) or
+          long short term memory (LSTM) networks.
         </p>
       </Container>
     </div>
