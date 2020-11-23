@@ -71,7 +71,7 @@ const Performance = () => {
           here;
         </p>
         <ul>
-          <li>First, we will check how our classifier’s labels agrees with the labels scored within our dataset.</li>
+          <li>First, we will check how our classifier’s labels agree with the labels scored within our dataset.</li>
           <li>
             Then, we will check how this classifier performs on a full night recorded on one of our members. It is the
             night displayed in preview mode. In order to be able to make comparisons, we asked for the help of a medical
@@ -81,7 +81,7 @@ const Performance = () => {
           <li>
             Finally, we will present the scoring differences between the medical electrophysiologist and our dataset. To
             do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous
-            results and maybe get an idea of the usual disagreement level between professional scorers.
+            results and maybe get an idea of the usual agreement level between professional scorers.
           </li>
         </ul>
         <p className="lead">
