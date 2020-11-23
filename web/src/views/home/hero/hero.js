@@ -29,9 +29,9 @@ class Hero extends React.Component {
                     <p className="lead text-white mb-5">Record, upload and visualize your sleep.</p>
                     <div className="hero__video-container center">
                       <iframe
-                        title="Open Challenge 2020"
+                        title="#NTXSC20 - PolyCortex - Polydodo [Open Challenge]"
                         className="hero__video-iframe"
-                        src="https://www.youtube.com/embed/322JvyDQYeQ"
+                        src="https://www.youtube.com/embed/wUkOeFDIFgg"
                         allowFullScreen
                       />
                     </div>
