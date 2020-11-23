@@ -57,7 +57,7 @@ const Performance = () => {
       />
       <Container className="mt-5 text-justify">
         <p className="lead">
-          This page aims to illustrate the performance of our sleep scoring algorithmcompared to manual and professional
+          This page aims to illustrate the performance of our sleep scoring algorithm compared to manual and professional
           scoring, which is considered the gold standard in sleep stage scoring. If you want to learn more about how
           we've defined our sleep scoring algorithm, please either refer to our presentation video in our home page, or
           to our{' '}

@@ -37,7 +37,8 @@ const ElectrodesApplicationSection = () => (
       <span />
       <span />
       <span />
-    </div>{' '}
+    </div>
+    &nbsp;
     <Container className="text-justify">
       <h3 className="display-3 mb-4 text-white">How to place the electrodes</h3>
 
