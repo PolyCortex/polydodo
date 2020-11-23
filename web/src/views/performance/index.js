@@ -66,7 +66,29 @@ const Performance = () => {
           </a>
           .
         </p>
-        <h3>Model training and selection</h3>
+        <p className="lead">
+          In summary, we will look at our classifier's performance against three different point of view, as described
+          here;
+        </p>
+        <ul>
+          <li>
+            First, we will check how our classifier’s scoring agrees with the scoring within the Physionet's Sleep-EDF
+            dataset. Of course, we will perform this agreement test on a subset of EEG data that was never trained on.
+            This subset is composed of full nights of sleep coming from five subject of a different age group.{' '}
+          </li>
+          <li>
+            Then, we will check how this classifier performs on a full night recorded on one of our members. In order to
+            be able to make comparisons, we asked for the help of a medical electrophysiologist to score our data. This
+            manual scoring will serve as reference to get an idea of the accuracy of our model on data acquired using an
+            OpenBCI under non-clinical conditions. The AASM manual was used for scoring.
+          </li>
+          <li>
+            Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To
+            do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous
+            results and maybe get an idea of the usual disagreement level between professional scorers.
+          </li>
+        </ul>
+        <h3 className="my-5">Model training and selection</h3>
         <p>
           In order to train our model to predict sleep stages based on EEG data, we used an open source dataset,
           <a href="https://physionet.org/content/sleep-edfx/1.0.0/" target="_blank" rel="noreferrer">
@@ -113,53 +135,35 @@ const Performance = () => {
           />
         </div>
         <p>
-          The test set, on which these metrics were calculated, is composed of subjects from different ages groups (33
-          year old female, 54 year old female, 67 year old female, 88 year old male), so that the obtained score is the
-          most representative of our ability to classify sleep, no matter the age. In another side, we could compare the
-          results obtained to the ones found in the litterature. To do so, we had to find a paper that uses the same
-          dataset, the same metric and that splits their dataset in a similar fashion as ours.TODO.
+          The test set, on which these metrics were calculated, is composed of randomly chosen subjects from different
+          ages groups (a 33 year old female, a 54 year old female, a 67 year old female and a 88 year old male), so that
+          the obtained score is the most representative of our ability to classify sleep, no matter the age. On another
+          side, we could compare the results obtained to the ones found in the litterature. To do so, we had to find a
+          paper that uses the same dataset, the same metric and that splits their dataset in a similar fashion as
+          ours.TODO.
         </p>
         <p className="lead">
           Although we obtain good results, it didn't quite validate that our classifier could accurately score OpenBCI
           data into sleep stages. After all, we only validated on data coming from the same acquisition hardware than
-          the data we trained on, which is not the case when we analyze data submitted in the application. We then had
-          to make our own polysomnographic dataset based on the hardware we use, so using an OpenBCI board.
+          the data we've trained on, which is not the case when we analyze data submitted in the application. We then
+          had to make our own polysomnographic dataset based on the hardware we use, namely an OpenBCI board.
         </p>
-
-        <ul>
-          <li>
-            First, we will check how our classifier’s scoring agrees with the scoring within the Physionet's Sleep-EDF
-            dataset. Of course, we will perform this agreement test on a subset of EEG data that was never trained on.
-            This subset is composed of full nights of sleep coming from five subject of a different age group.{' '}
-          </li>
-          <li>
-            Then, we will check how this classifier performs on a full night recorded on one of our members. In order to
-            be able to make comparisons, we ask for the help of a medical electrophysiologist to score our data. This
-            manual scoring will serve as reference to get an idea of the accuracy of our model on data acquired using an
-            OpenBCI under non-clinical conditions. The AASM manual was used for scoring.
-          </li>
-          <li>
-            Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To
-            do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous
-            results and maybe get an idea of the usual disagreement level between professional scorers.
-          </li>
-        </ul>
-        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF (kappa:0.6709)</h3>
-        <D3Component
-          callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
-          data={[predictedWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
-        />
-        <ClassificationReport
-          rows={[
-            ['W', 88, 97, 93, 409],
-            ['REM', 53, 100, 69, 100],
-            ['N1', 65, 35, 45, 183],
-            ['N2', 75, 77, 76, 405],
-            ['N3', 100, 34, 51, 91],
-            ['Accuracy', '', '', 76, 1188],
-          ]}
-        />
-        <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist (kappa;0.8310)</h3>
+        <h3 className="my-5">Manual scoring of OpenBCI data and comparaison to our classifier</h3>
+        <p>
+          As we had limited resources, we had in mind to create a small dataset of two manually scored night's of sleep,
+          based on biosginals acquired with OpenBCI Cyton boards. Due to a technical problem that occured while
+          recording one of them, we only had one night of sleep scored. The subject is one of our team member, William,
+          who turned exactly 23 years old on the night of the recording 🥳. Afterwards, Alexandra, the
+          electrophysiologist with who this part of the project was realized, manually scored the night of sleep based
+          on the signals from the EEG channels, namely Fpz-Cz and Pz-Oz, the EOG channel and the EMG channel. We finally
+          compared the scoring made by our classifier, which we recall has been trained on the SleepEDF dataset, and the
+          scoring made by Alexandra.&nbsp;
+          <strong>
+            We obtained a Cohen's Kappa agreement score of <span className="text-primary">0.8310</span>!
+          </strong>{' '}
+          Let's see below how the scorings compare in a hypnogram.
+        </p>
+        <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Electrophysiologist'])}
           data={[predictedWilliamCyton.epochs, electrophysiologistWilliamCyton.epochs]}
@@ -187,6 +191,22 @@ const Performance = () => {
             ['N2', 67, 70, 69, 405],
             ['N3', 0, 0, 0, 91],
             ['Accuracy', '', '', 74, 1188],
+          ]}
+        />
+
+        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF (kappa:0.6709)</h3>
+        <D3Component
+          callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
+          data={[predictedWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
+        />
+        <ClassificationReport
+          rows={[
+            ['W', 88, 97, 93, 409],
+            ['REM', 53, 100, 69, 100],
+            ['N1', 65, 35, 45, 183],
+            ['N2', 75, 77, 76, 405],
+            ['N3', 100, 34, 51, 91],
+            ['Accuracy', '', '', 76, 1188],
           ]}
         />
       </Container>
