@@ -114,7 +114,6 @@ def train_test_split_according_to_age(X, y, use_continuous_age, subjects_test=No
         [85,110] # 32 recordings
     ]
     age_categories = np.unique(X[:, AGE_CATEGORY_COL_IDX])
-    assert subjects_test is None or len(subjects_test) == len(age_categories), "If subjects are specified, they must be specified for all age groups"
 
     if subjects_test is None:
         unique_subject_with_age = np.array([
