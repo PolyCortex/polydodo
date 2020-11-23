@@ -168,6 +168,14 @@ const Performance = () => {
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Electrophysiologist'])}
           data={[predictedWilliamCyton.epochs, electrophysiologistWilliamCyton.epochs]}
         />
+        <p className="my-5">
+          The results are quite similar! If we take a step back and look at the main differences between the automatic
+          and manual scoring, there's notably the manual used for the classification. Indeed, the dataset we've used to
+          train our model contains sleep stages classification based on the 1968 Rechtschaffen and Kales manual, whereas
+          Alexandra, of course, used the most recent manual scoring guide, whereas the American Academy of Sleep
+          Medicine Manual for the Scoring of Sleep and Assoicated Events. Below are the other metrics describing the
+          differences in the classification of William's night.
+        </p>
         <ClassificationReport
           rows={[
             ['W', 100, 97, 98, 379],
@@ -178,6 +186,14 @@ const Performance = () => {
             ['Accuracy', '', '', 87, 1232],
           ]}
         />
+        <p className="mt-5">
+          So, we have been able to verify that, indeed, our automatic sleep stage classifier could accurately score EEG
+          data acquired from an OpenBCI Cyton. Of course, we only verified on one night of sleep, and on a single
+          subject. In the future, it would be interesting to test our classifier on subjects of different age and sex.
+          Also, <strong>we did not tested on OpenBCI Ganglion boards</strong>, and it would be really helpful to be able
+          to certify, in the same maner as we did for the Cyton, that the classification works also accurately on this
+          board.
+        </p>
         <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement (kappa:0.6315)</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Electrophysiologist', 'Sleep-EDF'])}
