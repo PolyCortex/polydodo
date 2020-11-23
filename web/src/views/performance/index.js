@@ -62,7 +62,7 @@ const Performance = () => {
           we've defined our sleep scoring algorithm, please either refer to our presentation video in our home page, or
           to our{' '}
           <a href="https://github.com/PolyCortex/polydodo/wiki/Model" target="_blank" rel="noreferrer">
-            wiki page
+            wiki
           </a>
           .
         </p>
@@ -71,19 +71,15 @@ const Performance = () => {
           here;
         </p>
         <ul>
+          <li>First, we will check how our classifier’s labels agrees with the labels scored within our dataset.</li>
           <li>
-            First, we will check how our classifier’s scoring agrees with the scoring within the Physionet's Sleep-EDF
-            dataset. Of course, we will perform this agreement test on a subset of EEG data that was never trained on.
-            This subset is composed of full nights of sleep coming from five subject of a different age group.{' '}
+            Then, we will check how this classifier performs on a full night recorded on one of our members. It is the
+            night displayed in preview mode. In order to be able to make comparisons, we asked for the help of a medical
+            electrophysiologist to score our data. This manual scoring will serve as reference to get an idea of the
+            accuracy of our model on data acquired using an OpenBCI under non-clinical conditions.
           </li>
           <li>
-            Then, we will check how this classifier performs on a full night recorded on one of our members. In order to
-            be able to make comparisons, we asked for the help of a medical electrophysiologist to score our data. This
-            manual scoring will serve as reference to get an idea of the accuracy of our model on data acquired using an
-            OpenBCI under non-clinical conditions. The AASM manual was used for scoring.
-          </li>
-          <li>
-            Finally, we will present the scoring differences between the medical electrophysiologist and Sleep-EDF. To
+            Finally, we will present the scoring differences between the medical electrophysiologist and our dataset. To
             do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous
             results and maybe get an idea of the usual disagreement level between professional scorers.
           </li>
@@ -142,13 +138,13 @@ const Performance = () => {
           paper that uses the same dataset, the same metric and that splits their dataset in a similar fashion as
           ours.TODO.
         </p>
-        <p className="lead">
+        <p>
           Although we obtain good results, it didn't quite validate that our classifier could accurately score OpenBCI
           data into sleep stages. After all, we only validated on data coming from the same acquisition hardware than
           the data we've trained on, which is not the case when we analyze data submitted in the application. We then
           had to make our own polysomnographic dataset based on the hardware we use, namely an OpenBCI board.
         </p>
-        <h3 className="my-5">Manual scoring of OpenBCI data and comparaison to our classifier</h3>
+        <h3 className="my-5">Manual scoring of OpenBCI data and comparison to our classifier</h3>
         <p>
           As we had limited resources, we had in mind to create a small dataset of two manually scored night's of sleep,
           based on biosginals acquired with OpenBCI Cyton boards. Due to a technical problem that occured while
@@ -169,12 +165,8 @@ const Performance = () => {
           data={[predictedWilliamCyton.epochs, electrophysiologistWilliamCyton.epochs]}
         />
         <p className="my-5">
-          The results are quite similar! If we take a step back and look at the main differences between the automatic
-          and manual scoring, there's notably the manual used for the classification. Indeed, the dataset we've used to
-          train our model contains sleep stages classification based on the 1968 Rechtschaffen and Kales manual, whereas
-          Alexandra, of course, used the most recent manual scoring guide, whereas the American Academy of Sleep
-          Medicine Manual for the Scoring of Sleep and Assoicated Events. Below are the other metrics describing the
-          differences in the classification of William's night.
+          The results are quite similar! Below are the other metrics describing the differences in the classification of
+          William's night.
         </p>
         <ClassificationReport
           rows={[
@@ -225,6 +217,41 @@ const Performance = () => {
             ['Accuracy', '', '', 76, 1188],
           ]}
         />
+        <h3 className="my-5">Limitations and further development</h3>
+        <p>
+          If we take a step back and look at the main differences between the automatic and manual scoring that
+          Alexandra did, there's notably the manual used for the classification. Indeed, the dataset we've used to train
+          our model contains sleep stages classification based on the 1968 Rechtschaffen and Kales manual, whereas
+          Alexandra, of course, used the most recent manual scoring guide, whereas the American Academy of Sleep
+          Medicine Manual for the Scoring of Sleep and Assoicated Events. In order to output AASM's sleep stages instead
+          of R&K's sleep stages, we've merged both Sleep Stage 3 and 4 together. Further work could be done to either
+          look at the litterature to see if there's a better way to translate R&K's sleep stages into AASM's sleep
+          stages. Even better, it would be to train on labels scored based on the latest AASM's sleep stages. We have
+          considered more recent datasets, such as{' '}
+          <a href="http://www.ceams-carsm.ca/mass" target="_blank" rel="noreferrer">
+            the Montreal Archive of Sleep Studies (MASS)
+          </a>
+          , but it involved having a complete accreditation coming from an ethic board.
+        </p>
+        <p>
+          Furthermore, as we've already mentionned, we would also like to test our automatic sleep stage scoring based
+          on OpenBCI Ganglion board's data, by comparing it to manual scoring. It could also be interesting to test on
+          subjects of different age groups and sex.
+        </p>
+        <p className="mb-5">
+          Finally, in terms of the explored machine learning models, we've mostly looked at classic statistical models,
+          and have not exhaustively looked at deep learning algorithms. We did look at the differences between manual
+          feature extraction and representation learning, through a CNN (we've written{' '}
+          <a
+            href="https://drive.google.com/file/d/1Td3NE207KiSkJ6xJxsKN1TkvLNXsNXrl/view?usp=sharing"
+            target="_blank"
+            rel="noreferrer"
+          >
+            an article
+          </a>{' '}
+          about the results we've obtained, which currently is in french only). Since we were limited in both time and
+          in hardware, we only trained on a few subjects.
+        </p>
       </Container>
     </div>
   );
