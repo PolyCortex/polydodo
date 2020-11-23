@@ -67,9 +67,9 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
               <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
               <span className="scrollytelling_cards__n2_text">N2</span>
               &nbsp;and&nbsp;
-              <span className="scrollytelling_cards__n3_text">N3</span>. Each colored block reprensents a part of
-              your night that was associated to one of these five stages. You may want to hover them as it shows more
-              details about that part of your night.
+              <span className="scrollytelling_cards__n3_text">N3</span>. Each colored block reprensents a part of your
+              night that was associated to one of these five stages. You may want to hover them as it shows more details
+              about that part of your night.
             </p>
           </CardBody>
         </Card>
@@ -107,10 +107,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, which will be refered to as <i>sleep onset</i>.
-              You woke up at <Metric isTime>{sleepOffset}</Metric>, which we will refer to as sleep offset.
-              During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different stages.
-              Let's take a look at them.
+              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, which will be refered to as{' '}
+              <i>sleep onset</i>. You woke up at <Metric isTime>{sleepOffset}</Metric>, which we will refer to as sleep
+              offset. During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different
+              stages. Let's take a look at them.
             </p>
           </CardBody>
         </Card>
@@ -160,10 +160,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
             <p>
               <span className="scrollytelling_cards__rem_text">REM</span> stage, which is short for&nbsp;
               <i>rapid eye movement</i>, is a stage characterized by, like its name implies it, rapid eye movement.
-              During this stage, your muscles are completely immobilized but your brain and your heart
-              should be very active, which illustrates why this stage is also called paradoxical sleep. This sleep stage
-              therefore closely resembles wake and it is hard to tell the difference using EEG signals. Take note here that we dream
-              during all sleep stages but it is in the&nbsp;
+              During this stage, your muscles are completely immobilized but your brain and your heart should be very
+              active, which illustrates why this stage is also called paradoxical sleep. This sleep stage therefore
+              closely resembles wake and it is hard to tell the difference using EEG signals. Take note here that we
+              dream during all sleep stages but it is in the&nbsp;
               <span className="scrollytelling_cards__rem_text">REM</span> stage that dreams are best remembered and seem
               the most vivid.
             </p>
@@ -175,10 +175,10 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with the typical drowsiness felt
-              before falling asleep. It is a transition stage between wake and sleep. This stage is characterized by
-              reduced alertness, muscle tone and heart rate. Most people won't say they fell asleep if they get
-              woken up from <span className="scrollytelling_cards__n1_text">N1</span> sleep.
+              <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with the typical drowsiness
+              felt before falling asleep. It is a transition stage between wake and sleep. This stage is characterized
+              by reduced alertness, muscle tone and heart rate. Most people won't say they fell asleep if they get woken
+              up from <span className="scrollytelling_cards__n1_text">N1</span> sleep.
             </p>
           </CardBody>
         </Card>
@@ -189,8 +189,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               <span className="scrollytelling_cards__n2_text">N2</span>&nbsp; stage corresponds to light sleep. The
-              muscle activity decreases even more, and the eyes stop moving. In this stage, the sensitivity to
-              external stimuli is still noticeable. On the EEG, this stage can be identified by the presence of&nbsp;
+              muscle activity decreases even more, and the eyes stop moving. In this stage, the sensitivity to external
+              stimuli is still noticeable. On the EEG, this stage can be identified by the presence of&nbsp;
               <a href="https://en.wikipedia.org/wiki/K-complex" target="_blank" rel="noreferrer">
                 K complexes
               </a>
@@ -224,7 +224,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
             <p>
               <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
               <span className="scrollytelling_cards__n2_text">N2</span> and&nbsp;
-              <span className="scrollytelling_cards__n3_text">N3</span> are called, in opposition to{' '}
+              <span className="scrollytelling_cards__n3_text">N3</span> are called, in opposition to&nbsp;
               <span className="scrollytelling_cards__rem_text">REM</span>, the&nbsp;
               <strong>NREM sleep stages</strong>.
             </p>

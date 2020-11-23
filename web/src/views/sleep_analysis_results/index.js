@@ -85,6 +85,12 @@ const SleepAnalysisResults = ({ location }) => {
           sleep and possibly awake. Any imbalance in these hormones or their secretion can have an inhibiting effect on
           sleep.
         </p>
+        <p className="lead">
+          Adenosine is not a hormone, but it also plays its role into sleep mechanisms. When you are awake, the level of
+          adenosine continuously increases in the brain. When we sleep, it is the opposite, it continuously falls. This
+          is why coffee makes us feel more energized, as caffeine acts as an adenosine-receptor antagonist [O. Björklund
+          et al., 2008].
+        </p>
       </Container>
       <SleepMechanisms />
       <section className="section bg-secondary pt-150">
@@ -303,8 +309,13 @@ const SleepAnalysisResults = ({ location }) => {
           24983, 2014.
         </div>
         <div className="mt-2">
-          [D. Purves et al., 2001] D. Purves et al., “Stages of Sleep,” Neuroscience. 2nd edition, 2001, Accessed: Nov.
+          [D. Purves and al., 2001] D. Purves et al., “Stages of Sleep,” Neuroscience. 2nd edition, 2001, Accessed: Nov.
           22, 2020. [Online]. Available: https://www.ncbi.nlm.nih.gov/books/NBK10996/.
+        </div>
+        <div className="mt-2">
+          [O. Björklund and al., 2008] Björklund O, Kahlström J, Salmi P, Fredholm BB "Perinatal Caffeine, Acting on
+          Maternal Adenosine A1 Receptors, Causes Long-Lasting Behavioral Changes in Mouse Offspring". vol. 3, no. 12:
+          e3977, 2008. https://doi.org/10.1371/journal.pone.0003977
         </div>
         <div className="mt-2">
           [M. Corsi-Cabrera, and al., 2000] M. Corsi-Cabrera, M. A. Guevara, Y. Del Río-Portilla, C. Arce, and Y.
