@@ -26,7 +26,7 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
           <CardBody>
             <p>
               Generally, when talking about brain waves, we group certain frequencies together into bands. There are
-              overall five frequency bands, where each has a general associated behaviour, or state of mind. We will
+              overall five frequency bands, where each has a general associated behaviour, or state of consciousness. We will
               cover those when looking at time frames corresponding to each sleep stage.
             </p>
           </CardBody>
@@ -74,7 +74,7 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
         <Card className="shadow">
           <CardBody>
             <p>
-              By slowly falling asleep, the signal frequencies tend to decrease into the 4 to 8 Hz range, or the theta
+              While slowly falling asleep, the signal frequencies tend to decrease into the 4 to 8 Hz range, or the theta
               band, and to have larger amplitudes [D. Purves et al., 2001]. You should then see more yellow in the
               specified frequency band range. These characteristics are associated with&nbsp;
               <span className="scrollytelling_cards__n1_text">N1</span>.

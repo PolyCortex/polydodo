@@ -41,7 +41,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
   const mostProminentStage = _.maxBy(_.keys(sleepStageTimes), (stage) => sleepStageTimes[stage]);
   const recommendedSleepStage =
     parseInt(subject.age) > 18
-      ? 'an adult should sleep more than 7 hours per night to promote optimal health [Watson and al., 2015]'
+      ? 'an adult should sleep, on average, more than 7 hours per night to promote optimal health [Watson and al., 2015]'
       : 'teenagers, from 13 to 18 years of age, should sleep 8 to 10 hours on a regular basis to promote optimal health [Paruthi and al., 2016]';
   return (
     <Container className="text-justify">
@@ -59,7 +59,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              This is your sleep time line. Each color represents one of the 5 sleep stages which are&nbsp;
+              This is your sleep timeline. Each color represents one of the 5 sleep stages which are&nbsp;
               <span className="scrollytelling_cards__w_text">Wake</span>
               ,&nbsp;
               <span className="scrollytelling_cards__rem_text">REM</span>
@@ -67,7 +67,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
               <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
               <span className="scrollytelling_cards__n2_text">N2</span>
               &nbsp;and&nbsp;
-              <span className="scrollytelling_cards__n3_text">N3</span>. Each of the colored blocks reprensent a part of
+              <span className="scrollytelling_cards__n3_text">N3</span>. Each colored block reprensents a part of
               your night that was associated to one of these five stages. You may want to hover them as it shows more
               details about that part of your night.
             </p>
@@ -80,7 +80,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               The time you spent out of bed is not taken into account in this analysis. Thus, our timeline starts at the
-              bedtime, so <Metric isTime>{bedTime}</Metric> in your case, and ends at the time you got out of bed,
+              bedtime, <Metric isTime>{bedTime}</Metric> in your case, and ends at the time you got out of bed,
               whereas&nbsp;
               <Metric isTime>{wakeUpTime}</Metric>. Out of this <Metric isDuration>{sleepTime}</Metric>, you spent&nbsp;
               <Metric isDuration>{efficientSleepTime}</Metric> actually sleeping. According to the American Academy of
@@ -94,7 +94,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              In total, there were <Metric>{stageShifts}</Metric> sleep stage shifts and <Metric>{awakenings}</Metric>
+              In total, there were <Metric>{stageShifts}</Metric> sleep stage's shifts and <Metric>{awakenings}</Metric>
               &nbsp;noctural awakenings. "High levels of sleep fragmentation, as defined by recurrent awakenings and/or
               stage shifts may result in complaints of non-restorative sleep even when an apparently normal total sleep
               time is present." [Shrivastava and al., 2014]
@@ -107,7 +107,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, to which we will refer to as sleep onset.
+              You first fell asleep at <Metric isTime>{sleepOnset}</Metric>, which will be refered to as <i>sleep onset</i>.
               You woke up at <Metric isTime>{sleepOffset}</Metric>, which we will refer to as sleep offset.
               During that night's sleep, you went through <Metric>{numberStagesTraversed}</Metric> different stages.
               Let's take a look at them.
@@ -142,12 +142,12 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
               asleep, which here is <Metric isDuration>{sleepLatency}</Metric>.
             </p>
             <p>
-              Secondly, <strong>wake after sleep onset</strong>, often abbreviated as WASO, is the time spent awake
+              Second, <strong>wake after sleep onset</strong>, often abbreviated as WASO, is the time spent awake
               between sleep onset and sleep offset. In your case, it corresponds to&nbsp;
               <Metric isDuration>{WASO}</Metric>.
             </p>
             <p>
-              Thirdly, the time you spend in bed after waking up and getting out of bed, here being&nbsp;
+              Third, the time you spend in bed after waking up and getting out of bed, here being&nbsp;
               <Metric isDuration>{wakeAfterSleepOffset}</Metric>, is called <strong>wake after sleep offset</strong>.
             </p>
           </CardBody>
@@ -159,11 +159,11 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               <span className="scrollytelling_cards__rem_text">REM</span> stage, which is short for&nbsp;
-              <i>rapid eyes movement</i>, is a stage characterized by, like its name implies it, rapid eyes movements.
-              During this stage, your muscles are completely immobilized, but on the opposite, your brain and your heart
+              <i>rapid eye movement</i>, is a stage characterized by, like its name implies it, rapid eye movement.
+              During this stage, your muscles are completely immobilized but your brain and your heart
               should be very active, which illustrates why this stage is also called paradoxical sleep. This sleep stage
-              therefore closely resembles wake and it is hard to tell the difference using EEG signals. We are dreaming
-              in all sleep stages but it is in the&nbsp;
+              therefore closely resembles wake and it is hard to tell the difference using EEG signals. Take note here that we dream
+              during all sleep stages but it is in the&nbsp;
               <span className="scrollytelling_cards__rem_text">REM</span> stage that dreams are best remembered and seem
               the most vivid.
             </p>
@@ -175,9 +175,9 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
             <p>
-              <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with that drowsy feeling
+              <span className="scrollytelling_cards__n1_text">N1</span> stage is associated with the typical drowsiness felt
               before falling asleep. It is a transition stage between wake and sleep. This stage is characterized by
-              reduced alertness, muscle tone and heart rate. Most people wouldn’t say they fell asleep if they’ve been
+              reduced alertness, muscle tone and heart rate. Most people won't say they fell asleep if they get
               woken up from <span className="scrollytelling_cards__n1_text">N1</span> sleep.
             </p>
           </CardBody>
@@ -189,7 +189,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               <span className="scrollytelling_cards__n2_text">N2</span>&nbsp; stage corresponds to light sleep. The
-              muscle activity decreases more, and the eyes have stopped moving. In this stage, the sensitivity to
+              muscle activity decreases even more, and the eyes stop moving. In this stage, the sensitivity to
               external stimuli is still noticeable. On the EEG, this stage can be identified by the presence of&nbsp;
               <a href="https://en.wikipedia.org/wiki/K-complex" target="_blank" rel="noreferrer">
                 K complexes
@@ -211,8 +211,8 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
               <span className="scrollytelling_cards__n3_text">N3</span> stage is when you are deeply asleep, hence it’s
               also called&nbsp;
               <strong>deep sleep</strong>, or sometimes <strong>slow wave sleep</strong>, and is the most difficult to
-              wake up from. During this stage, virtually no muscle activity can be detected. It is during those stages
-              that your cells get repaired, and that tissue grows. This is considered the most restful phase of sleep.
+              wake up from. During this stage, virtually no muscle activity can be detected. It is during this stage
+              that your cells get repaired and tissue grows. This is considered the most restful phase of sleep.
             </p>
           </CardBody>
         </Card>
