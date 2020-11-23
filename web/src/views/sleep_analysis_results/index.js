@@ -86,7 +86,7 @@ const SleepAnalysisResults = ({ location }) => {
         </p>
         <p className="lead">
           Adenosine is not a hormone, but it also plays its role into sleep mechanisms. When you are awake, the level of
-          adenosine continuously increases in your brain. In contrast, when you sleep, it is the opposite, it
+          adenosine continuously increases in your brain. In contrast, when you sleep it is the opposite: it
           continuously falls. This is why coffee makes us feel more energized, as caffeine acts as an adenosine-receptor
           antagonist [O. Björklund et al., 2008].
         </p>
