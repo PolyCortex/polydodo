@@ -61,7 +61,7 @@ const Performance = () => {
           scoring, which is considered the gold standard in sleep stage scoring. If you want to learn more about how
           we've defined our sleep scoring algorithm, please either refer to our presentation video in our home page, or
           to our{' '}
-          <a href="https://github.com/PolyCortex/polydodo/wiki/Model" target="_blank" rel="noreferrer">
+          <a href="https://github.com/PolyCortex/polydodo/wiki/Classification-Model-&-Pipeline" target="_blank" rel="noreferrer">
             wiki
           </a>
           .
@@ -75,8 +75,8 @@ const Performance = () => {
           <li>
             Then, we will check how this classifier performs on a full night recorded on one of our members. It is the
             night displayed in preview mode. In order to be able to make comparisons, we asked for the help of a medical
-            electrophysiologist to score our data. This manual scoring will serve as reference to get an idea of the
-            accuracy of our model on data acquired using an OpenBCI under non-clinical conditions.
+            electrophysiologist to score our data. This manual scoring will serve as reference to get an idea of our
+            model's accuracy on data acquired using an OpenBCI under non-clinical conditions.
           </li>
           <li>
             Finally, we will present the scoring differences between the medical electrophysiologist and our dataset. To
@@ -90,7 +90,7 @@ const Performance = () => {
         </p>
         <h3 className="my-5">Model training and selection</h3>
         <p>
-          In order to train our model to predict sleep stages based on EEG data, we used an open source dataset,
+          In order to train our model for the prediction of sleep stages based on EEG data, we used an open source dataset,
           <a href="https://physionet.org/content/sleep-edfx/1.0.0/" target="_blank" rel="noreferrer">
             &nbsp;Physionet SleepEDF expanded
           </a>
@@ -143,14 +143,14 @@ const Performance = () => {
           ours.TODO. */}
         </p>
         <p>
-          Although we obtain good results, it didn't quite validate that our classifier could accurately score OpenBCI
+          Although we obtained good results, it didn't quite validated that our classifier could accurately score OpenBCI
           data into sleep stages. After all, we only validated on data coming from the same acquisition hardware than
           the data we've trained on, which is not the case when we analyze data submitted in the application. We then
           had to make our own polysomnographic dataset based on the hardware we use, namely an OpenBCI board.
         </p>
         <h3 className="my-5">Manual scoring of OpenBCI data and comparison to our classifier</h3>
         <p>
-          As we had limited resources, we had in mind to create a small dataset of two manually scored night's of sleep,
+          As we had limited resources, we planned to create a small dataset of two manually scored night's of sleep,
           based on biosginals acquired with OpenBCI Cyton boards. Due to a technical problem that occured while
           recording one of them, we only had one night of sleep scored. The subject is one of our team member, William,
           who turned exactly 23 years old on the night of the recording 🥳. Afterwards, Alexandra, the
