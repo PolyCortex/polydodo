@@ -66,10 +66,9 @@ const SleepAnalysisResults = ({ location }) => {
       <Container className="text-justify">
         <p className="lead">
           You should now have a pretty good picture of how you spent your night. Also, we have seen that sleep can be
-          decomposed into two groups: REM and NREM. We’ve also defined other measures of your sleep
-          architecture, such as your sleep latency, efficiency and total sleep time. All of these metrics are very
-          interesting. However, it would be interesting to understand a little bit more about sleep in order to make
-          sense of this.
+          decomposed into two groups: REM and NREM. We’ve also defined other measures of your sleep architecture, such
+          as your sleep latency, efficiency and total sleep time. All of these metrics are very interesting. However, it
+          would be interesting to understand a little bit more about sleep in order to make sense of this.
         </p>
         <h4 className="mt-5">This is about your hormones</h4>
         <p className="lead">
@@ -87,9 +86,9 @@ const SleepAnalysisResults = ({ location }) => {
         </p>
         <p className="lead">
           Adenosine is not a hormone, but it also plays its role into sleep mechanisms. When you are awake, the level of
-          adenosine continuously increases in the brain. When we sleep, it is the opposite, it continuously falls. This
-          is why coffee makes us feel more energized, as caffeine acts as an adenosine-receptor antagonist [O. Björklund
-          et al., 2008].
+          adenosine continuously increases in your brain. In contrast, when you sleep, it is the opposite, it
+          continuously falls. This is why coffee makes us feel more energized, as caffeine acts as an adenosine-receptor
+          antagonist [O. Björklund et al., 2008].
         </p>
       </Container>
       <SleepMechanisms />
@@ -147,8 +146,8 @@ const SleepAnalysisResults = ({ location }) => {
         Below are represented spectrograms of the EEG signals recorded for each channel. The spectrogram is a special
         visualization of a signal in the frequency and time domain. Indeed, it represents the spectrum of a signal as it
         changes over time. Concretely, spectrograms can be viewed as if we took your signal, separated it into 30
-        seconds blocks, stacked them horizontally and then applied the Fast Fourier Transform. We then have,
-        for each 30 seconds epoch, the corresponding amplitudes for each frequency that makes up the signal hence the spectra.
+        seconds blocks, stacked them horizontally and then applied the Fast Fourier Transform. We then have, for each 30
+        seconds epoch, the corresponding amplitudes for each frequency that makes up the signal hence the spectra.
       </p>
       <p className="my-5 lead">
         We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
@@ -156,13 +155,12 @@ const SleepAnalysisResults = ({ location }) => {
       </p>
       <h4>Why are spectrograms useful to observe EEG?</h4>
       <p className="my-5 lead">
-        Electroencephalography signals allow us to observe brainwaves which have been traditionally split into
-        defined frequency bands, as they appear and disappear under specific conditions with specific voltage [M.
-        Corsi-Cabrera and al., 2000]. Thus, observing the spectrum of a signal is great as we can see the voltage
-        amplitude for each band and then try to predict under which physiological condition was the subject in. But as
-        we've mentionned, the EEG signals' spectrum do change over time, as EEG is not a stationnary signal. So we need
-        to split the signal into much smaller chunks, and then observe the spectrum of these chunks, and their evolution
-        over time.
+        Electroencephalography signals allow us to observe brainwaves which have been traditionally split into defined
+        frequency bands, as they appear and disappear under specific conditions with specific voltage [M. Corsi-Cabrera
+        and al., 2000]. Thus, observing the spectrum of a signal is great as we can see the voltage amplitude for each
+        band and then try to predict under which physiological condition was the subject in. But as we've mentionned,
+        the EEG signals' spectrum do change over time, as EEG is not a stationnary signal. So we need to split the
+        signal into much smaller chunks, and then observe the spectrum of these chunks, and their evolution over time.
       </p>
       <p className="my-5 lead">
         Furthermore, brainwaves frequency bands are widely used and their associated states are defined as below. Please
