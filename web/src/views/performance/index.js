@@ -57,8 +57,8 @@ const Performance = () => {
       />
       <Container className="mt-5 text-justify">
         <p className="lead">
-          This page aims to illustrate the performance of our sleep scoring compared to clinical hypnogram scoring,
-          which is usually considered the gold standard in sleep stage scoring. If you want to learn more about how
+          This page aims to illustrate the performance of our sleep scoring algorithmcompared to manual and professional
+          scoring, which is considered the gold standard in sleep stage scoring. If you want to learn more about how
           we've defined our sleep scoring algorithm, please either refer to our presentation video in our home page, or
           to our{' '}
           <a href="https://github.com/PolyCortex/polydodo/wiki/Model" target="_blank" rel="noreferrer">
@@ -84,6 +84,10 @@ const Performance = () => {
             results and maybe get an idea of the usual disagreement level between professional scorers.
           </li>
         </ul>
+        <p className="lead">
+          We will finally cover the limitations of our current sleep staging model and further work to be done in order
+          to improve our results.
+        </p>
         <h3 className="my-5">Model training and selection</h3>
         <p>
           In order to train our model to predict sleep stages based on EEG data, we used an open source dataset,
@@ -133,10 +137,10 @@ const Performance = () => {
         <p>
           The test set, on which these metrics were calculated, is composed of randomly chosen subjects from different
           ages groups (a 33 year old female, a 54 year old female, a 67 year old female and a 88 year old male), so that
-          the obtained score is the most representative of our ability to classify sleep, no matter the age. On another
-          side, we could compare the results obtained to the ones found in the litterature. To do so, we had to find a
+          the obtained score is the most representative of our ability to classify sleep, no matter the age.
+          {/* On another side, we could compare the results obtained to the ones found in the litterature. To do so, we had to find a
           paper that uses the same dataset, the same metric and that splits their dataset in a similar fashion as
-          ours.TODO.
+          ours.TODO. */}
         </p>
         <p>
           Although we obtain good results, it didn't quite validate that our classifier could accurately score OpenBCI
@@ -198,7 +202,7 @@ const Performance = () => {
         </p>
         <p className="mt-5">
           We then randomly selected a night of sleep within our dataset and asked Alexandra to score it. The selected
-          subject is a 74 year old women. You can see below the differences between both classification. The Cohen's
+          subject is a 74 year old woman. You can see below the differences between both classification. The Cohen's
           Kappa agreement score is of{' '}
           <strong>
             <span className="text-primary">0.6315</span>
@@ -220,7 +224,8 @@ const Performance = () => {
           >
             interview you can view here
           </a>{' '}
-          (in french only), that no epochs filled all the N3 sleep stage conditions.
+          (in french only), that no epochs filled the N3 sleep stage conditions. It may be explained by the fact that
+          the scoring manual used is different.
         </p>
         <ClassificationReport
           rows={[
@@ -232,12 +237,27 @@ const Performance = () => {
             ['Accuracy', '', '', 74, 1188],
           ]}
         />
-
-        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF (kappa:0.6709)</h3>
+        <p className="my-5">
+          And what if we looked at the automatic sleep classification of the same subject? We then reused the same model
+          description, trained on all the dataset's recording except for the randomly selected recording, and looked at
+          the results. The Cohen's Kappa agreement score is of{' '}
+          <strong>
+            <span className="text-primary">0.6709</span>
+          </strong>
+          .
+        </p>
+        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
           data={[predictedWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
         />
+        <p className="my-5">
+          We can see that some differences between the automatic classification and SleepEDF's are the same as
+          Alexandra's. Per example, near the end of the night, both Alexandra and the automatic scoring model classified
+          N2 instead of N1. On another note, we can see that the obtained Cohen's Kappa agreement score is less than the
+          one obtained for our test set above, which was 0.741. We can then reasonably assume that this night of sleep
+          may be hard to conclude on.
+        </p>
         <ClassificationReport
           rows={[
             ['W', 88, 97, 93, 409],
