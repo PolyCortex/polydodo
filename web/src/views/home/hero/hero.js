@@ -31,7 +31,7 @@ class Hero extends React.Component {
                       <iframe
                         title="Open Challenge 2020"
                         className="hero__video-iframe"
-                        src="https://youtu.be/322JvyDQYeQ"
+                        src="https://www.youtube.com/embed/322JvyDQYeQ"
                         allowFullScreen
                       />
                     </div>
