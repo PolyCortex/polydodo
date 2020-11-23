@@ -56,9 +56,17 @@ const Performance = () => {
         description={text['header_description']}
       />
       <Container className="mt-5 text-justify">
+        <p className="lead">
+          This page aims to illustrate the performance of our sleep scoring compared to clinical hypnogram scoring
+          (which is usually considered the state-of-the-art technique). If you want to learn more about how we've
+          defined our sleep scoring algorithm, please either refer to our presentation video in our home page, or to our{' '}
+          <a href="https://github.com/PolyCortex/polydodo/wiki/Model" target="_blank" rel="noreferrer">
+            wiki page
+          </a>
+          .
+        </p>
         <p>
-          This page aims to illustrate the relative performance of our sleep scoring compared to clinical hypnogram
-          scoring (which is usually considered the state-of-the-art technique).
+
         </p>
         <p>
           <strong>Here is the plan:</strong>
@@ -81,49 +89,64 @@ const Performance = () => {
             results and maybe get an idea of the usual disagreement level between professional scorers.
           </li>
         </ul>
-        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF</h3>
+        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF (kappa:0.6709)</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
           data={[predictedWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
         />
         <ClassificationReport
           rows={[
-            ['W', 92, 93, 92, 242],
-            ['REM', 56, 50, 52, 86],
-            ['N1', 80, 82, 70, 32],
-            ['N2', 75, 72, 23, 368],
-            ['N3', 96, 97, 96, 68],
-            ['Accuracy', '', '', 82, 796],
+            ['W', 88, 97, 93, 409],
+            ['REM', 53, 100, 69, 100],
+            ['N1', 65, 35, 45, 183],
+            ['N2', 75, 77, 76, 405],
+            ['N3', 100, 34, 51, 91],
+            ['Accuracy', '', '', 76, 1188],
           ]}
         />
-        <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist</h3>
+        <h3 className="mt-5">Classifier's accuracy according to the electrophysiologist (kappa;0.8310)</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Electrophysiologist'])}
           data={[predictedWilliamCyton.epochs, electrophysiologistWilliamCyton.epochs]}
         />
         <ClassificationReport
           rows={[
-            ['W', 85, 93, 92, 304],
-            ['REM', 52, 50, 52, 83],
-            ['N1', 76, 80, 78, 37],
-            ['N2', 75, 60, 68, 366],
-            ['N3', 92, 93, 92, 65],
-            ['Accuracy', '', '', 74, 842],
+            ['W', 100, 97, 98, 379],
+            ['REM', 84, 82, 83, 200],
+            ['N1', 30, 12, 17, 58],
+            ['N2', 79, 90, 84, 353],
+            ['N3', 89, 91, 90, 242],
+            ['Accuracy', '', '', 87, 1232],
           ]}
         />
-        <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement</h3>
+        <h3 className="mt-5">Electrophysiologist and Sleep-EDF's agreement (kappa:0.6315)</h3>
         <D3Component
           callback={(svg, data) => createComparativeHypnogram(svg, data, ['Electrophysiologist', 'Sleep-EDF'])}
           data={[electrophysiologistWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
         />
         <ClassificationReport
           rows={[
-            ['W', 92, 93, 92, 304],
-            ['REM', 56, 50, 52, 83],
-            ['N1', 74, 72, 73, 37],
-            ['N2', 70, 64, 67, 366],
-            ['N3', 89, 87, 87, 65],
-            ['Accuracy', '', '', 73, 842],
+            ['W', 87, 100, 93, 409],
+            ['REM', 73, 100, 84, 100],
+            ['N1', 52, 46, 49, 183],
+            ['N2', 67, 70, 69, 405],
+            ['N3', 0, 0, 0, 91],
+            ['Accuracy', '', '', 74, 1188],
+          ]}
+        />
+        <h3 className="mt-5">Classifier's accuracy according to Sleep-EDF testing set (kappa:0.74131)</h3>
+        <D3Component
+          callback={(svg, data) => createComparativeHypnogram(svg, data, ['Classifier', 'Sleep-EDF'])}
+          data={[predictedWoman78yoSleepEDF.epochs, physionetWoman78yoSleepEDF.epochs]}
+        />
+        <ClassificationReport
+          rows={[
+            ['W',   88, 90, 89,  1624],
+            ['REM', 75, 87, 81,  1302],
+            ['N1',  69, 26, 38,   983],
+            ['N2',  86, 89, 87,  3603],
+            ['N3',  70, 94, 80,   611],
+            ['Accuracy', '', '', 82, 8123],
           ]}
         />
       </Container>
