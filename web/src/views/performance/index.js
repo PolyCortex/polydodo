@@ -253,7 +253,7 @@ const Performance = () => {
         />
         <p className="my-5">
           We can see that some differences between the automatic classification and SleepEDF's are the same as
-          Alexandra's. Per example, near the end of the night, both Alexandra and the automatic scoring model classified
+          Alexandra's. For instance, near the end of the night, both Alexandra and the automatic scoring model classified
           N2 instead of N1. On another note, we can see that the obtained Cohen's Kappa agreement score is less than the
           one obtained for our test set above, which was 0.741. We can then reasonably assume that this night of sleep
           may be hard to conclude on.
@@ -273,16 +273,16 @@ const Performance = () => {
           If we take a step back and look at the main differences between the automatic and manual scoring that
           Alexandra did, there's notably the manual used for the classification. Indeed, the dataset we've used to train
           our model contains sleep stages classification based on the 1968 Rechtschaffen and Kales manual, whereas
-          Alexandra, of course, used the most recent manual scoring guide, whereas the American Academy of Sleep
+          Alexandra, of course, used the most recent manual scoring guide, which is the American Academy of Sleep
           Medicine Manual for the Scoring of Sleep and Assoicated Events. In order to output AASM's sleep stages instead
           of R&K's sleep stages, we've merged both Sleep Stage 3 and 4 together. Further work could be done to either
-          look at the litterature to see if there's a better way to translate R&K's sleep stages into AASM's sleep
+          review the litterature to see if there's a better way to translate R&K's sleep stages into AASM's sleep
           stages. Even better, it would be to train on labels scored based on the latest AASM's sleep stages. We have
           considered more recent datasets, such as{' '}
           <a href="http://www.ceams-carsm.ca/mass" target="_blank" rel="noreferrer">
             the Montreal Archive of Sleep Studies (MASS)
           </a>
-          , but it involved having a complete accreditation coming from an ethic board.
+          , but it involved having a complete accreditation coming from an ethics board.
         </p>
         <p>
           Furthermore, as we've already mentionned, we would also like to test our automatic sleep stage scoring based
