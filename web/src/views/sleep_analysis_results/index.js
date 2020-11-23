@@ -66,7 +66,7 @@ const SleepAnalysisResults = ({ location }) => {
       <Container className="text-justify">
         <p className="lead">
           You should now have a pretty good picture of how you spent your night. Also, we have seen that sleep can be
-          decomposed into two groups, whereas REM and NREM. We’ve also defined other measures of your sleep
+          decomposed into two groups: REM and NREM. We’ve also defined other measures of your sleep
           architecture, such as your sleep latency, efficiency and total sleep time. All of these metrics are very
           interesting. However, it would be interesting to understand a little bit more about sleep in order to make
           sense of this.
@@ -110,7 +110,7 @@ const SleepAnalysisResults = ({ location }) => {
       <h3>Hypnogram</h3>
       <p className="mt-3 lead">
         A hypnogram allows you to visually inspect the evolution of your night, through time. The vertical axis
-        represents how hard it is to wake up, namely the sleep deepness. We see that REM is one of the lightest sleep
+        represents how hard it is to wake up, namely the sleep depth. We see that REM is one of the lightest sleep
         stages (along with N1), because we unknowingly wake up from that stage. Those short periods of arousal often
         last no longer than 15 seconds, are followed by a lighter sleep stage, and cannot be remembered the next
         morning. If they are too frequent, they can affect your sleep quality. Considering that we only have a 30
@@ -144,12 +144,11 @@ const SleepAnalysisResults = ({ location }) => {
     <Container className="text-justify">
       <h3 className="mt-5">Spectrogram</h3>
       <p className="lead">
-        Below are represented spectrograms of the EEG signals recorded for each channel. Spectrogram is a special
+        Below are represented spectrograms of the EEG signals recorded for each channel. The spectrogram is a special
         visualization of a signal in the frequency and time domain. Indeed, it represents the spectrum of a signal as it
-        changes over time. Concretely, spectrograms can be viewed as if we took your signal, we’ve separated it into 30
-        seconds blocs, stacked then horizontally and to which we’ve applied the fast fourier transform. We then have,
-        for each 30 seconds epoch, the corresponding amplitudes for each frequency that makes up the signal, hence the
-        spectra.
+        changes over time. Concretely, spectrograms can be viewed as if we took your signal, separated it into 30
+        seconds blocks, stacked them horizontally and then applied the Fast Fourier Transform. We then have,
+        for each 30 seconds epoch, the corresponding amplitudes for each frequency that makes up the signal hence the spectra.
       </p>
       <p className="my-5 lead">
         We then converted the scale to logarithmic, to better see the differences in the spectrums. We then speak of
@@ -157,11 +156,11 @@ const SleepAnalysisResults = ({ location }) => {
       </p>
       <h4>Why are spectrograms useful to observe EEG?</h4>
       <p className="my-5 lead">
-        Electroencephalography signals allows us to observe brainwaves, which have been traditionnally splitted into
+        Electroencephalography signals allow us to observe brainwaves which have been traditionally split into
         defined frequency bands, as they appear and disappear under specific conditions with specific voltage [M.
-        Corsi-Cabrera and al., 2000]. Thus, observing the spectrum of a signal is great, as we can see the voltage
-        amplitude for each band, and then try to predict under which physiological condition was the subject in. But, as
-        we've mentionned, the EEG signals' spectrum do change over time, as EEG is not a stationnary signal. So, we need
+        Corsi-Cabrera and al., 2000]. Thus, observing the spectrum of a signal is great as we can see the voltage
+        amplitude for each band and then try to predict under which physiological condition was the subject in. But as
+        we've mentionned, the EEG signals' spectrum do change over time, as EEG is not a stationnary signal. So we need
         to split the signal into much smaller chunks, and then observe the spectrum of these chunks, and their evolution
         over time.
       </p>
@@ -246,12 +245,12 @@ const SleepAnalysisResults = ({ location }) => {
     <Container className="text-justify">
       <Row className="scrollytelling-container__buttons">
         <p className="mt-5 lead">
-          If you found our visualization helpful in better understanding how sleep works, and especially how you slept
+          If you found our visualizations helpful in better understanding how sleep works, and especially how you slept
           on your recorded night, you can come say hi at our &nbsp;
           <a href="https://www.facebook.com/PolyCortex/" target="_blank" rel="noopener noreferrer">
             Facebook page
           </a>
-          . On another hand, if there has been problems or unexpected results while recording and analyzing your sleep,
+          . On another hand, if there have been problems or unexpected results while recording and analyzing your sleep,
           you can always open an issue in our &nbsp;
           <a href="https://github.com/PolyCortex/polydodo" target="_blank" rel="noopener noreferrer">
             Github repository
