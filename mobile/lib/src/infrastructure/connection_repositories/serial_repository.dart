@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
+import 'package:pedantic/pedantic.dart';
+import 'package:usb_serial/usb_serial.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
-import 'package:usb_serial/usb_serial.dart';
-import 'package:pedantic/pedantic.dart';
 
 class SerialRepository implements IAcquisitionDeviceRepository {
   UsbDevice _selectedDevice;
@@ -40,7 +40,7 @@ class SerialRepository implements IAcquisitionDeviceRepository {
       var device = AcquisitionDevice(
           UniqueId.from(serialDevice.deviceId.toString()),
           serialDevice.productName,
-          DeviceType.serial);
+          AcquisitionDeviceType.serial);
 
       streamController.add(device);
 

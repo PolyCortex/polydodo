@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/eeg_data/data_cubit.dart';
-import 'package:polydodo/src/application/eeg_data/data_states.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_cubit.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_states.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
@@ -19,7 +19,7 @@ class RecordSleepValidatePage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       drawer: NavDrawer(activeTab: NavdrawerTab.RecordSleep),
-      body: BlocConsumer<DataCubit, DataState>(
+      body: BlocConsumer<SleepSequenceCubit, SleepSequenceState>(
         listener: (context, state) {
           print(state.runtimeType);
         },
@@ -28,7 +28,7 @@ class RecordSleepValidatePage extends StatelessWidget {
             child: Column(children: <Widget>[
               _buildValidationCircle(context, state),
               buildSignalSection(state),
-              if (state is DataStateTestSignalSuccess)
+              if (state is SleepSequenceTestSignalSuccess)
                 _buildNextButton(context),
             ]),
           );
@@ -47,7 +47,7 @@ Widget _buildValidationCircle(var context, var state) {
 }
 
 Widget _buildProgressIndicator(var state) {
-  return (state is DataStateTestSignalSuccess)
+  return (state is SleepSequenceTestSignalSuccess)
       ? CircularProgressIndicator(
           strokeWidth: 10,
           valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
@@ -59,7 +59,7 @@ Widget _buildProgressIndicator(var state) {
 }
 
 Widget _buildProgressIndicatorContent(var state) {
-  return (state is DataStateTestSignalSuccess)
+  return (state is SleepSequenceTestSignalSuccess)
       ? Icon(
           Icons.check,
           color: Colors.green,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
 
-Container buildMetricSection(SleepSequenceStats stats) {
+Container buildMetricSection(SleepSequence sequence) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -11,21 +11,26 @@ Container buildMetricSection(SleepSequenceStats stats) {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildMetric('Recording Start', stats.recordingTime.start),
-            _buildMetric('Recording Time', stats.recordingTime.duration),
-            _buildMetric('Sleep Efficiency', stats.sleepEfficiency),
-            _buildMetric('WASO', stats.waso),
-            _buildMetric('REM Latency', stats.remLatency)
+            _buildMetric(
+                'Recording Start', sequence.metadata.sequenceDuration.start),
+            _buildMetric(
+                'Recording Time', sequence.metadata.sequenceDuration.duration),
+            _buildMetric('Sleep Efficiency', sequence.stats.sleepEfficiency),
+            _buildMetric('WASO', sequence.stats.waso),
+            _buildMetric('REM Latency', sequence.stats.remLatency)
           ],
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildMetric('Recording End', stats.recordingTime.end),
-            _buildMetric('Effective Sleep Time', stats.effectiveSleepTime),
-            _buildMetric('Sleep Latency', stats.sleepLatency),
-            _buildMetric('Awakenings', stats.awakenings),
-            _buildMetric('Number of Transitions', stats.numberTransitions)
+            _buildMetric(
+                'Recording End', sequence.metadata.sequenceDuration.end),
+            _buildMetric(
+                'Effective Sleep Time', sequence.stats.effectiveSleepTime),
+            _buildMetric('Sleep Latency', sequence.stats.sleepLatency),
+            _buildMetric('Awakenings', sequence.stats.awakenings),
+            _buildMetric(
+                'Number of Transitions', sequence.stats.numberTransitions)
           ],
         )
       ],

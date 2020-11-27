@@ -32,15 +32,15 @@ Widget _buildStatsBody(var context, var state, var statsCubit) {
     return Container();
   }
 
-  if (state.stats.analysisState == AnalysisState.analysis_failed) {
+  if (state.sequence.metadata.analysisState == AnalysisState.analysis_failed) {
     return buildAnalysisFailure();
   }
 
   return SingleChildScrollView(
     child: Column(
       children: [
-        buildMetricSection(state.stats),
-        buildSleepStagesSection(state.stats)
+        buildMetricSection(state.sequence),
+        buildSleepStagesSection(state.sequence)
       ],
     ),
   );

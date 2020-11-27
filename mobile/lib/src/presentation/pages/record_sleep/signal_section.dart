@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:polydodo/src/application/eeg_data/data_states.dart';
-import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_states.dart';
+import 'package:polydodo/src/domain/sleep_sequence/signal_result.dart';
 
 Container buildSignalSection(var state) {
   var fpzCzChannelResult = SignalResult.invalid;
   var pzOzChannelResult = SignalResult.invalid;
 
-  if (state is DataStateTestSignalInProgress ||
-      state is DataStateTestSignalSuccess) {
+  if (state is SleepSequenceTestSignalInProgress ||
+      state is SleepSequenceTestSignalSuccess) {
     fpzCzChannelResult = state.fpzCzChannelResult;
     pzOzChannelResult = state.pzOzChannelResult;
   }

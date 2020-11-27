@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/sleep_sequence_stats/sleep_sequence_stats_cubit.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
-import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
 import 'sleep_sequence_history_state.dart';
 
 class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
@@ -13,7 +13,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   final StreamController<String> _selectText =
       StreamController<String>.broadcast();
 
-  List<SleepSequenceStats> _selectedSequences;
+  List<SleepSequence> _selectedSequences;
 
   SleepSequenceHistoryCubit(
       this._sleepSequenceRepository, this._sleepSequenceStatsCubit)
@@ -25,7 +25,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
-  void loadSleepSequence(SleepSequenceStats sequence) {
+  void loadSleepSequence(SleepSequence sequence) {
     _sleepSequenceStatsCubit.loadSleepSequence(sequence);
   }
 
@@ -50,7 +50,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
-  void toggleSelectSequenceForDeletion(SleepSequenceStats sequence) {
+  void toggleSelectSequenceForDeletion(SleepSequence sequence) {
     if (_selectedSequences.contains(sequence)) {
       _selectedSequences.remove(sequence);
     } else {
@@ -62,9 +62,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void deleteSelected() {
-    _sleepSequenceRepository.delete(
-        (state as SleepSequenceHistoryEditInProgress).history,
-        _selectedSequences);
+    _sleepSequenceRepository.delete(_selectedSequences);
     _disableSelection();
   }
 
