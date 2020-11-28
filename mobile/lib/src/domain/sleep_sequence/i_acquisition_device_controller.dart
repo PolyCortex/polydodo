@@ -7,7 +7,7 @@ abstract class IAcquisitionDeviceController {
 
   void startRecording(Stream<List<int>> stream);
 
-  Future<SleepSequence> stop();
+  Future<SleepSequence> stopRecording();
 
   void testSignal(Stream<List<int>> stream,
       Function(SignalResult, SignalResult, [Exception]) callback);

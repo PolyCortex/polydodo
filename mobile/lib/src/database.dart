@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/infrastructure/hive_datastructures/hive_analysis_state.dart';
 import 'package:polydodo/src/infrastructure/hive_datastructures/hive_sleep_sequence.dart';
 import 'package:polydodo/src/infrastructure/hive_datastructures/hive_sleep_sequence_metadata.dart';
-import 'package:polydodo/src/infrastructure/hive_datastructures/hive_sleep_sequence_stats.dart';
+import 'package:polydodo/src/infrastructure/hive_datastructures/hive_sleep_sequence_metrics.dart';
 import 'package:polydodo/src/infrastructure/hive_datastructures/hive_sleep_stage_type.dart';
 import 'package:polydodo/src/infrastructure/hive_datastructures/hive_sleep_stage.dart';
 
@@ -23,7 +23,7 @@ Future<void> initDatabase() async {
 
 void _registerAdapters() {
   Hive.registerAdapter(HiveAnalysisStateAdapter());
-  Hive.registerAdapter(HiveSleepSequenceStatsAdapter());
+  Hive.registerAdapter(HiveSleepSequenceMetricsAdapter());
   Hive.registerAdapter(HiveSleepSequenceMetadataAdapter());
   Hive.registerAdapter(HiveSleepStageTypeAdapter());
   Hive.registerAdapter(HiveSleepStageAdapter());
@@ -34,6 +34,7 @@ void _registerAdapters() {
 // the old box with old content it will crash so you need to delete everything
 // to store the new content type.
 // todo: Remove this function at the end ?
+// ignore: unused_element
 void _deleteDatabase(var appDocDir) {
   var hiveDb = Directory(appDocDir.path + HIVE_RELATIVE_LOCATION);
   hiveDb.delete(recursive: true);

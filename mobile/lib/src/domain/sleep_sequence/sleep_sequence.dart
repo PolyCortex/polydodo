@@ -1,21 +1,21 @@
 import 'package:meta/meta.dart';
-import 'package:polydodo/src/domain/unique_id.dart';
+import 'package:polydodo/src/domain/entity.dart';
 
 import 'sleep_sequence_metadata.dart';
-import 'sleep_sequence_stats.dart';
+import 'sleep_sequence_metrics.dart';
 import 'sleep_stage.dart';
 
-class SleepSequence {
-  final UniqueId id;
+class SleepSequence extends Entity {
   final String eegDataFilename;
   SleepSequenceMetadata metadata;
-  SleepSequenceStats stats;
+  SleepSequenceMetrics metrics;
   List<SleepStage> sleepStages;
 
   SleepSequence(
-      {@required this.id,
+      {@required id,
       @required this.eegDataFilename,
       @required this.metadata,
-      this.stats,
-      this.sleepStages});
+      this.metrics,
+      this.sleepStages})
+      : super(id);
 }

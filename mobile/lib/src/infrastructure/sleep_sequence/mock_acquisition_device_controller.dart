@@ -14,7 +14,7 @@ class MockAcquisitionDeviceController implements IAcquisitionDeviceController {
   void startRecording(Stream<List<int>> stream) {}
 
   @override
-  Future<SleepSequence> stop() async {
+  Future<SleepSequence> stopRecording() async {
     return mock_data_1;
   }
 

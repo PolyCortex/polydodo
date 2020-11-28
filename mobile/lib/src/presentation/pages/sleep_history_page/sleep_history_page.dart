@@ -17,14 +17,13 @@ class SleepHistoryPage extends StatelessWidget {
         drawer: NavDrawer(activeTab: NavdrawerTab.History),
         body:
             BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
-                listener: (context, state) {
-          print(state.runtimeType);
-        }, builder: (context, state) {
-          return (state is SleepSequenceHistoryLoaded ||
-                  state is SleepSequenceHistoryEditInProgress)
-              ? buildHistoryList(context, state, historyCubit)
-              : Container();
-        }),
+                listener: (context, state) {},
+                builder: (context, state) {
+                  return (state is SleepSequenceHistoryLoaded ||
+                          state is SleepSequenceHistoryEditInProgress)
+                      ? buildHistoryList(context, state, historyCubit)
+                      : Container();
+                }),
         floatingActionButton: _buildFloatingActionButton(historyCubit));
   }
 }
@@ -35,7 +34,7 @@ Widget _buildFloatingActionButton(var historyCubit) {
       builder: (context, state) {
         return (state is SleepSequenceHistoryEditInProgress)
             ? Visibility(
-                visible: (state.selectedSequences?.isNotEmpty ?? false),
+                visible: (state.selectedSleepSequences?.isNotEmpty ?? false),
                 child: FloatingActionButton(
                   onPressed: () => historyCubit.deleteSelected(),
                   child: Icon(Icons.delete),

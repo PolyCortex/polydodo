@@ -23,7 +23,7 @@ Widget _buildItemCard(var context, var state, var historyCubit, var index) {
       else
         {
           historyCubit.loadSleepSequence(state.history[index]),
-          ExtendedNavigator.of(context).push(Routes.sleepSequenceStatsPage)
+          ExtendedNavigator.of(context).push(Routes.sleepSequenceMetricsPage)
         }
     },
     title: Text(state.history[index].id.toString()),
@@ -31,12 +31,14 @@ Widget _buildItemCard(var context, var state, var historyCubit, var index) {
   ));
 }
 
-Widget _buildTrailing(var state, var sequence) {
+Widget _buildTrailing(var state, var sleepSequence) {
   if (!(state is SleepSequenceHistoryEditInProgress)) {
     return Icon(Icons.navigate_next);
   }
 
-  return state.selectedSequences.contains(sequence)
+  print(state.selectedSleepSequences);
+
+  return state.selectedSleepSequences.contains(sleepSequence)
       ? Icon(Icons.check_circle_outline, color: Colors.blue)
       : Icon(Icons.check_circle_outline);
 }

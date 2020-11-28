@@ -12,5 +12,5 @@ abstract class ISleepSequenceRepository {
 
   IAcquisitionDeviceController acquire(AcquisitionDeviceType deviceType);
 
-  Future<SleepSequence> analyze(SleepSequence sequence);
+  Future<SleepSequence> analyze(SleepSequence sleepSequence);
 }

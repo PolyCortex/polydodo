@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_cubit.dart';
-import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_states.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_acquisition_cubit.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_acquisition_states.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
@@ -19,7 +19,8 @@ class RecordSleepValidatePage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       drawer: NavDrawer(activeTab: NavdrawerTab.RecordSleep),
-      body: BlocConsumer<SleepSequenceCubit, SleepSequenceState>(
+      body: BlocConsumer<SleepSequenceAcquisitionCubit,
+          SleepSequenceAcquisitionState>(
         listener: (context, state) {
           print(state.runtimeType);
         },
@@ -28,7 +29,7 @@ class RecordSleepValidatePage extends StatelessWidget {
             child: Column(children: <Widget>[
               _buildValidationCircle(context, state),
               buildSignalSection(state),
-              if (state is SleepSequenceTestSignalSuccess)
+              if (state is SleepSequenceAcquisitionTestSignalSuccess)
                 _buildNextButton(context),
             ]),
           );
@@ -38,7 +39,8 @@ class RecordSleepValidatePage extends StatelessWidget {
   }
 }
 
-Widget _buildValidationCircle(var context, var state) {
+Widget _buildValidationCircle(
+    BuildContext context, SleepSequenceAcquisitionState state) {
   return Center(
       child: Stack(alignment: Alignment.center, children: [
     SizedBox(width: 200, height: 200, child: _buildProgressIndicator(state)),
@@ -46,8 +48,8 @@ Widget _buildValidationCircle(var context, var state) {
   ]));
 }
 
-Widget _buildProgressIndicator(var state) {
-  return (state is SleepSequenceTestSignalSuccess)
+Widget _buildProgressIndicator(SleepSequenceAcquisitionState state) {
+  return (state is SleepSequenceAcquisitionTestSignalSuccess)
       ? CircularProgressIndicator(
           strokeWidth: 10,
           valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
@@ -58,8 +60,8 @@ Widget _buildProgressIndicator(var state) {
         );
 }
 
-Widget _buildProgressIndicatorContent(var state) {
-  return (state is SleepSequenceTestSignalSuccess)
+Widget _buildProgressIndicatorContent(SleepSequenceAcquisitionState state) {
+  return (state is SleepSequenceAcquisitionTestSignalSuccess)
       ? Icon(
           Icons.check,
           color: Colors.green,
@@ -71,7 +73,7 @@ Widget _buildProgressIndicatorContent(var state) {
         );
 }
 
-Widget _buildNextButton(var context) {
+Widget _buildNextButton(BuildContext context) {
   return Expanded(
       child: Align(
           alignment: Alignment.bottomRight,

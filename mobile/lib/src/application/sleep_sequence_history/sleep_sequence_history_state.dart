@@ -12,7 +12,7 @@ class SleepSequenceHistoryLoaded extends SleepSequenceHistoryState {
 
 class SleepSequenceHistoryEditInProgress extends SleepSequenceHistoryState {
   final List<SleepSequence> history;
-  final List<SleepSequence> selectedSequences;
+  final List<SleepSequence> selectedSleepSequences;
 
-  SleepSequenceHistoryEditInProgress(this.history, this.selectedSequences);
+  SleepSequenceHistoryEditInProgress(this.history, this.selectedSleepSequences);
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_states.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_acquisition_states.dart';
 import 'package:polydodo/src/domain/sleep_sequence/signal_result.dart';
 
 Container buildSignalSection(var state) {
   var fpzCzChannelResult = SignalResult.invalid;
   var pzOzChannelResult = SignalResult.invalid;
 
-  if (state is SleepSequenceTestSignalInProgress ||
-      state is SleepSequenceTestSignalSuccess) {
+  if (state is SleepSequenceAcquisitionTestSignalInProgress ||
+      state is SleepSequenceAcquisitionTestSignalSuccess) {
     fpzCzChannelResult = state.fpzCzChannelResult;
     pzOzChannelResult = state.pzOzChannelResult;
   }

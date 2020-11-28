@@ -1,16 +1,16 @@
 import 'package:hive/hive.dart';
+import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metrics.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_stage.dart';
+import 'package:polydodo/src/domain/unique_id.dart';
+import 'package:polydodo/src/infrastructure/hive_datastructures/hive_analysis_state.dart';
 
 import 'hive_sleep_sequence_metadata.dart';
-import 'hive_sleep_sequence_stats.dart';
+import 'hive_sleep_sequence_metrics.dart';
 import 'hive_sleep_stage.dart';
 
 part 'hive_sleep_sequence.g.dart'; // Name of the TypeAdapter that we will generate in the future
-
-// final UniqueId id;
-// final String eegDataFilename;
-// SleepSequenceMetadata metadata;
-// SleepSequenceStats stats;
-// List<SleepStages> sleepStages;
 
 @HiveType(typeId: 4)
 class HiveSleepSequence {
@@ -24,7 +24,7 @@ class HiveSleepSequence {
   HiveSleepSequenceMetadata metadata;
 
   @HiveField(3)
-  HiveSleepSequenceStats stats;
+  HiveSleepSequenceMetrics metrics;
 
   @HiveField(4)
   List<HiveSleepStage> sleepStages;
@@ -33,6 +33,39 @@ class HiveSleepSequence {
       {this.uniqueId,
       this.eegDataFilename,
       this.metadata,
-      this.stats,
+      this.metrics,
       this.sleepStages});
+
+  HiveSleepSequence.fromDomain(SleepSequence sleepSequence)
+      : uniqueId = sleepSequence.id.toString(),
+        eegDataFilename = sleepSequence.eegDataFilename,
+        metadata = HiveSleepSequenceMetadata.fromDomain(sleepSequence.metadata),
+        metrics = (sleepSequence.metadata.analysisState ==
+                AnalysisState.analysis_successful)
+            ? HiveSleepSequenceMetrics.fromDomain(sleepSequence.metrics)
+            : HiveSleepSequenceMetrics(),
+        sleepStages = (sleepSequence.metadata.analysisState ==
+                AnalysisState.analysis_successful)
+            ? sleepSequence.sleepStages
+                .map<HiveSleepStage>(
+                    (sleepStage) => HiveSleepStage.fromDomain(sleepStage))
+                .toList()
+            : [];
+
+  SleepSequence toDomain() {
+    return SleepSequence(
+        id: UniqueId.from(uniqueId),
+        eegDataFilename: eegDataFilename,
+        metadata: metadata.toDomain(),
+        metrics:
+            (metadata.analysisState == HiveAnalysisState.analysis_successful)
+                ? metrics.toDomain()
+                : SleepSequenceMetrics(),
+        sleepStages: (metadata.analysisState ==
+                HiveAnalysisState.analysis_successful)
+            ? sleepStages
+                .map<SleepStage>((hiveSleepStage) => hiveSleepStage.toDomain())
+                .toList()
+            : []);
+  }
 }
