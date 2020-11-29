@@ -6,5 +6,7 @@ class SleepSequenceMetadata {
   DateTimeRange sleepSequenceDateTimeRange;
   AnalysisState analysisState;
 
-  SleepSequenceMetadata(this.sleepSequenceDateTimeRange, this.analysisState);
+  SleepSequenceMetadata(this.sleepSequenceDateTimeRange, this.analysisState)
+      : assert(!sleepSequenceDateTimeRange.duration.isNegative),
+        assert(analysisState != null);
 }

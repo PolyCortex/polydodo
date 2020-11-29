@@ -35,7 +35,6 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
 
   @override
   void store(SleepSequence sleepSequence) {
-    print(sleepSequence.id.toString());
     _sleepSequencesListBox.put(sleepSequence.id.toString(),
         HiveSleepSequence.fromDomain(sleepSequence));
   }

@@ -9,7 +9,7 @@ import 'package:polydodo/src/domain/unique_id.dart';
 
 SleepSequence mock_data_1 = SleepSequence(
     id: UniqueId.from('test'),
-    eegDataFilename: '',
+    eegDataFilename: 'test.txt',
     metadata: SleepSequenceMetadata(
         DateTimeRange(start: DateTime.now(), end: DateTime.now()),
         AnalysisState.analysis_successful),
@@ -18,14 +18,14 @@ SleepSequence mock_data_1 = SleepSequence(
         effectiveSleepTime: Duration(minutes: 59),
         shifts: 5,
         remLatency: 20,
-        sleepEfficiency: 20.0,
-        sleepLatency: 10,
+        sleepEfficiency: 0.2,
+        sleepLatency: null,
         waso: Duration(minutes: 59)),
     sleepStages: []);
 
 SleepSequence mock_data_2 = SleepSequence(
     id: UniqueId.from('test2'),
-    eegDataFilename: '',
+    eegDataFilename: 'test2.txt',
     metadata: SleepSequenceMetadata(
         DateTimeRange(start: DateTime.now(), end: DateTime.now()),
         AnalysisState.analysis_successful),
@@ -34,7 +34,7 @@ SleepSequence mock_data_2 = SleepSequence(
         effectiveSleepTime: Duration(minutes: 100),
         shifts: 5,
         remLatency: 20,
-        sleepEfficiency: 20.0,
+        sleepEfficiency: 0.2,
         sleepLatency: 10,
         waso: Duration(minutes: 100)),
     sleepStages: []);
