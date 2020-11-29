@@ -36,8 +36,6 @@ Widget _buildTrailing(var state, var sleepSequence) {
     return Icon(Icons.navigate_next);
   }
 
-  print(state.selectedSleepSequences);
-
   return state.selectedSleepSequences.contains(sleepSequence)
       ? Icon(Icons.check_circle_outline, color: Colors.blue)
       : Icon(Icons.check_circle_outline);

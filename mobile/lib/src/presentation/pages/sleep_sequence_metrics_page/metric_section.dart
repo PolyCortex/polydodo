@@ -17,27 +17,25 @@ class MetricSection extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildMetric('Recording Start',
+              Metric('Recording Start',
                   sleepSequence.metadata.sleepSequenceDateTimeRange.start),
-              _buildMetric('Recording Time',
+              Metric('Recording Time',
                   sleepSequence.metadata.sleepSequenceDateTimeRange.duration),
-              _buildMetric(
-                  'Sleep Efficiency', sleepSequence.metrics.sleepEfficiency),
-              _buildMetric('WASO', sleepSequence.metrics.waso),
-              _buildMetric('REM Latency', sleepSequence.metrics.remLatency)
+              Metric('Sleep Efficiency', sleepSequence.metrics.sleepEfficiency),
+              Metric('WASO', sleepSequence.metrics.waso),
+              Metric('REM Latency', sleepSequence.metrics.remLatency)
             ],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildMetric('Recording End',
+              Metric('Recording End',
                   sleepSequence.metadata.sleepSequenceDateTimeRange.end),
-              _buildMetric('Effective Sleep Time',
+              Metric('Effective Sleep Time',
                   sleepSequence.metrics.effectiveSleepTime),
-              _buildMetric('Sleep Latency', sleepSequence.metrics.sleepLatency),
-              _buildMetric('Awakenings', sleepSequence.metrics.awakenings),
-              _buildMetric(
-                  'Number of Transitions', sleepSequence.metrics.shifts)
+              Metric('Sleep Latency', sleepSequence.metrics.sleepLatency),
+              Metric('Awakenings', sleepSequence.metrics.awakenings),
+              Metric('Number of Transitions', sleepSequence.metrics.shifts)
             ],
           )
         ],
@@ -46,24 +44,34 @@ class MetricSection extends StatelessWidget {
   }
 }
 
-Container _buildMetric(String label, var value) {
-  if (value is DateTime) {
-    value = formatTime(value);
-  } else if (value is Duration) {
-    value = formatDuration(value);
-  }
+class Metric extends StatelessWidget {
+  final String label;
+  final value;
 
-  return Container(
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(label, style: TextStyle(color: Colors.blue)),
-        Text(value.toString())
-      ],
-    ),
-  );
+  Metric(this.label, this.value);
+
+  @override
+  Widget build(BuildContext context) {
+    var formattedValue = value;
+
+    if (value is DateTime) {
+      formattedValue = formatTime(value);
+    } else if (value is Duration) {
+      formattedValue = formatDuration(value);
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(label, style: TextStyle(color: Colors.blue)),
+          Text(formattedValue.toString())
+        ],
+      ),
+    );
+  }
 }
 
 String formatTime(DateTime t) => DateFormat('HH:mm:ss').format(t);

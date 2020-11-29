@@ -13,14 +13,11 @@ import 'package:polydodo/src/presentation/pages/sleep_sequence_metrics_page/slee
 class SleepSequenceMetricsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var statsCubit = BlocProvider.of<SleepSequenceMetricsCubit>(context);
     return Scaffold(
-        appBar: buildAppBar(statsCubit),
+        appBar: MetricAppBar(),
         body:
             BlocConsumer<SleepSequenceMetricsCubit, SleepSequenceMetricsState>(
-          listener: (context, state) {
-            print(state.runtimeType);
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return StatsBody(state);
           },

@@ -29,7 +29,6 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
 
   @override
   List<SleepSequence> getAll() {
-    // todo: check if empty database returns something from toMap
     return _parseHiveSleepSequenceList(
         _sleepSequencesListBox.toMap().cast() ?? <String, HiveSleepSequence>{});
   }
@@ -97,7 +96,6 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
   }
 
   void _parseServerResponse(Response response, SleepSequence sleepSequence) {
-    // todo: Choose if we want to make a copy or work inside the sequence
     if (response.statusCode != 200) {
       sleepSequence.metadata.analysisState = AnalysisState.analysis_failed;
     } else {
