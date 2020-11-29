@@ -45,8 +45,8 @@ class MetricSection extends StatelessWidget {
 }
 
 class Metric extends StatelessWidget {
-  final String label;
   final value;
+  final String label;
 
   Metric(this.label, this.value);
 

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/sleep_sequence_metrics/sleep_sequence_metrics_cubit.dart';
@@ -10,8 +8,6 @@ import 'sleep_sequence_history_state.dart';
 class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   final ISleepSequenceRepository _sleepSequenceRepository;
   final SleepSequenceMetricsCubit _sleepSequenceStatsCubit;
-  final StreamController<String> _selectText =
-      StreamController<String>.broadcast();
 
   SleepSequenceHistoryCubit(
       this._sleepSequenceRepository, this._sleepSequenceStatsCubit)
@@ -36,13 +32,11 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void _enableSelection() {
-    _selectText.add('Done');
     emit(SleepSequenceHistoryEditInProgress(
         _sleepSequenceRepository.getAll(), []));
   }
 
   void _disableSelection() {
-    _selectText.add('Select');
     emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
@@ -65,6 +59,4 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
         (state as SleepSequenceHistoryEditInProgress).selectedSleepSequences);
     _disableSelection();
   }
-
-  Stream<String> get selectStream => _selectText.stream;
 }
