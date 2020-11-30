@@ -29,16 +29,16 @@ class Hero extends React.Component {
                     <p className="lead text-white mb-5">Record, upload and visualize your sleep.</p>
                     <div className="hero__video-container center">
                       <iframe
-                        title="Open Challenge 2020"
+                        title="#NTXSC20 - PolyCortex - Polydodo [Open Challenge]"
                         className="hero__video-iframe"
-                        src="https://www.youtube.com/embed/YJV732hR0gU"
+                        src="https://www.youtube.com/embed/wUkOeFDIFgg"
                         allowFullScreen
                       />
                     </div>
                     <Row className="align-items-center justify-content-center mt-5 mb-4">
                       <RecordMyOwnSleepButton className="ml-3 mb-3 mb-md-0 hero__action_button" color="warning" />
                       <span className="mr-4" />
-                      <PreviewButton className="btn-white hero__action_button mr-3 mb-3 mb-sm-0" />
+                      <PreviewButton className="btn-white btn-lg hero__action_button mr-3 mb-3 mb-sm-0" />
                     </Row>
                     <div className="mt-4">
                       <small className="text-muted font-weight-bold mb-0 mr-2">* a project made by</small>

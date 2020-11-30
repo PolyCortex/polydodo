@@ -3,3 +3,28 @@
   justify-content: space-between;
   margin: 1rem 0.1rem;
 }
+
+.scrollytelling_cards__w_text {
+  font-weight: bold;
+  color: #e3624b;
+}
+
+.scrollytelling_cards__rem_text {
+  font-weight: bold;
+  color: #ffd443;
+}
+
+.scrollytelling_cards__n1_text {
+  font-weight: bold;
+  color: #b0c9d9;
+}
+
+.scrollytelling_cards__n2_text {
+  font-weight: bold;
+  color: #4da6fe;
+}
+
+.scrollytelling_cards__n3_text {
+  font-weight: bold;
+  color: #48587f;
+}

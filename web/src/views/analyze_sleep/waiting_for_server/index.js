@@ -32,7 +32,7 @@ const WaitingForServer = () => {
           <ListGroup flush>
             {assets.map((asset) => (
               <ListGroupItem key={asset.name} active={asset.currentOs} tag="a" href={asset.url}>
-                <i class="fas fa-download fa-lg mr-3" />
+                <i className="fas fa-download fa-lg mr-3" />
                 <span>{asset.name}</span>
               </ListGroupItem>
             ))}
