@@ -17,6 +17,8 @@ class SleepSequence extends Entity {
       @required this.metadata,
       this.metrics,
       this.sleepStages})
-      : assert(eegDataFilename.isNotEmpty),
+      : assert(eegDataFilename != null, 'eegDataFilename cannot be null'),
+        assert(eegDataFilename.isNotEmpty, 'eegDataFilename cannot be empty'),
+        assert(metadata != null, 'metadata cannot be null'),
         super(id);
 }

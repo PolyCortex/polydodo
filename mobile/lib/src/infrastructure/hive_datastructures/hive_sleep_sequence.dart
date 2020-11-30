@@ -1,7 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
 import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
-import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metrics.dart';
 import 'package:polydodo/src/domain/sleep_sequence/sleep_stage.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 import 'package:polydodo/src/infrastructure/hive_datastructures/hive_analysis_state.dart';
@@ -43,14 +42,14 @@ class HiveSleepSequence {
         metrics = (sleepSequence.metadata.analysisState ==
                 AnalysisState.analysis_successful)
             ? HiveSleepSequenceMetrics.fromDomain(sleepSequence.metrics)
-            : HiveSleepSequenceMetrics(),
+            : null,
         sleepStages = (sleepSequence.metadata.analysisState ==
                 AnalysisState.analysis_successful)
             ? sleepSequence.sleepStages
                 .map<HiveSleepStage>(
                     (sleepStage) => HiveSleepStage.fromDomain(sleepStage))
                 .toList()
-            : [];
+            : null;
 
   SleepSequence toDomain() {
     return SleepSequence(
@@ -60,12 +59,12 @@ class HiveSleepSequence {
         metrics:
             (metadata.analysisState == HiveAnalysisState.analysis_successful)
                 ? metrics.toDomain()
-                : SleepSequenceMetrics(),
+                : null,
         sleepStages: (metadata.analysisState ==
                 HiveAnalysisState.analysis_successful)
             ? sleepStages
                 .map<SleepStage>((hiveSleepStage) => hiveSleepStage.toDomain())
                 .toList()
-            : []);
+            : null);
   }
 }

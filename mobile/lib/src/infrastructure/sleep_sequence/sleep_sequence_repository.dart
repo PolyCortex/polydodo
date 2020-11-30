@@ -100,6 +100,7 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
       sleepSequence.metadata.analysisState = AnalysisState.analysis_failed;
     } else {
       // todo: add SleepStages
+      // response SleepStage = unix timestamp  DateTime.fromMillisecondsSinceEpoch(int timestampInMilliseconds)
       var report = response.data['report'];
 
       sleepSequence.metadata.analysisState = AnalysisState.analysis_successful;
