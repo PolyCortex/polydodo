@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_acquisition_cubit.dart';
 import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_acquisition_states.dart';
-import 'package:polydodo/src/presentation/navigation/navdrawer_tabs.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
 import 'package:polydodo/src/presentation/pages/record_sleep/signal_section.dart';
