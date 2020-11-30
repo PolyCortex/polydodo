@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
-import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 
-class DeviceLocatorService {
+class AcquisitionDeviceLocatorService {
   final IAcquisitionDeviceRepository _bluetoothRepository;
   final IAcquisitionDeviceRepository _serialRepository;
 
@@ -14,7 +14,8 @@ class DeviceLocatorService {
   StreamSubscription _bluetoothStreamSubscription;
   StreamController<AcquisitionDevice> _acquisitionDeviceController;
 
-  DeviceLocatorService(this._bluetoothRepository, this._serialRepository) {
+  AcquisitionDeviceLocatorService(
+      this._bluetoothRepository, this._serialRepository) {
     _currentRepository = _serialRepository;
     _acquisitionDeviceController = StreamController();
   }
@@ -34,9 +35,7 @@ class DeviceLocatorService {
   }
 
   void connect(AcquisitionDevice device, Function(bool, Exception) callback) {
-    _bluetoothRepository.pauseScan();
-
-    _currentRepository = (device.deviceType == DeviceType.bluetooth)
+    _currentRepository = (device.deviceType == AcquisitionDeviceType.bluetooth)
         ? _bluetoothRepository
         : _serialRepository;
 
@@ -53,5 +52,11 @@ class DeviceLocatorService {
 
   void stopDataStream() {
     _currentRepository.stopDataStream();
+  }
+
+  AcquisitionDeviceType getCurrentDeviceType() {
+    return (_currentRepository == _bluetoothRepository)
+        ? AcquisitionDeviceType.bluetooth
+        : AcquisitionDeviceType.serial;
   }
 }

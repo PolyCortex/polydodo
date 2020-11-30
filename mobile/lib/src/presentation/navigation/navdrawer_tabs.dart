@@ -7,5 +7,6 @@ enum NavdrawerTab {
   RecordSleep,
   Settings,
   DeviceSelector,
-  SleepSequenceStats
+  History,
+  SleepSequenceMetrics
 }

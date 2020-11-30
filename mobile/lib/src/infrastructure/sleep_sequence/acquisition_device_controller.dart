@@ -4,83 +4,83 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
+import 'package:intl/intl.dart';
+import 'package:polydodo/src/domain/sleep_sequence/signal_result.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metrics.dart';
+import 'package:flutter/material.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:polydodo/src/domain/eeg_data/eeg_data.dart';
-import 'package:polydodo/src/domain/eeg_data/i_eeg_data_repository.dart';
-import 'package:polydodo/src/domain/eeg_data/signal_result.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.dart';
+import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
+import 'package:polydodo/src/domain/sleep_sequence/i_acquisition_device_controller.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metadata.dart';
+import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/baseOpenBCITransformer.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/cytonTransformer.dart';
-import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/infrastructure/eeg_data_transformers/ganglionTransformer.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:pedantic/pedantic.dart';
-import 'package:intl/intl.dart';
 
-class EEGDataRepository implements IEEGDataRepository {
+class AcquisitionDeviceController implements IAcquisitionDeviceController {
   final GanglionTransformer<List<int>, List> _ganglionTransformer =
       GanglionTransformer<List<int>, List>.broadcast();
   final CytonTransformer<List<int>, List<dynamic>> _cytonTransformer =
       CytonTransformer<Uint8List, List>.broadcast();
+  final List<List> _recordingData = [[]];
 
   BaseOpenBCITransformer<List<int>, List<dynamic>> currentStreamTransformer;
   BaseOpenBCITransformer<List<int>, List<dynamic>> _currentTransformer;
   StreamSubscription _currentTransformerStream;
-  StreamingSharedPreferences _preferences;
-  EEGData _recordingData;
+  DateTime _recordingStart;
   double _fpzCzChannelMax = 0;
   double _pzOzChannelMax = 0;
   int _dataCount = 0;
 
   @override
-  void initialize() async {
-    _preferences ??= await StreamingSharedPreferences.instance;
-
-    _currentTransformer =
-        _preferences.getBool('using_bluetooth', defaultValue: false).getValue()
-            ? _ganglionTransformer
-            : _cytonTransformer;
+  void setDeviceType(AcquisitionDeviceType deviceType) async {
+    _currentTransformer = (deviceType == AcquisitionDeviceType.bluetooth)
+        ? _ganglionTransformer
+        : _cytonTransformer;
   }
 
   @override
-  void createRecordingFromStream(Stream<List<int>> stream) {
-    _recordingData = EEGData(
-        UniqueId.from(DateFormat.yMMMMd().add_jm().format(DateTime.now())),
-        [[]]);
+  void startRecording(Stream<List<int>> stream) {
+    _recordingStart = DateTime.now();
+    _recordingData.clear();
 
     _currentTransformer.reset();
     _currentTransformerStream = stream
         .asBroadcastStream()
         .transform(_currentTransformer)
-        .listen((data) => _recordingData.values.add(data));
+        .listen((data) => _recordingData.add(data));
   }
 
   @override
-  Future<void> stopRecordingFromStream() async {
+  Future<SleepSequence> stopRecording() async {
     unawaited(_currentTransformerStream.cancel());
 
-    if (_recordingData == null) return;
+    if (_recordingData.isEmpty) return null;
 
-    _saveRecordingToFile();
-  }
+    var id = DateFormat.yMMMMd().add_jm().format(_recordingStart);
 
-  void _saveRecordingToFile() async {
-    final directory = await getExternalStorageDirectory();
-    final pathOfTheFileToWrite =
-        directory.path + '/' + _recordingData.fileName + '.txt';
-    var file = File(pathOfTheFileToWrite);
-    var fileContent = [[]];
-    //todo: dynamically change header when we change transformer
-    fileContent.addAll(OPEN_BCI_CYTON_HEADER);
-    fileContent.addAll(_recordingData.values);
-    var csv = const ListToCsvConverter().convert(fileContent);
-    await file.writeAsString(csv);
+    await _saveRecording(id);
+
+    return SleepSequence(
+      id: UniqueId.from(id),
+      eegDataFilename: id + '.txt',
+      metadata: SleepSequenceMetadata(
+          DateTimeRange(start: _recordingStart, end: DateTime.now()),
+          AnalysisState.analysis_pending),
+      metrics: SleepSequenceMetrics(),
+      sleepStages: [],
+    );
   }
 
   @override
   void testSignal(Stream<List<int>> stream,
       Function(SignalResult, SignalResult, [Exception]) callback) {
     _dataCount = 0;
+    _recordingData.clear();
     _currentTransformer.reset();
     _currentTransformerStream = stream
         .asBroadcastStream()
@@ -119,10 +119,16 @@ class EEGDataRepository implements IEEGDataRepository {
     return result;
   }
 
-  // todo: implement export and import
-  @override
-  void importData() {}
-
-  @override
-  void exportData() {}
+  void _saveRecording(String filename) async {
+    final directory = await getExternalStorageDirectory();
+    final pathOfTheFileToWrite = directory.path + '/' + filename + '.txt';
+    var file = File(pathOfTheFileToWrite);
+    var fileContent = [[]];
+    fileContent.addAll((_currentTransformer == _ganglionTransformer)
+        ? OPEN_BCI_GANGLION_HEADER
+        : OPEN_BCI_CYTON_HEADER);
+    fileContent.addAll(_recordingData);
+    var csv = const ListToCsvConverter().convert(fileContent);
+    await file.writeAsString(csv);
+  }
 }

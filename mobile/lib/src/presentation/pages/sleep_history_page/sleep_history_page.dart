@@ -9,37 +9,38 @@ import 'package:polydodo/src/presentation/pages/sleep_history_page/sleep_history
 class SleepHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final historyCubit = BlocProvider.of<SleepSequenceHistoryCubit>(context);
-
-    return Scaffold(
-        appBar: buildAppBar(historyCubit),
-        drawer: NavDrawer(activeTab: NavdrawerTab.History),
-        body:
-            BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
-                listener: (context, state) {
-          print(state.runtimeType);
-        }, builder: (context, state) {
-          return (state is SleepSequenceHistoryLoaded ||
-                  state is SleepSequenceHistoryEditInProgress)
-              ? buildHistoryList(context, state, historyCubit)
-              : Container();
-        }),
-        floatingActionButton: _buildFloatingActionButton(historyCubit));
+    return BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+              appBar: HistoryAppBar(),
+              drawer: NavDrawer(activeTab: NavdrawerTab.History),
+              body: (state is SleepSequenceHistoryLoaded ||
+                      state is SleepSequenceHistoryEditInProgress)
+                  ? HistoryList(state)
+                  : Container(),
+              floatingActionButton: HistoryFloatingActionButton(state));
+        });
   }
 }
 
-Widget _buildFloatingActionButton(var historyCubit) {
-  return BlocConsumer<SleepSequenceHistoryCubit, SleepSequenceHistoryState>(
-      listener: (context, state) => {},
-      builder: (context, state) {
-        return (state is SleepSequenceHistoryEditInProgress)
-            ? Visibility(
-                visible: (state.selectedSequences?.isNotEmpty ?? false),
-                child: FloatingActionButton(
-                  onPressed: () => historyCubit.deleteSelected(),
-                  child: Icon(Icons.delete),
-                  backgroundColor: Colors.red,
-                ))
-            : Container();
-      });
+class HistoryFloatingActionButton extends StatelessWidget {
+  final state;
+
+  HistoryFloatingActionButton(this.state);
+
+  @override
+  Widget build(BuildContext context) {
+    return (state is SleepSequenceHistoryEditInProgress)
+        ? Visibility(
+            visible: (state.selectedSleepSequences?.isNotEmpty ?? false),
+            child: FloatingActionButton(
+              onPressed: () =>
+                  BlocProvider.of<SleepSequenceHistoryCubit>(context)
+                      .deleteSelected(),
+              child: Icon(Icons.delete),
+              backgroundColor: Colors.red,
+            ))
+        : Container();
+  }
 }

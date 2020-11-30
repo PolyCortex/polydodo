@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device.dart';
-import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.dart';
 import 'package:polydodo/src/domain/acquisition_device/i_acquisition_device_repository.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
@@ -26,8 +26,6 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
   Stream<AcquisitionDevice> scan() {
     if (_bluetoothScanSubscription == null) {
       _initScan();
-    } else {
-      resumeScan();
     }
 
     return bluetoothStream;
@@ -40,16 +38,7 @@ class BluetoothRepository implements IAcquisitionDeviceRepository {
         (device) => AcquisitionDevice(
             UniqueId.from(device.id),
             (device.name.isEmpty) ? 'Unknown' : device.name,
-            DeviceType.bluetooth));
-  }
-
-  @override
-  void pauseScan() {
-    _bluetoothScanSubscription.pause();
-  }
-
-  void resumeScan() {
-    _bluetoothScanSubscription.resume();
+            AcquisitionDeviceType.bluetooth));
   }
 
   @override

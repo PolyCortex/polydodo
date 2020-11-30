@@ -1,19 +1,13 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/sleep_sequence_stats/sleep_sequence_stats_cubit.dart';
+import 'package:polydodo/src/application/sleep_sequence_metrics/sleep_sequence_metrics_cubit.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
-import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_stats.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
 import 'sleep_sequence_history_state.dart';
 
 class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   final ISleepSequenceRepository _sleepSequenceRepository;
-  final SleepSequenceStatsCubit _sleepSequenceStatsCubit;
-  final StreamController<String> _selectText =
-      StreamController<String>.broadcast();
-
-  List<SleepSequenceStats> _selectedSequences;
+  final SleepSequenceMetricsCubit _sleepSequenceStatsCubit;
 
   SleepSequenceHistoryCubit(
       this._sleepSequenceRepository, this._sleepSequenceStatsCubit)
@@ -25,7 +19,7 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
     emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
-  void loadSleepSequence(SleepSequenceStats sequence) {
+  void loadSleepSequence(SleepSequence sequence) {
     _sleepSequenceStatsCubit.loadSleepSequence(sequence);
   }
 
@@ -38,35 +32,31 @@ class SleepSequenceHistoryCubit extends Cubit<SleepSequenceHistoryState> {
   }
 
   void _enableSelection() {
-    _selectedSequences = [];
-    _selectText.add('Done');
     emit(SleepSequenceHistoryEditInProgress(
-        _sleepSequenceRepository.getAll(), _selectedSequences));
+        _sleepSequenceRepository.getAll(), []));
   }
 
   void _disableSelection() {
-    _selectedSequences = null;
-    _selectText.add('Select');
     emit(SleepSequenceHistoryLoaded(_sleepSequenceRepository.getAll()));
   }
 
-  void toggleSelectSequenceForDeletion(SleepSequenceStats sequence) {
-    if (_selectedSequences.contains(sequence)) {
-      _selectedSequences.remove(sequence);
+  void toggleSelectSequenceForDeletion(SleepSequence sequence) {
+    var selectedSleepSequences =
+        (state as SleepSequenceHistoryEditInProgress).selectedSleepSequences;
+
+    if (selectedSleepSequences.contains(sequence)) {
+      selectedSleepSequences.remove(sequence);
     } else {
-      _selectedSequences.add(sequence);
+      selectedSleepSequences.add(sequence);
     }
 
     emit(SleepSequenceHistoryEditInProgress(
-        _sleepSequenceRepository.getAll(), _selectedSequences));
+        _sleepSequenceRepository.getAll(), selectedSleepSequences));
   }
 
   void deleteSelected() {
     _sleepSequenceRepository.delete(
-        (state as SleepSequenceHistoryEditInProgress).history,
-        _selectedSequences);
+        (state as SleepSequenceHistoryEditInProgress).selectedSleepSequences);
     _disableSelection();
   }
-
-  Stream<String> get selectStream => _selectText.stream;
 }

@@ -1,11 +1,13 @@
-import 'package:equatable/equatable.dart';
 import 'package:polydodo/src/domain/unique_id.dart';
 
-abstract class Entity extends Equatable {
+abstract class Entity {
   final UniqueId id;
 
   Entity(this.id) : assert(id != null);
 
   @override
-  List<Object> get props => [id];
+  bool operator ==(other) => other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

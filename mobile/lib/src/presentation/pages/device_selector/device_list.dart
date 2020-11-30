@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:polydodo/src/application/device/device_selector_cubit.dart';
-import 'package:polydodo/src/domain/acquisition_device/device_type.dart';
+import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.dart';
 
 Widget buildDeviceList(var state) {
   return ListView.builder(
@@ -19,11 +19,11 @@ Widget buildDeviceList(var state) {
       });
 }
 
-Widget _getTrailing(DeviceType type) {
+Widget _getTrailing(AcquisitionDeviceType type) {
   switch (type) {
-    case DeviceType.bluetooth:
+    case AcquisitionDeviceType.bluetooth:
       return Icon(Icons.bluetooth);
-    case DeviceType.serial:
+    case AcquisitionDeviceType.serial:
       return Icon(Icons.usb);
     default:
       return Icon(Icons.error);
