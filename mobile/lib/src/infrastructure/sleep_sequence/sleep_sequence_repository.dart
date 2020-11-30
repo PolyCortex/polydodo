@@ -7,6 +7,7 @@ import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.d
 import 'package:polydodo/src/domain/sleep_sequence/i_acquisition_device_controller.dart';
 import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
 import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metrics.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_stage.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
 import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
@@ -96,13 +97,15 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
   }
 
   void _parseServerResponse(Response response, SleepSequence sleepSequence) {
+    print(response.statusCode);
+    print(response.data);
+
     if (response.statusCode != 200) {
       sleepSequence.metadata.analysisState = AnalysisState.analysis_failed;
     } else {
-      // todo: add SleepStages
       // response SleepStage = unix timestamp  DateTime.fromMillisecondsSinceEpoch(int timestampInMilliseconds)
-      var report = response.data['report'];
-
+      final report = response.data['report'];
+      final epochs = response.data['epochs'];
       sleepSequence.metadata.analysisState = AnalysisState.analysis_successful;
       sleepSequence.metrics = SleepSequenceMetrics(
         awakenings: report['awakenings'],
@@ -113,6 +116,15 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
         sleepLatency: report['sleepOnset'],
         waso: Duration(seconds: report['WASO']),
       );
+
+      final sleepStages = [];
+      for (var i = 0; i < epochs['stages'].length; ++i) {
+        sleepStages.add(SleepStage(
+            SleepStageType.values[sleepStageMap[epochs['stages'][i]]],
+            DateTime.fromMillisecondsSinceEpoch(
+                epochs['timestamps'][i].round())));
+      }
+      sleepSequence.sleepStages = sleepStages.cast();
     }
   }
 }

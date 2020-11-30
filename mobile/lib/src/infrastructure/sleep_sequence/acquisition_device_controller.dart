@@ -71,8 +71,8 @@ class AcquisitionDeviceController implements IAcquisitionDeviceController {
       metadata: SleepSequenceMetadata(
           DateTimeRange(start: _recordingStart, end: DateTime.now()),
           AnalysisState.analysis_pending),
-      metrics: SleepSequenceMetrics(),
-      sleepStages: [],
+      metrics: null,
+      sleepStages: null,
     );
   }
 
