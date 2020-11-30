@@ -8,14 +8,17 @@ import 'package:polydodo/src/presentation/pages/record_sleep/record_sleep_valida
 import 'package:polydodo/src/presentation/pages/settings/settings_page.dart';
 import 'package:polydodo/src/presentation/pages/sleep_history_page/sleep_history_page.dart';
 import 'package:polydodo/src/presentation/pages/sleep_sequence_metrics_page/sleep_sequence_metrics_page.dart';
+import 'package:polydodo/src/presentation/pages/splash.dart';
 
 @MaterialAutoRouter(
     generateNavigationHelperExtension: true,
     routes: <AutoRoute>[
       CustomRoute(
-          page: DashboardPage,
-          initial: true,
-          transitionsBuilder: TransitionsBuilders.fadeIn),
+        initial: true,
+        page: SplashPage,
+      ),
+      CustomRoute(
+          page: DashboardPage, transitionsBuilder: TransitionsBuilders.fadeIn),
       CustomRoute(
           page: RecordSleepGuidePage,
           transitionsBuilder: TransitionsBuilders.fadeIn),
@@ -34,7 +37,7 @@ import 'package:polydodo/src/presentation/pages/sleep_sequence_metrics_page/slee
       CustomRoute(
           page: SleepSequenceMetricsPage,
           transitionsBuilder: TransitionsBuilders.fadeIn),
-      CustomRoute(         
+      CustomRoute(
           page: SettingsPage, transitionsBuilder: TransitionsBuilders.fadeIn),
     ])
 class $Router {}
