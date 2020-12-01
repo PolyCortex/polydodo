@@ -157,7 +157,7 @@ class TestReportLatenciesOnset():
             dict(
                 sequence=['W', 'N1', 'N2', 'N1', 'REM', 'W'],
                 test_rem=True,
-                latency=4 * EPOCH_DURATION,
+                latency=3 * EPOCH_DURATION,
             ), dict(
                 sequence=['W', 'W', 'N1', 'W', 'N1', 'W'],
                 test_rem=False,
@@ -189,7 +189,7 @@ class TestReportLatenciesOnset():
         self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 
     def test_sequence_ends_with_stage(self, sequence, test_rem):
-        expected_latency = EPOCH_DURATION * (len(sequence) - 1)
+        expected_latency = EPOCH_DURATION * (len(sequence) - 1) if not test_rem else 0
         expected_onset = expected_latency + self.MOCK_REQUEST.bedtime
         self.assert_latency_equals_expected(expected_latency, expected_onset, sequence, test_rem)
 

@@ -1,7 +1,11 @@
+part of 'navdrawer_widget.dart';
+
 enum NavdrawerTab {
+  BluetoothSelector,
   Dashboard,
-  RecordSleep,
-  DeviceSelector,
   History,
-  SleepSequenceMetrics
+  SleepSequenceMetrics,
+  RecordSleep,
+  Settings,
+  DeviceSelector,
 }

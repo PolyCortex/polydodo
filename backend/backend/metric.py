@@ -106,11 +106,11 @@ class Metrics():
         return rem_latency + self.bedtime
 
     def _initialize_sleep_offset(self):
-        if not self.has_slept:
-            sleep_offset = None
-        else:
+        if self.has_slept:
             sleep_nb_epochs = (self.sleep_indexes[-1] + 1) if len(self.sleep_indexes) else len(self.sleep_stages)
             sleep_offset = sleep_nb_epochs * EPOCH_DURATION + self.bedtime
+        else:
+            sleep_offset = None
 
         self._sleep_offset = sleep_offset
 
@@ -118,8 +118,14 @@ class Metrics():
         self._sleep_latency = self._get_latency_of_stage(self.is_sleeping_stages)
 
     def _initialize_rem_latency(self):
-        """Time it took to enter REM stage"""
-        self._rem_latency = self._get_latency_of_stage(self.sleep_stages == SleepStage.REM.name)
+        """Time from the sleep onset to the first epoch of REM sleep"""
+        if self.has_slept:
+            bedtime_to_rem_duration = self._get_latency_of_stage(self.sleep_stages == SleepStage.REM.name)
+            rem_latency = bedtime_to_rem_duration - self._sleep_latency if bedtime_to_rem_duration is not None else None
+        else:
+            rem_latency = None
+
+        self._rem_latency = rem_latency
 
     def _initialize_transition_based_metrics(self):
         consecutive_stages_occurences = Counter(zip(self.sleep_stages[:-1], self.sleep_stages[1:]))

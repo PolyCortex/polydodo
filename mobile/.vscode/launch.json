@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "mobile",
+      "name": "Mobile debug",
       "program": "lib/main.dart",
       "request": "launch",
       "type": "dart",

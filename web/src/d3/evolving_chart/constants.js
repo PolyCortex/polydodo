@@ -16,3 +16,4 @@ export const DIMENSION = {
 };
 
 export const BAR_HEIGHT = DIMENSION.HEIGHT / STAGES_ORDERED.length;
+export const HOVERED_RECT_OPACITY = 0.7;
