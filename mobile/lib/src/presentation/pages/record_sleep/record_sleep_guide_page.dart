@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:polydodo/src/application/blocs.dart';
+import 'package:polydodo/src/application/sleep_sequence/sleep_sequence_acquisition_cubit.dart';
 import 'package:polydodo/src/constants.dart';
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/navigation/routes/router.gr.dart';
@@ -40,7 +40,8 @@ class RecordSleepGuidePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // todo: Place start validation at last page of guide or skip guide button
-          BlocProvider.of<DataCubit>(context).startSignalValidation();
+          BlocProvider.of<SleepSequenceAcquisitionCubit>(context)
+              .startSignalValidation();
           ExtendedNavigator.of(context).replace(Routes.recordSleepValidatePage);
         },
         icon: Icon(Icons.radio_button_checked),
