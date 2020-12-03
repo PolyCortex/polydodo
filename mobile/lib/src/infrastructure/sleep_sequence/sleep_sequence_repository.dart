@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:polydodo/src/domain/acquisition_device/acquisition_device_type.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_acquisition_device_controller.dart';
 import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metrics.dart';
+import 'package:polydodo/src/domain/sleep_sequence/sleep_stage.dart';
 import 'package:polydodo/src/infrastructure/constants.dart';
 import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.dart';
 import 'package:polydodo/src/domain/sleep_sequence/analysis_state.dart';
@@ -95,20 +97,34 @@ class SleepSequenceRepository implements ISleepSequenceRepository {
   }
 
   void _parseServerResponse(Response response, SleepSequence sleepSequence) {
+    print(response.statusCode);
+    print(response.data);
+
     if (response.statusCode != 200) {
       sleepSequence.metadata.analysisState = AnalysisState.analysis_failed;
     } else {
-      var report = response.data['report'];
-
+      // response SleepStage = unix timestamp  DateTime.fromMillisecondsSinceEpoch(int timestampInMilliseconds)
+      final report = response.data['report'];
+      final epochs = response.data['epochs'];
       sleepSequence.metadata.analysisState = AnalysisState.analysis_successful;
-      sleepSequence.metrics.awakenings = report['awakenings'];
-      sleepSequence.metrics.effectiveSleepTime =
-          Duration(seconds: report['efficientSleepTime']);
-      sleepSequence.metrics.shifts = report['stageShifts'];
-      sleepSequence.metrics.remLatency = report['remLatency'];
-      sleepSequence.metrics.sleepEfficiency = report['sleepEfficiency'];
-      sleepSequence.metrics.sleepLatency = report['sleepOnset'];
-      sleepSequence.metrics.waso = Duration(seconds: report['WASO']);
+      sleepSequence.metrics = SleepSequenceMetrics(
+        awakenings: report['awakenings'],
+        effectiveSleepTime: Duration(seconds: report['efficientSleepTime']),
+        shifts: report['stageShifts'],
+        remLatency: report['remLatency'],
+        sleepEfficiency: report['sleepEfficiency'],
+        sleepLatency: report['sleepOnset'],
+        waso: Duration(seconds: report['WASO']),
+      );
+
+      final sleepStages = [];
+      for (var i = 0; i < epochs['stages'].length; ++i) {
+        sleepStages.add(SleepStage(
+            SleepStageType.values[sleepStageMap[epochs['stages'][i]]],
+            DateTime.fromMillisecondsSinceEpoch(
+                epochs['timestamps'][i].round())));
+      }
+      sleepSequence.sleepStages = sleepStages.cast();
     }
   }
 }

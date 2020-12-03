@@ -6,7 +6,6 @@ import 'dart:typed_data';
 import 'package:csv/csv.dart';
 import 'package:intl/intl.dart';
 import 'package:polydodo/src/domain/sleep_sequence/signal_result.dart';
-import 'package:polydodo/src/domain/sleep_sequence/sleep_sequence_metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:path_provider/path_provider.dart';
@@ -71,8 +70,8 @@ class AcquisitionDeviceController implements IAcquisitionDeviceController {
       metadata: SleepSequenceMetadata(
           DateTimeRange(start: _recordingStart, end: DateTime.now()),
           AnalysisState.analysis_pending),
-      metrics: SleepSequenceMetrics(),
-      sleepStages: [],
+      metrics: null,
+      sleepStages: null,
     );
   }
 

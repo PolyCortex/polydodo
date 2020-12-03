@@ -11,7 +11,7 @@ class HiveSleepStage {
   HiveSleepStageType stage;
 
   @HiveField(1)
-  int timestamp;
+  DateTime timestamp;
 
   HiveSleepStage(this.stage, this.timestamp);
 
