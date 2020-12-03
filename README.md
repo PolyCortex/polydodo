@@ -40,14 +40,14 @@ This project aims to offer a cheaper and more accessible way to perform sleep st
 
 **This application is not intended for medical purposes and the data it produces should not be used in such context. Its only goal is to help you study your sleep by yourself. Always seek the advice of a physician on any questions regarding a medical condition.**
 
-## Key features
+## 🎖 Key features
 
 - Compatible with both OpenBCI's Cyton and Ganglion boards.
 - Automatic sleep stage scoring based on the AASM's labels.
 - A comprehensive guide on how to record polysomnographic EEG data from home.
 - A nice and straightforward UI to help you upload, visualize and save your sleep.
 
-## How it works
+## 💡 How it works
 
 Polydodo is composed of two client apps, a web one and a mobile one, through which the user can interact. These clients are not complementary but are alternatives to one another. Each of these clients uses the same local server which hosts the automatic sleep stages classification algorithm.
 
@@ -65,7 +65,7 @@ Finally, both these clients use a local HTTP server that is easy to install. Thi
 
 As the above diagram states, in the case of the mobile application, the data is received in real time, and in the case of the web application, the data is received asynchronously. In both cases, the data is classified after the end of the acquisition on the local server.
 
-## Project Structure
+## 📁 Project Structure
 
 This project is split into different folders that represent the standalone parts of our project:
 
@@ -74,7 +74,7 @@ This project is split into different folders that represent the standalone parts
 - `web/` contains the React web app which is the UI for our project. See [`web/README.md`](https://github.com/PolyCortex/polydodo/tree/master/web) for more info;
 - `mobile` contains the Flutter app. This app is an alternative to our web app. It can interface directly with OpenBCI boards which makes it even simpler to proceed to your own sleep analysis. See [`mobile/README.md`](https://github.com/PolyCortex/polydodo/tree/master/mobile) for more info.
 
-## Getting started
+## 🔮 Getting started
 
 ### VS Code
 
@@ -84,12 +84,11 @@ This project is split into different folders that represent the standalone parts
 
 For more information about how to get started for each part (web, server, mobile) of the project, head to the eponym folder and look for the `README.md` file.
 
-## Learn more
+## ❓ Learn more
 
 For more information, please refer to our [wiki pages](https://github.com/PolyCortex/polydodo/wiki). This is where you'll get all of our official documentation.
 
-## About us
-
+## ℹ About us 
 [PolyCortex](http://polycortex.polymtl.ca/) is a student club based at [Polytechnique Montreal](https://www.polymtl.ca/).
 
 The goal of PolyCortex is to develop expertise in neuroscience and engineering to solve neuroengineering problems. This field aims to create technological solutions dedicated to the search for innovative solutions to neuroscience problems.
