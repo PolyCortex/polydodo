@@ -28,6 +28,7 @@ class DashboardPage extends StatelessWidget {
                     brightness: Brightness.dark,
                     expandedHeight: 200.0,
                     pinned: true,
+                    floating: false,
                     title: SliverAppBarTitle(child: Text('Polydodo')),
                     flexibleSpace: FlexibleSpaceBar(
                       centerTitle: true,
@@ -44,15 +45,6 @@ class DashboardPage extends StatelessWidget {
               body: (state is SleepSequenceHistoryLoaded) &&
                       state.history.isNotEmpty
                   ? DashboardMetrics(state)
-                  // Center(
-                  //     child: Padding(
-                  //       padding: EdgeInsets.symmetric(horizontal: 50),
-                  //       child: Padding(
-                  //         padding: EdgeInsets.symmetric(vertical: 200),
-                  //         child: DashboardMetrics(state),
-                  //       ),
-                  //     ),
-                  //   )
                   : LoadingIndicator(),
             ),
           );
@@ -69,12 +61,16 @@ class DashboardMetrics extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(top: 30.0),
+        padding: const EdgeInsets.only(top: 15.0),
         child: Column(
           children: [
-            Title(
-              child: Text('Dashboard'),
-              color: Colors.black,
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff46426c),
+              ),
             ),
             Container(
               child: Row(
@@ -85,12 +81,15 @@ class DashboardMetrics extends StatelessWidget {
                     children: [
                       Metric(
                           'Last efficiency',
-                          AggregatedSleepMetrics.getAverageSleepEffiency(
-                              state.history)),
+                          AggregatedSleepMetrics.getLastSequenceEfficiency(
+                                  state.history) *
+                              100,
+                          unit: '%'),
                       Metric(
                           'Last latency',
                           AggregatedSleepMetrics.getLastSequenceLatency(
-                              state.history)),
+                              state.history),
+                          unit: ' min'),
                     ],
                   ),
                   Column(
@@ -101,13 +100,17 @@ class DashboardMetrics extends StatelessWidget {
                           AggregatedSleepMetrics.getAverageSleepTime(
                               state.history)),
                       Metric(
-                          'Average Latency',
-                          AggregatedSleepMetrics.getAverageSleepLatency(
-                              state.history)),
+                        'Average Latency',
+                        AggregatedSleepMetrics.getAverageSleepLatency(
+                            state.history),
+                        unit: ' min',
+                      ),
                       Metric(
                           'Average efficiency',
-                          AggregatedSleepMetrics.getLastSequenceLatency(
-                              state.history)),
+                          AggregatedSleepMetrics.getAverageSleepEffiency(
+                                  state.history) *
+                              100,
+                          unit: '%'),
                     ],
                   )
                 ],
@@ -116,7 +119,10 @@ class DashboardMetrics extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0)
                   .add(EdgeInsets.symmetric(vertical: 30)),
-              child: SleepEfficiencyChart(state.history),
+              child: Container(
+                child: SleepEfficiencyChart(state.history),
+                height: 260,
+              ),
             ),
             //Text(AggregatedSleepMetrics.get(state.history).toString())
           ],

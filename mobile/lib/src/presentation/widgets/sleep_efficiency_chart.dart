@@ -70,21 +70,24 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
                 // const SizedBox(
                 //   height: 4,
                 // ),
-                const Text(
-                  'Sleep Efficiency',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2),
-                  textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: const Text(
+                    'Sleep Efficiency',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0, left: 6.0),
+                    padding: const EdgeInsets.only(right: 22.0, left: 6.0),
                     child: LineChart(
                       isShowingMainData ? mainData() : avgData(),
                       swapAnimationDuration: const Duration(milliseconds: 250),
@@ -96,16 +99,20 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
                 ),
               ],
             ),
-            IconButton(
-              icon: Icon(
-                Icons.refresh,
-                color: Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: IconButton(
+                icon: Icon(
+                  Icons.equalizer,
+                  color:
+                      Colors.white.withOpacity(isShowingMainData ? 1.0 : 0.5),
+                ),
+                onPressed: () {
+                  setState(() {
+                    isShowingMainData = !isShowingMainData;
+                  });
+                },
               ),
-              onPressed: () {
-                setState(() {
-                  isShowingMainData = !isShowingMainData;
-                });
-              },
             )
           ],
         ),
@@ -132,12 +139,12 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
           );
         },
       ),
-      // axisTitleData: FlAxisTitleData(
-      //     leftTitle: AxisTitle(
-      //       showTitle: true,
-      //       titleText: 'Efficiency',
-      //     ),
-      //     bottomTitle: AxisTitle(titleText: 'Sleep sequences')),
+      axisTitleData: FlAxisTitleData(
+          //     leftTitle: AxisTitle(
+          //       showTitle: true,
+          //       titleText: 'Efficiency',
+          //     ),
+          bottomTitle: AxisTitle(titleText: 'Sleep sequences')),
       titlesData: FlTitlesData(
         show: true,
         bottomTitles: SideTitles(
@@ -162,8 +169,12 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
+          interval: 0.25,
           getTitles: (value) {
-            return (value * 100).ceil().toString() + ' %';
+            if (value * 100 % 25 == 0) {
+              return (value * 100).ceil().toString() + ' %';
+            }
+            return '';
           },
           reservedSize: 45,
           margin: 12,
@@ -175,7 +186,7 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
       minX: 0,
       maxX: data.length.toDouble() - 1,
       minY: 0,
-      maxY: 1,
+      maxY: 0.9,
       lineBarsData: [
         LineChartBarData(
           spots: data,
@@ -201,14 +212,15 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
       lineTouchData: LineTouchData(enabled: false),
       gridData: FlGridData(
         show: true,
-        drawHorizontalLine: true,
-        getDrawingVerticalLine: (value) {
+        drawVerticalLine: true,
+        horizontalInterval: 0.1,
+        getDrawingHorizontalLine: (value) {
           return FlLine(
             color: const Color(0xff37434d),
-            strokeWidth: 1,
+            strokeWidth: 1.5,
           );
         },
-        getDrawingHorizontalLine: (value) {
+        getDrawingVerticalLine: (value) {
           return FlLine(
             color: const Color(0xff37434d),
             strokeWidth: 1,
@@ -223,10 +235,10 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
           getTextStyles: (value) => const TextStyle(
               color: Color(0xff68737d),
               fontWeight: FontWeight.bold,
-              fontSize: 12),
+              fontSize: 16),
           getTitles: (value) {
             if (value.toInt() % 2 == 0) {
-              return value.toString();
+              return value.ceil().toString();
             }
             return '';
           },
@@ -239,18 +251,14 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
+          interval: 0.25,
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '10k';
-              case 3:
-                return '30k';
-              case 5:
-                return '50k';
+            if (value * 100 % 25 == 0) {
+              return (value * 100).ceil().toString() + ' %';
             }
             return '';
           },
-          reservedSize: 28,
+          reservedSize: 45,
           margin: 12,
         ),
       ),
@@ -258,19 +266,18 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
-      maxX: 11,
+      maxX: data.length.toDouble() - 1,
       minY: 0,
-      maxY: 6,
+      maxY: 0.9,
       lineBarsData: [
         LineChartBarData(
           spots: [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
+            FlSpot(0, 0.47),
+            FlSpot(1.0, 0.47),
+            FlSpot(2, 0.47),
+            FlSpot(3, 0.47),
+            FlSpot(4, 0.47),
+            FlSpot(6, 0.47),
           ],
           isCurved: true,
           colors: [

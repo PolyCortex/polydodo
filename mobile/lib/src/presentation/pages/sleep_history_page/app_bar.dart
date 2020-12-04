@@ -25,7 +25,7 @@ class HistoryAppBar extends StatelessWidget with PreferredSizeWidget {
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.indigo,
+          color: Color(0xff46426c),
         ),
       ),
       actions: <Widget>[

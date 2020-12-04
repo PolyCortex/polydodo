@@ -21,9 +21,12 @@ class MetricSection extends StatelessWidget {
                   sleepSequence.metadata.sleepSequenceDateTimeRange.start),
               Metric('Recording Time',
                   sleepSequence.metadata.sleepSequenceDateTimeRange.duration),
-              Metric('Sleep Efficiency', sleepSequence.metrics.sleepEfficiency),
+              Metric('Sleep Efficiency',
+                  sleepSequence.metrics.sleepEfficiency * 100,
+                  unit: '%'),
               Metric('WASO', sleepSequence.metrics.waso),
-              Metric('REM Latency', sleepSequence.metrics.remLatency)
+              Metric('REM Latency', sleepSequence.metrics.remLatency,
+                  unit: ' min')
             ],
           ),
           Column(
@@ -33,7 +36,8 @@ class MetricSection extends StatelessWidget {
                   sleepSequence.metadata.sleepSequenceDateTimeRange.end),
               Metric('Effective Sleep Time',
                   sleepSequence.metrics.effectiveSleepTime),
-              Metric('Sleep Latency', sleepSequence.metrics.sleepLatency),
+              Metric('Sleep Latency', sleepSequence.metrics.sleepLatency,
+                  unit: ' min'),
               Metric('Awakenings', sleepSequence.metrics.awakenings),
               Metric('Number of Transitions', sleepSequence.metrics.shifts)
             ],
