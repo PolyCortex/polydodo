@@ -71,7 +71,7 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
                 //   height: 4,
                 // ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
+                  padding: const EdgeInsets.only(top: 5.0, left: 20),
                   child: const Text(
                     'Sleep Efficiency',
                     style: TextStyle(
@@ -140,11 +140,15 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
         },
       ),
       axisTitleData: FlAxisTitleData(
-          //     leftTitle: AxisTitle(
-          //       showTitle: true,
-          //       titleText: 'Efficiency',
-          //     ),
-          bottomTitle: AxisTitle(titleText: 'Sleep sequences')),
+        // leftTitle: AxisTitle(
+        //   showTitle: true,
+        //   titleText: 'Efficiency',
+        // ),
+        bottomTitle: AxisTitle(
+            titleText: 'Sleep sequences',
+            textStyle: TextStyle(color: Colors.white),
+            showTitle: true),
+      ),
       titlesData: FlTitlesData(
         show: true,
         bottomTitles: SideTitles(
@@ -226,6 +230,16 @@ class _SleepEfficiencyChartState extends State<SleepEfficiencyChart> {
             strokeWidth: 1,
           );
         },
+      ),
+      axisTitleData: FlAxisTitleData(
+        // leftTitle: AxisTitle(
+        //   showTitle: true,
+        //   titleText: 'Efficiency',
+        // ),
+        bottomTitle: AxisTitle(
+            titleText: 'Sleep sequences',
+            textStyle: TextStyle(color: Colors.white),
+            showTitle: true),
       ),
       titlesData: FlTitlesData(
         show: true,
