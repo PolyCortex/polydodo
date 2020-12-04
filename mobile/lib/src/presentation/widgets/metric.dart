@@ -26,7 +26,14 @@ class Metric extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(label, style: TextStyle(color: Colors.blue)),
+          Text(
+            label,
+            style: TextStyle(
+                color: Theme.of(context).buttonColor,
+                // color: Colors.blue,
+                fontWeight: FontWeight.w700,
+                fontSize: 15),
+          ),
           Text(formattedValue.toString() + unit)
         ],
       ),
