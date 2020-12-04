@@ -11,7 +11,8 @@ import 'package:polydodo/src/domain/sleep_sequence/i_sleep_sequence_repository.d
 import 'package:polydodo/src/infrastructure/connection_repositories/serial_repository.dart';
 import 'package:polydodo/src/infrastructure/connection_repositories/bluetooth_repository.dart';
 import 'package:polydodo/src/infrastructure/settings_repository/settings_repository.dart';
-import 'package:polydodo/src/infrastructure/sleep_sequence/sleep_sequence_repository.dart';
+
+import 'infrastructure/sleep_sequence/mock_sleep_sequence_repository.dart';
 
 /// Private GetIt instance as we want all DI to be performed here in this file
 final _serviceLocator = GetIt.asNewInstance();
@@ -20,8 +21,8 @@ void registerServices() {
   _serviceLocator.registerSingleton<AcquisitionDeviceLocatorService>(
       AcquisitionDeviceLocatorService(
           BluetoothRepository(), SerialRepository()));
-  _serviceLocator
-      .registerSingleton<ISleepSequenceRepository>(SleepSequenceRepository());
+  _serviceLocator.registerSingleton<ISleepSequenceRepository>(
+      MockSleepSequenceRepository());
   _serviceLocator.registerSingleton<ISettingsRepository>(SettingsRepository());
 }
 

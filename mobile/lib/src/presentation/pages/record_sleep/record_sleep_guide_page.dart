@@ -126,7 +126,8 @@ Widget _buildSleepGuideCard(BuildContext context) {
                       child: Image(
                         height: 250.0,
                         width: 305.0,
-                        image: AssetImage('common/assets/img/Objets.png'),
+                        image:
+                            AssetImage('common/assets/img/Objets_cropped.png'),
                         fit: BoxFit.cover,
                       ),
                     ),

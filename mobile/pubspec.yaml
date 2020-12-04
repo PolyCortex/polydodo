@@ -33,6 +33,7 @@ dependencies:
   dio: ^3.0.10
   equatable: ^1.2.5
   enum_to_string: ^1.0.13
+  fl_chart: ^0.12.0
   flutter_bloc: ^6.0.5
   flutter_reactive_ble: ^2.5.2
   get_it: ^4.0.4

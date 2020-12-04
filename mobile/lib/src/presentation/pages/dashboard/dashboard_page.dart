@@ -6,6 +6,8 @@ import 'package:polydodo/src/domain/sleep_sequence/aggregated_sleep_metrics.dart
 import 'package:polydodo/src/presentation/navigation/navdrawer_widget.dart';
 import 'package:polydodo/src/presentation/pages/dashboard/sliver_app_bar_title.dart';
 import 'package:polydodo/src/presentation/widgets/loading_indicator.dart';
+import 'package:polydodo/src/presentation/widgets/metric.dart';
+import 'package:polydodo/src/presentation/widgets/sleep_efficiency_chart.dart';
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -41,26 +43,85 @@ class DashboardPage extends StatelessWidget {
               },
               body: (state is SleepSequenceHistoryLoaded) &&
                       state.history.isNotEmpty
-                  ? Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 200),
-                          child: Column(
-                            children: [
-                              Text('Dashboard'),
-                              Text(AggregatedSleepMetrics.getAverageSleepTime(
-                                      state.history)
-                                  .toString()),
-                              //Text(AggregatedSleepMetrics.get(state.history).toString())
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                  ? DashboardMetrics(state)
+                  // Center(
+                  //     child: Padding(
+                  //       padding: EdgeInsets.symmetric(horizontal: 50),
+                  //       child: Padding(
+                  //         padding: EdgeInsets.symmetric(vertical: 200),
+                  //         child: DashboardMetrics(state),
+                  //       ),
+                  //     ),
+                  //   )
                   : LoadingIndicator(),
             ),
           );
         });
+  }
+}
+
+class DashboardMetrics extends StatelessWidget {
+  final SleepSequenceHistoryLoaded state;
+
+  DashboardMetrics(this.state);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30.0),
+        child: Column(
+          children: [
+            Title(
+              child: Text('Dashboard'),
+              color: Colors.black,
+            ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Metric(
+                          'Last efficiency',
+                          AggregatedSleepMetrics.getAverageSleepEffiency(
+                              state.history)),
+                      Metric(
+                          'Last latency',
+                          AggregatedSleepMetrics.getLastSequenceLatency(
+                              state.history)),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Metric(
+                          'Average duration',
+                          AggregatedSleepMetrics.getAverageSleepTime(
+                              state.history)),
+                      Metric(
+                          'Average Latency',
+                          AggregatedSleepMetrics.getAverageSleepLatency(
+                              state.history)),
+                      Metric(
+                          'Average efficiency',
+                          AggregatedSleepMetrics.getLastSequenceLatency(
+                              state.history)),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0)
+                  .add(EdgeInsets.symmetric(vertical: 30)),
+              child: SleepEfficiencyChart(state.history),
+            ),
+            //Text(AggregatedSleepMetrics.get(state.history).toString())
+          ],
+        ),
+      ),
+    );
   }
 }

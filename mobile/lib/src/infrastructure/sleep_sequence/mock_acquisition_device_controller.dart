@@ -15,7 +15,7 @@ class MockAcquisitionDeviceController implements IAcquisitionDeviceController {
 
   @override
   Future<SleepSequence> stopRecording() async {
-    return mock_data_1;
+    return mock_data[0];
   }
 
   @override

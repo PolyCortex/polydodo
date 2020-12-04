@@ -16,9 +16,7 @@ class MockSleepSequenceRepository implements ISleepSequenceRepository {
   final List<SleepSequence> _sleepSequencesPersistency = [];
 
   MockSleepSequenceRepository() {
-    _sleepSequencesPersistency.add(mock_data_1);
-
-    _sleepSequencesPersistency.add(mock_data_2);
+    _sleepSequencesPersistency.addAll(mock_data);
   }
 
   @override
@@ -42,6 +40,6 @@ class MockSleepSequenceRepository implements ISleepSequenceRepository {
 
   @override
   Future<SleepSequence> analyze(SleepSequence sleepSequence) async {
-    return mock_data_1;
+    return mock_data[0];
   }
 }

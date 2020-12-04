@@ -30,12 +30,12 @@ class AggregatedSleepMetrics {
         sleepHistory.length;
   }
 
-  static int getAverageSleepLatency(List<SleepSequence> sleepHistory) {
+  static double getAverageSleepLatency(List<SleepSequence> sleepHistory) {
     return sleepHistory.fold(
-          0,
-          (sum, element) => sum + element.metrics.sleepLatency,
+          0.0,
+          (sum, element) => sum + element.metrics.sleepLatency.toDouble(),
         ) /
-        sleepHistory.length;
+        sleepHistory.length.toDouble();
   }
 
   static double getAverageSleepEffiency(List<SleepSequence> sleepHistory) {
