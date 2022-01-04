@@ -27,7 +27,7 @@ const HowWeDidSection = () => (
             at chin and eye level (they were used for manual data scoring purposes). For this recording, we used the
             Cyton board and a microSD card. We put the board in a disposable plastic container that we covered with
             aluminum foil, to limit EMIs. Then, we put the container in a camera bag worn with a shoulder strap to be
-            able to carry the board on us.
+            able to carry the board with us.
           </p>
         </Col>
         <Col className="mb-lg-auto" lg="5">

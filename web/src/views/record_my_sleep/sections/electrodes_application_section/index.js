@@ -82,9 +82,9 @@ const ElectrodesApplicationSection = () => (
           />
         </Row>
         <p className="lead text-white">
-          Finally, take the gauze pad with the electrode and the EC2 and place it on the marked area. Exerce a small
+          Finally, take the gauze pad with the electrode and the EC2 and place it on the marked area. Exert a small
           pressure on the gauze square with your palm. The electrode should stay in place. The EC2 conductive paste
-          should take a couple minutes to dry (try to avoid sudden movements). Repeat these steps for the two others
+          should take a couple minutes to dry (try to avoid sudden movements). Repeat these steps for the other two
           scalp electrodes.
         </p>
         <h4 className="mt-5 display-4 text-white">Place the skin electrodes (Fpz and A2)</h4>

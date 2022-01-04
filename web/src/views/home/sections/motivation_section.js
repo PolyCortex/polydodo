@@ -6,14 +6,14 @@ const MotivationSection = () => (
     <Container>
       <h2 className="mt-3">Why Would I Analyze My Sleep?</h2>
       <p className="lead text-justify">
-        Although we spend a major part of our day sleeping, we cannot truly understand what happens during this time, as
+        Although we spend a major part of our day sleeping, we are not fully aware of what happens during this time, as
         sleep is inherently an altered state of consciousness. With Polydodo we offer a practical and fairly accurate way to answer the
         question "How was my sleep?".
       </p>
       <p className="text-justify">
         We do so by offering you a picture of your sleep based on the five standard sleep stages defined by the American
         Academy of Sleep Medicine's (AASM) Manual for the Scoring of Sleep and Associated Events. These sleep stages are
-        Wake, Rapid-Eye Movement (REM), and the three non-REM stages, which goes from the lightest, N1, to the deepest,
+        Wake, Rapid-Eye Movement (REM), and the three non-REM stages, which range from lightest, N1, to deepest,
         N3. Polydodo scores every 30 seconds of your night into these five stages.
       </p>
       <p className="text-justify">

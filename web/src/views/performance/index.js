@@ -57,7 +57,7 @@ const Performance = () => {
       />
       <Container className="mt-5 text-justify">
         <p className="lead">
-          This page aims to illustrate the performance of our sleep scoring algorithm compared to professional manual
+          This page aims to compare the performance of our sleep scoring algorithm against professional manual
           scoring, which is considered the gold standard in sleep stage scoring. If you want to learn more about how
           we've defined our sleep scoring algorithm, please either refer to our presentation video in our home page, or
           to our{' '}
@@ -67,25 +67,25 @@ const Performance = () => {
           .
         </p>
         <p className="lead">
-          In summary, we will look at our classifier's performance against three different point of view, as described
+          In summary, we will assess our classifier's performance according to three different modes of evaluation, as described
           here;
         </p>
         <ul>
           <li>First, we will check how our classifier’s labels agree with the labels scored within our dataset.</li>
           <li>
-            Then, we will check how this classifier performs on a full night recorded on one of our members. It is the
+            Then, we will check how the classifier performs on a full night recorded on one member of our team. It is the
             night displayed in preview mode. In order to be able to make comparisons, we asked for the help of a medical
             electrophysiologist to score our data. This manual scoring will serve as reference to get an idea of our
             model's accuracy on data acquired using an OpenBCI under non-clinical conditions.
           </li>
           <li>
             Finally, we will present the scoring differences between the medical electrophysiologist and our dataset. To
-            do this, we will take a random night in our dataset. This will allow us to qualify somewhat the previous
-            results and maybe get an idea of the usual agreement level between professional scorers.
+            do this, we will take a random night in our dataset. This will allow us to put the previous
+            results in perspective and maybe get an idea of the usual agreement level between professional scorers.
           </li>
         </ul>
         <p className="lead">
-          We will finally cover the limitations of our current sleep staging model and further work to be done in order
+          We will end by covering the limitations of our current sleep staging model and with further work to be done in order
           to improve our results.
         </p>
         <h3 className="my-5">Model training and selection</h3>
@@ -94,11 +94,10 @@ const Performance = () => {
           <a href="https://physionet.org/content/sleep-edfx/1.0.0/" target="_blank" rel="noreferrer">
             &nbsp;Physionet SleepEDF expanded
           </a>
-          , which is composed of 153 nights of sleep coming from 82 subjects, of different ages and sex. The labelled
+          , which consists of 153 nights of sleep coming from 82 subjects, of different ages and sex. The labelled
           data has been produced by well-trained technicians according to the 1968 Rechtschaffen and Kales manual,
-          adapted to the used EEG montage. In order to compare and validate the prototyped models, we divided the data
-          into a training and testing set, and we made sure that both sets had different subjects. Indeed, we didn't
-          want our test metrics to be biaised, as we'd have already trained on data coming from a same subject.
+          adapted to the EEG montage that was used. In order to compare and validate the prototyped models, we divided the data
+          into a training and testing set, and we made sure that both sets had different subjects.
         </p>
 
         <p>
@@ -108,18 +107,18 @@ const Performance = () => {
           </a>
           , as it is often used in the automatic sleep scoring litterature. We then chose the model with the highest
           agreement score, which is a voting classifier, composed of a K Nearest Neighbour and a Random Forest
-          classifiers. Unfortunatly, the model couldn't be exported to be used in the server, as we included, inside the
-          voting classifier, a pipeline to reduce the dimension of the inputed features. We then decided to use our
-          second best model, which is a Random Forest. It is the one we will evaluate the performances, as it is the one
+          classifier. Unfortunatly, the model could not be exported to be used in the server, as we included, inside the
+          voting classifier, a pipeline to reduce the dimension of the input features. We then decided to use our
+          second best model, which is a Random Forest. It is the one we will use to evaluate the performance metrics, as it is the one
           currently used to classify sleep stages in our server.
         </p>
         <p>
-          Let's first look at the performances of the classifier over the selected test set composed of subjects from
-          the SleepEDF dataset. The resulted Cohen's Kappa agreement score is{' '}
+          Let's first look at the performance of the classifier over the selected test set composed of subjects from
+          the SleepEDF dataset. The Cohen's Kappa agreement score obtained is{' '}
           <strong>
             <span className="text-primary">0.741</span>
           </strong>
-          . Please note that the classes are imbalanced, and thus impacting the metrics displayed.
+          . Please note that the classes are imbalanced, thus impacting the metrics displayed.
         </p>
         <h3 className="my-5">Classifier's accuracy according to Sleep-EDF testing set</h3>
         <div className="my-5">
@@ -136,23 +135,20 @@ const Performance = () => {
         </div>
         <p>
           The test set, on which these metrics were calculated, is composed of randomly chosen subjects from different
-          ages groups (a 33 year old female, a 54 year old female, a 67 year old female and a 88 year old male), so that
+          age groups (a 33 year old female, a 54 year old female, a 67 year old female and a 88 year old male), so that
           the obtained score is the most representative of our ability to classify sleep, no matter the age.
-          {/* On another side, we could compare the results obtained to the ones found in the litterature. To do so, we had to find a
-          paper that uses the same dataset, the same metric and that splits their dataset in a similar fashion as
-          ours.TODO. */}
         </p>
         <p>
-          Although we obtained good results, it didn't quite validated that our classifier could accurately score OpenBCI
-          data into sleep stages. After all, we only validated on data coming from the same acquisition hardware than
-          the data we've trained on, which is not the case when we analyze data submitted in the application. We then
+          Although we obtained good results, it did not quite fully confirmed that our classifier could accurately score OpenBCI
+          data into sleep stages. After all, we only performed validation using data coming from the same acquisition hardware as
+          the data we trained on, which is not the case when we analyze data submitted in the application. We then
           had to make our own polysomnographic dataset based on the hardware we use, namely an OpenBCI board.
         </p>
         <h3 className="my-5">Manual scoring of OpenBCI data and comparison to our classifier</h3>
         <p>
-          As we had limited resources, we planned to create a small dataset of two manually scored night's of sleep,
+          As we had limited resources, we planned to create a small dataset of two manually scored nights of sleep,
           based on biosginals acquired with OpenBCI Cyton boards. Due to a technical problem that occured while
-          recording one of them, we only had one night of sleep scored. The subject is one of our team member, William,
+          recording one of them, we only had one night of sleep scored. The subject is one of our team members, William,
           who turned exactly 23 years old on the night of the recording 🥳. Afterwards, Alexandra, the
           electrophysiologist with who this part of the project was realized, manually scored the night of sleep based
           on the signals from the EEG channels, namely Fpz-Cz and Pz-Oz, the EOG channel and the EMG channel. We finally
@@ -185,7 +181,7 @@ const Performance = () => {
         <p className="mt-5">
           So, we have been able to verify that, indeed, our automatic sleep stage classifier could accurately score EEG
           data acquired from an OpenBCI Cyton. Of course, we only verified on one night of sleep, and on a single
-          subject. In the future, it would be interesting to test our classifier on subjects of different age and sex.
+          subject. In the future, it would be interesting to test our classifier on subjects of different ages and sex.
           Also, <strong>we did not tested on OpenBCI Ganglion boards</strong>, and it would be really helpful to be able
           to certify, in the same maner as we did for the Cyton, that the classification works also accurately on this
           board.
@@ -238,8 +234,8 @@ const Performance = () => {
           ]}
         />
         <p className="my-5">
-          And what if we looked at the automatic sleep classification of the same subject? We then reused the same model
-          description, trained on all the dataset's recording except for the randomly selected recording, and looked at
+          Now what if we examined the automatic sleep classification for the same subject? We reused the same model
+          description, trained on all the dataset's recordings except for the randomly selected recording, and looked at
           the results. The Cohen's Kappa agreement score is of{' '}
           <strong>
             <span className="text-primary">0.6709</span>
@@ -256,7 +252,7 @@ const Performance = () => {
           Alexandra's. For instance, near the end of the night, both Alexandra and the automatic scoring model classified
           N2 instead of N1. On another note, we can see that the obtained Cohen's Kappa agreement score is less than the
           one obtained for our test set above, which was 0.741. We can then reasonably assume that this night of sleep
-          may be hard to conclude on.
+          may be hard to draw conclusions from.
         </p>
         <ClassificationReport
           rows={[
@@ -277,12 +273,12 @@ const Performance = () => {
           Medicine Manual for the Scoring of Sleep and Assoicated Events. In order to output AASM's sleep stages instead
           of R&K's sleep stages, we've merged both Sleep Stage 3 and 4 together. Further work could be done to either
           review the litterature to see if there's a better way to translate R&K's sleep stages into AASM's sleep
-          stages. Even better, it would be to train on labels scored based on the latest AASM's sleep stages. We have
+          stages. Even better would be to train on labels scored based on the latest AASM's sleep stages. We have
           considered more recent datasets, such as{' '}
           <a href="http://www.ceams-carsm.ca/mass" target="_blank" rel="noreferrer">
             the Montreal Archive of Sleep Studies (MASS)
           </a>
-          , but it involved having a complete accreditation coming from an ethics board.
+          , but it involved obtaining accreditation from an ethics board.
         </p>
         <p>
           Furthermore, as we've already mentionned, we would also like to test our automatic sleep stage scoring based
@@ -300,7 +296,7 @@ const Performance = () => {
           >
             an article
           </a>{' '}
-          about the results we've obtained, which currently is in french only). Since we were limited in both time and
+          about the results we've obtained, which is currently in french only). Since we were limited in both time and
           in hardware, we only trained on a few subjects. Also, considering that the dependancy of sleep stages over
           time is quite important, we could greatly improve our model by exploring recurrent neural networks (RNN) or
           long short term memory (LSTM) networks.

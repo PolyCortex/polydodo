@@ -13,8 +13,8 @@ const GUIConfigurationSection = () => (
             OpenBCI GUI
           </a>
         </strong>
-        &nbsp;in order to use the hardware. Therefrom, select <b>Live (from &lt;boardname&gt;)</b> as your source. If
-        you’re using a Cyton board we suggest you use a microSD card using FAT32 format. If you do so, do not forget to
+        &nbsp;in order to use the hardware. Then, select <b>Live (from &lt;boardname&gt;)</b> as your source. If
+        you are using a Cyton board we suggest you use a microSD card using FAT32 format. If you do so, do not forget to
         select at least&nbsp;
         <b>12 hour maximum</b> for the write to SD card parameter.
       </p>

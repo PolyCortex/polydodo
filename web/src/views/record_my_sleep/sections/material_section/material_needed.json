@@ -2,12 +2,12 @@
   "elements": [
     {
       "title": "Rubbing alcohol, cotton swabs and medical tape",
-      "text": "Rubbing alcohol is important for disinfecting the skin. Cotton swabs will be used to apply different products to the skin. Medical tape is optional, but helpful to hold certain electrodes on the skin which could come off. If you don't already have these, you can find them all at the drugstore for cheap.",
+      "text": "Rubbing alcohol is important for disinfecting the skin. Cotton swabs will be used to apply different products to the skin. Medical tape is optional, but helpful to hold certain electrodes on the skin which could come off. If you don't already have these, you can find them all relatively cheaply at a drugstore.",
       "image": "illustrations/alcohol__cotton_swabs__medical_tape.png"
     },
     {
       "title": "Hypafix and gauze squares",
-      "text": "Hypafix is a skin adhesive that holds very well in place while being stretchy and comfortable. This can seem a little bit expensive, but it is really useful to keep the electrodes in place for the long term such as a whole night. While we recommend it, you can also use medical tape to replace the Hypafix, but it is less suitable for long term recordings like sleep study. You will also need pieces of gauze wrap (or gauze pads) to receive and  to isolate the conductive paste. You will be able to get Hypafix from medical equipment distributors and gauze wrap can be found at your local drugstore.",
+      "text": "Hypafix is a skin adhesive that holds very well in place while being stretchy and comfortable. It may seem a little bit expensive, but it is really useful to keep the electrodes in place for extended periods such as a whole night. While we recommend it, you can also use medical tape to replace the Hypafix, but it is less suitable for extended recordings like sleep study. You will also need pieces of gauze wrap (or gauze pads) to receive and  to isolate the conductive paste. You will be able to get Hypafix from medical equipment distributors and gauze wrap can be found at your local drugstore.",
       "image": "illustrations/hypafix__gauze_wrap.png"
     },
     {
@@ -22,12 +22,12 @@
     },
     {
       "title": "An OpenBCI board (Cyton or Ganglion) with its dongle, 5 Gold Cup Electrodes and 4 AA batteries",
-      "text": "OpenBCI boards are low-cost brain-computer interface hardware that provides high quality biosignals. We’re using two channels and a driven ground to record the EEG activity while sleeping. Polydodo is compatible with both Cyton and Ganglion boards. To use them, you will also need the OpenBCI GUI to configure and monitor your recordings. Goldcup electrodes works great for sleep EEG recording and are easy to find. You can find the boards and the electrode on the official OpenBCI store. You'll also need 4 full-charged AA batteries to power the board for the whole night.",
+      "text": "OpenBCI boards are low-cost brain-computer interface hardware that provide high quality biosignals. We are using two channels and a driven ground to record the EEG activity while sleeping. Polydodo is compatible with both Cyton and Ganglion boards. To use them, you will also need the OpenBCI GUI to configure and monitor your recordings. Goldcup electrodes works great for sleep EEG recording and are easy to find. You can find the boards and the electrode on the official OpenBCI store. You'll also need 4 full-charged AA batteries to power the board for the whole night.",
       "image": "illustrations/open_bci__electrodes__batteries.png"
     },
     {
       "title": "A micro SD card (for Cyton users only)",
-      "text": "If you have a Cyton board, you will probably want to use a SD card. It makes recordings more convenient because it removes the need to maintain the connection between your board and your computer. If you choose to use one, please note that Cyton boards do not work with every kind of microSD card. We can only approve the one we tested: SanDisk Ultra 32Gb class 10 and Kingston SDHC 8Gb class 4. Some other brands we tested were not compatible at all like the Lexar 633x 32gb class 10. Refer to the OpenBCI SD card documentation for more information. That's why we recommend to stick to these.",
+      "text": "If you have a Cyton board, you will probably want to use a SD card. It makes recordings more convenient because it removes the need to maintain the connection between your board and your computer. If you choose to use one, please note that Cyton boards do not work with every kind of microSD card. We can only recommend the ones we tested: SanDisk Ultra 32Gb class 10 and Kingston SDHC 8Gb class 4. Some other brands we tested were not compatible at all like the Lexar 633x 32gb class 10. Refer to the OpenBCI SD card documentation for more information.",
       "image": "illustrations/sd.png"
     },
     {
