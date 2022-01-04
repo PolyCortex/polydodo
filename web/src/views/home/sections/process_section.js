@@ -63,7 +63,7 @@ const ProcessSection = () => (
           titlePrefix="03|"
           title="Visualize"
           description="Check out your results and see how you slept through our personalized infographics."
-          link={<Link to={{ pathname: '/sleep-analysis-results', state: { isPreviewMode: true } }}>Have a look</Link>}
+          link={<Link to="/sleep-analysis-results?preview=true">Have a look</Link>}
         />
         <Feature
           iconClassColor="icon-shape-primary"
