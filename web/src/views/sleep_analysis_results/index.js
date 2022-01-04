@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Button, UncontrolledTooltip, Badge } from 'reactstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 
 import Header from 'components/header';
 import D3Component from 'components/d3component';
@@ -20,18 +20,13 @@ import SleepMechanisms from './sleep_mechanisms';
 import TipsToImproveSleep from './improve_sleep_tips';
 import Metric from './metric';
 
-const SleepAnalysisResults = ({ location }) => {
+const SleepAnalysisResults = () => {
   const [response] = useGlobalState('response');
-  const isPreviewMode = location.state?.isPreviewMode;
+  const [searchParams] = useSearchParams();
+  const isPreviewMode = searchParams.get('preview') === 'true' ? true : false;
 
   if (!isPreviewMode && !response) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/analyze-my-sleep',
-        }}
-      />
-    );
+    return <Navigate to="/analyze-my-sleep" replace />;
   }
   const data = isPreviewMode ? previewSequence : response.data;
   const { epochs, report, metadata, subject } = data;
