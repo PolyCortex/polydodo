@@ -23,7 +23,7 @@ const WaitingForServer = () => {
       <Row>
         <Col md="6">
           <p>
-            In order to upload your sleep file, we ask you to install our local server. This server will proceed to the
+            In order to upload your sleep file, we ask you to install our local server. This server will carry out the
             preprocessing, feature extraction and classification of your sleep EEG. Your data is processed locally since
             we, at PolyCortex, believe that you should have full control over your data and its privacy.
           </p>

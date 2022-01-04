@@ -39,9 +39,9 @@ const ConnectionsSection = () => (
           ]}
         />
         <p className="lead mt-5">
-          The headers pins of the electrodes can be disconnected rather easily. Make sure that no pressure is exerted on
-          the wire at any time. On our side, we decided to tap the wire on its container, in order to avoid such a
-          scenario. It is now time to power your OpenBCI device. We suggest full charged batteries, since the device
+          The header pins of the electrodes can be disconnected rather easily. Make sure that no pressure is exerted on
+          the wires at any time. For our part, we decided to tape the wire to the container, in order to avoid such a
+          scenario. It is now time to power your OpenBCI device. We recommend fully charged batteries, since the device
           will be powered on for several hours.
         </p>
       </div>

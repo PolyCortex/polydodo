@@ -23,7 +23,7 @@ const IntroductionSection = () => (
               <Col lg="8">
                 <h4 className="text-white">Not sure yet?</h4>
                 <p className="text-white text-justify mt-3">
-                  If you'd first like to see what the sleep analysis looks like, check out the preview.
+                  If you would first like to see what the sleep analysis looks like, check out the preview.
                 </p>
               </Col>
               <Col className="ml-lg-auto" lg="4">
