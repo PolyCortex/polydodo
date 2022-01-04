@@ -5,8 +5,8 @@ const TipsToImproveSleep = () => (
   <>
     <p className="lead mt-8">
       Sleep deficiency increases the risk of health disorders like high blood pressure, cardiovascular disease,
-      diabetes, depression and obesity. It can also have huge side effects such as decreased mental capabilities
-      like learning, decision making process and problem-solving skills. Sleep deficiency is often caused by sleep
+      diabetes, depression and obesity. It can also have huge side effects such as decreased mental capabilities like
+      learning, decision making process and problem-solving skills. Sleep deficiency is often caused by sleep
       deprivation but can also be due to other factors like out of sync sleep (going to bed out of sync with your
       circadian rythm) and getting poor sleep quality (which may be a symptom of sleep disorders such as sleep apnea or
       restless legs syndrome). In order to improve your sleep hygiene and get a better and longer sleep, many actions
@@ -42,7 +42,7 @@ const TipsToImproveSleep = () => (
       <li className="py-2">
         <BadgeBulletPoint badgeColor="warning" iconClass="fas fa-lightbulb">
           <h6 className="mb-0">
-            Light: avoid looking at screens before or while getting to bed. Light, especially blue wavelenghts, suppress
+            Light: avoid looking at screens before or while getting to bed. Light, especially blue wavelengths, suppress
             melatonin secretion, thus interfering with your circadian rhythms.
           </h6>
         </BadgeBulletPoint>
