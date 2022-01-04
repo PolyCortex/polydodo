@@ -51,7 +51,7 @@ const createHypnogram = (containerNode, data, chartTitle, hypnogramNames, compar
 };
 
 export const createSingleHypnogram = (containerNode, data) => {
-  createHypnogram(containerNode, data, 'Hypnogram', ['Classifier'], [COMPARATIVE_COLORS.Classifier]);
+  createHypnogram(containerNode, data, 'Hypnogram', [], [COMPARATIVE_COLORS.Classifier]);
 };
 
 export const createComparativeHypnogram = (containerNode, data, hypnogramNames) => {

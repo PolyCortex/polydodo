@@ -66,12 +66,10 @@ const createTitle = (g, title) => {
 };
 
 const createLegend = (g, hypnogramNames, comparativeColors) => {
-  const legendData = _.zip(hypnogramNames, comparativeColors).map((x) => {
-    return {
+  const legendData = _.zip(hypnogramNames, comparativeColors).map(x => ({
       name: x[0],
       color: x[1],
-    };
-  });
+  })).filter(zipped => zipped.name !== undefined);
 
   g.selectAll('.rect.legend')
     .data(legendData)
