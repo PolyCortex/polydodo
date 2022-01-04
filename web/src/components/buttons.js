@@ -16,7 +16,7 @@ export const PreviewButton = ({ block, className, color }) => (
     block={block}
     className={`btn-icon ${className}`}
     color={color}
-    to={{ pathname: '/sleep-analysis-results', state: { isPreviewMode: true } }}
+    to="/sleep-analysis-results?preview=true"
     tag={Link}
     size="md"
   >

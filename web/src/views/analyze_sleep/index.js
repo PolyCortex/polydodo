@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router-dom';
 
 import Header from 'components/header';
 import useGlobalState from 'hooks/useGlobalState';
@@ -26,13 +26,7 @@ const AnalyzeSleep = () => {
   });
 
   if (response) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/sleep-analysis-results',
-        }}
-      />
-    );
+    return <Navigate to="/sleep-analysis-results" replace />;
   }
 
   return (
