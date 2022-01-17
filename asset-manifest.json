@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/polydodo/static/css/main.a87a7c20.css",
-    "main.js": "/polydodo/static/js/main.3f450a65.js",
+    "main.js": "/polydodo/static/js/main.9b7ee64c.js",
     "static/media/fa-solid-900.svg": "/polydodo/static/media/fa-solid-900.7a8b4f130182d19a2d7c.svg",
     "static/media/fa-brands-400.svg": "/polydodo/static/media/fa-brands-400.2f517e09eb2ca6650ff5.svg",
     "static/media/team_3.jpg": "/polydodo/static/media/team_3.966d262136eb0f7ede2e.jpg",
@@ -34,6 +34,6 @@
   },
   "entrypoints": [
     "static/css/main.a87a7c20.css",
-    "static/js/main.3f450a65.js"
+    "static/js/main.9b7ee64c.js"
   ]
 }
