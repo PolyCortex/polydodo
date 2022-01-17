@@ -167,7 +167,7 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
             <p>
               We've covered each of the band power frequency ranges we have used in our classification algorithm, and
               their associated expected power depending on the sleep stages. We hope you now get a better idea on how
-              brain waves are correlated to you sleep stages.
+              brain waves are correlated to your sleep stages.
             </p>
           </CardBody>
         </Card>
