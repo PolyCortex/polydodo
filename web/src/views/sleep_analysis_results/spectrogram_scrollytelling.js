@@ -159,6 +159,19 @@ const SpectrogramScrollyTelling = ({ spectrograms, epochs }) => {
           </CardBody>
         </Card>
       </Row>
+      {isInitialized && <WaypointDirection onDown={spectrogramCallbacks[null]} onUp={spectrogramCallbacks['REM']} />}
+      <div style={{ marginBottom: '125%' }} />
+      <Row className="mx-auto col-md-6">
+        <Card className="shadow">
+          <CardBody>
+            <p>
+              We've covered each of the band power frequency ranges we have used in our classification algorithm, and
+              their associated expected power depending on the sleep stages. We hope you now get a better idea on how
+              brain waves are correlated to you sleep stages.
+            </p>
+          </CardBody>
+        </Card>
+      </Row>
       <div style={{ marginBottom: '70%' }} />
       &nbsp;
     </Container>
