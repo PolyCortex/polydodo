@@ -83,10 +83,12 @@ const createMouseOver = (g, x, y, data, color) => {
 
     textHover
       .attr('transform', `translate(${x(timestamp)},${(5 / 6) * HEIGHT})`)
-      .text((x) => `${x.name}: ${x.currentValue.sleepStage}`)
+      .text((x) => (x.name !== undefined ? `${x.name}: ${x.currentValue.sleepStage}` : x.currentValue.sleepStage))
       .style('opacity', 1);
 
-    x(timestamp) > (4 / 5) * WIDTH ? textHover.attr('text-anchor', 'end').attr('dx', -10) : textHover.attr('text-anchor', 'start').attr('dx', 10);
+    x(timestamp) > (4 / 5) * WIDTH
+      ? textHover.attr('text-anchor', 'end').attr('dx', -10)
+      : textHover.attr('text-anchor', 'start').attr('dx', 10);
   };
 
   const mouseLeave = () => {

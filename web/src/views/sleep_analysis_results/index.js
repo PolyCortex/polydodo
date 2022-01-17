@@ -226,14 +226,6 @@ const SleepAnalysisResults = () => {
       </p>
     </Container>
   );
-  const spectrogramOutro = (
-    <Container className="text-justify">
-      <p className="mt-5 lead">
-        We've covered each of the band power frequency ranges we have used in our classification algorithm, and their
-        associated expected power depending on the sleep stages.
-      </p>
-    </Container>
-  );
   const callToAction = (
     <Container className="text-justify">
       <Row className="scrollytelling-container__buttons">
@@ -337,7 +329,6 @@ const SleepAnalysisResults = () => {
       {hypnogramOutro}
       {spectrogramIntro}
       <SpectrogramScrollyTelling spectrograms={data.spectrograms} epochs={data.epochs} />
-      {spectrogramOutro}
       {callToAction}
       {references}
     </>
