@@ -36,7 +36,7 @@ This project aims to offer a cheaper and more accessible way to perform sleep st
 
 🌐 Our web application does exactly all that and is available [here](https://polycortex.github.io/polydodo/). Check it out!
 
-🤖 An Android app **prototype** has been built to test the interface with the OpenBCI boards. Using this, we were able to record sleep data from Cyton and Ganglion boards to a mobile device in a clean way ([see details](mobile)). 
+🤖 An Android app **prototype** has been built to test the interface with the OpenBCI boards. Using this, we were able to record sleep data from Cyton and Ganglion boards to a mobile device ([see details](mobile)). 
 
 **This application is not intended for medical purposes and the data it produces should not be used in such context. Its only goal is to help you study your sleep by yourself. Always seek the advice of a physician on any questions regarding a medical condition.**
 
