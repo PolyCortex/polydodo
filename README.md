@@ -36,7 +36,7 @@ This project aims to offer a cheaper and more accessible way to perform sleep st
 
 🌐 Our web application does exactly all that and is available [here](https://polycortex.github.io/polydodo/). Check it out!
 
-🤖 Our Android app is underway. Give us a star to stay tuned for upcoming news about its release!
+🤖 An Android app **prototype** has been built to test the interface with the OpenBCI boards. Using this, we were able to record sleep data from Cyton and Ganglion boards to a mobile device in a clean way ([see details](mobile)). 
 
 **This application is not intended for medical purposes and the data it produces should not be used in such context. Its only goal is to help you study your sleep by yourself. Always seek the advice of a physician on any questions regarding a medical condition.**
 
@@ -49,13 +49,11 @@ This project aims to offer a cheaper and more accessible way to perform sleep st
 
 ## How it works
 
-Polydodo is composed of two client apps, a web one and a mobile one, through which the user can interact. These clients are not complementary but are alternatives to one another. Each of these clients uses the same local server which hosts the automatic sleep stages classification algorithm.
-
 The web client allows the user to upload a data file acquired using an OpenBCI board and then presents him a detailed and personalized analysis of his sleep. Additionally, this client will further detail the process by which we come to classify sleep in stages and offer a review of this process. OpenBCI boards must be configured via OpenBCI GUI and data must be saved on a SD card (Cyton only) or through a session file.
 
-On the other hand, the mobile client offers a tool that can be used on a regular basis. Unlike the web application, this app can save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard. Also, it will guide the user from the installation of the electrodes to the end of his data acquisition.
+On the other hand, the mobile client is a prototype for a tool that could be used on a regular basis. Unlike the web application, this app could save sleep sequences for later consultation and display the aggregated results of several nights of sleep on a dashboard.
 
-Finally, both these clients use a local HTTP server that is easy to install. This server is hosted locally so that your data is not sent over the internet. Biosignal data are sensitive and this is our way to promise you security.
+Finally, both these clients use a local HTTP server that hosts the automatic sleep stages classification algorithm. This server is easy to install and is  hosted locally so that your data is not sent over the internet. This ensure more security for sensitive data like biosignals.
 <p align="center">
   <br>
   <img alt="General architecture of the project" src="https://github.com/PolyCortex/polydodo/wiki/img/general_architecture_small.png">
@@ -72,7 +70,7 @@ This project is split into different folders that represent the standalone parts
 - The `ai/` folder contains all of our machine learning prototypes. It mainly consists of a set of notebooks that documents our work. It is there that we trained our sleep stage classification algorithm, validated, tested and serialized it for production. For more information, see [`ai/README.md`](https://github.com/PolyCortex/polydodo/tree/master/ai); and open the notebooks as a lot of documentation can be found there;
 - The `backend/` folder contains the python server that uses the serialized model from the `ai/` notebooks. This is the local server that must be used with the web app and the mobile app. See [`server/README.md`](https://github.com/PolyCortex/polydodo/tree/master/backend);
 - `web/` contains the React web app which is the UI for our project. See [`web/README.md`](https://github.com/PolyCortex/polydodo/tree/master/web) for more info;
-- `mobile` contains the Flutter app. This app is an alternative to our web app. It can interface directly with OpenBCI boards which makes it even simpler to proceed to your own sleep analysis. See [`mobile/README.md`](https://github.com/PolyCortex/polydodo/tree/master/mobile) for more info.
+- `mobile` contains the Flutter app. It is a prototype that can interface directly with OpenBCI boards which could make it even simpler to proceed to your own sleep analysis. See [`mobile/README.md`](https://github.com/PolyCortex/polydodo/tree/master/mobile) for more info.
 
 ## Getting started
 
