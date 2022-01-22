@@ -10,7 +10,7 @@ const ElectrodesPlacementSection = () => (
       <Alert color="primary">
         <span className="text-white alert-inner--text">
           <i className="text-white fas fa-hands-helping fa-lg mr-2" />
-          <strong>For the two next parts, you may want to ask a friend for some help.</strong> It will be far easier in
+          <strong>For the two next parts, you may want to ask someone for some help.</strong> It will be far easier in
           order to locate and fix each electrode.
         </span>
       </Alert>
