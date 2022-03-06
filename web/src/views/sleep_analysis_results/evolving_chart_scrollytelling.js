@@ -17,7 +17,15 @@ import Metric from './metric';
 
 import './style.css';
 
-const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
+const EvolvingChartScrollyTelling = ({
+  epochs,
+  report,
+  metadata,
+  subject,
+  yourSleepRefStagesIntroductionRef,
+  yourSleepTimePerStagesRef,
+  yourSleepComparedRef,
+}) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { bedTime, wakeUpTime, totalBedTime } = metadata;
@@ -60,16 +68,16 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
           <CardBody>
             <p>
               This is your sleep timeline. Each color represents one of the 5 sleep stages which are&nbsp;
-              <span className="scrollytelling_cards__w_text">Wake</span>
+              <span className="scrollytelling_cards__w_text">Wake (W)</span>
               ,&nbsp;
-              <span className="scrollytelling_cards__rem_text">REM</span>
+              <span className="scrollytelling_cards__rem_text">Rapid Eye Movement (REM)</span>
               ,&nbsp;
-              <span className="scrollytelling_cards__n1_text">N1</span>,&nbsp;
-              <span className="scrollytelling_cards__n2_text">N2</span>
+              <span className="scrollytelling_cards__n1_text">Non Rapid Eye Movement 1 (N1)</span>,&nbsp;
+              <span className="scrollytelling_cards__n2_text">Non Rapid Eye Movement 2 (N2)</span>
               &nbsp;and&nbsp;
-              <span className="scrollytelling_cards__n3_text">N3</span>. Each colored block reprensents a part of your
-              night that was associated to one of these five stages. You may want to hover them as it shows more details
-              about that part of your night.
+              <span className="scrollytelling_cards__n3_text">Non Rapid Eye Movement 3 (N3)</span>. Each colored block
+              reprensents a part of your night that was associated to one of these five stages. You may want to hover
+              them as it shows more details about that part of your night.
             </p>
           </CardBody>
         </Card>
@@ -119,6 +127,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <WaypointDirection onDown={instanceChartCallbacks.fromTimeline} onUp={timelineChartCallbacks.fromInstance} />
       )}
       <div style={{ marginBottom: '175%' }} />
+      <div ref={yourSleepRefStagesIntroductionRef} />
       <Row>
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
@@ -239,6 +248,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         <WaypointDirection onDown={barChartCallbacks.fromInstance} onUp={instanceChartCallbacks.fromBarChart} />
       )}
       <div style={{ marginBottom: '125%' }} />
+      <div ref={yourSleepTimePerStagesRef} />
       <Row>
         <Card className="shadow col-lg-6 ml-auto">
           <CardBody>
@@ -288,6 +298,7 @@ const EvolvingChartScrollyTelling = ({ epochs, report, metadata, subject }) => {
         />
       )}
       <div style={{ marginBottom: '125%' }} />
+      <div ref={yourSleepComparedRef} />
       <Row>
         <Card className="shadow col-lg-6 mx-auto">
           <CardBody>
