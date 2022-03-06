@@ -19,7 +19,7 @@ const CallToActionSection = () => (
         <Col lg="6" className="mb-6">
           <FloatingCard
             cardClassName="bg-gradient-primary"
-            headerText="Nothing is better than an example"
+            headerText="Take a look"
             bodyText="You can use the preview mode. This gives an example of what you might see if you upload a sleep sequence that you have acquired."
             button={<PreviewButton className="btn-white btn-lg mt-4 w-50" />}
           />

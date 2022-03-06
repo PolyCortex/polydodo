@@ -16,7 +16,7 @@ const TechnologySection = () => (
         to reach higher precision and accuracy than actigraphy based solutions, which can be found in some sleep apps.
       </p>
       <Link to="/performance">
-        <span className="lead">Learn more about the performances</span>
+        <span className="lead">Learn more about the tech</span>
       </Link>
       <div className="mt-4">
         <small className="text-muted text-justify">
