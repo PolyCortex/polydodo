@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-import { EPOCH_DURATION_MS } from '../constants';
+import { EPOCH_DURATION_MS, STAGES_LABELS_TO_DISPLAY } from '../constants';
 import { DateTime, Duration } from 'luxon';
 
 export const initializeTooltips = (containerNode, data) => {
@@ -38,7 +38,7 @@ const initializeTooltip = (containerNode, getToolTipText) => {
   return { mouseover, mousemove, mouseleave };
 };
 
-const getBarToolTipText = (d) => `Stage : <strong> ${d.stage} </strong> <br>
+const getBarToolTipText = (d) => `Stage : <strong> ${STAGES_LABELS_TO_DISPLAY[d.stage]} </strong> <br>
             Range  :  <strong> ${DateTime.fromJSDate(d.start).toFormat('hh:mm:ss')} </strong>
               - <strong> ${DateTime.fromJSDate(d.end).toFormat('hh:mm:ss')} </strong> <br>
             Duration: <strong> ${DateTime.fromJSDate(d.end)
@@ -46,6 +46,6 @@ const getBarToolTipText = (d) => `Stage : <strong> ${d.stage} </strong> <br>
               .toFormat('hh:mm:ss')} </strong>`;
 
 const getStackedToolTipText = (d, stageTimeProportions, nbEpochs) =>
-  `Stage : <strong> ${d.stage} </strong><br>  Duration : <strong> ${Duration.fromMillis(
+  `Stage : <strong> ${STAGES_LABELS_TO_DISPLAY[d.stage]} </strong><br>  Duration : <strong> ${Duration.fromMillis(
     stageTimeProportions[d.stage] * nbEpochs * EPOCH_DURATION_MS,
   ).toFormat('hh:mm:ss')} </strong><br>`;

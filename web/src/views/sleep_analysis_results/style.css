@@ -16,15 +16,26 @@
 
 .scrollytelling_cards__n1_text {
   font-weight: bold;
-  color: #b0c9d9;
+  color: #85c2fe;
 }
 
 .scrollytelling_cards__n2_text {
   font-weight: bold;
-  color: #4da6fe;
+  color: #188cfe;
 }
 
 .scrollytelling_cards__n3_text {
   font-weight: bold;
-  color: #48587f;
+  color: #013f7d;
+}
+
+.tablecontent_link:hover {
+  color: #233dd2;
+  text-decoration: none;
+}
+
+.tablecontent_link {
+  color: #5e72e4;
+  text-decoration: none;
+  background-color: transparent;
 }

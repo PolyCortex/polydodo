@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Container, Row, Button, UncontrolledTooltip, Badge } from 'reactstrap';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
 
@@ -24,6 +24,14 @@ const SleepAnalysisResults = () => {
   const [response] = useGlobalState('response');
   const [searchParams] = useSearchParams();
   const isPreviewMode = searchParams.get('preview') === 'true' ? true : false;
+  const yourSleepRef = useRef();
+  const yourSleepOverviewRef = useRef();
+  const yourSleepRefStagesIntroductionRef = useRef();
+  const yourSleepTimePerStagesRef = useRef();
+  const yourSleepComparedRef = useRef();
+  const sleepPhysiologyRef = useRef();
+  const sleepPatternsRef = useRef();
+  const spectrogramChartRef = useRef();
 
   if (!isPreviewMode && !response) {
     return <Navigate to="/analyze-my-sleep" replace />;
@@ -33,7 +41,7 @@ const SleepAnalysisResults = () => {
   const encodedJsonEpochs = encodeURIComponent(JSON.stringify(data.epochs));
 
   const sleepAnalysisIntro = (
-    <Container className="mt-5 mb-8 text-justify">
+    <Container className="mt-5 mb-2 text-justify">
       {isPreviewMode && (
         <Row className="mb-5 justify-content-center">
           <PreviewModeWarning />
@@ -52,8 +60,61 @@ const SleepAnalysisResults = () => {
         from the stages of sleep that we found. They will appear, here and there, <Metric>in blue</Metric>, in order to
         stand out from the rest of the text.
       </p>
+    </Container>
+  );
+  const scrollToRef = (ref) => (event) => {
+    event.preventDefault();
+    ref.current?.scrollIntoView({ behaviour: 'smooth' });
+  };
+  const tableOfContents = (
+    <Container className="mt-8 mb-3 text-justify">
+      <p className="lead mt-5">Table of Contents:</p>
 
-      <p className="lead mt-5">Without further ado, let's get started:</p>
+      <ol>
+        <li>
+          <a href="yourSleepRef" onClick={scrollToRef(yourSleepRef)}>
+            Your sleep
+          </a>
+          <ul>
+            <li>
+              <a href="yourSleepOverviewRef" onClick={scrollToRef(yourSleepOverviewRef)}>
+                Night's overview
+              </a>
+            </li>
+            <li>
+              <a href="yourSleepRefStagesIntroductionRef" onClick={scrollToRef(yourSleepRefStagesIntroductionRef)}>
+                Sleep stage introduction
+              </a>
+            </li>
+            <li>
+              <a href="yourSleepTimePerStagesRef" onClick={scrollToRef(yourSleepTimePerStagesRef)}>
+                Total time spent in each stage
+              </a>
+            </li>
+            <li>
+              <a href="yourSleepComparedRef" onClick={scrollToRef(yourSleepComparedRef)}>
+                Sleep stage comparison
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="sleepPhysiologyRef" onClick={scrollToRef(sleepPhysiologyRef)}>
+            Sleep physiology
+          </a>
+        </li>
+        <li>
+          <a href="sleepPatternsRef" onClick={scrollToRef(sleepPatternsRef)}>
+            Sleep patterns
+          </a>
+        </li>
+        <li>
+          <a href="spectrogramChartRef" onClick={scrollToRef(spectrogramChartRef)}>
+            Analysis of EEG frequency bands power
+          </a>
+        </li>
+      </ol>
+      <br />
     </Container>
   );
   const evolvingChartOutro = (
@@ -65,7 +126,8 @@ const SleepAnalysisResults = () => {
           as your sleep latency, efficiency and total sleep time. All of these metrics are very interesting. However, it
           would be interesting to understand a little bit more about sleep in order to make sense of this.
         </p>
-        <h4 className="mt-5">This is about your hormones</h4>
+        <div ref={sleepPhysiologyRef} />
+        <h4 className="mt-5">Sleep physiology</h4>
         <p className="lead">
           Hormones such as melatonin and cortisol play a decisive role in sleep. In fact, it is their variation that
           partly explains the circadian cycle.
@@ -319,14 +381,27 @@ const SleepAnalysisResults = () => {
         subtitle={text['header_subtitle']}
         description={text['header_description']}
       />
+      {tableOfContents}
+      <div ref={yourSleepRef} />
       {sleepAnalysisIntro}
-      <EvolvingChartScrollyTelling epochs={epochs} report={report} metadata={metadata} subject={subject} />
+      <div ref={yourSleepOverviewRef} />
+      <EvolvingChartScrollyTelling
+        epochs={epochs}
+        report={report}
+        metadata={metadata}
+        subject={subject}
+        yourSleepRefStagesIntroductionRef={yourSleepRefStagesIntroductionRef}
+        yourSleepTimePerStagesRef={yourSleepTimePerStagesRef}
+        yourSleepComparedRef={yourSleepComparedRef}
+      />
       {evolvingChartOutro}
+      <div ref={sleepPatternsRef} />
       {hypnogramIntro}
       <Container>
         <D3Component callback={createSingleHypnogram} data={data.epochs ? [data.epochs] : null} />
       </Container>
       {hypnogramOutro}
+      <div ref={spectrogramChartRef} />
       {spectrogramIntro}
       <SpectrogramScrollyTelling spectrograms={data.spectrograms} epochs={data.epochs} />
       {callToAction}
