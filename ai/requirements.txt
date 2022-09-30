@@ -1,6 +1,6 @@
 cycler==0.10.0
 git+https://github.com/raphaelvallat/entropy@a9e222eeb32952943249e81079755ea1fe71a431
-joblib==0.14.1
+joblib==1.2.0
 kiwisolver==1.1.0
 llvmlite==0.31.0
 matplotlib==3.0.2
