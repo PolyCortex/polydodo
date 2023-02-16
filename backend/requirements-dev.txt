@@ -2,4 +2,4 @@ hupper==1.10.2
 pyinstaller==4.0
 pytest==6.1.2
 snakeviz==2.1.0
-Werkzeug==1.0.1
+Werkzeug==2.2.3
